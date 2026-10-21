@@ -19,6 +19,13 @@ class MainApp extends StatelessWidget {
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text('Ingenieria de Sistemas'),
+                ],
+              ),
             ],
           ),
         ),
