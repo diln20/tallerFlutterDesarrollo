@@ -1,59 +1,89 @@
-# Taller de Flutter — desarrollo guiado en clase
+# Flutter en práctica — Taller de Desarrollo Móvil
 
-> **Estado:** estructura pedagógica inicial. El contenido técnico se completará a partir del código real de `actividad2a` cuando se restablezca el acceso al equipo. No representa una auditoría ni una copia de ese proyecto.
+**Guía web interactiva para acompañar las clases de Flutter**, basada en el código real de `actividad2a` y organizada en pasos cortos, explicaciones, ejercicios y verificaciones.
 
-## Propósito
+### Abrir la guía
 
-Construir un taller práctico de Flutter a partir de lo que se desarrolla en clase: cada tema debe incorporarse en el orden en que los estudiantes lo aprenden, y cada ejercicio debe continuar el código del ejercicio anterior.
+- **Sitio GitHub Pages:** https://diln20.github.io/tallerFlutterDesarrollo/ (funcionará cuando se active Pages).
+- **Repositorio:** https://github.com/diln20/tallerFlutterDesarrollo
+- **Archivo de entrada:** [index.html](index.html)
 
-**Proyecto de referencia en el equipo del docente:** `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`  
-**Equipo:** `WIN-C2ANEVBHN6Q`
+> El sitio es HTML, CSS y JavaScript estático: no requiere instalaciones ni compilación. El progreso y las casillas se guardan únicamente en el navegador del estudiante.
 
-## Metodología de cada sección
+## Publicar en GitHub Pages
 
-1. **Qué aprenderemos:** objetivo escrito con lenguaje sencillo.
-2. **Qué hace falta saber:** solo conceptos vistos anteriormente.
-3. **Antes de escribir:** identificar archivo y fragmento que se va a modificar.
-4. **Construcción paso a paso:** instrucciones cortas y ordenadas, sin pegar la aplicación completa de una sola vez.
-5. **Explicación del código:** explicar línea a línea los conceptos, parámetros y métodos nuevos.
-6. **Cómo ejecutarlo:** comandos y resultado esperado en emulador o dispositivo.
-7. **Errores habituales:** cómo reconocer y resolver los errores que aparezcan realmente en clase.
-8. **Evidencia:** captura de pantalla real del resultado.
-9. **Actividad individual:** un cambio pequeño que el estudiante pueda implementar por sí mismo.
+La primera vez, en este repositorio abre **Settings → Pages → Build and deployment** y elige:
 
-## Secuencia didáctica preliminar
+- **Source:** Deploy from a branch
+- **Branch:** `main`
+- **Folder:** `/(root)`
+- **Save**
 
-La secuencia definitiva debe ajustarse a las carpetas, archivos y avances reales de `actividad2a`.
+Después GitHub Pages publicará los archivos de `main` en la URL indicada. La activación de Pages se realiza una sola vez en la configuración del repositorio; subir archivos por sí solo no garantiza que ya esté habilitada.
 
-| Etapa | Tema | Producto verificable |
-| --- | --- | --- |
-| 0 | Revisar el proyecto existente y ejecutarlo | Aplicación actual funcionando |
-| 1 | Estructura Flutter y archivo `main.dart` | Explicación del punto de entrada |
-| 2 | `MaterialApp`, `Scaffold` y primeros widgets | Pantalla básica |
-| 3 | `StatelessWidget`, `StatefulWidget`, `const`, `super.key`, `setState` y `dispose` | Pantalla que reacciona a cambios |
-| 4 | Diseño con `Column`, `Row`, `Container`, `Padding` y `Expanded` | Interfaz organizada y adaptable |
-| 5 | Botones, eventos y entrada de texto | Interacción del usuario |
-| 6 | `TextField`, `TextEditingController`, `Form` y validaciones | Formulario funcional |
-| 7 | Navegación entre pantallas | Flujo de varias pantallas |
-| 8 | Organización en archivos y componentes reutilizables | Código más sencillo de mantener |
-| 9 | Consumo de API y manejo de errores, cuando corresponda a lo visto en clase | Datos externos en una pantalla |
-| 10 | Introducción conceptual a BLoC y evolución guiada | Separación de interfaz y lógica |
+## Módulos
 
-### Reglas editoriales
+| # | Tema | Origen |
+|---|---|---|
+| 01 | Preparar y ejecutar el proyecto | Entorno actual de clase |
+| 02 | Entender `main.dart`, `main()`, `runApp`, `super.key`, `const` | Código de clase |
+| 03 | `MaterialApp`, `Scaffold`, `AppBar` y `body` | Código de clase |
+| 04 | `Column`, `Row`, `Center`, `Icon`, `SizedBox` | Código de clase |
+| 05 | `TextField`, `InputDecoration`, `Expanded` | Código de clase |
+| 06 | Espaciado y diseño adaptable | Práctica propuesta |
+| 07 | `StatefulWidget`, `setState`, controlador y `dispose` | Práctica propuesta |
+| 08 | `Form`, `TextFormField` y validación | Práctica propuesta |
+| 09 | Cajero electrónico como proyecto transversal paralelo | Propuesta |
+| 10 | Introducción conceptual a BLoC | Propuesta posterior |
 
-- No anticipar widgets, métodos o patrones que todavía no se han explicado.
-- Presentar primero una solución sencilla y, **solo después**, su evolución a BLoC.
-- Diferenciar claramente el **código que el docente ya construyó** de las **ampliaciones sugeridas**.
-- Explicar abreviaturas y operaciones nuevas (`split`, `map`, `trim`, `...`) antes de usarlas.
-- No inventar capturas del proyecto: se utilizarán evidencias reales.
-- No modificar ni sobrescribir el proyecto de clase sin revisar previamente su estado y cambios locales.
+La guía **separa lo que ya aparece en el código real de clase de las ampliaciones didácticas**. Por ahora, la app original tiene una pantalla `Tienda` con un `StatelessWidget`, filas, columnas, iconos y un campo de búsqueda. No afirmamos que la búsqueda ya filtre productos.
 
-## Pendiente para continuar
+## Proyectos en el equipo de trabajo
 
-- Recuperar conexión con Mi Terminal Commander en `WIN-C2ANEVBHN6Q`.
-- Inspeccionar archivos de `actividad2a` y confirmar qué contenido se ha desarrollado realmente.
-- Registrar la secuencia exacta de lo visto con los estudiantes.
-- Transformar esta planificación en una guía web **paso a paso**, con código, explicaciones y evidencias tomadas del proyecto real.
+- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`: **proyecto del docente**, para avanzar con estudiantes; no se modifica desde esta guía.
+- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`: **copia de trabajo** para construir contenidos y probar cambios.
+- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia\guia-web`: **copia local** del sitio que se sube a GitHub.
+
+Los ejemplos de código de la web son demostraciones didácticas. Los cambios sugeridos para módulos posteriores no se han aplicado por el mero hecho de publicar la guía.
+
+## Estructura del sitio
+
+```text
+index.html
+assets/
+  app.js
+  styles.css
+  favicon.svg
+README.md
+.nojekyll
+```
+
+## Funciones de la guía
+
+- Menú por módulos, búsqueda de temas y navegación por enlace directo.
+- Diseño responsivo para celular, tableta y escritorio.
+- Modo claro / oscuro.
+- Copiar bloques de código.
+- Casillas de verificación y registro local de avance.
+- Ejercicios individuales con orientaciones desplegables.
+- Diferencia visible entre **código de clase** y **prácticas propuestas**.
+
+## Metodología de cada módulo
+
+1. Objetivo con lenguaje sencillo.
+2. Lo que se necesita saber antes.
+3. Fragmento pequeño de código.
+4. Explicación de cada línea o concepto nuevo.
+5. Cambio práctico y comprobación.
+6. Actividad individual y resultado esperado.
+7. Marcación de progreso.
+
+**Capturas de pantalla:** la ilustración de la portada es esquemática, *no una captura real*. Las capturas de Flutter se incorporarán al sitio cuando se obtengan y validen desde el proyecto de pruebas.
+
+## Desarrollo local
+
+Puedes abrir `index.html` directamente con tu navegador. Si quieres servirlo en una URL local, desde la carpeta del sitio ejecuta cualquier servidor HTTP estático. Usa URLs relativas para conservar compatibilidad con la ruta de GitHub Pages.
 
 ---
-**Repositorio:** [diln20/tallerFlutterDesarrollo](https://github.com/diln20/tallerFlutterDesarrollo)
+
+Material educativo en desarrollo continuo, basado en la práctica real de aula.
