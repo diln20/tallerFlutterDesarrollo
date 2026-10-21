@@ -1,78 +1,76 @@
-# Taller Flutter — basado en actividad2a
+# Taller Flutter — Guía detallada basada en actividad2a
 
-**Guía interactiva de Flutter basada en la aplicación real del docente**, no en ejemplos o aplicaciones independientes.
+**Guía web didáctica para construir la aplicación «Tienda» paso a paso, basada en el código real que se utiliza en clase.** No cambia de proyecto ni incluye el cajero electrónico de otros talleres.
 
-[Repositorio](https://github.com/diln20/tallerFlutterDesarrollo) · [GitHub Pages (tras activarlo)](https://diln20.github.io/tallerFlutterDesarrollo/)
+**Página publicada:** https://diln20.github.io/tallerFlutterDesarrollo/  
+**Repositorio:** https://github.com/diln20/tallerFlutterDesarrollo
 
-## Punto de partida comprobado
+## Cómo estudiar con esta guía
 
-En el equipo WIN-C2ANEVBHN6Q se leyó la carpeta:
+1. **Lee primero el objetivo.** Cada módulo parte de algo que ya aprendiste.
+2. **Escribe el fragmento en su lugar.** No copies la aplicación completa antes de conocer las instrucciones.
+3. **Lee las explicaciones.** Se aclaran líneas, símbolos, parámetros, métodos y cierres.
+4. **Ejecuta y observa.** Comprueba el resultado en Flutter, no solamente en el editor.
+5. **Consulta los errores frecuentes.** Identifica su causa antes de cambiar código al azar.
+6. **Resuelve el ejercicio individual** y las preguntas de sustentación.
+7. **Compara con el archivo completo de la etapa.** Es un punto de verificación, no un atajo para saltar la explicación.
+8. **Marca el módulo como completado** cuando puedas explicar por qué funciona.
 
-`C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`
+## Proyecto real de referencia
 
-La aplicación actual tiene el archivo `lib/main.dart`, con:
+Equipo: `WIN-C2ANEVBHN6Q`  
+Docente y estudiantes: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`  
+Copia para preparar ejemplos: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`
 
-- `void main()` y `runApp(const MainApp())`.
-- `MainApp extends StatelessWidget`.
-- `MaterialApp`, `Scaffold` y `AppBar` con título **Tienda**.
-- `Center`, `Column`, `Row`, `Text`, `Icon`, `SizedBox` y `Expanded`.
-- Un `TextField` con `hintText: 'Buscar marca o modelo'`.
+Se verificó el código exacto de [`codigo-base/main.dart`](codigo-base/main.dart) y [`codigo-base/pubspec.yaml`](codigo-base/pubspec.yaml). **El `main.dart` tiene 42 líneas.** La página explica una por una, incluidas llaves, comas, paréntesis y listas de widgets.
 
-**Todavía no existe** una lista de productos, lógica de filtrado, formularios de registro ni BLoC en el código de clase.
+La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp`, `Scaffold`, una barra «Tienda», `Center`, `Column`, `Row`, iconos de automóvil, `Expanded` y un `TextField` con `hintText: 'Buscar marca o modelo'`. El campo permite escribir, pero aún **no realiza búsquedas ni registra vehículos**.
 
-Los archivos de referencia copiados literalmente son [codigo-base/main.dart](codigo-base/main.dart) y [codigo-base/pubspec.yaml](codigo-base/pubspec.yaml). Se preservan los textos escritos en clase tal y como aparecen.
+## Secuencia de aprendizaje
 
-## Organización del taller
-
-| Módulo | Contenido | Estado |
+| Módulo | ¿Qué aprenderás? | Estado |
 | --- | --- | --- |
-| 01 | Abrir y ejecutar actividad2a | Basado en proyecto real |
-| 02 | Entender main.dart, runApp, StatelessWidget, super.key y const | Basado en proyecto real |
-| 03 | MaterialApp, Scaffold y AppBar: construir Tienda | Basado en proyecto real |
-| 04 | Center, Column, Row, SizedBox e Icon | Basado en proyecto real |
-| 05 | Expanded y TextField: buscador visual de la Tienda | **Coincide con main.dart real** |
-| 06 | Mejorar la distribución de la pantalla Tienda | Propuesta futura en la copia |
-| 07 | Hacer interactivo el campo de búsqueda con StatefulWidget y setState | Propuesta futura en la copia |
-| 08 | Filtrar una lista local de vehículos de prueba | Propuesta futura en la copia |
-| 09 | Agregar vehículos a la misma Tienda con Form y validación | Propuesta futura en la copia |
-| 10 | Comprender BLoC como evolución de la Tienda | Propuesta conceptual posterior |
+| 01 | Entorno, carpetas, `flutter doctor`, `pub get`, `run`, Hot Reload y errores de instalación. | Código y entorno de clase |
+| 02 | Dart básico: función, clase, constructor, `runApp`, `StatelessWidget`, `const`, `super.key`, símbolos y argumentos. | Código de clase |
+| 03 | Estructura de la Tienda: `MaterialApp`, `Scaffold`, `AppBar`, `body`, `Center` y `Text`. | Código de clase |
+| 04 | Distribución de widgets: `Column`, `Row`, `children`, `SizedBox`, iconos, tamaños y restricciones. | Código de clase |
+| 05 | `TextField`, `InputDecoration`, `hintText`, `Expanded` y explicación exacta de las **42 líneas** del programa. | Código de clase |
+| 06 | Mejorar la misma Tienda con `Padding`, `SingleChildScrollView` y distribución adaptable. | Propuesta para la copia |
+| 07 | Hacer que el buscador reaccione con `StatefulWidget`, `createState`, `setState` y `onChanged`. | Propuesta para la copia |
+| 08 | Lista de vehículos de prueba y filtro con `where`, `trim`, `toLowerCase`, `contains` y `toList`. | Propuesta para la copia |
+| 09 | Agregar vehículos con `Form`, `TextFormField`, `validator`, `TextEditingController`, `dispose` y `SnackBar`. | Propuesta para la copia |
+| 10 | Comprender eventos, estados y responsabilidad de cada parte de la Tienda con BLoC (sin adelantar código). | Propuesta conceptual |
 
-Los módulos 01–05 avanzan del código mínimo al archivo actual. Los módulos 06–10 no están implementados en el proyecto original y **no deben presentarse como funcionalidades ya vistas en clase**.
+## Archivos completos para verificar el avance
 
-## Archivos completos por etapa
+Los ejemplos son **versiones acumulativas de la misma Tienda**, y sirven para comparar el resultado después de construir los fragmentos del módulo.
 
-Para el trabajo didáctico se prepararon estos archivos completos que permiten revisar cada etapa y culminan en la versión auténtica:
+| Etapa | Archivo de ejemplo | Qué representa |
+| --- | --- | --- |
+| 02 | [`paso_02_main.dart`](etapas/paso_02_main.dart) | Aplicación mínima y función principal |
+| 03 | [`paso_03_tienda.dart`](etapas/paso_03_tienda.dart) | Título y contenido de la pantalla |
+| 04 | [`paso_04_columna.dart`](etapas/paso_04_columna.dart) | Column, Row, texto e iconos |
+| 05 | [`paso_05_buscador.dart`](etapas/paso_05_buscador.dart) | **Igual al main.dart original del docente** |
+| 06 | [`paso_06_responsive.dart`](etapas/paso_06_responsive.dart) | Reorganización de la misma Tienda |
+| 07 | [`paso_07_estado.dart`](etapas/paso_07_estado.dart) | Captura del texto de búsqueda |
+| 08 | [`paso_08_filtro.dart`](etapas/paso_08_filtro.dart) | Filtrar nombres de vehículos de prueba |
+| 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | Validar y registrar vehículos en memoria |
 
-- [etapas/paso_02_main.dart](etapas/paso_02_main.dart)
-- [etapas/paso_03_tienda.dart](etapas/paso_03_tienda.dart)
-- [etapas/paso_04_columna.dart](etapas/paso_04_columna.dart)
-- [etapas/paso_05_buscador.dart](etapas/paso_05_buscador.dart) — idéntico a `codigo-base/main.dart`.
+Los archivos de las etapas 06 a 09 describen **posibles prácticas siguientes**, no avances que el docente ya haya realizado con sus estudiantes.
 
-Los estudiantes deben construir **paso a paso**, explicando cada línea y comprobando el resultado, no pegar la etapa completa antes de estudiar los conceptos.
+## Cómo usar la página
 
-## Rutas de trabajo
+- Menú por módulos, enlaces directos y buscador que revisa **también las explicaciones internas**.
+- Tema claro u oscuro y diseño adaptable.
+- Copia de ejemplos y enlaces a archivos Dart completos.
+- Avance y listas de verificación guardados localmente en el navegador.
+- Ejercicios con soluciones orientativas y preguntas para explicar en clase.
+- Explicaciones extensas en cuadros, tablas y lectura línea a línea.
 
-- **Docente y estudiantes — NO MODIFICAR AUTOMÁTICAMENTE**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`.
-- **Copia para preparar la guía y futuras prácticas**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`.
-- **Sitio web local**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia\guia-web`.
+## Publicación de GitHub Pages
 
-El proyecto original no se modifica al publicar la guía. Las mejoras de módulos posteriores se desarrollarán en la copia cuando corresponda a la clase.
+El sitio utiliza `index.html`, `assets/styles.css` y `assets/app.js`. Está publicado desde la rama `main` en https://diln20.github.io/tallerFlutterDesarrollo/. No necesita compilación adicional porque es una página estática.
 
-## Funciones de la página
+## Criterio de actualización
 
-- Índice y buscador por módulos, navegación mediante enlaces directos.
-- Diseño responsive en computador y celular; modo claro y oscuro.
-- Botones para copiar los ejemplos de código.
-- Actividades y listas de comprobación; progreso guardado en el navegador del estudiante.
-- Referencias a los archivos auténticos y a los hitos ejecutables.
-- Distinción visual entre **lo ya realizado en clase** y **las prácticas propuestas**.
-
-## Publicación en GitHub Pages
-
-Si Pages todavía no está activo: abrir **Settings → Pages → Build and deployment**, elegir **Deploy from a branch**, rama `main`, carpeta `/(root)` y **Save**. El sitio está preparado en `index.html` y usa rutas relativas compatibles con Pages.
-
-La URL prevista es https://diln20.github.io/tallerFlutterDesarrollo/ tras el despliegue.
-
-## Política editorial
-
-Cada concepto se explica cuando aparece por primera vez. Para cada etapa, incluir: objetivo, código en fragmentos cortos, explicación de nuevas líneas o propiedades, comando de ejecución, prueba observable, errores típicos y ejercicio individual. Las capturas deben proceder del Flutter real, no de ilustraciones simuladas sin aviso. 
+El proyecto **`actividad2a` del docente se conserva intacto**. La copia `actividad2a-guia` sirve para construir y verificar propuestas antes de incorporarlas a clase. Las explicaciones siempre deben respetar el orden didáctico, los conceptos ya vistos y el código auténtico. Las capturas deben proceder de pruebas reales y distinguirse de las ilustraciones.
