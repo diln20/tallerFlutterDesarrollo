@@ -350,3 +350,9 @@ body[data-theme="dark"] .button-complete.is-complete{color:#a6e6d4;background:#1
  .hero{color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
  .code-block{white-space:pre-wrap;overflow:visible}
 }
+/* En celulares muy estrechos, evita que el encabezado se desborde. */
+@media(max-width:360px){
+  .breadcrumbs>span:first-child,.breadcrumbs>span:nth-child(2){display:none}
+  .breadcrumbs strong{max-width:165px}
+  .top-github{display:none}
+}
