@@ -493,7 +493,263 @@ class MainApp extends StatelessWidget {
 <div><span class="roadmap-step">B</span><strong>Widget raíz</strong><p><code>class MainApp extends StatelessWidget</code>, <code>super.key</code> y <code>build</code>.</p></div>
 <div><span class="roadmap-step">C</span><strong>Estructura de Tienda</strong><p><code>MaterialApp</code>, <code>Scaffold</code> y <code>AppBar</code>.</p></div>
 <div><span class="roadmap-step">D</span><strong>Contenido</strong><p><code>Center</code>, <code>Column</code>, <code>Text</code>, <code>Icon</code> y <code>SizedBox</code>.</p></div>
-<div><span class="roadmap-step">E</span><strong>Buscador</strong><p><code>Row</code>, <code>Expanded</code>, <code>TextField</code> e <code>InputDecoration</code>.</p></div></div><h2>6. Comprueba lo que viste</h2><div class="checklist" data-checklist="campo-texto"><label><input type="checkbox"> El campo me permite escribir.</label><label><input type="checkbox"> Comprendo por qué el campo está dentro de <code>Expanded</code>.</label><label><input type="checkbox"> Puedo distinguir texto de ayuda y texto real.</label></div>
+<div><span class="roadmap-step">E</span><strong>Buscador</strong><p><code>Row</code>, <code>Expanded</code>, <code>TextField</code> e <code>InputDecoration</code>.</p></div></div><div class="deep-dive" id="detalle-codigo-real">
+<div class="deep-heading"><span>AMPLIACIÓN · MÓDULO 05</span><h2>Las 42 líneas exactas de main.dart, explicadas una por una</h2><p>Cada fila contiene una línea real del archivo y su explicación. Incluimos también las llaves, comas, corchetes y paréntesis de cierre, porque comprenderlos permite escribir correctamente el árbol de Flutter.</p></div>
+<div class="line-summary"><span><strong>42</strong> líneas de código</span><span><strong>2</strong> listas de children</span><span><strong>1</strong> TextField</span><span><strong>0</strong> filtros implementados</span></div>
+<ol class="source-walkthrough"><li class="source-row">
+ <span class="line-no">01</span>
+ <code class="line-code">import 'package:flutter/material.dart';</code>
+ <div class="line-explanation"><span class="line-group">Importación</span><p>Importa los componentes de Material Design de Flutter. Por eso podemos utilizar <code>Text</code>, <code>Row</code>, <code>AppBar</code> e <code>Icons</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">02</span>
+ <code class="line-code">&nbsp;</code>
+ <div class="line-explanation"><p>Separación visual: Dart no ejecuta nada por una línea en blanco.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">03</span>
+ <code class="line-code">void main() {</code>
+ <div class="line-explanation"><span class="line-group">Función principal</span><p>Declara la función principal, el punto de partida del programa. <code>void</code> significa que no devuelve un valor; la llave abre el cuerpo.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">04</span>
+ <code class="line-code">  runApp(const MainApp());</code>
+ <div class="line-explanation"><p>Ejecuta <code>runApp</code> y entrega el widget raíz <code>MainApp</code>. <code>const</code> permite crearlo como constante y <code>;</code> cierra la instrucción.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">05</span>
+ <code class="line-code">}</code>
+ <div class="line-explanation"><p>Cierra con <code>}</code> el cuerpo de la función <code>main</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">06</span>
+ <code class="line-code">&nbsp;</code>
+ <div class="line-explanation"><p>Deja una separación legible entre la función y la clase.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">07</span>
+ <code class="line-code">class MainApp extends StatelessWidget {</code>
+ <div class="line-explanation"><span class="line-group">Clase y constructor</span><p>Declara la clase <code>MainApp</code> y establece que hereda de <code>StatelessWidget</code>, un widget sin estado mutable propio.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">08</span>
+ <code class="line-code">  const MainApp({super.key});</code>
+ <div class="line-explanation"><p>Constructor de <code>MainApp</code>. La expresión <code>super.key</code> pasa al padre la clave opcional del widget.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">09</span>
+ <code class="line-code">&nbsp;</code>
+ <div class="line-explanation"><p>Separación visual entre constructor y método.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">10</span>
+ <code class="line-code">  @override</code>
+ <div class="line-explanation"><p><code>@override</code> señala que implementamos un método declarado por un tipo padre.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">11</span>
+ <code class="line-code">  Widget build(BuildContext context) {</code>
+ <div class="line-explanation"><span class="line-group">Método build</span><p>El método <code>build</code> recibe <code>BuildContext context</code> y devuelve un <code>Widget</code>. La llave abre el método.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">12</span>
+ <code class="line-code">    return MaterialApp(</code>
+ <div class="line-explanation"><span class="line-group">Estructura Material</span><p><code>return</code> entrega un widget <code>MaterialApp</code>, encargado de preparar la aplicación de tipo Material.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">13</span>
+ <code class="line-code">      home: Scaffold(</code>
+ <div class="line-explanation"><p><code>home:</code> identifica la pantalla inicial; aquí es un <code>Scaffold</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">14</span>
+ <code class="line-code">        appBar: AppBar(title: const Text('Tienda')),</code>
+ <div class="line-explanation"><p><code>appBar:</code> establece la barra superior. <code>title:</code> recibe un <code>Text</code> con el texto literal «Tienda».</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">15</span>
+ <code class="line-code">        body: Center(</code>
+ <div class="line-explanation"><p><code>body:</code> determina la zona principal debajo de la barra. Aquí contiene un <code>Center</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">16</span>
+ <code class="line-code">          child: Column(</code>
+ <div class="line-explanation"><p><code>child:</code> indica el único hijo de Center. Es una <code>Column</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">17</span>
+ <code class="line-code">            children: [</code>
+ <div class="line-explanation"><span class="line-group">Elementos de Column</span><p><code>children: [</code> abre la lista vertical de widgets dentro de Column.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">18</span>
+ <code class="line-code">              Text('Hello dsfdsWorld'),</code>
+ <div class="line-explanation"><p>Primer widget visible del cuerpo: texto literal «Hello dsfdsWorld», conservado del proyecto de clase.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">19</span>
+ <code class="line-code">              const SizedBox(height: 20),</code>
+ <div class="line-explanation"><p>Agrega 20 píxeles lógicos de espacio vertical. <code>const</code> es posible porque el valor es constante.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">20</span>
+ <code class="line-code">              Icon(Icons.directions_car),</code>
+ <div class="line-explanation"><p>Muestra un icono de automóvil mediante <code>Icons.directions_car</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">21</span>
+ <code class="line-code">              const SizedBox(height: 8),</code>
+ <div class="line-explanation"><p>Añade 8 píxeles lógicos de alto para separar ese icono del siguiente elemento.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">22</span>
+ <code class="line-code">              Row(</code>
+ <div class="line-explanation"><span class="line-group">Fila y buscador</span><p>Abre una <code>Row</code>, para organizar los elementos de su interior horizontalmente.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">23</span>
+ <code class="line-code">                children: [</code>
+ <div class="line-explanation"><p>Abre una segunda lista <code>children</code>, que pertenece a la Row, no a Column.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">24</span>
+ <code class="line-code">                  Icon(Icons.directions_car),</code>
+ <div class="line-explanation"><p>Primer hijo de Row: otro icono de automóvil, distinto del de la línea 20.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">25</span>
+ <code class="line-code">                  const SizedBox(width: 8),</code>
+ <div class="line-explanation"><p>Deja 8 píxeles lógicos de separación horizontal dentro de la fila.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">26</span>
+ <code class="line-code">                  Text('Ingenieria de Sistemas'),</code>
+ <div class="line-explanation"><p>Muestra exactamente «Ingenieria de Sistemas», la cadena escrita en el archivo original.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">27</span>
+ <code class="line-code">                  Expanded(</code>
+ <div class="line-explanation"><p>Abre <code>Expanded</code> para que su hijo use el espacio flexible restante de la Row.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">28</span>
+ <code class="line-code">                    child: TextField(</code>
+ <div class="line-explanation"><p>El <code>child</code> de Expanded es un <code>TextField</code>, un campo que permite escribir.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">29</span>
+ <code class="line-code">                      decoration: const InputDecoration(</code>
+ <div class="line-explanation"><p><code>decoration:</code> asigna la apariencia del campo a través de <code>InputDecoration</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">30</span>
+ <code class="line-code">                        hintText: 'Buscar marca o modelo',</code>
+ <div class="line-explanation"><p><code>hintText:</code> especifica la sugerencia «Buscar marca o modelo» cuando el campo está vacío. No es una función de búsqueda.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">31</span>
+ <code class="line-code">                      ),</code>
+ <div class="line-explanation"><span class="line-group">Orden de los cierres</span><p><code>),</code> cierra InputDecoration, iniciado en la línea 29.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">32</span>
+ <code class="line-code">                    ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra TextField, iniciado en la línea 28.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">33</span>
+ <code class="line-code">                  ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra Expanded, iniciado en la línea 27.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">34</span>
+ <code class="line-code">                ],</code>
+ <div class="line-explanation"><p><code>],</code> cierra la lista de hijos de Row que empezó en la línea 23.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">35</span>
+ <code class="line-code">              ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra Row, iniciada en la línea 22.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">36</span>
+ <code class="line-code">            ],</code>
+ <div class="line-explanation"><p><code>],</code> cierra la lista de hijos de Column, abierta en la línea 17.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">37</span>
+ <code class="line-code">          ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra Column, iniciada en la línea 16.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">38</span>
+ <code class="line-code">        ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra Center, iniciado en la línea 15.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">39</span>
+ <code class="line-code">      ),</code>
+ <div class="line-explanation"><p><code>),</code> cierra Scaffold, iniciado en la línea 13.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">40</span>
+ <code class="line-code">    );</code>
+ <div class="line-explanation"><p><code>);</code> cierra MaterialApp y termina la instrucción <code>return</code>.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">41</span>
+ <code class="line-code">  }</code>
+ <div class="line-explanation"><p><code>}</code> cierra el método build.</p></div>
+</li>
+<li class="source-row">
+ <span class="line-no">42</span>
+ <code class="line-code">}</code>
+ <div class="line-explanation"><p><code>}</code> cierra la clase MainApp.</p></div>
+</li></ol>
+<h3>1. ¿Qué hace exactamente Expanded en esta Row?</h3>
+<p>La fila ya contiene un icono, ocho píxeles de separación y el texto «Ingenieria de Sistemas». <code>Expanded</code> recibe el ancho flexible que queda y se lo ofrece al campo de texto. Si los elementos fijos ocupan demasiado, <code>Expanded</code> no puede resolver por sí solo cualquier desbordamiento; por eso en el módulo 06 propondremos situar el campo debajo de la fila.</p>
+<div class="code-label">Cómo se reparte el contenido horizontal</div><pre class="code-block"><code>Row(
+  children: [
+    Icon(Icons.directions_car),
+    const SizedBox(width: 8),
+    Text('Ingenieria de Sistemas'),
+    Expanded(
+      child: TextField(),
+    ),
+  ],
+)</code></pre>
+<h3>2. Escribir no significa buscar</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Función</th><th>Significado</th><th>¿Existe ahora?</th></tr></thead><tbody>
+<tr><td><code>TextField</code></td><td>Permite escribir caracteres.</td><td>Sí, línea 28.</td></tr>
+<tr><td><code>InputDecoration</code></td><td>Define propiedades de presentación del campo.</td><td>Sí, línea 29.</td></tr>
+<tr><td><code>hintText</code></td><td>Muestra una sugerencia cuando el campo está vacío.</td><td>Sí, línea 30.</td></tr>
+<tr><td>Estado de búsqueda</td><td>Guarda el texto que el usuario escribió.</td><td>No; se aprenderá en el módulo 07.</td></tr>
+<tr><td>Filtrado</td><td>Compara el texto con una lista de vehículos.</td><td>No; se aprenderá en el módulo 08.</td></tr>
+</tbody></table></div>
+<h3>3. Leer los cierres de adentro hacia afuera</h3>
+<div class="code-label">Correspondencia entre las líneas 31 a 42</div><pre class="code-block"><code>31 → cierra InputDecoration
+32 → cierra TextField
+33 → cierra Expanded
+34 → cierra children de Row
+35 → cierra Row
+36 → cierra children de Column
+37 → cierra Column
+38 → cierra Center
+39 → cierra Scaffold
+40 → cierra MaterialApp y finaliza return
+41 → cierra build
+42 → cierra MainApp</code></pre>
+<p>Una <code>Row</code> no puede cerrarse antes de sus hijos. Los cierres aparecen en orden inverso de apertura. Las comas que acompañan algunos cierres separan argumentos o elementos de listas; el punto y coma de la línea 40 finaliza la instrucción <code>return</code>.</p>
+<h3>4. Errores frecuentes al llegar al código completo</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Comportamiento</th><th>Causa</th><th>Qué revisar</th></tr></thead><tbody>
+<tr><td>El campo admite texto pero no busca vehículos.</td><td>La aplicación aún no lee ni procesa la búsqueda.</td><td>Es correcto para esta etapa; el siguiente objetivo es <code>onChanged</code> y <code>setState</code>.</td></tr>
+<tr><td>La fila desborda por la derecha.</td><td>Icono y texto fijo consumen gran parte del espacio.</td><td>Probar ancho móvil y continuar con la reorganización del módulo 06.</td></tr>
+<tr><td>La cadena mostrada no coincide.</td><td>Se modificó un literal.</td><td>Comparar con <code>codigo-base/main.dart</code>, sin cambiar el proyecto docente.</td></tr>
+<tr><td>El compilador indica que falta una llave o un paréntesis.</td><td>Alguna apertura no se cerró correctamente.</td><td>Seguir las líneas 31–42 y emparejar cada widget con su cierre.</td></tr>
+<tr><td>El buscador es muy estrecho.</td><td>Expanded solo utiliza el espacio flexible que queda.</td><td>En el módulo 06 mover el TextField debajo de la Row.</td></tr>
+</tbody></table></div>
+<div class="guided-check"><strong>Comprobación de 5 preguntas</strong><p>¿Cuál es el primer <code>children</code>? ¿En qué línea está el segundo icono de carro? ¿Dónde se define el texto de ayuda? ¿Qué línea cierra el campo? ¿Cuál aporta espacio flexible?</p><details><summary>Ver respuestas esperadas</summary><p>Líneas 17, 24, 30, 32 y 27 respectivamente.</p></details></div>
+</div><h2>6. Comprueba lo que viste</h2><div class="checklist" data-checklist="campo-texto"><label><input type="checkbox"> El campo me permite escribir.</label><label><input type="checkbox"> Comprendo por qué el campo está dentro de <code>Expanded</code>.</label><label><input type="checkbox"> Puedo distinguir texto de ayuda y texto real.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Reconoce las diferencias</h3><p>Explica qué pasaría si la <code>Row</code> tuviera textos muy largos y el <code>TextField</code> no dispusiera de espacio flexible.</p><details><summary>Ver orientación</summary><p>La fila podría sobrepasar el ancho de la pantalla. <code>Expanded</code> permite que el campo use el espacio flexible disponible, aunque también debemos cuidar los otros elementos.</p></details></div>
           <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_05_buscador.dart" target="_blank" rel="noopener noreferrer">Llegar al código original exacto: paso_05_buscador.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="campo-texto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Siguiente: Mejorar el diseño →</a></div>
         </section>
