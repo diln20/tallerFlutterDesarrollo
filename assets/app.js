@@ -190,7 +190,9 @@
       const needle = searchInput.value.trim().toLocaleLowerCase('es');
       let matches = 0;
       navLinks.forEach((link) => {
-        const haystack = ((link.dataset.search || '') + ' ' + link.textContent).toLocaleLowerCase('es');
+        const lesson = document.getElementById(link.dataset.route);
+        const lessonText = lesson ? lesson.textContent : '';
+        const haystack = ((link.dataset.search || '') + ' ' + link.textContent + ' ' + lessonText).toLocaleLowerCase('es');
         const visible = !needle || haystack.includes(needle);
         link.hidden = !visible;
         if (visible) matches++;
