@@ -812,7 +812,74 @@ const TextField(
 <h2>4. Verifica el resultado</h2>
 <div class="checklist" data-checklist="responsive"><label><input type="checkbox"> El título sigue diciendo «Tienda».</label><label><input type="checkbox"> El campo todavía dice «Buscar marca o modelo».</label><label><input type="checkbox"> La pantalla funciona en un teléfono estrecho y no se corta horizontalmente.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dos capturas, una comparación</h3><p>Captura la pantalla original y la versión de práctica con el nuevo diseño. Describe exactamente qué widget moviste y qué propiedades agregaste.</p><details><summary>Ver orientación de la respuesta</summary><p>El mismo TextField pasa a estar debajo de Row; Padding crea un margen y Expanded limita el ancho ocupado por el texto de la fila.</p></details></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="responsive">Marcar módulo como completado</button><a class="next-link" href="#estado">Siguiente: Búsqueda interactiva →</a></div></section>
+<div class="deep-dive">
+<div class="deep-heading"><span>AMPLIACIÓN · PRÁCTICA 06</span><h2>Orden de cambios para que la Tienda se vea mejor</h2><p>Seguimos a partir del archivo exacto del módulo 05. Cada paso modifica una parte concreta de la interfaz. No estamos comenzando una app nueva.</p></div>
+<div class="step-explainer">
+<div><span class="step-counter">1</span><div><strong>Asegura tu punto de partida.</strong><p>Abre <code>actividad2a-guia/lib/main.dart</code> en el editor. Comprueba que aparece el <code>AppBar</code> «Tienda» y el campo «Buscar marca o modelo». El directorio <code>actividad2a</code> queda para las clases, sin cambios.</p></div></div>
+<div><span class="step-counter">2</span><div><strong>Agrega <code>Padding</code> alrededor del cuerpo.</strong><p>Busca <code>body: Center(...)</code>. Primero puedes envolver el Center con <code>Padding</code> para ver el efecto. Esto crea un margen entre los widgets y los bordes.</p></div></div>
+<div><span class="step-counter">3</span><div><strong>Permite el desplazamiento.</strong><p>Después del <code>Padding</code>, usa un <code>SingleChildScrollView</code> y coloca la <code>Column</code> dentro. Para esta versión final se retira el <code>Center</code> externo y la <code>Column</code> se expande horizontalmente; así el buscador aprovecha el ancho disponible.</p></div></div>
+<div><span class="step-counter">4</span><div><strong>Separa la Row del TextField.</strong><p>Conserva el icono y el texto en la Row. Sitúa el <code>TextField</code> debajo y deja entre ambos <code>SizedBox(height: 12)</code>. El texto fijo de la fila queda dentro de <code>Expanded</code> para controlar su ancho.</p></div></div>
+<div><span class="step-counter">5</span><div><strong>Haz visible el límite del campo.</strong><p>Añade <code>border: OutlineInputBorder()</code> a <code>InputDecoration</code>. Este cambio afecta al aspecto del campo, no a lo que puede hacer el buscador.</p></div></div>
+<div><span class="step-counter">6</span><div><strong>Ejecuta y compara.</strong><p>Usa Hot Reload o vuelve a ejecutar la copia de práctica. El título debe seguir siendo «Tienda»; el icono, el texto original y el campo deben continuar visibles. Prueba un dispositivo estrecho.</p></div></div>
+</div>
+<h3>Explicación de las nuevas instrucciones</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Instrucción nueva</th><th>Para qué sirve</th><th>Cuándo comprobarla</th></tr></thead><tbody><tr><td><code>Padding(padding: EdgeInsets.all(16))</code></td><td>Reserva 16 píxeles lógicos alrededor del contenido que contiene.</td><td>Después de agregar el margen, compara los bordes.</td></tr><tr><td><code>SingleChildScrollView</code></td><td>Permite desplazamiento cuando la altura del contenido excede el espacio disponible.</td><td>Reduce la altura de la ventana o agrega contenido de prueba.</td></tr><tr><td><code>crossAxisAlignment: CrossAxisAlignment.stretch</code></td><td>Pide a la Column que sus hijos se extiendan en el eje horizontal, dentro de sus restricciones.</td><td>El campo de texto puede ocupar el ancho del cuerpo.</td></tr><tr><td><code>Expanded</code> envolviendo el Text</td><td>Da al texto de la Row el ancho flexible restante.</td><td>El texto largo ya no necesita empujar al TextField.</td></tr><tr><td><code>maxLines: 2</code></td><td>Permite hasta dos líneas en ese Text.</td><td>Prueba un ancho de pantalla pequeño.</td></tr><tr><td><code>overflow: TextOverflow.ellipsis</code></td><td>Agrega puntos suspensivos cuando el texto supera el espacio permitido.</td><td>Comprueba que la Row no se corta.</td></tr><tr><td><code>OutlineInputBorder()</code></td><td>Dibuja un borde alrededor de la entrada de texto.</td><td>El campo ya no aparece solamente como una línea inferior.</td></tr></tbody></table></div>
+<h3>Cuando algo falla</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Síntoma</th><th>Revisión recomendada</th></tr></thead><tbody><tr><td>El contenido se sale de la pantalla por abajo.</td><td>Comprueba que la Column se encuentre dentro de SingleChildScrollView y que no haya otra Column expandiéndose sin restricciones verticales.</td></tr><tr><td>El buscador queda en la misma Row y se ve diminuto.</td><td>Asegúrate de haber movido TextField al nivel de la Column, como hermano de Row.</td></tr><tr><td>Hay un error de cierre al agregar Padding.</td><td>Anida en este orden: <code>Padding → SingleChildScrollView → Column</code> y cierra en orden inverso.</td></tr><tr><td>La aplicación se ve diferente de la etapa 05.</td><td>Esta sección introduce cambios deliberados de diseño; compara ambos archivos y documenta qué moviste.</td></tr></tbody></table></div>
+<details class="deep-details final-code"><summary>Ver archivo Dart completo al finalizar la etapa 6</summary><div class="deep-details-body"><p><strong>Úsalo para comprobar, no para reemplazar la explicación:</strong> construye cada cambio y ejecútalo antes de comparar con este archivo. En tu copia de práctica, el contenido completo debe guardarse como <code>lib/main.dart</code>.</p><p><a href="./etapas/paso_06_responsive.dart" target="_blank" rel="noopener noreferrer">Abrir archivo completo paso_06_responsive.dart ↗</a></p><div class="code-label">Resultado completo de la etapa 6 · código Dart comprobable</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Tienda')),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Hello dsfdsWorld'),
+                const SizedBox(height: 20),
+                const Icon(Icons.directions_car),
+                const SizedBox(height: 8),
+                const Row(
+                  children: [
+                    Icon(Icons.directions_car),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Ingenieria de Sistemas',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Buscar marca o modelo',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+</div><div class="lesson-end"><button class="button button-complete" data-complete="responsive">Marcar módulo como completado</button><a class="next-link" href="#estado">Siguiente: Búsqueda interactiva →</a></div></section>
 
         
 <section class="page lesson" id="estado" aria-labelledby="estado-title" data-lesson="7">
@@ -861,7 +928,92 @@ Text('Estás buscando: $busqueda'),</code></pre>
 <h2>5. Comprueba tus cambios</h2>
 <div class="checklist" data-checklist="estado"><label><input type="checkbox"> La pantalla sigue siendo «Tienda».</label><label><input type="checkbox"> Al escribir, se actualiza la etiqueta «Estás buscando».</label><label><input type="checkbox"> Puedo explicar StatelessWidget, StatefulWidget y setState.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Prueba el estado</h3><p>Escribe «Mazda», cambia a «Renault» y borra el campo. Observa cuándo cambia el texto mostrado.</p><details><summary>Ver orientación de la respuesta</summary><p>onChanged recibe cada nuevo valor y setState lo guarda; el widget Text refleja los cambios.</p></details></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="estado">Marcar módulo como completado</button><a class="next-link" href="#formularios">Siguiente: Filtrar vehículos →</a></div></section>
+<div class="deep-dive">
+<div class="deep-heading"><span>AMPLIACIÓN · PRÁCTICA 07</span><h2>Cómo reacciona el buscador al escribir</h2><p>La etapa 06 mejoró la presentación, pero TextField todavía no almacena nada. Ahora introducimos estado dentro del mismo <code>MainApp</code>.</p></div>
+<h3>Secuencia para no perder ningún widget</h3>
+<div class="step-explainer">
+<div><span class="step-counter">1</span><div><strong>Conserva <code>main()</code> y <code>runApp</code>.</strong><p>Esas líneas no necesitan cambiar. La aplicación continuará iniciándose con <code>const MainApp()</code>.</p></div></div>
+<div><span class="step-counter">2</span><div><strong>Transforma StatelessWidget en StatefulWidget.</strong><p>La clase pública <code>MainApp</code> ahora devuelve un objeto de estado mediante <code>createState()</code>. El objeto <code>_MainAppState</code> es el encargado de construir la pantalla.</p></div></div>
+<div><span class="step-counter">3</span><div><strong>Mueve el método <code>build</code> al objeto State.</strong><p>Conserva intacto el contenido de la pantalla «Tienda» y asegúrate de que haya un solo método <code>build</code> para este State.</p></div></div>
+<div><span class="step-counter">4</span><div><strong>Declara <code>String busqueda = '';</code>.</strong><p>La variable pertenece a <code>_MainAppState</code>, fuera del método <code>build</code>. Comienza vacía porque el usuario aún no escribió nada.</p></div></div>
+<div><span class="step-counter">5</span><div><strong>Agrega <code>onChanged</code> al TextField actual.</strong><p>La función recibe <code>valor</code>. Dentro de <code>setState</code>, asigna ese valor a la variable <code>busqueda</code>.</p></div></div>
+<div><span class="step-counter">6</span><div><strong>Muestra el valor en una etiqueta.</strong><p>Agrega <code>Text('Estás buscando: $busqueda')</code> debajo del campo. Escribe y borra caracteres, comprobando que la etiqueta se actualice.</p></div></div>
+</div>
+<h3>¿Qué significan los signos nuevos?</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Expresión</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>State&lt;MainApp&gt;</code></td><td>Los signos <code>&lt; &gt;</code> indican el tipo de widget al que corresponde el State. En Dart se utilizan para parametrizar tipos genéricos.</td></tr><tr><td><code>_MainAppState</code></td><td>El guion bajo al comienzo hace privado ese nombre dentro de la biblioteca Dart. No es una resta ni un error de escritura.</td></tr><tr><td><code>createState() =&gt; _MainAppState()</code></td><td>La flecha <code>=&gt;</code> es una forma abreviada de retornar una expresión. Crea un objeto de estado.</td></tr><tr><td><code>onChanged: (valor) { ... }</code></td><td>Pasa una función como argumento: Flutter la ejecuta cuando el texto cambia.</td></tr><tr><td><code>setState(() { ... })</code></td><td>Ejecuta una función que modifica el estado y marca el widget para ser reconstruido. No crea otra pantalla.</td></tr><tr><td><code>busqueda = valor;</code></td><td>El signo <code>=</code> asigna el texto nuevo a la variable.</td></tr><tr><td><code>$busqueda</code></td><td>Inserta el valor de la variable dentro de un String: es interpolación de cadenas.</td></tr></tbody></table></div>
+<h3>Qué diferencias notarás entre StatelessWidget y StatefulWidget</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Pregunta</th><th>StatelessWidget original</th><th>StatefulWidget de esta etapa</th></tr></thead><tbody><tr><td>¿Dónde se encuentra build?</td><td>En MainApp.</td><td>En _MainAppState.</td></tr><tr><td>¿Dónde guardamos busqueda?</td><td>Todavía no existe.</td><td>En una variable del State.</td></tr><tr><td>¿Qué sucede al escribir?</td><td>El campo recibe texto, sin modificar otro widget.</td><td>onChanged actualiza busqueda y la etiqueta refleja el valor.</td></tr><tr><td>¿La búsqueda ya filtra vehículos?</td><td>No.</td><td>Todavía no: únicamente muestra lo escrito.</td></tr></tbody></table></div>
+<h3>Errores frecuentes en este cambio</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Error</th><th>Cómo interpretarlo y resolverlo</th></tr></thead><tbody><tr><td><code>setState isn't defined</code></td><td>Probablemente usaste setState fuera de un objeto que hereda de State. Comprueba que el método build esté dentro de _MainAppState.</td></tr><tr><td>Duplicaste dos clases llamadas MainApp.</td><td>Debes reemplazar la clase anterior, no añadir otra MainApp debajo.</td></tr><tr><td>La cadena muestra literalmente <code>$busqueda</code>.</td><td>Comprueba el uso de comillas, la variable y la interpolación de Dart.</td></tr><tr><td>La etiqueta no se actualiza.</td><td>Revisa si el TextField tiene onChanged, si recibe valor y si lo asigna dentro de setState.</td></tr><tr><td>Aparece un error por <code>const TextField</code>.</td><td>Un TextField con una función de evento que depende del State normalmente no se construye como expresión const. Consulta el archivo completo de la etapa.</td></tr></tbody></table></div>
+<details class="deep-details final-code"><summary>Ver archivo Dart completo al finalizar la etapa 7</summary><div class="deep-details-body"><p><strong>Úsalo para comprobar, no para reemplazar la explicación:</strong> construye cada cambio y ejecútalo antes de comparar con este archivo. En tu copia de práctica, el contenido completo debe guardarse como <code>lib/main.dart</code>.</p><p><a href="./etapas/paso_07_estado.dart" target="_blank" rel="noopener noreferrer">Abrir archivo completo paso_07_estado.dart ↗</a></p><div class="code-label">Resultado completo de la etapa 7 · código Dart comprobable</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  String busqueda = '';
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Tienda')),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text('Hello dsfdsWorld'),
+                const SizedBox(height: 20),
+                const Icon(Icons.directions_car),
+                const SizedBox(height: 8),
+                const Row(
+                  children: [
+                    Icon(Icons.directions_car),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Ingenieria de Sistemas',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                TextField(
+            onChanged: (valor) {
+              setState(() {
+                busqueda = valor;
+              });
+            },
+                  decoration: const InputDecoration(
+                    hintText: 'Buscar marca o modelo',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text('Estás buscando: $busqueda'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+</div><div class="lesson-end"><button class="button button-complete" data-complete="estado">Marcar módulo como completado</button><a class="next-link" href="#formularios">Siguiente: Filtrar vehículos →</a></div></section>
 
         
 <section class="page lesson" id="formularios" aria-labelledby="formularios-title" data-lesson="8">
