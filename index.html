@@ -374,7 +374,55 @@ class MainApp extends StatelessWidget {
             <div><strong><code>Row</code></strong><p>Distribuye sus hijos horizontalmente.</p></div>
             <div><strong><code>SizedBox(width: 8)</code></strong><p>Agrega 8 píxeles lógicos entre elementos de la fila.</p></div>
           </div>
-          <h2>3. Haz una prueba guiada</h2><p>En una copia de práctica, modifica únicamente un elemento por vez:</p><ol class="steps-list"><li>Cambia el texto inicial por <code>'Bienvenido a mi tienda'</code>.</li><li>Aumenta <code>height: 20</code> a <code>height: 28</code> y observa la distancia.</li><li>Cambia el icono a <code>Icons.directions_bike</code>, si está disponible en tu versión de Flutter.</li><li>Comprueba que la fila sigue apareciendo de izquierda a derecha.</li></ol>
+          <div class="deep-dive">
+<div class="deep-heading"><span>AMPLIACIÓN · MÓDULO 04</span><h2>Entender cómo Flutter coloca cada widget</h2><p>Para programar en Flutter debes comprender primero quién contiene a quién, qué dirección usa cada widget y cómo influyen sus dimensiones.</p></div>
+<h3>La jerarquía que tenemos en actividad2a</h3>
+<div class="code-label">Esquema del código original</div><pre class="code-block"><code>Scaffold
+└── body: Center
+    └── child: Column
+        ├── Text('Hello dsfdsWorld')
+        ├── SizedBox(height: 20)
+        ├── Icon(Icons.directions_car)
+        ├── SizedBox(height: 8)
+        └── Row
+            ├── Icon(Icons.directions_car)
+            ├── SizedBox(width: 8)
+            ├── Text('Ingenieria de Sistemas')
+            └── Expanded
+                └── TextField</code></pre>
+<p>La <code>Column</code> es hija de <code>Center</code>. A su vez, <code>Row</code> es un elemento de la lista de <code>Column</code>, y el <code>TextField</code> está dentro de <code>Expanded</code>. El árbol ayuda a entender por qué un cambio afecta solo a ciertos widgets.</p>
+<h3>Qué debes comprender de cada widget</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Elemento</th><th>Qué hace exactamente</th><th>Qué se observa en la Tienda</th></tr></thead><tbody><tr><td><code>Center</code></td><td>Centra a su hijo dentro de las restricciones que recibe; no organiza varios widgets por sí solo.</td><td>Contiene la <code>Column</code> principal.</td></tr><tr><td><code>Column</code></td><td>Distribuye los hijos de <code>children</code> de arriba a abajo.</td><td>El texto aparece antes del primer icono.</td></tr><tr><td><code>Row</code></td><td>Distribuye su propia lista <code>children</code> horizontalmente.</td><td>Los elementos del buscador comparten una fila.</td></tr><tr><td><code>SizedBox(height: 20)</code></td><td>Crea un espacio de 20 píxeles lógicos de alto.</td><td>Separa un texto del icono que viene a continuación.</td></tr><tr><td><code>SizedBox(width: 8)</code></td><td>Crea una separación horizontal de 8 píxeles lógicos.</td><td>Deja distancia entre icono y texto.</td></tr><tr><td><code>Icon(Icons.directions_car)</code></td><td>Construye un icono con los datos proporcionados por <code>Icons.directions_car</code>.</td><td>Aparece el símbolo de un automóvil.</td></tr><tr><td><code>Text('Ingenieria de Sistemas')</code></td><td>Muestra el contenido literal de una cadena.</td><td>Se conserva el texto que realmente escribió el grupo.</td></tr></tbody></table></div>
+<h3>El eje principal y el eje transversal</h3><p>La <code>Column</code> utiliza un eje principal <strong>vertical</strong>; la <code>Row</code> tiene eje principal <strong>horizontal</strong>. El otro eje se conoce como transversal. Esto permite entender propiedades como las siguientes, que practicaremos más adelante:</p>
+<div class="code-label">Ejemplo complementario, no pertenece al main.dart de clase</div><pre class="code-block"><code>Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    const Text('Primer elemento'),
+    const Text('Segundo elemento'),
+  ],
+)</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Propiedad</th><th>Explicación</th></tr></thead><tbody><tr><td><code>mainAxisAlignment</code></td><td>Distribuye los hijos en la dirección principal. En una Column, <code>center</code> busca centrarlos verticalmente dentro del espacio disponible.</td></tr><tr><td><code>crossAxisAlignment</code></td><td>Alinea los hijos en la dirección perpendicular. En Column, <code>start</code> suele alinearlos hacia el inicio horizontal.</td></tr><tr><td><code>mainAxisSize</code></td><td>Define cuánto espacio intenta ocupar el widget en el eje principal: <code>max</code> o <code>min</code>.</td></tr></tbody></table></div>
+<div class="notice notice-warning"><strong>Center no es igual a mainAxisAlignment.center</strong><p>En el proyecto original, la Column intenta ocupar el tamaño máximo en su eje principal. Aunque esté dentro de Center, sus hijos no necesariamente quedan centrados verticalmente. Diferencia centrar el widget hijo y alinear sus elementos internos.</p></div>
+<h3>Reproducir la etapa 04 sin adelantar el TextField</h3><p>Para construir de manera progresiva, escribe primero el Text inicial, después el SizedBox vertical, después el Icon y finalmente la Row con icono, separación y texto. El campo de búsqueda se incorpora en el módulo 05.</p>
+<div class="code-label">Fragmento para construir dentro de Column</div><pre class="code-block"><code>children: [
+  Text('Hello dsfdsWorld'),
+  const SizedBox(height: 20),
+  Icon(Icons.directions_car),
+  const SizedBox(height: 8),
+  Row(
+    children: [
+      Icon(Icons.directions_car),
+      const SizedBox(width: 8),
+      Text('Ingenieria de Sistemas'),
+    ],
+  ),
+],</code></pre>
+<p><code>children</code> significa «varios hijos» y usa corchetes <code>[ ]</code>. <code>child</code> significa «un hijo» y espera un único widget. Los elementos se separan con comas. Observa también que <code>Row</code> tiene su propia lista, independiente de la lista de <code>Column</code>.</p>
+<h3>Errores frecuentes, con su causa</h3>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Problema</th><th>Qué revisar</th></tr></thead><tbody><tr><td>La fila muestra una franja de desbordamiento.</td><td>Icono, texto y campo pueden no caber horizontalmente. El módulo 05 introduce Expanded y el 06 reorganiza el buscador.</td></tr><tr><td>La separación aparece en la dirección equivocada.</td><td><code>height</code> controla el alto y <code>width</code> el ancho de SizedBox.</td></tr><tr><td>Los elementos aparecen en distinto orden.</td><td>En las listas de <code>children</code>, el orden en el código determina su orden visual.</td></tr><tr><td>Dart indica un error de lista o paréntesis.</td><td>Revisa la coma tras cada widget, los paréntesis <code>( )</code> y los corchetes <code>[ ]</code>.</td></tr><tr><td>No aparece el icono de carro.</td><td>Revisa la escritura <code>Icons.directions_car</code> y la importación Material.</td></tr></tbody></table></div>
+<div class="guided-check"><strong>Actividad de sustentación</strong><p>Dibuja el árbol <code>Center → Column → Row</code> y explica por qué <code>Row</code> y <code>Column</code> usan <code>children</code>, pero <code>Center</code> utiliza <code>child</code>.</p><details><summary>Ver orientación</summary><p>Center contiene un único widget; Column y Row admiten varias entradas mediante una lista. En el árbol, la Row es uno de los hijos de la Column.</p></details></div>
+</div><h2>3. Haz una prueba guiada</h2><p>En una copia de práctica, modifica únicamente un elemento por vez:</p><ol class="steps-list"><li>Cambia el texto inicial por <code>'Bienvenido a mi tienda'</code>.</li><li>Aumenta <code>height: 20</code> a <code>height: 28</code> y observa la distancia.</li><li>Cambia el icono a <code>Icons.directions_bike</code>, si está disponible en tu versión de Flutter.</li><li>Comprueba que la fila sigue apareciendo de izquierda a derecha.</li></ol>
           <div class="notice notice-warning"><strong>Un error frecuente</strong><p>Si una <code>Row</code> tiene muchos elementos anchos y ninguno puede reducirse, puede aparecer un desbordamiento horizontal. En el próximo módulo entenderemos por qué se utiliza <code>Expanded</code> alrededor del campo de texto.</p></div>
           <div class="checklist" data-checklist="diseno"><label><input type="checkbox"> Diferencio un widget que organiza verticalmente de uno horizontal.</label><label><input type="checkbox"> Identifico un <code>SizedBox</code> que agrega alto y otro que agrega ancho.</label><label><input type="checkbox"> Puedo explicar la diferencia entre <code>child</code> y <code>children</code>.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Diseña un catálogo sencillo</h3><p>Dibuja una pantalla con un título, tres productos uno debajo de otro y, para cada producto, su icono junto al nombre. ¿Dónde usarías <code>Column</code> y dónde usarías <code>Row</code>?</p><details><summary>Ver orientación</summary><p>Utilizarías una <code>Column</code> principal con tres <code>Row</code> dentro. Cada fila incluiría un icono y un texto.</p></details></div>
