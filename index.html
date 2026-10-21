@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b36">
+  <meta name="description" content="Taller interactivo de Flutter: guía práctica y progresiva, basada en el código real desarrollado en clase.">
+  <meta property="og:title" content="Flutter en práctica | Taller de Desarrollo Móvil">
+  <meta property="og:description" content="Aprende Flutter desde cero con ejemplos, explicaciones y retos guiados.">
+  <meta property="og:type" content="website">
+  <title>Flutter en práctica — Taller de Desarrollo Móvil</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <script src="./assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+  <div class="layout">
+    <div class="menu-overlay" id="menu-overlay" hidden></div>
+    <aside class="sidebar" id="sidebar" aria-label="Navegación del taller">
+      <div class="sidebar-brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 34 34" width="34" height="34" fill="none">
+            <path d="M21.8 3 7 17.9l5.8 5.8L32 4.5 21.8 3Z" fill="#65D6F4"/>
+            <path d="m13.1 24.4 8-8 10.9 10.9-5.5 5.4-13.4-8.3Z" fill="#8E8BFF"/>
+            <path d="m12.8 23.7 5.7-5.8 8 8.1-5.6 5.5-8.1-7.8Z" fill="#4AB9F2"/>
+          </svg>
+        </div>
+        <div><span class="brand-title">Flutter<span class="brand-light">Lab</span></span><span class="brand-caption">DESARROLLO MÓVIL · 2026</span></div>
+        <button class="icon-button sidebar-close" id="sidebar-close" aria-label="Cerrar menú" title="Cerrar menú"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="course-info"><span class="live-dot"></span><span>Guía en construcción</span><span class="course-tag">v1.0</span></div>
+      <div class="search-wrap">
+        <label for="lesson-search">Buscar contenido</label>
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="lesson-search" type="search" placeholder="Buscar un tema..." autocomplete="off">
+        <kbd>/</kbd>
+      </div>
+      <nav class="nav-list" id="lesson-nav" aria-label="Módulos">
+        <div class="nav-group-label">EMPEZAR AQUÍ</div>
+        <a class="nav-link is-active" href="#inicio" data-route="inicio" data-search="inicio portada recorrido ruta guía"><span class="nav-symbol" aria-hidden="true">⌂</span><span>Inicio del taller</span></a>
+        <div class="nav-group-label">LO QUE YA VIMOS EN CLASE</div>
+        <a class="nav-link" href="#preparacion" data-route="preparacion" data-search="preparacion instalación flutter doctor proyecto ejecutar emulador"><span class="lesson-index">01</span><span>Preparar el proyecto</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#punto-entrada" data-route="punto-entrada" data-search="main dart runapp import flutter statelesswidget super key const build"><span class="lesson-index">02</span><span>Entender main.dart</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#diseno" data-route="diseno" data-search="Column Row Center Icon children SizedBox widgets layout"><span class="lesson-index">04</span><span>Organizar los widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <div class="nav-group-label">PRÓXIMOS PASOS PROPUESTOS</div>
+        <a class="nav-link" href="#responsive" data-route="responsive" data-search="padding singlechildscrollview diseño adaptable móvil"><span class="lesson-index">06</span><span>Mejorar el diseño</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#estado" data-route="estado" data-search="StatefulWidget setState onChanged TextEditingController dispose"><span class="lesson-index">07</span><span>Dar vida a la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#formularios" data-route="formularios" data-search="Form TextFormField validator validar SnackBar formulario"><span class="lesson-index">08</span><span>Construir formularios</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="cajero electrónico proyecto transversal saldo retirar consignar"><span class="lesson-index">09</span><span>Proyecto transversal</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#bloc" data-route="bloc" data-search="bloc patrón estados eventos lógica interfaz"><span class="lesson-index">10</span><span>Introducción a BLoC</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <p id="no-search-results" class="no-search-results" hidden>No se encontraron módulos con ese texto.</p>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="progress-heading"><strong>Tu avance</strong><span id="sidebar-progress-text">0 / 10</span></div>
+        <div class="progress-track"><span id="sidebar-progress-bar"></span></div>
+        <p>Se guarda solo en este navegador.</p>
+        <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer" class="repo-link">Ver repositorio <span aria-hidden="true">↗</span></a>
+      </div>
+    </aside>
+    <div class="main-column">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-open" id="sidebar-open" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar"><span aria-hidden="true">☰</span></button>
+          <div class="breadcrumbs"><span>CURSO / FLUTTER</span><span aria-hidden="true">/</span><strong id="current-crumb">Inicio</strong></div>
+        </div>
+        <div class="topbar-right">
+          <span class="top-label">Proyecto base: actividad2a</span>
+          <button class="icon-button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema"><span id="theme-icon" aria-hidden="true">☾</span></button>
+          <a class="top-github" href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+      <main id="contenido" tabindex="-1">
+        <section class="page is-active" id="inicio" aria-labelledby="inicio-title">
+          <div class="hero">
+            <div class="hero-copy">
+              <span class="eyebrow"><span class="eyebrow-dot"></span>TALLER PRÁCTICO · DESDE CERO</span>
+              <h1 id="inicio-title">Aprende Flutter <span>construyendo,</span> no solo leyendo.</h1>
+              <p>Una guía hecha para avanzar al mismo ritmo de la clase. Entiende cada línea, ejecútala, comprueba el resultado y mejora tu aplicación paso a paso.</p>
+              <div class="hero-actions"><a class="button button-primary" href="#preparacion">Empezar el taller <span aria-hidden="true">→</span></a><a class="button button-ghost" href="#punto-entrada">Explorar el código</a></div>
+              <div class="hero-facts"><span><strong>10</strong> módulos</span><span><strong>1</strong> proyecto real</span><span><strong>100%</strong> práctico</span></div>
+            </div>
+            <div class="hero-visual" aria-label="Vista ilustrativa del proyecto Flutter actual">
+              <div class="float-card float-card-top"><span class="float-dot violet"></span> MainApp · StatelessWidget</div>
+              <div class="phone-device">
+                <div class="phone-top"><span></span></div>
+                <div class="phone-screen">
+                  <div class="phone-appbar">Tienda <span>⋮</span></div>
+                  <div class="phone-body">
+                    <span class="phone-small-text">Hello dsfdsWorld</span>
+                    <div class="car-icon" aria-hidden="true">🚘</div>
+                    <div class="phone-row"><span>🚘</span><span class="phone-name">Ingenieria de Sistemas</span></div>
+                    <div class="phone-input">Buscar marca o modelo</div>
+                  </div>
+                </div>
+                <div class="phone-home"></div>
+              </div>
+              <div class="float-card float-card-bottom"><span class="float-dot cyan"></span> main.dart · código real</div>
+              <p class="hero-visual-caption">Ilustración esquemática del código de clase; no es una captura real.</p>
+            </div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card"><span class="stat-icon blue">⌘</span><div><strong>Paso a paso</strong><p>Código explicado línea por línea</p></div></div>
+            <div class="stat-card"><span class="stat-icon orange">◎</span><div><strong>Aprender haciendo</strong><p>Prueba y reto en cada tema</p></div></div>
+            <div class="stat-card"><span class="stat-icon purple">✓</span><div><strong>Tu ritmo</strong><p>Marca lo que ya dominaste</p></div></div>
+          </div>
+          <div class="section-heading"><div><span class="overline">PLAN DE APRENDIZAJE</span><h2>Tu ruta de aprendizaje</h2><p>Comenzamos con lo que realmente está en <code>actividad2a</code>; lo nuevo se identifica como propuesta.</p></div><span class="mini-tag">10 módulos</span></div>
+          <div class="module-grid">
+            <a href="#preparacion" class="module-card"><span class="module-top"><span class="module-number">01</span><span class="status-pill seen">Código de clase</span></span><h3>Preparar el proyecto</h3><p>Verificar Flutter, abrir la carpeta y ejecutar la aplicación.</p><span class="module-footer">Comenzar <span aria-hidden="true">↗</span></span></a>
+            <a href="#punto-entrada" class="module-card"><span class="module-top"><span class="module-number">02</span><span class="status-pill seen">Código de clase</span></span><h3>Entender main.dart</h3><p>Comprender el punto de entrada, runApp, const y super.key.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
+            <a href="#estructura" class="module-card"><span class="module-top"><span class="module-number">03</span><span class="status-pill seen">Código de clase</span></span><h3>Estructura de pantalla</h3><p>MaterialApp, Scaffold, AppBar y los primeros textos.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
+            <a href="#diseno" class="module-card"><span class="module-top"><span class="module-number">04</span><span class="status-pill seen">Código de clase</span></span><h3>Organizar los widgets</h3><p>Column, Row, Icon, Center y separación visual.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
+            <a href="#campo-texto" class="module-card"><span class="module-top"><span class="module-number">05</span><span class="status-pill seen">Código de clase</span></span><h3>Primer campo de texto</h3><p>TextField, Expanded y texto de ayuda.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
+            <a href="#responsive" class="module-card"><span class="module-top"><span class="module-number">06</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Mejorar el diseño</h3><p>Espaciado y contenido adaptable a pantallas pequeñas.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+            <a href="#estado" class="module-card"><span class="module-top"><span class="module-number">07</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Dar vida a la pantalla</h3><p>StatefulWidget, setState, eventos y ciclo de vida.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+            <a href="#formularios" class="module-card"><span class="module-top"><span class="module-number">08</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Construir formularios</h3><p>Validación y mensajes para el usuario.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+            <a href="#proyecto" class="module-card"><span class="module-top"><span class="module-number">09</span><span class="status-pill planned">Proyecto paralelo</span></span><h3>Cajero electrónico</h3><p>Un proyecto transversal construido por etapas.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+            <a href="#bloc" class="module-card"><span class="module-top"><span class="module-number">10</span><span class="status-pill planned">Más adelante</span></span><h3>Introducción a BLoC</h3><p>Aprender primero el concepto antes de escribir código.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+          </div>
+          <div class="notice notice-info"><strong>Cómo se actualiza esta guía</strong><p>La carpeta del docente <code>actividad2a</code> permanece intacta. Nuestra copia <code>actividad2a-guia</code> sirve para construir y probar nuevas explicaciones. La página distingue los ejemplos que ya aparecen en clase de las actividades propuestas.</p></div>
+        </section>
+
+        <section class="page lesson" id="preparacion" aria-labelledby="preparacion-title" data-lesson="1">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 01</span><span class="status-pill seen">Código de clase</span><span class="lesson-time">15–20 min</span></div><h1 id="preparacion-title">Preparar y ejecutar el proyecto</h1><p>Antes de escribir Flutter, comprobemos que nuestro entorno funciona y sepamos en qué carpeta vamos a trabajar.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Ubicar el proyecto, revisar el entorno de Flutter y abrir la aplicación en un dispositivo o emulador.</p></div></div>
+          <h2>1. Reconocer el proyecto</h2><p>Flutter organiza una aplicación en varias carpetas. Por ahora nos interesan estas tres piezas:</p>
+          <div class="concept-grid"><div class="concept"><strong><code>lib/main.dart</code></strong><p>Es el archivo donde se encuentra el código Dart principal de la aplicación.</p></div><div class="concept"><strong><code>pubspec.yaml</code></strong><p>Define el nombre del proyecto, la versión y las dependencias necesarias.</p></div><div class="concept"><strong><code>android/</code> y <code>web/</code></strong><p>Contienen archivos de soporte para ejecutar Flutter en distintas plataformas.</p></div></div>
+          <h2>2. Comprobar Flutter</h2><p>Abre PowerShell o la terminal de tu editor y ejecuta el diagnóstico. No modifica tus archivos.</p>
+          <div class="code-label">Terminal · verificar instalación</div><pre class="code-block"><code>flutter doctor
+flutter devices</code></pre>
+          <div class="line-notes"><div><strong>flutter doctor</strong><p>Comprueba la instalación de Flutter y muestra herramientas que podrían faltar.</p></div><div><strong>flutter devices</strong><p>Lista los dispositivos disponibles: emuladores, teléfonos o navegadores compatibles.</p></div></div>
+          <h2>3. Abrir y ejecutar</h2><p>En el equipo del docente, la carpeta principal para clase es <code>actividad2a</code>. Nosotros haremos las pruebas de guía en <code>actividad2a-guia</code>. Cada estudiante debe entrar a la ubicación donde guardó su propio proyecto.</p>
+          <div class="code-label">Terminal · ejecutar desde la carpeta del proyecto</div><pre class="code-block"><code>cd "C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a"
+flutter pub get
+flutter run</code></pre>
+          <div class="line-notes"><div><strong>Línea 1 · cd</strong><p>Cambia la carpeta de trabajo. Las comillas permiten usar rutas con espacios.</p></div><div><strong>Línea 2 · flutter pub get</strong><p>Obtiene las dependencias indicadas en <code>pubspec.yaml</code>. No es necesario repetirlo en cada ejecución si nada cambió.</p></div><div><strong>Línea 3 · flutter run</strong><p>Compila e inicia la aplicación en el dispositivo seleccionado. Si hay más de uno, Flutter puede pedirte elegir.</p></div></div>
+          <div class="notice notice-tip"><strong>Atajo de clase</strong><p>Con la aplicación ejecutándose desde la terminal, presiona <kbd>r</kbd> para <em>Hot Reload</em> cuando corresponda. El cambio se aplica sin reiniciar toda la aplicación. <kbd>R</kbd> hace un reinicio más completo.</p></div>
+          <h2>4. Verificar el resultado</h2><div class="checklist" data-checklist="preparacion"><label><input type="checkbox"> Flutter doctor se ejecuta y puedo identificar sus mensajes.</label><label><input type="checkbox"> Encontré <code>lib/main.dart</code> en mi proyecto.</label><label><input type="checkbox"> Ejecuté la pantalla que tiene el título «Tienda».</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Identifica las carpetas</h3><p>En una hoja, escribe para qué sirven <code>lib</code>, <code>android</code>, <code>web</code> y <code>pubspec.yaml</code> usando una frase sencilla por cada una.</p><details><summary>Ver orientación de la respuesta</summary><p><code>lib</code> guarda el código Dart; <code>android</code> contiene la configuración de Android; <code>web</code> permite ejecutar en navegador; <code>pubspec.yaml</code> define dependencias y datos del proyecto.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="preparacion">Marcar módulo como completado</button><a class="next-link" href="#punto-entrada">Siguiente: Entender main.dart →</a></div>
+        </section>
+
+        <section class="page lesson" id="punto-entrada" aria-labelledby="punto-entrada-title" data-lesson="2">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 02</span><span class="status-pill seen">Código de clase</span><span class="lesson-time">25–30 min</span></div><h1 id="punto-entrada-title">Entender main.dart desde la primera línea</h1><p>Flutter no necesita que memorices todo de una vez. Primero entenderemos cómo arranca la aplicación y quién dibuja la pantalla.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Explicar con tus palabras qué hacen <code>import</code>, <code>main</code>, <code>runApp</code>, <code>StatelessWidget</code>, <code>const</code>, <code>super.key</code> y <code>build</code>.</p></div></div>
+          <h2>1. Este es nuestro código de partida</h2><p>El siguiente fragmento corresponde al comienzo del archivo <code>lib/main.dart</code> leído del proyecto de clase:</p>
+          <div class="code-label">lib/main.dart · código real de actividad2a</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Tienda')),
+        // Aquí continúa el cuerpo de la pantalla.
+      ),
+    );
+  }
+}</code></pre>
+          <p class="source-note">El comentario sustituye visualmente el bloque <code>body</code> para estudiar el comienzo sin distracciones. No representa un cambio aplicado al archivo.</p>
+          <h2>2. La explicación, línea por línea</h2>
+          <div class="line-notes numbered">
+            <div><strong>1 · <code>import</code></strong><p>Trae la biblioteca <code>material.dart</code>, que contiene los elementos de interfaz utilizados en este proyecto.</p></div>
+            <div><strong>2 · <code>void main()</code></strong><p>Es la función donde empieza la ejecución de Dart. <code>void</code> significa que esta función no devuelve un valor.</p></div>
+            <div><strong>3 · <code>runApp(...)</code></strong><p>Entrega a Flutter el widget que será la raíz de la aplicación. En este caso es <code>MainApp</code>.</p></div>
+            <div><strong>4 · <code>const MainApp()</code></strong><p>Crea una instancia del widget. <code>const</code> indica que su configuración puede tratarse como constante cuando sus valores lo permiten.</p></div>
+            <div><strong>5 · <code>class MainApp extends StatelessWidget</code></strong><p>Define un widget propio. <code>StatelessWidget</code> significa que este widget no administra un estado mutable interno.</p></div>
+            <div><strong>6 · <code>const MainApp({super.key});</code></strong><p>Es su constructor. <code>super.key</code> pasa una clave opcional a la clase padre; Flutter puede usarla para identificar widgets al reconstruir el árbol.</p></div>
+            <div><strong>7 · <code>@override</code></strong><p>Indica que vamos a proporcionar nuestra implementación de un método heredado: <code>build</code>.</p></div>
+            <div><strong>8 · <code>Widget build(BuildContext context)</code></strong><p>Es el método que describe qué interfaz debe construir Flutter. <code>context</code> informa dónde se encuentra este widget en el árbol.</p></div>
+            <div><strong>9 · <code>return MaterialApp(...)</code></strong><p>Devuelve la interfaz de la aplicación, empezando por la configuración de Material Design.</p></div>
+          </div>
+          <h2>3. Primero entiende este recorrido</h2>
+          <div class="diagram" role="img" aria-label="La ejecución comienza en main, sigue por runApp, MainApp y build, y termina en MaterialApp">
+            <div class="diagram-node">main()</div><span aria-hidden="true">→</span><div class="diagram-node">runApp()</div><span aria-hidden="true">→</span><div class="diagram-node">MainApp</div><span aria-hidden="true">→</span><div class="diagram-node accent">build()</div><span aria-hidden="true">→</span><div class="diagram-node">MaterialApp</div>
+          </div>
+          <div class="notice notice-tip"><strong>¿Cuándo usar <code>const</code>?</strong><p>Úsalo si Dart permite crear el widget con argumentos constantes, por ejemplo <code>const Text('Hola')</code>. No todos los widgets ni todas las expresiones pueden ser constantes. No agregues <code>const</code> de forma automática: revisa si el editor lo sugiere.</p></div>
+          <h2>4. Verifica que comprendiste</h2><div class="checklist" data-checklist="punto-entrada"><label><input type="checkbox"> Puedo decir qué función se ejecuta primero.</label><label><input type="checkbox"> Sé para qué sirve <code>runApp</code>.</label><label><input type="checkbox"> Distingo el constructor del método <code>build</code>.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Explica sin mirar</h3><p>Responde: ¿por qué hay un <code>const</code> delante de <code>MainApp</code>? ¿Qué pasaría si olvidamos llamar a <code>runApp</code>?</p><details><summary>Ver respuesta orientativa</summary><p><code>const</code> permite construir el widget con una configuración constante. Si no llamamos a <code>runApp</code>, Flutter no recibe el widget raíz que debe mostrar.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="punto-entrada">Marcar módulo como completado</button><a class="next-link" href="#estructura">Siguiente: Estructura de pantalla →</a></div>
+        </section>
+
+        <section class="page lesson" id="estructura" aria-labelledby="estructura-title" data-lesson="3">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 03</span><span class="status-pill seen">Código de clase</span><span class="lesson-time">20–25 min</span></div><h1 id="estructura-title">La estructura de nuestra pantalla</h1><p>Antes de colocar textos, iconos o botones, necesitamos una estructura que los contenga.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Diferenciar el papel de <code>MaterialApp</code>, <code>Scaffold</code>, <code>AppBar</code>, <code>body</code> y <code>Text</code>.</p></div></div>
+          <h2>1. Observa cómo se anidan los widgets</h2>
+          <div class="widget-tree" aria-label="Árbol de widgets actual"><div class="tree-item root">MainApp</div><div class="tree-branch"><div class="tree-item">MaterialApp</div><div class="tree-branch"><div class="tree-item">Scaffold</div><div class="tree-branch"><div class="tree-item accent-blue">AppBar → Text('Tienda')</div><div class="tree-item accent-purple">body → Center → Column</div></div></div></div></div>
+          <p>Piensa en una construcción: <code>MaterialApp</code> prepara el entorno visual, <code>Scaffold</code> distribuye la pantalla, <code>AppBar</code> muestra la barra superior y <code>body</code> contiene el espacio principal.</p>
+          <h2>2. Lee el fragmento real</h2>
+          <div class="code-label">lib/main.dart · estructura actual</div><pre class="code-block"><code>return MaterialApp(
+  home: Scaffold(
+    appBar: AppBar(title: const Text('Tienda')),
+    body: Center(
+      child: Column(
+        children: [
+          Text('Hello dsfdsWorld'),
+          // Aquí hay más widgets.
+        ],
+      ),
+    ),
+  ),
+);</code></pre>
+          <div class="source-note">Este fragmento simplifica la lista de hijos para estudiar su organización. El texto mostrado es el que figura en el código actual de clase.</div>
+          <h2>3. Comprueba qué hace cada parte</h2>
+          <div class="line-notes numbered"><div><strong><code>MaterialApp</code></strong><p>Configura la aplicación con los componentes de Material Design.</p></div><div><strong><code>home:</code></strong><p>Indica cuál será la pantalla inicial.</p></div><div><strong><code>Scaffold</code></strong><p>Proporciona una estructura común: barra superior y contenido.</p></div><div><strong><code>appBar:</code></strong><p>Asigna la barra superior. <code>title: const Text('Tienda')</code> coloca su título.</p></div><div><strong><code>body:</code></strong><p>Indica qué mostrar en la parte principal de la pantalla.</p></div><div><strong><code>child</code> frente a <code>children</code></strong><p><code>child</code> recibe un widget; <code>children</code> recibe una lista de widgets entre corchetes.</p></div></div>
+          <div class="notice notice-info"><strong>¿Qué significan los dos puntos y los paréntesis?</strong><p>En <code>title: const Text('Tienda')</code>, <code>title</code> es el nombre de un argumento y lo que sigue después de <code>:</code> es su valor. Los paréntesis <code>( )</code> contienen los argumentos con los que construimos un widget.</p></div>
+          <h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
+          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dibuja tu propia jerarquía</h3><p>Representa en una hoja el árbol de widgets desde <code>MainApp</code> hasta el primer <code>Text</code> del cuerpo. Usa flechas para indicar qué widget está dentro de cuál.</p><details><summary>Ver orientación</summary><p>MainApp → MaterialApp → Scaffold → body → Center → Column → Text.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="estructura">Marcar módulo como completado</button><a class="next-link" href="#diseno">Siguiente: Organizar widgets →</a></div>
+        </section>
+
+        <section class="page lesson" id="diseno" aria-labelledby="diseno-title" data-lesson="4">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 04</span><span class="status-pill seen">Código de clase</span><span class="lesson-time">25–30 min</span></div><h1 id="diseno-title">Organizar los widgets en filas y columnas</h1><p>Una interfaz es como organizar muebles en una habitación: algunos elementos van uno debajo del otro y otros al lado.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Construir una columna de elementos, colocar widgets en una fila y controlar separaciones simples.</p></div></div>
+          <div class="side-by-side">
+            <div class="layout-demo"><h3>Column</h3><div class="demo-column"><span>Widget A</span><span>Widget B</span><span>Widget C</span></div><p>Uno debajo del otro</p></div>
+            <div class="layout-demo"><h3>Row</h3><div class="demo-row"><span>Widget A</span><span>Widget B</span><span>Widget C</span></div><p>Uno al lado del otro</p></div>
+          </div>
+          <h2>1. Partamos del código que ya existe</h2>
+          <div class="code-label">lib/main.dart · fragmento real</div><pre class="code-block"><code>body: Center(
+  child: Column(
+    children: [
+      Text('Hello dsfdsWorld'),
+      const SizedBox(height: 20),
+      Icon(Icons.directions_car),
+      const SizedBox(height: 8),
+      Row(
+        children: [
+          Icon(Icons.directions_car),
+          const SizedBox(width: 8),
+          Text('Ingenieria de Sistemas'),
+          // La fila también contiene un campo de texto.
+        ],
+      ),
+    ],
+  ),
+),</code></pre>
+          <h2>2. Vamos parte por parte</h2>
+          <div class="line-notes numbered">
+            <div><strong><code>Center</code></strong><p>Centra su único hijo dentro del espacio disponible. Como ese hijo es una <code>Column</code>, importa también cómo la columna ocupa el espacio.</p></div>
+            <div><strong><code>Column</code></strong><p>Organiza la lista <code>children</code> de arriba hacia abajo.</p></div>
+            <div><strong><code>Text('Hello dsfdsWorld')</code></strong><p>Muestra exactamente ese texto. Puedes cambiarlo por una frase comprensible en tu copia de práctica.</p></div>
+            <div><strong><code>SizedBox(height: 20)</code></strong><p>Introduce 20 píxeles lógicos de separación vertical.</p></div>
+            <div><strong><code>Icon(Icons.directions_car)</code></strong><p>Dibuja el símbolo de un automóvil proporcionado por Material Icons.</p></div>
+            <div><strong><code>Row</code></strong><p>Distribuye sus hijos horizontalmente.</p></div>
+            <div><strong><code>SizedBox(width: 8)</code></strong><p>Agrega 8 píxeles lógicos entre elementos de la fila.</p></div>
+          </div>
+          <h2>3. Haz una prueba guiada</h2><p>En una copia de práctica, modifica únicamente un elemento por vez:</p><ol class="steps-list"><li>Cambia el texto inicial por <code>'Bienvenido a mi tienda'</code>.</li><li>Aumenta <code>height: 20</code> a <code>height: 28</code> y observa la distancia.</li><li>Cambia el icono a <code>Icons.directions_bike</code>, si está disponible en tu versión de Flutter.</li><li>Comprueba que la fila sigue apareciendo de izquierda a derecha.</li></ol>
+          <div class="notice notice-warning"><strong>Un error frecuente</strong><p>Si una <code>Row</code> tiene muchos elementos anchos y ninguno puede reducirse, puede aparecer un desbordamiento horizontal. En el próximo módulo entenderemos por qué se utiliza <code>Expanded</code> alrededor del campo de texto.</p></div>
+          <div class="checklist" data-checklist="diseno"><label><input type="checkbox"> Diferencio un widget que organiza verticalmente de uno horizontal.</label><label><input type="checkbox"> Identifico un <code>SizedBox</code> que agrega alto y otro que agrega ancho.</label><label><input type="checkbox"> Puedo explicar la diferencia entre <code>child</code> y <code>children</code>.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Diseña un catálogo sencillo</h3><p>Dibuja una pantalla con un título, tres productos uno debajo de otro y, para cada producto, su icono junto al nombre. ¿Dónde usarías <code>Column</code> y dónde usarías <code>Row</code>?</p><details><summary>Ver orientación</summary><p>Utilizarías una <code>Column</code> principal con tres <code>Row</code> dentro. Cada fila incluiría un icono y un texto.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="diseno">Marcar módulo como completado</button><a class="next-link" href="#campo-texto">Siguiente: Campo de texto →</a></div>
+        </section>
+
+        <section class="page lesson" id="campo-texto" aria-labelledby="campo-texto-title" data-lesson="5">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 05</span><span class="status-pill seen">Código de clase</span><span class="lesson-time">20–25 min</span></div><h1 id="campo-texto-title">Nuestro primer campo de texto</h1><p>Ya tenemos una pantalla con iconos y textos. Ahora queremos que el usuario pueda escribir algo.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Explicar para qué sirven <code>TextField</code>, <code>InputDecoration</code>, <code>hintText</code> y <code>Expanded</code>.</p></div></div>
+          <h2>1. Identifica el código real</h2><div class="code-label">lib/main.dart · campo dentro de Row</div><pre class="code-block"><code>Expanded(
+  child: TextField(
+    decoration: const InputDecoration(
+      hintText: 'Buscar marca o modelo',
+    ),
+  ),
+),</code></pre>
+          <div class="line-notes numbered"><div><strong><code>Expanded</code></strong><p>Le indica al hijo de la <code>Row</code> que utilice el espacio horizontal flexible que queda disponible.</p></div><div><strong><code>child: TextField(...)</code></strong><p>El hijo de <code>Expanded</code> es un campo donde el usuario puede escribir.</p></div><div><strong><code>decoration: InputDecoration(...)</code></strong><p>Define cómo se presenta visualmente el campo: texto de ayuda, bordes, iconos y otros detalles.</p></div><div><strong><code>hintText</code></strong><p>Muestra una sugerencia mientras el campo está vacío. No es el texto que escribió el usuario.</p></div></div>
+          <h2>2. Prueba un nuevo texto de ayuda</h2><p>En tu copia para ejercicios, sustituye únicamente <code>hintText</code>:</p><div class="code-label">Propuesta de práctica · un cambio pequeño</div><pre class="code-block"><code>hintText: 'Escribe el nombre del vehículo',</code></pre><p>Ejecuta Hot Reload. El texto se verá dentro del campo cuando esté vacío.</p>
+          <div class="notice notice-info"><strong>¿Ya busca vehículos?</strong><p>No todavía. El código actual muestra un campo de texto, pero no contiene una función que filtre productos. Primero aprenderemos a leer el valor que el usuario escribe y después a reaccionar a él.</p></div>
+          <h2>3. Comprueba lo que viste</h2><div class="checklist" data-checklist="campo-texto"><label><input type="checkbox"> El campo me permite escribir.</label><label><input type="checkbox"> Comprendo por qué el campo está dentro de <code>Expanded</code>.</label><label><input type="checkbox"> Puedo distinguir texto de ayuda y texto real.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Reconoce las diferencias</h3><p>Explica qué pasaría si la <code>Row</code> tuviera textos muy largos y el <code>TextField</code> no dispusiera de espacio flexible.</p><details><summary>Ver orientación</summary><p>La fila podría sobrepasar el ancho de la pantalla. <code>Expanded</code> permite que el campo use el espacio flexible disponible, aunque también debemos cuidar los otros elementos.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="campo-texto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Siguiente: Mejorar el diseño →</a></div>
+        </section>
+
+        <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Siguiente práctica propuesta</span><span class="lesson-time">25–30 min</span></div><h1 id="responsive-title">Hacer que la pantalla respire</h1><p>Esta sección es una <strong>propuesta para la siguiente clase</strong>; todavía no está incorporada en el código original.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Aprenderás</strong><p>Agregar espacios a los bordes y permitir desplazamiento cuando la pantalla sea pequeña.</p></div></div>
+          <h2>1. ¿Por qué agregar <code>Padding</code>?</h2><p>Sin márgenes, los widgets pueden quedar pegados al borde. <code>Padding</code> deja un espacio interior alrededor de su hijo.</p><div class="code-label">Propuesta · rodear el contenido con Padding</div><pre class="code-block"><code>body: Padding(
+  padding: const EdgeInsets.all(16),
+  child: Center(
+    child: Column(
+      children: [
+        const Text('Bienvenido a la tienda'),
+      ],
+    ),
+  ),
+),</code></pre><div class="line-notes"><div><strong><code>padding: EdgeInsets.all(16)</code></strong><p>Agrega 16 píxeles lógicos de margen interno a los cuatro lados.</p></div><div><strong><code>child: Center(...)</code></strong><p>Mantiene el contenido como hijo del nuevo widget. No reemplaza toda la pantalla por otro proyecto.</p></div></div>
+          <h2>2. ¿Y si el contenido no cabe?</h2><p>Cuando haya muchos elementos, un <code>SingleChildScrollView</code> puede permitir desplazarse verticalmente. Primero prueba el cambio en una copia, sin reescribir todo el archivo.</p><div class="code-label">Propuesta · envolver una columna con scroll</div><pre class="code-block"><code>SingleChildScrollView(
+  child: Column(
+    children: [
+      const Text('Primera sección'),
+      const SizedBox(height: 16),
+      const Text('Segunda sección'),
+    ],
+  ),
+)</code></pre>
+          <div class="notice notice-warning"><strong>No todo debe tener scroll</strong><p>Úsalo cuando el contenido pueda sobrepasar la altura disponible. Para listas muy grandes aprenderemos después widgets especializados.</p></div>
+          <div class="checklist" data-checklist="responsive"><label><input type="checkbox"> Identifico dónde colocar <code>Padding</code>.</label><label><input type="checkbox"> Entiendo cuándo necesito desplazamiento.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Adapta el ejemplo</h3><p>En nuestra copia para la guía, agrega <code>Padding</code> alrededor de la columna, ejecuta la aplicación y compara el espacio antes y después. Registra una captura real de cada estado.</p></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="responsive">Marcar módulo como completado</button><a class="next-link" href="#estado">Siguiente: StatefulWidget →</a></div>
+        </section>
+
+        <section class="page lesson" id="estado" aria-labelledby="estado-title" data-lesson="7">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 07</span><span class="status-pill planned">Siguiente práctica propuesta</span><span class="lesson-time">35–45 min</span></div><h1 id="estado-title">StatefulWidget: una interfaz que puede cambiar</h1><p>Hasta ahora usamos <code>StatelessWidget</code>. ¿Qué hacemos si queremos mostrar en pantalla lo que escribió el usuario?</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Aprenderás</strong><p>Diferenciar <code>StatelessWidget</code> de <code>StatefulWidget</code> y usar <code>setState</code> para actualizar una pantalla.</p></div></div>
+          <div class="side-by-side"><div class="compare-card"><span class="compare-icon">□</span><h3>StatelessWidget</h3><p>Describe una interfaz sin estado mutable administrado dentro de ese widget.</p><span class="compare-example">Ejemplo: título fijo</span></div><div class="compare-card compare-card-blue"><span class="compare-icon">↻</span><h3>StatefulWidget</h3><p>Tiene un objeto de estado que puede cambiar y provocar una nueva construcción visual.</p><span class="compare-example">Ejemplo: contador o búsqueda</span></div></div>
+          <h2>1. Crea primero la estructura con estado</h2><p>En una copia para prácticas, reemplaza la declaración de un widget sencillo por esta estructura. Primero estudia el código; no necesitas introducir todavía un formulario.</p><div class="code-label">Propuesta · estructura de StatefulWidget</div><pre class="code-block"><code>class PantallaBusqueda extends StatefulWidget {
+  const PantallaBusqueda({super.key});
+
+  @override
+  State&lt;PantallaBusqueda&gt; createState() =&gt;
+      _PantallaBusquedaState();
+}
+
+class _PantallaBusquedaState
+    extends State&lt;PantallaBusqueda&gt; {
+  String busqueda = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Buscando: $busqueda');
+  }
+}</code></pre>
+          <div class="line-notes numbered"><div><strong><code>StatefulWidget</code></strong><p>Representa la parte del widget que conserva su configuración.</p></div><div><strong><code>createState()</code></strong><p>Crea el objeto encargado de mantener y actualizar el estado.</p></div><div><strong><code>_PantallaBusquedaState</code></strong><p>La clase guarda los datos que pueden cambiar. El guion bajo inicial hace privado ese nombre dentro de la biblioteca Dart.</p></div><div><strong><code>String busqueda = ''</code></strong><p>Guarda el texto actual; al principio está vacío.</p></div><div><strong><code>$busqueda</code></strong><p>Inserta el valor de una variable en una cadena. Esto se conoce como interpolación.</p></div></div>
+          <h2>2. Haz que un evento cambie la pantalla</h2><p>Una vez entendida la estructura anterior, añade un campo de texto <strong>dentro de un widget con estado</strong> y actualiza la variable.</p><div class="code-label">Propuesta · contenido para el método build</div><pre class="code-block"><code>Column(
+  children: [
+    TextField(
+      onChanged: (valor) {
+        setState(() {
+          busqueda = valor;
+        });
+      },
+    ),
+    Text('Buscando: $busqueda'),
+  ],
+)</code></pre>
+          <div class="line-notes numbered"><div><strong><code>onChanged</code></strong><p>Recibe una función que se ejecuta cuando el usuario modifica el texto.</p></div><div><strong><code>valor</code></strong><p>Es el nuevo texto recibido por la función.</p></div><div><strong><code>setState(() { ... })</code></strong><p>Avisa a Flutter que cambiaron datos de este widget y debe volver a construir su interfaz.</p></div><div><strong><code>busqueda = valor</code></strong><p>Guarda el texto actual para mostrarlo debajo.</p></div></div>
+          <h2>3. ¿Y <code>dispose()</code> para qué sirve?</h2><p>Más adelante, si utilizas un <code>TextEditingController</code>, tendrás que liberar ese recurso cuando el widget deje de existir:</p><div class="code-label">Propuesta posterior · manejo de un controlador</div><pre class="code-block"><code>final controlador = TextEditingController();
+
+@override
+void dispose() {
+  controlador.dispose();
+  super.dispose();
+}</code></pre><p><code>controlador.dispose()</code> libera los recursos del controlador. <code>super.dispose()</code> permite que la clase padre complete su limpieza. No agregues un controlador si la práctica todavía no lo necesita.</p>
+          <div class="checklist" data-checklist="estado"><label><input type="checkbox"> Distingo qué datos pueden cambiar y cuáles son fijos.</label><label><input type="checkbox"> Puedo explicar qué hace <code>setState</code>.</label><label><input type="checkbox"> Sé por qué un controlador necesita <code>dispose</code>.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Contador sencillo</h3><p>Imagina una variable <code>int cantidad = 0</code>. ¿Qué instrucciones escribirías dentro de <code>setState</code> para aumentar su valor en uno?</p><details><summary>Ver orientación</summary><p>Dentro de <code>setState(() { ... })</code> se puede escribir <code>cantidad = cantidad + 1;</code>. Una forma abreviada equivalente es <code>cantidad++;</code>.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="estado">Marcar módulo como completado</button><a class="next-link" href="#formularios">Siguiente: Formularios →</a></div>
+        </section>
+
+        <section class="page lesson" id="formularios" aria-labelledby="formularios-title" data-lesson="8">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 08</span><span class="status-pill planned">Siguiente práctica propuesta</span><span class="lesson-time">35–45 min</span></div><h1 id="formularios-title">Construir un formulario y validar sus datos</h1><p>Cuando necesitamos que el usuario escriba información obligatoria, no basta con mostrar cajas de texto: también debemos comprobar lo que ingresa.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Aprenderás</strong><p>Comprender el propósito de <code>Form</code>, <code>TextFormField</code>, <code>validator</code> y un botón que ejecuta una acción.</p></div></div>
+          <h2>1. Piensa primero en la lógica</h2><ol class="steps-list"><li>Mostrar el campo «Nombre del cliente».</li><li>Permitir que el usuario escriba.</li><li>Al pulsar «Guardar», comprobar que no esté vacío.</li><li>Mostrar un mensaje de error o continuar.</li></ol>
+          <h2>2. Implementar la validación</h2><p>Esta práctica presupone que ya conocemos cómo administrar estado. El ejemplo se integra <strong>dentro de una clase State</strong>; primero hay que declarar su clave.</p><div class="code-label">Propuesta · declarar la clave dentro de State</div><pre class="code-block"><code>final _formKey = GlobalKey&lt;FormState&gt;();</code></pre><p>La clave nos permite acceder al estado del formulario y pedirle que se valide.</p><div class="code-label">Propuesta · contenido del método build</div><pre class="code-block"><code>Form(
+  key: _formKey,
+  child: Column(
+    children: [
+      TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Nombre del cliente',
+        ),
+        validator: (valor) {
+          if (valor == null || valor.trim().isEmpty) {
+            return 'Escribe un nombre';
+          }
+          return null;
+        },
+      ),
+      ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Datos válidos'),
+              ),
+            );
+          }
+        },
+        child: const Text('Guardar'),
+      ),
+    ],
+  ),
+)</code></pre>
+          <div class="line-notes numbered"><div><strong><code>Form(key: _formKey)</code></strong><p>Agrupa los campos y los relaciona con una clave.</p></div><div><strong><code>TextFormField</code></strong><p>Es un campo de texto que puede participar en la validación del formulario.</p></div><div><strong><code>validator: (valor)</code></strong><p>Ejecuta una función que devuelve un mensaje de error o <code>null</code> cuando el dato es válido.</p></div><div><strong><code>trim()</code></strong><p>Elimina espacios al comienzo y al final; así, un campo con solo espacios también se considera vacío.</p></div><div><strong><code>onPressed</code></strong><p>Indica qué debe pasar al pulsar el botón.</p></div><div><strong><code>validate()</code></strong><p>Evalúa las funciones de validación de los campos del formulario.</p></div><div><strong><code>SnackBar</code></strong><p>Muestra un aviso breve dentro de la aplicación cuando la validación pasa.</p></div></div>
+          <div class="notice notice-warning"><strong>Sobre el operador <code>!</code></strong><p>En <code>_formKey.currentState!.validate()</code>, el signo <code>!</code> afirma que el estado no es nulo. En esta práctica se asume que el formulario está montado y vinculado a la clave. Más adelante veremos el manejo seguro de valores nulos.</p></div>
+          <div class="checklist" data-checklist="formularios"><label><input type="checkbox"> Puedo describir qué debe ocurrir al pulsar Guardar.</label><label><input type="checkbox"> Identifico dónde se muestra el mensaje de error.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Validación adicional</h3><p>Diseña la regla para un campo «Código del producto» que no acepte una cadena vacía. Explica en palabras qué devuelve el validador en cada caso.</p></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Siguiente: Proyecto transversal →</a></div>
+        </section>
+
+        <section class="page lesson" id="proyecto" aria-labelledby="proyecto-title" data-lesson="9">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 09</span><span class="status-pill planned">Proyecto paralelo · propuesta</span><span class="lesson-time">Varias sesiones</span></div><h1 id="proyecto-title">Proyecto transversal: cajero electrónico</h1><p>Construiremos un segundo ejemplo que crece a lo largo de las clases. No sustituye la pantalla «Tienda» ni se agrega automáticamente a <code>actividad2a</code>.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Propósito</strong><p>Crear una aplicación sencilla para consultar saldo, consignar y retirar. Cada concepto nuevo tendrá una mejora visible.</p></div></div>
+          <h2>1. El funcionamiento antes del código</h2><div class="diagram" role="img" aria-label="El usuario consulta el saldo, decide si consigna o retira y recibe el nuevo saldo"><div class="diagram-node">Saldo inicial</div><span aria-hidden="true">→</span><div class="diagram-node accent">Elegir operación</div><span aria-hidden="true">→</span><div class="diagram-node">Validar valor</div><span aria-hidden="true">→</span><div class="diagram-node">Nuevo saldo</div></div>
+          <h2>2. Una aplicación que avanza por etapas</h2>
+          <div class="roadmap"><div><span class="roadmap-step">A</span><strong>Interfaz fija</strong><p>Con <code>StatelessWidget</code>, mostrar un saldo ficticio y títulos. Todavía no hay operaciones.</p></div><div><span class="roadmap-step">B</span><strong>Diseño de operaciones</strong><p>Organizar «Consultar», «Consignar» y «Retirar» con filas, columnas y botones.</p></div><div><span class="roadmap-step">C</span><strong>Estado mutable</strong><p>Cuando lleguemos a <code>StatefulWidget</code>, guardar el saldo y actualizarlo con <code>setState</code>.</p></div><div><span class="roadmap-step">D</span><strong>Formularios y validación</strong><p>Ingresar un valor, rechazar datos inválidos y comprobar que un retiro no exceda el saldo.</p></div><div><span class="roadmap-step">E</span><strong>Versión con BLoC</strong><p>Solo después de dominar la versión básica, mover la lógica de operaciones fuera de la interfaz.</p></div></div>
+          <h2>3. Primera representación de datos</h2><p>Cuando estudiemos variables y estado, podremos utilizar algo como esto:</p><div class="code-label">Propuesta · dato inicial del cajero</div><pre class="code-block"><code>double saldo = 100000;</code></pre><p><code>double</code> almacena números con parte decimal. <code>saldo</code> es la variable y <code>100000</code> es el valor inicial. Para una aplicación financiera real se necesitan tipos de dinero y reglas de precisión más estrictas; aquí es un ejercicio educativo.</p>
+          <div class="checklist" data-checklist="proyecto"><label><input type="checkbox"> Puedo explicar las reglas de retiro y consignación.</label><label><input type="checkbox"> Reconozco qué parte de la app necesita estado.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Escribe tres casos de prueba</h3><p>Con saldo inicial de 100.000, escribe el saldo esperado después de consignar 25.000, después de retirar 10.000 y cuando alguien intenta retirar 200.000. Explica por qué debe rechazarse el último caso.</p><details><summary>Ver orientación</summary><p>Consignación: 125.000. Retiro desde saldo inicial: 90.000. El retiro de 200.000 desde 100.000 no debe permitirse por saldo insuficiente.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: Introducción a BLoC →</a></div>
+        </section>
+
+        <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Contenido para más adelante</span><span class="lesson-time">30–40 min</span></div><h1 id="bloc-title">Entender BLoC antes de programarlo</h1><p>Cuando nuestro cajero tenga varias operaciones, podremos separar lo que <em>vemos</em> de las decisiones que toma la aplicación.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Explicar con un ejemplo cotidiano qué son los eventos, la lógica del BLoC y los estados de la interfaz.</p></div></div>
+          <h2>1. Una analogía cotidiana</h2><p>Piensa en un cajero automático real. La pantalla recibe una instrucción, un sistema verifica la operación y después la pantalla muestra el resultado. No hace falta que la pantalla conozca todos los cálculos internos.</p>
+          <div class="bloc-flow"><div><span class="flow-kicker">01 · EVENTO</span><strong>Usuario pulsa «Retirar»</strong><p>Es la solicitud de hacer algo.</p></div><div class="flow-arrow" aria-hidden="true">→</div><div><span class="flow-kicker">02 · BLOC</span><strong>Comprueba el saldo</strong><p>Contiene las reglas de la operación.</p></div><div class="flow-arrow" aria-hidden="true">→</div><div><span class="flow-kicker">03 · ESTADO</span><strong>Retiro exitoso o error</strong><p>Indica qué debe mostrar la pantalla.</p></div></div>
+          <h2>2. Comparar las dos versiones</h2><div class="side-by-side"><div class="compare-card"><span class="compare-icon">1</span><h3>Primero: sin BLoC</h3><p>La propia pantalla mantiene el saldo y llama a <code>setState</code>. Es fácil de entender para comenzar.</p></div><div class="compare-card compare-card-blue"><span class="compare-icon">2</span><h3>Después: con BLoC</h3><p>La pantalla envía una acción. El BLoC procesa las reglas y produce un nuevo estado que la pantalla muestra.</p></div></div>
+          <div class="notice notice-info"><strong>Importante para nuestro taller</strong><p>No mezclaremos BLoC con las primeras explicaciones de <code>Column</code>, <code>Row</code> o <code>TextField</code>. Primero terminaremos una versión funcional sin BLoC; después la evolucionaremos de forma guiada.</p></div>
+          <h2>3. Vocabulario esencial</h2><div class="line-notes"><div><strong>Evento</strong><p>Representa una acción o solicitud, por ejemplo «Retirar 20.000».</p></div><div><strong>BLoC</strong><p>Procesa eventos y define cómo debe evolucionar el estado según las reglas.</p></div><div><strong>Estado</strong><p>Es la información necesaria para representar la situación actual: saldo disponible, operación correcta o mensaje de error.</p></div><div><strong>Interfaz</strong><p>Dibuja lo que el usuario ve a partir del estado. No debería concentrar toda la lógica de negocio.</p></div></div>
+          <div class="checklist" data-checklist="bloc"><label><input type="checkbox"> Soy capaz de distinguir evento, BLoC y estado.</label><label><input type="checkbox"> Entiendo por qué primero construiremos una versión sin BLoC.</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Describe el flujo sin código</h3><p>Para el evento «Retirar 150.000» cuando hay 100.000 de saldo: ¿qué comprueba la lógica? ¿Qué estado debería producir? ¿Qué muestra la pantalla?</p><details><summary>Ver orientación</summary><p>La lógica compara el valor solicitado con el saldo. Produce un estado de error por saldo insuficiente. La pantalla muestra el mensaje correspondiente y conserva el saldo anterior.</p></details></div>
+          <div class="lesson-end"><button class="button button-complete" data-complete="bloc">Marcar módulo como completado</button><a class="next-link" href="#inicio">Volver al inicio →</a></div>
+        </section>
+      </main>
+      <footer class="page-footer"><span>FlutterLab · Taller de Desarrollo Móvil</span><span>Guía viva basada en <code>actividad2a</code> · <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer">Ver el código fuente ↗</a></span></footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Esta guía utiliza JavaScript para navegar entre los módulos y guardar tu progreso. Actívalo para usar todas las funciones.</p></noscript>
+</body>
+</html>
