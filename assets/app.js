@@ -71,7 +71,7 @@
       const route = link.dataset.route;
       link.classList.toggle('done', completed.has(route));
       if (completed.has(route) && route !== 'inicio') {
-        link.setAttribute('aria-label', (link.dataset.search || route).split(' ')[0] + ' — completado');
+        link.setAttribute('aria-label', link.querySelectorAll('span')[1]?.textContent.trim() + ' — completado');
       } else {
         link.removeAttribute('aria-label');
       }
