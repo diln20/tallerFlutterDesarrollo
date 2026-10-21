@@ -1,89 +1,78 @@
-# Flutter en práctica — Taller de Desarrollo Móvil
+# Taller Flutter — basado en actividad2a
 
-**Guía web interactiva para acompañar las clases de Flutter**, basada en el código real de `actividad2a` y organizada en pasos cortos, explicaciones, ejercicios y verificaciones.
+**Guía interactiva de Flutter basada en la aplicación real del docente**, no en ejemplos o aplicaciones independientes.
 
-### Abrir la guía
+[Repositorio](https://github.com/diln20/tallerFlutterDesarrollo) · [GitHub Pages (tras activarlo)](https://diln20.github.io/tallerFlutterDesarrollo/)
 
-- **Sitio GitHub Pages:** https://diln20.github.io/tallerFlutterDesarrollo/ (funcionará cuando se active Pages).
-- **Repositorio:** https://github.com/diln20/tallerFlutterDesarrollo
-- **Archivo de entrada:** [index.html](index.html)
+## Punto de partida comprobado
 
-> El sitio es HTML, CSS y JavaScript estático: no requiere instalaciones ni compilación. El progreso y las casillas se guardan únicamente en el navegador del estudiante.
+En el equipo WIN-C2ANEVBHN6Q se leyó la carpeta:
 
-## Publicar en GitHub Pages
+`C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`
 
-La primera vez, en este repositorio abre **Settings → Pages → Build and deployment** y elige:
+La aplicación actual tiene el archivo `lib/main.dart`, con:
 
-- **Source:** Deploy from a branch
-- **Branch:** `main`
-- **Folder:** `/(root)`
-- **Save**
+- `void main()` y `runApp(const MainApp())`.
+- `MainApp extends StatelessWidget`.
+- `MaterialApp`, `Scaffold` y `AppBar` con título **Tienda**.
+- `Center`, `Column`, `Row`, `Text`, `Icon`, `SizedBox` y `Expanded`.
+- Un `TextField` con `hintText: 'Buscar marca o modelo'`.
 
-Después GitHub Pages publicará los archivos de `main` en la URL indicada. La activación de Pages se realiza una sola vez en la configuración del repositorio; subir archivos por sí solo no garantiza que ya esté habilitada.
+**Todavía no existe** una lista de productos, lógica de filtrado, formularios de registro ni BLoC en el código de clase.
 
-## Módulos
+Los archivos de referencia copiados literalmente son [codigo-base/main.dart](codigo-base/main.dart) y [codigo-base/pubspec.yaml](codigo-base/pubspec.yaml). Se preservan los textos escritos en clase tal y como aparecen.
 
-| # | Tema | Origen |
-|---|---|---|
-| 01 | Preparar y ejecutar el proyecto | Entorno actual de clase |
-| 02 | Entender `main.dart`, `main()`, `runApp`, `super.key`, `const` | Código de clase |
-| 03 | `MaterialApp`, `Scaffold`, `AppBar` y `body` | Código de clase |
-| 04 | `Column`, `Row`, `Center`, `Icon`, `SizedBox` | Código de clase |
-| 05 | `TextField`, `InputDecoration`, `Expanded` | Código de clase |
-| 06 | Espaciado y diseño adaptable | Práctica propuesta |
-| 07 | `StatefulWidget`, `setState`, controlador y `dispose` | Práctica propuesta |
-| 08 | `Form`, `TextFormField` y validación | Práctica propuesta |
-| 09 | Cajero electrónico como proyecto transversal paralelo | Propuesta |
-| 10 | Introducción conceptual a BLoC | Propuesta posterior |
+## Organización del taller
 
-La guía **separa lo que ya aparece en el código real de clase de las ampliaciones didácticas**. Por ahora, la app original tiene una pantalla `Tienda` con un `StatelessWidget`, filas, columnas, iconos y un campo de búsqueda. No afirmamos que la búsqueda ya filtre productos.
+| Módulo | Contenido | Estado |
+| --- | --- | --- |
+| 01 | Abrir y ejecutar actividad2a | Basado en proyecto real |
+| 02 | Entender main.dart, runApp, StatelessWidget, super.key y const | Basado en proyecto real |
+| 03 | MaterialApp, Scaffold y AppBar: construir Tienda | Basado en proyecto real |
+| 04 | Center, Column, Row, SizedBox e Icon | Basado en proyecto real |
+| 05 | Expanded y TextField: buscador visual de la Tienda | **Coincide con main.dart real** |
+| 06 | Mejorar la distribución de la pantalla Tienda | Propuesta futura en la copia |
+| 07 | Hacer interactivo el campo de búsqueda con StatefulWidget y setState | Propuesta futura en la copia |
+| 08 | Filtrar una lista local de vehículos de prueba | Propuesta futura en la copia |
+| 09 | Agregar vehículos a la misma Tienda con Form y validación | Propuesta futura en la copia |
+| 10 | Comprender BLoC como evolución de la Tienda | Propuesta conceptual posterior |
 
-## Proyectos en el equipo de trabajo
+Los módulos 01–05 avanzan del código mínimo al archivo actual. Los módulos 06–10 no están implementados en el proyecto original y **no deben presentarse como funcionalidades ya vistas en clase**.
 
-- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`: **proyecto del docente**, para avanzar con estudiantes; no se modifica desde esta guía.
-- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`: **copia de trabajo** para construir contenidos y probar cambios.
-- `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia\guia-web`: **copia local** del sitio que se sube a GitHub.
+## Archivos completos por etapa
 
-Los ejemplos de código de la web son demostraciones didácticas. Los cambios sugeridos para módulos posteriores no se han aplicado por el mero hecho de publicar la guía.
+Para el trabajo didáctico se prepararon estos archivos completos que permiten revisar cada etapa y culminan en la versión auténtica:
 
-## Estructura del sitio
+- [etapas/paso_02_main.dart](etapas/paso_02_main.dart)
+- [etapas/paso_03_tienda.dart](etapas/paso_03_tienda.dart)
+- [etapas/paso_04_columna.dart](etapas/paso_04_columna.dart)
+- [etapas/paso_05_buscador.dart](etapas/paso_05_buscador.dart) — idéntico a `codigo-base/main.dart`.
 
-```text
-index.html
-assets/
-  app.js
-  styles.css
-  favicon.svg
-README.md
-.nojekyll
-```
+Los estudiantes deben construir **paso a paso**, explicando cada línea y comprobando el resultado, no pegar la etapa completa antes de estudiar los conceptos.
 
-## Funciones de la guía
+## Rutas de trabajo
 
-- Menú por módulos, búsqueda de temas y navegación por enlace directo.
-- Diseño responsivo para celular, tableta y escritorio.
-- Modo claro / oscuro.
-- Copiar bloques de código.
-- Casillas de verificación y registro local de avance.
-- Ejercicios individuales con orientaciones desplegables.
-- Diferencia visible entre **código de clase** y **prácticas propuestas**.
+- **Docente y estudiantes — NO MODIFICAR AUTOMÁTICAMENTE**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`.
+- **Copia para preparar la guía y futuras prácticas**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`.
+- **Sitio web local**: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia\guia-web`.
 
-## Metodología de cada módulo
+El proyecto original no se modifica al publicar la guía. Las mejoras de módulos posteriores se desarrollarán en la copia cuando corresponda a la clase.
 
-1. Objetivo con lenguaje sencillo.
-2. Lo que se necesita saber antes.
-3. Fragmento pequeño de código.
-4. Explicación de cada línea o concepto nuevo.
-5. Cambio práctico y comprobación.
-6. Actividad individual y resultado esperado.
-7. Marcación de progreso.
+## Funciones de la página
 
-**Capturas de pantalla:** la ilustración de la portada es esquemática, *no una captura real*. Las capturas de Flutter se incorporarán al sitio cuando se obtengan y validen desde el proyecto de pruebas.
+- Índice y buscador por módulos, navegación mediante enlaces directos.
+- Diseño responsive en computador y celular; modo claro y oscuro.
+- Botones para copiar los ejemplos de código.
+- Actividades y listas de comprobación; progreso guardado en el navegador del estudiante.
+- Referencias a los archivos auténticos y a los hitos ejecutables.
+- Distinción visual entre **lo ya realizado en clase** y **las prácticas propuestas**.
 
-## Desarrollo local
+## Publicación en GitHub Pages
 
-Puedes abrir `index.html` directamente con tu navegador. Si quieres servirlo en una URL local, desde la carpeta del sitio ejecuta cualquier servidor HTTP estático. Usa URLs relativas para conservar compatibilidad con la ruta de GitHub Pages.
+Si Pages todavía no está activo: abrir **Settings → Pages → Build and deployment**, elegir **Deploy from a branch**, rama `main`, carpeta `/(root)` y **Save**. El sitio está preparado en `index.html` y usa rutas relativas compatibles con Pages.
 
----
+La URL prevista es https://diln20.github.io/tallerFlutterDesarrollo/ tras el despliegue.
 
-Material educativo en desarrollo continuo, basado en la práctica real de aula.
+## Política editorial
+
+Cada concepto se explica cuando aparece por primera vez. Para cada etapa, incluir: objetivo, código en fragmentos cortos, explicación de nuevas líneas o propiedades, comando de ejecución, prueba observable, errores típicos y ejercicio individual. Las capturas deben proceder del Flutter real, no de ilustraciones simuladas sin aviso. 
