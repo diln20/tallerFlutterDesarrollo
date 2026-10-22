@@ -14,7 +14,7 @@
     6:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true},
     7:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true},
     8:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true},
-    9:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,addButton:true}
+    9:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true}
   };
   const state=desc=>({...S[desc.stage],...desc});
   function editorUI(v){
@@ -49,16 +49,20 @@
     </section>`;
   }
   function formUI(v,which,highlight,r){
-    const error=which==='after'?r.invalid:!!v.validationError;
-    return `<section class="pv-form${highlight==='form'&&which==='after'?' pv-glow':''}">
-      <strong>Agregar un vehículo</strong>
-      <label>Nombre del vehículo</label>
+    const showTitle=v.formTitle!==false;
+    const showField=v.formField!==false;
+    const showButton=v.addButton!==false;
+    const ready=v.formReady!==false;
+    return `<section class="pv-form">
+      ${showTitle?`<strong class="${highlight==='form-title'&&which==='after'?'pv-glow':''}">Agregar un vehículo</strong>`:''}
+      ${showField?`<label class="${highlight==='form-field'&&which==='after'?'pv-glow':''}">Nombre del vehículo</label>
       <input type="text" data-pv-model="${which}" value="${which==='after'?esc(r.model):''}"
+        class="${highlight==='form-field'&&which==='after'?'pv-glow':''}"
         placeholder="Ej. Toyota Corolla" autocomplete="off"
-        ${which==='before'?'readonly tabindex="-1"':''}>
-      <small class="pv-validation" data-pv-error ${!error?'hidden':''}>Escribe un nombre</small>
-      ${v.addButton!==false?`<button type="button" class="pv-submit${highlight==='button'&&which==='after'?' pv-glow':''}"
-        ${which==='after'?'data-pv-submit':''} ${which==='before'?'disabled':''}>Agregar vehículo</button>`:''}
+        ${which==='before'?'readonly tabindex="-1"':''}>`:''}
+      ${showButton?`<button type="button" class="pv-submit${highlight==='button'&&which==='after'?' pv-glow':''}"
+        ${which==='after'&&ready?'data-pv-submit':''}
+        ${which==='before'?'disabled':''}>Agregar vehículo</button>`:''}
     </section>`;
   }
   function screenUI(v,which,highlight,r){
@@ -140,7 +144,7 @@
       </div>
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
-        ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el formulario completo.</span>':''}
+        ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
         <span class="pv-result-status">${internal?'Este paso prepara lógica o estructura y no introduce nuevos elementos visuales.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
@@ -179,7 +183,7 @@
     responsive:[0,0,4,5],
     estado:[0,2,3,4],
     formularios:[0,1,2,3],
-    proyecto:[0,3,4],
+    proyecto:[0,1,2,3,4,5,6],
     bloc:[]
   };
   function linkCodeBlocks(){
@@ -252,10 +256,11 @@
     if(submit){
       const id=submit.closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       const name=r.model.trim();
-      if(!name){r.invalid=true;r.snackbar='';updateResults(id);return;}
-      r.addedCars.push(name);r.invalid=false;r.model='';r.snackbar='Vehículo agregado';
-      const input=submit.closest('[data-pv-side]')?.querySelector('[data-pv-model="after"]');
-      if(input)input.value='';
+      if(!name)return;
+      r.addedCars.push(name);
+      r.invalid=false;
+      r.snackbar='';
+      // Primera práctica: el campo se conserva después de agregar un modelo.
       updateResults(id);
     }
   });
