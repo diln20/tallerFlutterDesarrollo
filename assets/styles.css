@@ -852,3 +852,21 @@ body[data-theme=dark] .wc-filter-row{color:var(--text-soft)}
   .wc-filter-row,.wc-search-bar,.wc-widget-card{break-inside:avoid}
   .wc-detail-dialog{display:none!important}
 }
+
+/* El ejemplo del modal se puede leer sin desplazamiento lateral excesivo. */
+.wc-detail-example .code-block {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.wc-widget-card-title strong {
+  overflow-wrap: anywhere;
+}
+.wc-appbar-lesson .wc-properties-scroll {
+  max-height: 480px;
+}
+@media(max-width:520px) {
+  .wc-control-grid {
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  }
+}
