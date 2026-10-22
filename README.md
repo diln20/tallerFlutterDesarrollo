@@ -38,6 +38,22 @@ Las referencias de línea pueden variar según los cambios particulares que haga
 
 > **Capturas antiguas:** si un navegador muestra los pasos «Preparar FormState y controller», «Dibujar TextFormField» o «Validar un campo vacío», corresponde a una versión anterior y más avanzada. Ahora el módulo 09 trabaja con `Text`, `TextField`, `ElevatedButton` y después `TextEditingController`; no requiere `Form` ni `validator`. Se incorporó también una aclaración desplegable para ubicar esos fragmentos antiguos, sin mezclarlos con la práctica básica. Puede ser necesario actualizar con **Ctrl + F5**.
 
+## Barrido de consistencia y ubicación de todos los fragmentos
+
+Ahora **todos los bloques de código del curso** tienen una ficha de ubicación, al igual que **todos los pasos de las simulaciones «Antes / Después»**. En cada ficha se indica:
+
+- **Destino:** `lib/main.dart` de una copia de práctica o **PowerShell/terminal**, según el caso.
+- **Contenedor exacto:** `MainApp`, `build`, `Scaffold.body`, `Column.children`, `Row.children`, `TextField.decoration`, etc.
+- **Ancla localizable con Ctrl + F**, más la acción: añadir, reemplazar, comparar, ejecutar o leer.
+- **Referencia desplegable con líneas numeradas**, cuando el fragmento tiene correspondencia en un archivo Dart del repositorio.
+- Advertencia y desactivación de copia para **diagramas, pseudocódigo, extractos incompletos** y pasos de comprobación que no deben copiarse otra vez.
+
+El **catálogo de widgets** muestra una indicación contextual distinta: `AppBar` en `Scaffold.appBar`, `Drawer` en `Scaffold.drawer`, `Expanded` dentro de `Row` o `Column`, `SnackBar` mediante `ScaffoldMessenger`, diálogos mediante `showDialog`, etc. Son ejemplos de consulta, no instrucciones de pegarlos todos en la Tienda.
+
+**Ruta didáctica principal:** módulos 01–05 (código original) → **primer formulario básico** (el archivo sigue llamándose `paso_09_formulario.dart` para no romper enlaces). Las ampliaciones de diseño, `StatefulWidget` para búsqueda y filtros (módulos 06–08) son una **ruta opcional posterior**, y BLoC es conceptual. El formulario básico **no depende** de conocer `for`, `where` ni `List<String>`.
+
+**Limitación de verificación:** los ejemplos y ubicaciones se contrastaron contra los archivos versionados del repositorio, incluida la instantánea `codigo-base/main.dart`. Esto no equivale a comprobar el proyecto local de los estudiantes en este momento ni a ejecutar Flutter en su equipo.
+
 ## Cómo estudiar con esta guía
 
 1. **Lee primero el objetivo.** Cada módulo parte de algo que ya aprendiste.
@@ -55,7 +71,7 @@ Equipo: `WIN-C2ANEVBHN6Q`
 Docente y estudiantes: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`  
 Copia para preparar ejemplos: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`
 
-Se verificó el código exacto de [`codigo-base/main.dart`](codigo-base/main.dart) y [`codigo-base/pubspec.yaml`](codigo-base/pubspec.yaml). **El `main.dart` tiene 42 líneas.** La página explica una por una, incluidas llaves, comas, paréntesis y listas de widgets.
+Se revisó la instantánea versionada de [`codigo-base/main.dart`](codigo-base/main.dart) y [`codigo-base/pubspec.yaml`](codigo-base/pubspec.yaml). **El `main.dart` de referencia tiene 42 líneas.** La página explica una por una, incluidas llaves, comas, paréntesis y listas de widgets.
 
 La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp`, `Scaffold`, una barra «Tienda», `Center`, `Column`, `Row`, iconos de automóvil, `Expanded` y un `TextField` con `hintText: 'Buscar marca o modelo'`. El campo permite escribir, pero aún **no realiza búsquedas ni registra vehículos**.
 
