@@ -108,7 +108,7 @@
       kind:'proposed',
       steps:[
         S('Agregar Padding','Un margen de 16 píxeles lógicos separa el contenido de los bordes.',
-          "body: Padding(\n  padding: const EdgeInsets.all(16),\n  child: Center(child: Column(...)),\n),",
+          "body: Padding(\n    padding: const EdgeInsets.all(16),\n    child: Center(\n      child: Column(\n        children: [\n          Text('Hello dsfdsWorld'),\n          const SizedBox(height: 20),\n          Icon(Icons.directions_car),\n          const SizedBox(height: 8),\n          Row(\n            children: [\n              Icon(Icons.directions_car),\n              const SizedBox(width: 8),\n              Text('Ingenieria de Sistemas'),\n              Expanded(\n                child: TextField(\n                  decoration: const InputDecoration(\n                    hintText: 'Buscar marca o modelo',\n                  ),\n                ),\n              ),\n            ],\n          ),\n        ],\n      ),\n    ),\n),",
           {stage:5},{stage:5,padding:16},'body'),
         S('Permitir desplazamiento','SingleChildScrollView admite desplazarse si el contenido crece. El cambio puede no ser visible sin desbordamiento.',
           "SingleChildScrollView(\n  child: Column(children: [...]),\n),",
