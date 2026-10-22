@@ -61,7 +61,7 @@
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#formularios" data-route="formularios" data-search="actividad2a tienda lista filtrar modelos where trim contains"><span class="lesson-index">08</span><span>Filtrar vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="actividad2a tienda formulario nuevo vehículo registrar validar"><span class="lesson-index">09</span><span>Agregar vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="actividad2a tienda Text TextField ElevatedButton botón entrada registrar nombre modelo básico"><span class="lesson-index">09</span><span>Campo y botón</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#bloc" data-route="bloc" data-search="actividad2a tienda BLoC patrones eventos filtrar resultados"><span class="lesson-index">10</span><span>Tienda con BLoC</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <p id="no-search-results" class="no-search-results" hidden>No se encontraron módulos con ese texto.</p>
       </nav>
@@ -1212,86 +1212,135 @@ class _MainAppState extends State&lt;MainApp&gt; {
   }
 }
 </code></pre></div></details>
-</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Siguiente: Formulario para vehículos →</a></div></section>
+</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Siguiente: Primer formulario sencillo →</a></div></section>
 
         
 <section class="page lesson" id="proyecto" aria-labelledby="proyecto-title" data-lesson="9">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 09</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">35–45 min</span></div>
-<h1 id="proyecto-title">Registrar un vehículo en la misma Tienda</h1><p>Sin crear otro proyecto, agregaremos un formulario a la pantalla de actividad2a para incorporar nuevos modelos a nuestra lista de práctica.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
+<div class="lesson-heading">
+  <div class="lesson-meta"><span class="lesson-id">MÓDULO 09</span><span class="status-pill planned">Siguiente práctica · propuesta</span><span class="lesson-time">25–35 min</span></div>
+  <h1 id="proyecto-title">Nuestro primer formulario sencillo: Text, TextField y botón</h1>
+  <p>Seguimos con la misma <strong>Tienda</strong> del módulo anterior. Añadiremos los elementos de uno en uno y solo al final conectaremos el botón para agregar un vehículo a la lista.</p>
+</div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Una sola novedad a la vez</strong><p>Partimos de <code>etapas/paso_08_filtro.dart</code>. Por ahora <strong>NO</strong> utilizaremos <code>Form</code>, <code>TextFormField</code>, <code>GlobalKey</code>, validadores, controladores ni mensajes <code>SnackBar</code>. Tampoco comenzamos otra aplicación.</p></div></div>
 
-<h2>1. Primero, pensar en el formulario</h2><p>El usuario verá un campo «Nombre del vehículo» y un botón «Agregar». Si no escribe nada, debe aparecer un error; si escribe un nombre válido, lo añadiremos al catálogo que ya filtra el buscador.</p>
-<h2>2. Variables nuevas en _MainAppState</h2><p>Dentro de la misma clase de estado creada en el módulo 07, incorpora una clave para el formulario y un controlador para leer el campo.</p>
-<div class="code-label">PROPUESTA · declaraciones y limpieza del State</div><pre class="code-block"><code>final formularioKey = GlobalKey&lt;FormState&gt;();
-final nuevoVehiculoController = TextEditingController();
+<h2>1. ¿Qué construiremos hoy?</h2>
+<p>Al final, debajo de los vehículos encontrados, veremos un pequeño espacio para agregar otro vehículo. No necesitamos aprender todavía los formularios avanzados.</p>
+<div class="roadmap">
+  <div><span class="roadmap-step">1</span><strong>Text</strong><p>Muestra el título «Agregar un vehículo».</p></div>
+  <div><span class="roadmap-step">2</span><strong>TextField</strong><p>Permite escribir, por ejemplo, «Toyota Corolla».</p></div>
+  <div><span class="roadmap-step">3</span><strong>ElevatedButton</strong><p>Permite pulsar «Agregar vehículo».</p></div>
+</div>
+<div class="notice notice-info"><strong>Antes de comenzar</strong><p>Abre <code>lib/main.dart</code> de tu copia de práctica y conserva <code>vehiculos</code>, <code>busqueda</code>, el filtro y <code>SingleChildScrollView</code>. Busca la lista <code>children: [</code> de la <code>Column</code> principal. Allí añadiremos los elementos nuevos, después del listado de vehículos.</p></div>
 
-@override
-void dispose() {
-  nuevoVehiculoController.dispose();
-  super.dispose();
-}</code></pre>
-<div class="line-notes numbered"><div><strong><code>GlobalKey&lt;FormState&gt;</code></strong><p>Permite acceder al formulario para solicitarle validación.</p></div><div><strong><code>TextEditingController</code></strong><p>Permite leer el contenido del campo y vaciarlo después.</p></div><div><strong><code>dispose()</code></strong><p>Se llama al terminar la vida de este objeto State.</p></div><div><strong><code>nuevoVehiculoController.dispose()</code></strong><p>Libera los recursos del controlador.</p></div><div><strong><code>super.dispose()</code></strong><p>Completa la limpieza propia de la clase padre.</p></div></div>
-<h2>3. Agregar el formulario debajo de los resultados</h2><p>Este bloque se colocará en la <code>Column</code> de la misma Tienda, después del listado.</p>
-<div class="code-label">PROPUESTA · formulario y botón</div><pre class="code-block"><code>Form(
-  key: formularioKey,
-  child: Column(
-    children: [
-      TextFormField(
-        controller: nuevoVehiculoController,
-        decoration: const InputDecoration(
-          labelText: 'Nombre del vehículo',
-        ),
-        validator: (valor) {
-          if (valor == null || valor.trim().isEmpty) {
-            return 'Escribe un nombre';
-          }
-          return null;
-        },
-      ),
-      ElevatedButton(
-        onPressed: () {
-          if (formularioKey.currentState?.validate() != true) {
-            return;
-          }
-          setState(() {
-            vehiculos.add(
-              nuevoVehiculoController.text.trim(),
-            );
-          });
-          nuevoVehiculoController.clear();
-        },
-        child: const Text('Agregar vehículo'),
-      ),
-    ],
+<h2>2. Paso 1 — Mostrar el título con Text</h2>
+<p>Al terminar el <code>for</code> que dibuja los vehículos, agrega una separación y luego el texto. Haz Hot Reload: <strong>todavía no aparece ningún campo ni botón</strong>.</p>
+<div class="code-label">PASO 1 · dentro de children, después del listado</div><pre class="code-block"><code>const SizedBox(height: 20),
+const Text(&#39;Agregar un vehículo&#39;),</code></pre>
+<div class="line-notes numbered">
+  <div><strong><code>SizedBox(height: 20)</code></strong><p>Deja 20 píxeles de espacio respecto a la lista anterior.</p></div>
+  <div><strong><code>const Text(...)</code></strong><p>Dibuja un texto fijo. <code>const</code> indica que su contenido no cambia.</p></div>
+  <div><strong>La coma final</strong><p>Separa este widget del siguiente dentro de <code>children</code>.</p></div>
+</div>
+
+<h2>3. Paso 2 — Añadir un TextField sencillo</h2>
+<p>Justo debajo del <code>Text</code> agrega el campo. Es muy parecido al buscador que ya conocemos, pero ahora sirve para escribir un <strong>nuevo</strong> vehículo. Por ahora solo se escribe: aún no guardamos nada.</p>
+<div class="code-label">PASO 2 · después del Text</div><pre class="code-block"><code>const SizedBox(height: 10),
+TextField(
+  decoration: const InputDecoration(
+    hintText: &#39;Ej. Toyota Corolla&#39;,
+    border: OutlineInputBorder(),
   ),
 ),</code></pre>
-<div class="line-notes numbered"><div><strong><code>Form</code> y <code>key</code></strong><p>Agrupan los campos y vinculan la clave para validar.</p></div><div><strong><code>TextFormField</code></strong><p>Permite escribir un dato que requiere validación.</p></div><div><strong><code>validator</code></strong><p>Devuelve el error «Escribe un nombre» si el texto está vacío o solo tiene espacios.</p></div><div><strong><code>?.validate() != true</code></strong><p>Detiene la acción si no se pudo validar correctamente.</p></div><div><strong><code>vehiculos.add(...)</code></strong><p>Agrega un nombre válido a la lista local que ya estamos filtrando.</p></div><div><strong><code>setState</code></strong><p>Indica que la lista cambió y debemos reconstruir el resultado visible.</p></div><div><strong><code>clear()</code></strong><p>Deja el campo vacío para la próxima entrada.</p></div></div>
-<div class="notice notice-info"><strong>Alcance de esta práctica</strong><p>Los nombres agregados quedan solo en la memoria de la aplicación. No se guardan en una base de datos ni permanecen al reiniciar. Este comportamiento es adecuado para aprender formularios primero.</p></div>
-<h2>4. Pruebas guiadas</h2>
-<div class="checklist" data-checklist="proyecto"><label><input type="checkbox"> Con el campo vacío veo el mensaje «Escribe un nombre».</label><label><input type="checkbox"> Al agregar «Toyota Corolla» aparece en la lista.</label><label><input type="checkbox"> Si busco «Toyota», puedo encontrar el vehículo agregado.</label></div>
-<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Evitar registros repetidos</h3><p>Escribe en palabras cómo comprobarías que «Renault 9» no se agregue dos veces. Todavía no necesitas implementar la regla.</p><details><summary>Ver orientación de la respuesta</summary><p>Antes de add, compararías el nuevo nombre con los que hay en vehiculos, ignorando espacios y mayúsculas. Si ya existe, informarías el error.</p></details></div>
-<div class="deep-dive">
-<div class="deep-heading"><span>AMPLIACIÓN · PRÁCTICA 09</span><h2>Entender un formulario real, desde la entrada hasta la validación</h2><p>Seguimos en la misma Tienda. Ahora el estudiante podrá escribir el nombre de un nuevo vehículo, comprobar que no esté vacío, agregarlo a la lista de práctica y recibir un mensaje de confirmación.</p></div>
-<h3>Construcción ordenada del formulario</h3>
-<div class="step-explainer">
-<div><span class="step-counter">1</span><div><strong>Conserva la lista y el buscador.</strong><p>La aplicación del módulo 08 ya tiene <code>vehiculos</code>, <code>busqueda</code> y el filtrado. No empieces otro archivo vacío: agrega a la misma <code>_MainAppState</code>.</p></div></div>
-<div><span class="step-counter">2</span><div><strong>Declara los recursos antes de build.</strong><p>En el State escribe una <code>GlobalKey&lt;FormState&gt;</code> para identificar el formulario y un <code>TextEditingController</code> para poder consultar y borrar lo que el usuario escribe.</p></div></div>
-<div><span class="step-counter">3</span><div><strong>Agrega el método dispose.</strong><p>Al terminar la vida del State, libera el controlador con <code>nuevoVehiculoController.dispose()</code> y luego llama <code>super.dispose()</code>. Estos métodos no se invocan después de pulsar cada botón, sino cuando el objeto State se elimina definitivamente.</p></div></div>
-<div><span class="step-counter">4</span><div><strong>Construye el Form debajo de los resultados.</strong><p>En la Column principal, añade un Form con un TextFormField que contenga la etiqueta «Nombre del vehículo», y después un <code>ElevatedButton</code> llamado «Agregar vehículo».</p></div></div>
-<div><span class="step-counter">5</span><div><strong>Valida antes de guardar.</strong><p>El <code>validator</code> comprueba si el texto es nulo o contiene solo espacios. Si hay un error devuelve el mensaje «Escribe un nombre»; si el dato es válido devuelve <code>null</code>.</p></div></div>
-<div><span class="step-counter">6</span><div><strong>Agrega, actualiza y limpia.</strong><p>Si el formulario pasó la validación, agrega el nombre a <code>vehiculos</code> dentro de <code>setState</code>, borra el controlador con <code>clear()</code> y muestra una notificación <code>SnackBar</code>.</p></div></div>
-<div><span class="step-counter">7</span><div><strong>Prueba el estado combinado.</strong><p>Si el buscador tiene un filtro activo, el nuevo vehículo podría quedar oculto hasta borrar o cambiar la búsqueda. Esto no significa que el registro falló: la interfaz continúa mostrando solamente coincidencias.</p></div></div>
+<div class="line-notes numbered">
+  <div><strong><code>TextField</code></strong><p>Crea una caja donde el usuario puede escribir.</p></div>
+  <div><strong><code>InputDecoration</code></strong><p>Configura lo que vemos alrededor y dentro del campo.</p></div>
+  <div><strong><code>hintText</code></strong><p>Presenta una ayuda que desaparece al comenzar a escribir.</p></div>
+  <div><strong><code>OutlineInputBorder</code></strong><p>Dibuja un borde alrededor de la caja de texto.</p></div>
 </div>
-<h3>Explicación de las instrucciones nuevas</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Instrucción</th><th>Qué hace y por qué la necesitamos</th></tr></thead><tbody><tr><td><code>GlobalKey&lt;FormState&gt;</code></td><td>Da acceso al estado del formulario para invocar su validación. <code>&lt;FormState&gt;</code> indica el tipo de estado esperado.</td></tr><tr><td><code>TextEditingController()</code></td><td>Crea un objeto que controla el contenido de un campo de texto y permite leerlo con <code>controller.text</code>.</td></tr><tr><td><code>Form(key: formularioKey)</code></td><td>Agrupa las entradas y las conecta con la clave creada en el State.</td></tr><tr><td><code>TextFormField(controller: ...)</code></td><td>Muestra un campo que, a diferencia del TextField inicial, puede validar la entrada cuando pertenece a un Form.</td></tr><tr><td><code>validator: (valor) { ... }</code></td><td>Es una función que devuelve un String de error o <code>null</code> si el dato es válido.</td></tr><tr><td><code>valor == null</code></td><td>Comprueba si no hay un valor disponible. <code>==</code> compara; no debe confundirse con el signo <code>=</code> de asignación.</td></tr><tr><td><code>||</code></td><td>Significa «o» lógico: la condición completa es verdadera si una de las dos condiciones se cumple.</td></tr><tr><td><code>valor.trim().isEmpty</code></td><td>Quita espacios y comprueba si la cadena quedó vacía.</td></tr><tr><td><code>onPressed: () { ... }</code></td><td>Declara lo que sucederá al pulsar el botón.</td></tr><tr><td><code>currentState?.validate()</code></td><td>El operador <code>?.</code> evita llamar validate sobre un valor nulo. El resultado puede ser true, false o null.</td></tr><tr><td><code>!= true</code></td><td>Significa «distinto de verdadero». Permite detener el registro cuando el formulario no es válido o no tiene estado.</td></tr><tr><td><code>return;</code></td><td>Sale de la función onPressed sin agregar un vehículo.</td></tr><tr><td><code>vehiculos.add(...)</code></td><td>Introduce el nuevo String en la lista que ya usa el filtro.</td></tr><tr><td><code>controller.clear()</code></td><td>Limpia el TextFormField después de agregar el elemento.</td></tr><tr><td><code>ScaffoldMessenger.of(context)</code></td><td>Accede al sistema que permite mostrar mensajes temporales dentro de una pantalla Scaffold.</td></tr><tr><td><code>SnackBar(content: Text(...))</code></td><td>Muestra un aviso visual breve de que el vehículo fue agregado.</td></tr><tr><td><code>dispose()</code> y <code>super.dispose()</code></td><td>Liberan los recursos propios del controlador y completan el cierre del State.</td></tr></tbody></table></div>
-<h3>Qué ocurre al pulsar el botón: recorrido completo</h3>
-<div class="diagram" role="img" aria-label="Escribir nombre, validar, agregar a la lista, limpiar y mostrar confirmación"><div class="diagram-node">Escribir nombre</div><span>→</span><div class="diagram-node">Validar</div><span>→</span><div class="diagram-node accent">Agregar</div><span>→</span><div class="diagram-node">Limpiar campo</div><span>→</span><div class="diagram-node">Avisar</div></div>
-<p>Si la validación falla, la ejecución se detiene antes de agregar el vehículo. Si funciona, <code>setState</code> vuelve a calcular los resultados del buscador y la pantalla se actualiza. Este orden importa para evitar guardar nombres vacíos.</p>
-<h3>Casos de prueba que debe realizar cada estudiante</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Acción</th><th>Resultado esperado</th></tr></thead><tbody><tr><td>Pulsar Agregar sin escribir nada.</td><td>Aparece la validación «Escribe un nombre» y no se añade ningún registro.</td></tr><tr><td>Escribir solamente espacios.</td><td>No permite el registro gracias a <code>trim()</code>.</td></tr><tr><td>Escribir «Toyota Corolla» y pulsar Agregar.</td><td>Se añade a la lista, se borra el campo y se muestra el mensaje de confirmación.</td></tr><tr><td>Buscar «Toyota» después de agregarlo.</td><td>Se muestra Toyota Corolla.</td></tr><tr><td>Buscar «Renault» mientras se agrega «Toyota Corolla».</td><td>El nuevo modelo se guarda, pero puede no aparecer hasta borrar el filtro porque no coincide con «Renault».</td></tr><tr><td>Cerrar y volver a abrir la aplicación.</td><td>Los datos agregados en memoria se pierden; aún no usamos una base de datos ni almacenamiento persistente.</td></tr></tbody></table></div>
-<h3>Errores frecuentes en formularios</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Síntoma</th><th>Cómo investigarlo</th></tr></thead><tbody><tr><td><code>controller</code> no existe.</td><td>Revisa que la variable esté declarada dentro de _MainAppState antes de build.</td></tr><tr><td><code>setState() called after dispose()</code></td><td>Se intentó actualizar un State después de que dejó de estar montado. No lo hagas desde callbacks asíncronos sin comprobar la vida del widget.</td></tr><tr><td>El campo no se limpia.</td><td>Comprueba que <code>nuevoVehiculoController.clear()</code> se ejecute después de agregar el registro.</td></tr><tr><td>Se agregan registros vacíos.</td><td>Verifica que se invoque validate y que el validator rechace cadenas vacías o solo espacios.</td></tr><tr><td>El mismo nombre se puede repetir.</td><td>Esta versión no impide duplicados. Es un ejercicio posterior: comparar los nombres antes de agregarlos.</td></tr></tbody></table></div>
-<details class="deep-details final-code"><summary>Consultar el main.dart completo después de terminar la práctica 9</summary><div class="deep-details-body"><p>Primero construye cada modificación en tu copia <code>actividad2a-guia</code>. Utiliza este archivo para comparar la aplicación terminada; no hace falta copiarlo al principio.</p><p><a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">Abrir paso_09_formulario.dart ↗</a></p><div class="code-label">Archivo completo de referencia de la práctica 9</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+
+<h2>4. Paso 3 — Agregar un botón sin lógica todavía</h2>
+<p>Debajo del <code>TextField</code> coloca un <code>ElevatedButton</code>. Primero queremos ver el botón; no hay problema si al presionarlo <strong>todavía no sucede nada</strong>.</p>
+<div class="code-label">PASO 3 · botón visual</div><pre class="code-block"><code>const SizedBox(height: 12),
+ElevatedButton(
+  onPressed: () {},
+  child: const Text(&#39;Agregar vehículo&#39;),
+),</code></pre>
+<div class="line-notes numbered">
+  <div><strong><code>ElevatedButton</code></strong><p>Es un botón de Flutter.</p></div>
+  <div><strong><code>child: const Text(...)</code></strong><p>Es lo que el usuario leerá dentro del botón.</p></div>
+  <div><strong><code>onPressed: () {}</code></strong><p>Es la función que se ejecuta al pulsarlo. Las llaves están vacías porque todavía no programamos la acción.</p></div>
+</div>
+
+<h2>5. Paso 4 — Guardar lo que el usuario escribe</h2>
+<p>Ya tenemos los tres widgets. Ahora haremos un cambio pequeño: guardar el texto que escribimos en una variable, igual que cuando aprendimos <code>onChanged</code> con el buscador.</p>
+<p><strong>Primero:</strong> dentro de <code>_MainAppState</code>, junto a <code>String busqueda = '';</code>, agrega esta nueva variable:</p>
+<div class="code-label">PASO 4A · variable de la pantalla</div><pre class="code-block"><code>String nuevoVehiculo = &#39;&#39;;</code></pre>
+<p><strong>Después:</strong> vuelve al <code>TextField</code> nuevo y añádele <code>onChanged</code>:</p>
+<div class="code-label">PASO 4B · campo que recuerda el texto</div><pre class="code-block"><code>TextField(
+  onChanged: (valor) {
+    nuevoVehiculo = valor;
+  },
+  decoration: const InputDecoration(
+    hintText: &#39;Ej. Toyota Corolla&#39;,
+    border: OutlineInputBorder(),
+  ),
+),</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Parte</th><th>Explicación sencilla</th></tr></thead><tbody>
+<tr><td><code>String nuevoVehiculo = '';</code></td><td>Prepara una variable de texto, inicialmente vacía.</td></tr>
+<tr><td><code>onChanged</code></td><td>Se ejecuta cada vez que cambia lo escrito en el campo.</td></tr>
+<tr><td><code>(valor)</code></td><td>Es el nuevo contenido del campo que Flutter nos entrega.</td></tr>
+<tr><td><code>nuevoVehiculo = valor;</code></td><td>Guarda ese texto en la variable. No hace falta usar <code>setState</code> hasta que tengamos que actualizar la lista visible.</td></tr>
+</tbody></table></div>
+
+<h2>6. Paso 5 — Darle al botón una acción básica</h2>
+<p>Ahora cambiamos únicamente el <code>onPressed</code> del botón. Cuando el estudiante escriba un nombre y lo pulse, se agregará a <code>vehiculos</code> y Flutter volverá a mostrar la lista.</p>
+<div class="code-label">PASO 5 · sustituir el botón anterior</div><pre class="code-block"><code>ElevatedButton(
+  onPressed: () {
+    final nombre = nuevoVehiculo.trim();
+    if (nombre.isEmpty) return;
+    setState(() {
+      vehiculos.add(nombre);
+    });
+  },
+  child: const Text(&#39;Agregar vehículo&#39;),
+),</code></pre>
+<div class="line-notes numbered">
+  <div><strong><code>final nombre = nuevoVehiculo.trim();</code></strong><p>Guarda temporalmente lo escrito, quitando espacios al inicio y al final. <code>trim()</code> ya lo aprendimos al hacer el filtro.</p></div>
+  <div><strong><code>if (nombre.isEmpty) return;</code></strong><p>Si no hay ningún nombre, termina la acción del botón. Es una condición sencilla, no un sistema de formularios.</p></div>
+  <div><strong><code>setState(() { ... });</code></strong><p>Le avisa a Flutter que vamos a cambiar datos que aparecen en pantalla, como ya vimos con la búsqueda.</p></div>
+  <div><strong><code>vehiculos.add(nombre);</code></strong><p>Agrega el texto escrito a la lista existente; no creamos otra lista diferente.</p></div>
+</div>
+<div class="diagram" role="img" aria-label="Escribir el nuevo vehículo, pulsar el botón, agregarlo a la lista y actualizar la Tienda">
+  <div class="diagram-node">Escribir nombre</div><span>→</span><div class="diagram-node">Pulsar el botón</div><span>→</span><div class="diagram-node accent">vehiculos.add()</div><span>→</span><div class="diagram-node">Lista actualizada</div>
+</div>
+
+<h2>7. Paso 6 — Probarlo en la Tienda</h2>
+<p>Escribe <strong>Toyota Corolla</strong> y pulsa «Agregar vehículo». Si no tienes una búsqueda activa, debe aparecer en «Vehículos encontrados». Ahora busca «Toyota» y comprueba que está en la misma lista.</p>
+<div class="checklist" data-checklist="proyecto">
+  <label><input type="checkbox"> Veo el nuevo título «Agregar un vehículo» debajo de la lista.</label>
+  <label><input type="checkbox"> Puedo escribir «Toyota Corolla» en el segundo <code>TextField</code>.</label>
+  <label><input type="checkbox"> Veo el botón «Agregar vehículo» y responde al pulsarlo.</label>
+  <label><input type="checkbox"> Al pulsarlo con un nombre, aparece un vehículo adicional en la lista.</label>
+  <label><input type="checkbox"> Si escribo «Toyota» en el buscador, encuentro el modelo que agregué.</label>
+</div>
+<div class="notice notice-warning"><strong>Lo que todavía NO hacemos</strong><p>Esta primera versión <strong>no limpia el campo automáticamente</strong>, no impide nombres repetidos y no guarda los vehículos al cerrar la aplicación. Tampoco muestra validaciones elaboradas. Todo eso lo podemos aprender en prácticas posteriores, cuando dominemos Text, TextField, el botón y <code>setState</code>.</p></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Personaliza tu primer formulario</h3><p>Cambia el título por «Registrar nuevo modelo», escribe «Kia Picanto», pulsa el botón y verifica que aparezca en la lista. Explica con tus palabras qué hace <code>onChanged</code> y qué hace <code>onPressed</code>.</p><details><summary>Ver respuesta orientativa</summary><p><code>onChanged</code> guarda lo que escribimos. <code>onPressed</code> se ejecuta cuando pulsamos el botón y agrega el nombre a la lista mediante <code>setState</code>.</p></details></div>
+<div class="deep-dive">
+  <div class="deep-heading"><span>REPASO · PRÁCTICA 09</span><h2>Tres widgets y una acción: nada más por ahora</h2><p>Primero comprobamos que cada pieza se vea; luego conectamos lo que ya aprendimos en los módulos 07 y 08. No pegues el programa entero al comenzar la actividad.</p></div>
+  <h3>Si algo no funciona</h3>
+  <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Problema</th><th>Qué revisar</th></tr></thead><tbody>
+    <tr><td>No se muestra el Text o el botón.</td><td>Confirma que los widgets estén dentro del mismo <code>children: [ ... ]</code> y separados con comas.</td></tr>
+    <tr><td><code>Undefined name 'nuevoVehiculo'</code>.</td><td>Declara <code>String nuevoVehiculo = '';</code> dentro de <code>_MainAppState</code>, antes de <code>build</code>.</td></tr>
+    <tr><td>Pulso el botón y no ocurre nada.</td><td>Comprueba que sustituiste el <code>onPressed: () {}</code> vacío por el del paso 5.</td></tr>
+    <tr><td>Agrego un vehículo pero no se ve.</td><td>El filtro de búsqueda puede estar ocultándolo. Borra el texto del buscador principal y revisa de nuevo.</td></tr>
+    <tr><td>El texto sigue escrito tras agregarlo.</td><td>Es normal en esta versión. Aún no aprendimos a controlar ni limpiar el campo.</td></tr>
+    <tr><td>Vuelvo a abrir y ya no está.</td><td>La lista está guardada solo en memoria; todavía no utilizamos almacenamiento persistente.</td></tr>
+  </tbody></table></div>
+  <details class="deep-details final-code"><summary>Ver el main.dart completo solo después de terminar la práctica 9</summary>
+    <div class="deep-details-body">
+      <p>Este archivo es la <strong>misma Tienda del paso 08</strong> más nuestro pequeño formulario. Es una referencia para comparar tu trabajo, no para copiarlo antes de realizar los pasos.</p>
+      <p><a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">Abrir paso_09_formulario.dart ↗</a></p>
+      <div class="code-label">ARCHIVO COMPLETO · PRÁCTICA 09</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 
 void main() {
   runApp(const MainApp());
@@ -1305,22 +1354,14 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State&lt;MainApp&gt; {
-  String busqueda = '';
+  String busqueda = &#39;&#39;;
+  String nuevoVehiculo = &#39;&#39;;
   final List&lt;String&gt; vehiculos = [
-    'Renault 9',
-    'Renault 21',
-    'Mazda 3',
-    'Chevrolet Spark',
+    &#39;Renault 9&#39;,
+    &#39;Renault 21&#39;,
+    &#39;Mazda 3&#39;,
+    &#39;Chevrolet Spark&#39;,
   ];
-
-  final formularioKey = GlobalKey&lt;FormState&gt;();
-  final nuevoVehiculoController = TextEditingController();
-
-  @override
-  void dispose() {
-    nuevoVehiculoController.dispose();
-    super.dispose();
-  }
 
 
   @override
@@ -1333,14 +1374,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Tienda')),
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text(&#39;Hello dsfdsWorld&#39;),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
@@ -1350,7 +1391,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Ingenieria de Sistemas',
+                        &#39;Ingenieria de Sistemas&#39;,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -1365,61 +1406,43 @@ class _MainAppState extends State&lt;MainApp&gt; {
               });
             },
                   decoration: const InputDecoration(
-                    hintText: 'Buscar marca o modelo',
+                    hintText: &#39;Buscar marca o modelo&#39;,
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text('Estás buscando: $busqueda'),
+                Text(&#39;Estás buscando: $busqueda&#39;),
                 const SizedBox(height: 16),
-                const Text('Vehículos encontrados:'),
+                const Text(&#39;Vehículos encontrados:&#39;),
                 if (resultados.isEmpty)
-                  const Text('No se encontraron vehículos.'),
+                  const Text(&#39;No se encontraron vehículos.&#39;),
                 for (final vehiculo in resultados)
                   ListTile(
                     leading: const Icon(Icons.directions_car),
                     title: Text(vehiculo),
                   ),
                 const SizedBox(height: 20),
-                const Text('Agregar un vehículo'),
-                Form(
-                  key: formularioKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        controller: nuevoVehiculoController,
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre del vehículo',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (valor) {
-                          if (valor == null || valor.trim().isEmpty) {
-                            return 'Escribe un nombre';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formularioKey.currentState?.validate() != true) {
-                            return;
-                          }
-                          setState(() {
-                            vehiculos.add(nuevoVehiculoController.text.trim());
-                          });
-                          nuevoVehiculoController.clear();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Vehículo agregado'),
-                            ),
-                          );
-                        },
-                        child: const Text('Agregar vehículo'),
-                      ),
-                    ],
+                const Text(&#39;Agregar un vehículo&#39;),
+                const SizedBox(height: 10),
+                TextField(
+                  onChanged: (valor) {
+                    nuevoVehiculo = valor;
+                  },
+                  decoration: const InputDecoration(
+                    hintText: &#39;Ej. Toyota Corolla&#39;,
+                    border: OutlineInputBorder(),
                   ),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    final nombre = nuevoVehiculo.trim();
+                    if (nombre.isEmpty) return;
+                    setState(() {
+                      vehiculos.add(nombre);
+                    });
+                  },
+                  child: const Text(&#39;Agregar vehículo&#39;),
                 ),
               ],
             ),
@@ -1429,10 +1452,13 @@ class _MainAppState extends State&lt;MainApp&gt; {
     );
   }
 }
-</code></pre></div></details>
-</div><div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: Evolución con BLoC →</a></div></section>
+</code></pre>
+    </div>
+  </details>
+</div>
+<div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: Conocer BLoC (más adelante) →</a></div>
+</section>
 
-        
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="bloc-title">Organizar la Tienda con el patrón BLoC</h1><p>Solo después de que funcionen la búsqueda y el formulario, podremos separar la lógica de los widgets de la misma aplicación.</p></div>
