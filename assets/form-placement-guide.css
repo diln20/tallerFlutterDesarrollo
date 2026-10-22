@@ -1,0 +1,162 @@
+
+/* Ubicacion exacta de cada instruccion dentro de lib/main.dart. */
+#proyecto .fg-location-panel,
+#pv-proyecto .fg-location-panel{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  background:var(--surface-soft);
+  margin:17px 0 22px;
+  min-width:0;
+  overflow:hidden
+}
+#proyecto .fg-location-head,
+#pv-proyecto .fg-location-head{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  margin-bottom:12px
+}
+#proyecto .fg-path,
+#pv-proyecto .fg-path{
+  color:var(--heading);background:var(--surface);border:1px solid var(--border);
+  padding:5px 9px;border-radius:7px;font-size:11px;font-weight:800;
+  font-family:ui-monospace,Consolas,monospace
+}
+#proyecto .fg-operation,
+#pv-proyecto .fg-operation{
+  font-size:10px;font-weight:850;letter-spacing:.05em;padding:5px 9px;
+  background:#deedfb;color:#224d82;border-radius:8px
+}
+#proyecto .fg-line-range,
+#pv-proyecto .fg-line-range{
+  font-size:10.5px;color:var(--text-soft);font-weight:700;margin-left:auto
+}
+#proyecto .fg-location-panel h3,
+#pv-proyecto .fg-location-panel h3{
+  color:var(--heading);font-size:15px;line-height:1.4;margin:5px 0 13px
+}
+#proyecto .fg-locate-details,
+#pv-proyecto .fg-locate-details{
+  border-left:3px solid #4e7bac;padding:4px 0 4px 13px;margin-bottom:15px
+}
+#proyecto .fg-locate-details p,
+#pv-proyecto .fg-locate-details p{
+  margin:3px 0 10px;line-height:1.7;color:var(--text-soft);font-size:11.5px
+}
+#proyecto .fg-locate-details p:last-child,
+#pv-proyecto .fg-locate-details p:last-child{margin-bottom:0}
+#proyecto .fg-locate-details strong,
+#pv-proyecto .fg-locate-details strong{color:var(--heading)}
+#proyecto .fg-source-caption,
+#pv-proyecto .fg-source-caption{
+  padding:11px 12px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:6px;border-radius:11px 11px 0 0;
+  background:#213954;color:#f0f7ff;
+  font-size:11px;line-height:1.6
+}
+#proyecto .fg-source-caption strong,
+#pv-proyecto .fg-source-caption strong{color:#eaf3ff;font-size:11px}
+#proyecto .fg-source-caption span,
+#pv-proyecto .fg-source-caption span{color:#bad6ee;font-size:10px}
+#proyecto .fg-source-window,
+#pv-proyecto .fg-source-window,
+#proyecto .fg-full-window,
+#pv-proyecto .fg-full-window{
+  background:#101c31;border:1px solid #324b6c;color:#dbeafd;
+  overflow-x:auto;overflow-y:auto;scrollbar-width:thin;
+  max-width:100%;border-radius:0 0 11px 11px;padding:8px 0 10px
+}
+#proyecto .fg-source-window,
+#pv-proyecto .fg-source-window{max-height:270px}
+#proyecto .fg-full-window,
+#pv-proyecto .fg-full-window{
+  border-radius:10px;max-height:480px;margin-top:10px
+}
+#proyecto .fg-source-line,
+#pv-proyecto .fg-source-line{
+  display:flex;align-items:stretch;
+  min-height:21px;line-height:21px;
+  font-size:11px;font-family:"Cascadia Code",Consolas,ui-monospace,monospace;
+  width:max-content;min-width:100%;
+  white-space:pre;
+}
+#proyecto .fg-source-line code,
+#pv-proyecto .fg-source-line code{
+  color:#dcecff;background:none;border:0;
+  padding:0 14px 0 10px;border-radius:0;
+  font-size:11px;font-family:inherit;font-weight:500;
+  overflow-wrap:normal;white-space:pre;
+  display:block
+}
+#proyecto .fg-line-num,
+#pv-proyecto .fg-line-num{
+  position:sticky;left:0;flex:0 0 43px;
+  text-align:right;padding-right:10px;
+  font-variant-numeric:tabular-nums;font-size:10px;
+  background:#192940;color:#8baaca;
+  border-right:1px solid #31445f;user-select:none
+}
+#proyecto .fg-highlight,
+#pv-proyecto .fg-highlight{
+  background:#204e5a!important;
+  box-shadow:inset 3px 0 0 #66ddc1
+}
+#proyecto .fg-highlight code,
+#pv-proyecto .fg-highlight code{color:#f1fff9;font-weight:750}
+#proyecto .fg-highlight .fg-line-num,
+#pv-proyecto .fg-highlight .fg-line-num{background:#22505a;color:#dbfff1}
+#proyecto .fg-location-tip,
+#pv-proyecto .fg-location-tip{
+  margin:11px 0 14px;color:var(--text-soft);font-size:11px;line-height:1.7
+}
+#proyecto .fg-location-footer,
+#pv-proyecto .fg-location-footer{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:11px
+}
+#proyecto .fg-expand,
+#pv-proyecto .fg-expand{min-width:min(100%,290px);max-width:100%;flex:1}
+#proyecto .fg-expand summary,
+#pv-proyecto .fg-expand summary{
+  cursor:pointer;color:var(--heading);font-size:11px;font-weight:800;
+  border:1px solid var(--border);border-radius:9px;
+  background:var(--surface);padding:9px 11px
+}
+#proyecto .fg-expand>p,
+#pv-proyecto .fg-expand>p{
+  font-size:11px;line-height:1.7;margin:10px 0;color:var(--text-soft)
+}
+#proyecto .fg-github-link,
+#pv-proyecto .fg-github-link{
+  padding:9px 2px;color:var(--blue);font-size:11px;
+  text-decoration:none;font-weight:850;line-height:1.5
+}
+#proyecto .fg-github-link:hover,
+#pv-proyecto .fg-github-link:hover{text-decoration:underline}
+#proyecto .fg-old-lesson-note{
+  border-radius:12px;border:1px solid var(--border);
+  background:var(--surface-soft);padding:12px 15px;
+  margin:13px 0 19px
+}
+#proyecto .fg-old-lesson-note summary{
+  cursor:pointer;font-size:12px;color:var(--heading);font-weight:800
+}
+#proyecto .fg-old-lesson-note p{
+  margin:10px 0;color:var(--text-soft);font-size:11.5px;line-height:1.8
+}
+#proyecto .fg-old-places{padding-left:13px;border-left:2px solid var(--blue)}
+#pv-proyecto .fg-location-panel{padding:14px;margin-top:18px}
+#pv-proyecto .fg-context-preview .fg-source-window{max-height:240px}
+body[data-theme=dark] #proyecto .fg-operation,
+body[data-theme=dark] #pv-proyecto .fg-operation{color:#c4e7ff;background:#294565}
+@media(max-width:610px){
+ #proyecto .fg-location-panel,#pv-proyecto .fg-location-panel{padding:11px;margin:13px 0}
+ #proyecto .fg-location-head,#pv-proyecto .fg-location-head{gap:6px}
+ #proyecto .fg-line-range,#pv-proyecto .fg-line-range{margin-left:0;width:100%}
+ #proyecto .fg-source-caption,#pv-proyecto .fg-source-caption{padding:9px}
+ #proyecto .fg-source-line code,#pv-proyecto .fg-source-line code{font-size:10px}
+ #proyecto .fg-location-footer,#pv-proyecto .fg-location-footer{flex-direction:column;align-items:stretch}
+ #proyecto .fg-expand,#pv-proyecto .fg-expand{min-width:0}
+}
+@media print{
+ #proyecto .fg-location-panel{break-inside:avoid}
+ #proyecto .fg-location-footer{display:none}
+}
