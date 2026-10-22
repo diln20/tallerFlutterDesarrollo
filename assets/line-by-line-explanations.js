@@ -79,6 +79,7 @@
     if(/^import\s+/.test(q))return 'Importa una biblioteca. material.dart contiene MaterialApp, Text, Scaffold y los demás widgets Material que utilizamos.';
     if(/^void\s+main\s*\(/.test(q))return 'Declara la función inicial del programa. void indica que no devuelve un valor; la llave abre sus instrucciones.';
     if(/\brunApp\s*\(/.test(q))return 'Entrega a Flutter el widget raíz MainApp para comenzar a construir la interfaz. const es válido si el constructor y sus argumentos son constantes.';
+    if(/^class\s+[A-Za-z_]\w*\s+extends\s+\w+/.test(q))return 'Declara una nueva clase Dart que hereda del tipo indicado con extends. Es un ejemplo de cómo definir un widget o componente propio.';
     if(/^class\s+MainApp\s+extends\s+StatelessWidget/.test(q))return 'Declara nuestro widget MainApp y hereda de StatelessWidget. Esta versión no tiene un objeto State mutable propio.';
     if(/^class\s+MainApp\s+extends\s+StatefulWidget/.test(q))return 'Declara MainApp como StatefulWidget: un widget que tendrá un objeto State asociado para administrar datos o recursos.';
     if(/^class\s+_MainAppState/.test(q))return 'Declara la clase State que pertenece a MainApp. El guion bajo hace privado este nombre dentro de su biblioteca Dart.';
@@ -157,6 +158,9 @@
     if(/^((\w+):\s*)?Icon\(/.test(q))return 'Crea o asigna un icono como parte de la interfaz.';
     if(/^(\w+)\s*:/.test(q))return 'Asigna un argumento llamado '+q.split(':')[0]+' en el constructor. Los dos puntos separan el nombre de su valor.';
     if(/^(\w+)\s*=/.test(q))return 'Asigna un valor a la variable '+q.split('=')[0].trim()+'. El punto y coma termina la instrucción.';
+    if(/^[A-Z][\w]*<[^>]+>\s*\(/.test(q))return 'Construye un widget parametrizado por un tipo genérico indicado entre < > (por ejemplo String o int). Sus argumentos configuran su contenido o sus eventos.';
+    if(/^[A-Z][\w]*(?:\.\w+)?\s*\(/.test(q))return 'Construye el widget o llama a un constructor con nombre (por ejemplo .count o .asset). Los argumentos dentro de los paréntesis configuran su comportamiento.';
+    if(/^Image\.asset\s*\(/.test(q))return 'Carga una imagen que forma parte de los recursos del proyecto; necesita declararse como asset en pubspec.yaml. width y fit ajustan su presentación.';
     if(/^\w+\s*\(/.test(q))return 'Llama al constructor o método indicado. Los paréntesis contienen sus argumentos.';
     if(/^['"]/.test(q))return 'Es un elemento de texto dentro de una lista; las comillas delimitan una cadena String y la coma separa elementos.';
     return 'Forma parte de la expresión o estructura de este ejemplo. Léela junto con las líneas anteriores y posteriores y revisa dónde se inserta el fragmento.';
@@ -183,6 +187,20 @@
     const content=code.textContent;
     const rows=buildRows(content);
     if(!rows.length)return;
+    const dialog=pre.closest('#widget-detail');
+    const widgetName=dialog?.querySelector('#wc-detail-title')?.textContent?.trim();
+    const widget=widgetName?(window.FlutterLabWidgetData||[]).find(w=>w.name===widgetName):null;
+    if(widget){
+      for(const row of rows){
+        if(row.explanation.startsWith('Forma parte de la expresión')){
+          const used=widget.properties.filter(p=>new RegExp('\\b'+p[0]+'\\s*:').test(row.code));
+          const summary=used.slice(0,4).map(p=>p[0]+': '+p[2]).join('; ');
+          row.explanation=widget.name+': '+widget.description+
+            (summary?' En este ejemplo, las propiedades principales son '+summary+'.':' Consulta las propiedades del widget en la tabla de esta ficha.')+
+            ' El ejemplo puede necesitar un contexto, clases o datos que se enseñarán en prácticas posteriores.';
+        }
+      }
+    }
     pre.dataset.lineGuide='yes';
     const isShell=pre.dataset.codeMode==='terminal'||/^\s*(flutter\s|cd\s|Get-Location|Get-ChildItem|Test-Path)/m.test(content);
     const diagram=pre.dataset.codeMode==='esquema';
