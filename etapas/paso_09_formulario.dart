@@ -12,103 +12,61 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  String busqueda = '';
-  final TextEditingController nuevoVehiculoController = TextEditingController();
-  final List<String> vehiculos = [
-    'Renault 9',
-    'Renault 21',
-    'Mazda 3',
-    'Chevrolet Spark',
-  ];
+  final TextEditingController vehiculoController = TextEditingController();
 
   @override
   void dispose() {
-    nuevoVehiculoController.dispose();
+    vehiculoController.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final resultados = vehiculos.where((vehiculo) {
-      return vehiculo.toLowerCase().contains(
-        busqueda.trim().toLowerCase(),
-      );
-    }).toList();
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Tienda')),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text('Hello dsfdsWorld'),
-                const SizedBox(height: 20),
-                const Icon(Icons.directions_car),
-                const SizedBox(height: 8),
-                const Row(
-                  children: [
-                    Icon(Icons.directions_car),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Ingenieria de Sistemas',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+        body: Center(
+          child: Column(
+            children: [
+              Text('Hello dsfdsWorld'),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text('Ingenieria de Sistemas'),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Buscar marca o modelo',
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  onChanged: (valor) {
-                    setState(() {
-                      busqueda = valor;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Buscar marca o modelo',
-                    border: OutlineInputBorder(),
                   ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text('Agregar un vehículo'),
+              const SizedBox(height: 10),
+              TextField(
+                controller: vehiculoController,
+                decoration: const InputDecoration(
+                  hintText: 'Nombre del vehículo',
+                  border: OutlineInputBorder(),
                 ),
-                const SizedBox(height: 12),
-                Text('Estás buscando: $busqueda'),
-                const SizedBox(height: 16),
-                const Text('Vehículos encontrados:'),
-                if (resultados.isEmpty)
-                  const Text('No se encontraron vehículos.'),
-                for (final vehiculo in resultados)
-                  ListTile(
-                    leading: const Icon(Icons.directions_car),
-                    title: Text(vehiculo),
-                  ),
-                const SizedBox(height: 20),
-                const Text('Agregar un vehículo'),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: nuevoVehiculoController,
-                  decoration: const InputDecoration(
-                    hintText: 'Ej. Toyota Corolla',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () {
-                    final nombre = nuevoVehiculoController.text.trim();
-                    if (nombre.isEmpty) return;
-                    setState(() {
-                      vehiculos.add(nombre);
-                    });
-                    nuevoVehiculoController.clear();
-                  },
-                  child: const Text('Agregar vehículo'),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final nombre = vehiculoController.text.trim();
+                  if (nombre.isEmpty) return;
+                  debugPrint('Vehículo escrito: $nombre');
+                  vehiculoController.clear();
+                },
+                child: const Text('Agregar vehículo'),
+              ),
+            ],
           ),
         ),
       ),
