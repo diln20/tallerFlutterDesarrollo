@@ -84,7 +84,7 @@
     ],
     'punto-entrada':[
       ["import 'package", 'void main()', 'runApp(', 'class MainApp', 'Widget build'],
-      null,
+      ["import 'package","void main()", "runApp(", "class MainApp", "Widget build(", "return const MaterialApp(", "body: Center(", "child: Text("],
       ["const Text('Tienda')","const SizedBox(height: 20)"]
     ],
     estructura:[
@@ -103,7 +103,7 @@
     'campo-texto':[
       ['Expanded(', 'child: TextField(', 'hintText:'],
       ['hintText:'],
-      null,
+      ["Row(", "Expanded(", "TextField(", "hintText:"],
       ['Row(', 'Expanded(', 'child: TextField('],
       ['31 →','36 →','42 →']
     ],
