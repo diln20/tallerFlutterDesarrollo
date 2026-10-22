@@ -7,14 +7,14 @@
 
 ## Vistas progresivas de la aplicación «Tienda»
 
-Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiando tu aplicación»**, con **49 pasos** en total:
+Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiando tu aplicación»**, con **51 pasos** en total:
 
 - Pantallas **Antes / Después** para comparar los efectos de un cambio.
 - Contorno amarillo alrededor del widget que aparece o cuya presentación se modifica.
 - El fragmento Dart responsable y una explicación del efecto.
 - Navegación por pasos, con botones «Anterior», «Siguiente» y acceso directo desde los bloques de código a su cambio correspondiente.
 - Campo de búsqueda simulado que permite escribir y visualizar el estado, las coincidencias o el mensaje sin resultados.
-- Primer formulario simulado: aparece progresivamente un `Text`, un `TextField` y un `ElevatedButton`. Se puede probar la incorporación a la lista, sin adelantar validaciones ni controladores.
+- Primer formulario simulado en **9 pasos**: aparecen `Text`, `TextField` y `ElevatedButton`, y después se introduce `TextEditingController`, su vínculo al campo, `controller.text`, `clear()` y `dispose()` sin usar todavía `Form` ni validadores.
 - En teléfonos pequeños, selector entre Antes y Después en lugar de comprimir ambas pantallas.
 
 **Exactitud pedagógica:** la vista es una simulación visual HTML y está identificada como tal. No representa una captura ni una ejecución real de Flutter. Los primeros módulos muestran la construcción del código de clase y los pasos 06–10 describen mejoras propuestas; algunos cambios de Dart (como declarar `StatefulWidget` o una variable) **no generan ningún cambio visual inmediato**, y así se señala explícitamente.
@@ -52,8 +52,10 @@ La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp
 | 06 | Mejorar la misma Tienda con `Padding`, `SingleChildScrollView` y distribución adaptable. | Propuesta para la copia |
 | 07 | Hacer que el buscador reaccione con `StatefulWidget`, `createState`, `setState` y `onChanged`. | Propuesta para la copia |
 | 08 | Lista de vehículos de prueba y filtro con `where`, `trim`, `toLowerCase`, `contains` y `toList`. | Propuesta para la copia |
-| 09 | Primer formulario básico con `Text`, `TextField`, `ElevatedButton`, `onChanged`, `onPressed` y `setState`; sin `Form` ni validadores. | Propuesta para la copia |
+| 09 | Primer formulario explicado línea a línea con `Text`, `TextField`, `ElevatedButton`, `TextEditingController`, `onPressed`, `setState`, `clear()` y `dispose()`; sin `Form` ni validadores. | Propuesta para la copia |
 | 10 | Comprender eventos, estados y responsabilidad de cada parte de la Tienda con BLoC (sin adelantar código). | Propuesta conceptual |
+
+**En particular, el módulo 09** incluye los fragmentos completos, botones «Copiar código», explicación de parámetros y signos de Dart, instrucciones de reemplazo (para no duplicar widgets), simulaciones antes/después y un `main.dart` final de comparación. También aclara que `...` en explicaciones puede representar contenido omitido y **no debe pegarse como un marcador de código**; los ejemplos para copiar no contienen código sustituido por puntos suspensivos.
 
 ## Archivos completos para verificar el avance
 
@@ -68,7 +70,7 @@ Los ejemplos son **versiones acumulativas de la misma Tienda**, y sirven para co
 | 06 | [`paso_06_responsive.dart`](etapas/paso_06_responsive.dart) | Reorganización de la misma Tienda |
 | 07 | [`paso_07_estado.dart`](etapas/paso_07_estado.dart) | Captura del texto de búsqueda |
 | 08 | [`paso_08_filtro.dart`](etapas/paso_08_filtro.dart) | Filtrar nombres de vehículos de prueba |
-| 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | Crear un campo sencillo y un botón para añadir vehículos a la lista en memoria |
+| 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | Text, TextField y botón: enlazar controlador, añadir vehículos, limpiar campo y liberar recursos |
 
 Los archivos de las etapas 06 a 09 describen **posibles prácticas siguientes**, no avances que el docente ya haya realizado con sus estudiantes.
 
