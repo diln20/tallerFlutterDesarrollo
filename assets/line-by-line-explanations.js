@@ -79,10 +79,10 @@
     if(/^import\s+/.test(q))return 'Importa una biblioteca. material.dart contiene MaterialApp, Text, Scaffold y los demás widgets Material que utilizamos.';
     if(/^void\s+main\s*\(/.test(q))return 'Declara la función inicial del programa. void indica que no devuelve un valor; la llave abre sus instrucciones.';
     if(/\brunApp\s*\(/.test(q))return 'Entrega a Flutter el widget raíz MainApp para comenzar a construir la interfaz. const es válido si el constructor y sus argumentos son constantes.';
-    if(/^class\s+[A-Za-z_]\w*\s+extends\s+\w+/.test(q))return 'Declara una nueva clase Dart que hereda del tipo indicado con extends. Es un ejemplo de cómo definir un widget o componente propio.';
     if(/^class\s+MainApp\s+extends\s+StatelessWidget/.test(q))return 'Declara nuestro widget MainApp y hereda de StatelessWidget. Esta versión no tiene un objeto State mutable propio.';
     if(/^class\s+MainApp\s+extends\s+StatefulWidget/.test(q))return 'Declara MainApp como StatefulWidget: un widget que tendrá un objeto State asociado para administrar datos o recursos.';
     if(/^class\s+_MainAppState/.test(q))return 'Declara la clase State que pertenece a MainApp. El guion bajo hace privado este nombre dentro de su biblioteca Dart.';
+    if(/^class\s+[A-Za-z_]\w*\s+extends\s+\w+/.test(q))return 'Declara una nueva clase Dart que hereda del tipo indicado con extends. Es un ejemplo de cómo definir un widget o componente propio.';
     if(/^const\s+MainApp\s*\(/.test(q))return 'Constructor de MainApp. const permite instancias constantes y super.key reenvía al padre una clave opcional de identidad.';
     if(/^@override/.test(q))return 'Anotación que indica que vamos a implementar o sobrescribir un método definido por el tipo padre.';
     if(/\bState<MainApp>\s+createState\s*\(/.test(q))return 'Crea y devuelve _MainAppState. Los signos < > indican el tipo de widget asociado al State; => es una forma corta de return.';
@@ -159,8 +159,8 @@
     if(/^(\w+)\s*:/.test(q))return 'Asigna un argumento llamado '+q.split(':')[0]+' en el constructor. Los dos puntos separan el nombre de su valor.';
     if(/^(\w+)\s*=/.test(q))return 'Asigna un valor a la variable '+q.split('=')[0].trim()+'. El punto y coma termina la instrucción.';
     if(/^[A-Z][\w]*<[^>]+>\s*\(/.test(q))return 'Construye un widget parametrizado por un tipo genérico indicado entre < > (por ejemplo String o int). Sus argumentos configuran su contenido o sus eventos.';
-    if(/^[A-Z][\w]*(?:\.\w+)?\s*\(/.test(q))return 'Construye el widget o llama a un constructor con nombre (por ejemplo .count o .asset). Los argumentos dentro de los paréntesis configuran su comportamiento.';
     if(/^Image\.asset\s*\(/.test(q))return 'Carga una imagen que forma parte de los recursos del proyecto; necesita declararse como asset en pubspec.yaml. width y fit ajustan su presentación.';
+    if(/^[A-Z][\w]*(?:\.\w+)?\s*\(/.test(q))return 'Construye el widget o llama a un constructor con nombre (por ejemplo .count o .asset). Los argumentos dentro de los paréntesis configuran su comportamiento.';
     if(/^\w+\s*\(/.test(q))return 'Llama al constructor o método indicado. Los paréntesis contienen sus argumentos.';
     if(/^['"]/.test(q))return 'Es un elemento de texto dentro de una lista; las comillas delimitan una cadena String y la coma separa elementos.';
     return 'Forma parte de la expresión o estructura de este ejemplo. Léela junto con las líneas anteriores y posteriores y revisa dónde se inserta el fragmento.';
