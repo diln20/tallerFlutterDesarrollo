@@ -13,21 +13,13 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String busqueda = '';
+  String nuevoVehiculo = '';
   final List<String> vehiculos = [
     'Renault 9',
     'Renault 21',
     'Mazda 3',
     'Chevrolet Spark',
   ];
-
-  final formularioKey = GlobalKey<FormState>();
-  final nuevoVehiculoController = TextEditingController();
-
-  @override
-  void dispose() {
-    nuevoVehiculoController.dispose();
-    super.dispose();
-  }
 
 
   @override
@@ -89,44 +81,26 @@ class _MainAppState extends State<MainApp> {
                   ),
                 const SizedBox(height: 20),
                 const Text('Agregar un vehículo'),
-                Form(
-                  key: formularioKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        controller: nuevoVehiculoController,
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre del vehículo',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (valor) {
-                          if (valor == null || valor.trim().isEmpty) {
-                            return 'Escribe un nombre';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formularioKey.currentState?.validate() != true) {
-                            return;
-                          }
-                          setState(() {
-                            vehiculos.add(nuevoVehiculoController.text.trim());
-                          });
-                          nuevoVehiculoController.clear();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Vehículo agregado'),
-                            ),
-                          );
-                        },
-                        child: const Text('Agregar vehículo'),
-                      ),
-                    ],
+                const SizedBox(height: 10),
+                TextField(
+                  onChanged: (valor) {
+                    nuevoVehiculo = valor;
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Ej. Toyota Corolla',
+                    border: OutlineInputBorder(),
                   ),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    final nombre = nuevoVehiculo.trim();
+                    if (nombre.isEmpty) return;
+                    setState(() {
+                      vehiculos.add(nombre);
+                    });
+                  },
+                  child: const Text('Agregar vehículo'),
                 ),
               ],
             ),
