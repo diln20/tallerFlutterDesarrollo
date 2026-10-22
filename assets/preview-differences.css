@@ -1,0 +1,99 @@
+/* Comparaciones de aprendizaje: editor y codigo realmente distintos en Antes / Despues. */
+.pv-editor{
+  display:flex;flex-direction:column;box-sizing:border-box;
+  height:300px;min-height:300px;min-width:0;
+}
+.pv-editor-title{flex:0 0 auto;padding:8px 12px}
+.pv-editor-tab{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:7px;flex:0 0 auto;padding:9px 10px;font-size:9px;
+}
+.pv-editor-tab span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-editor-tab span:first-child{font-weight:800;color:#d1e5ff}
+.pv-ide-viewport{flex:1;min-height:0;overflow:hidden;background:#101d31}
+.pv-editor-status{flex:0 0 auto;padding:8px 10px;font-size:8.5px;line-height:1.3;white-space:normal}
+.pv-ide-welcome{height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:15px 18px;gap:8px}
+.pv-ide-welcome-icon{width:30px;height:30px;display:grid;place-items:center;border:1px dashed #5b7596;border-radius:9px;font-size:20px;color:#9ab8e1}
+.pv-ide-welcome strong{color:#e5eefb;font-size:11px;line-height:1.4}
+.pv-ide-welcome p{margin:0;font-size:9px;line-height:1.65;color:#abbfd7;max-width:270px}
+.pv-ide-welcome b{color:#eff6ff}
+.pv-ide-welcome-hint{background:#223c60;border:1px solid #44658b;border-radius:6px;color:#bedafa;padding:7px 9px;font-size:9px;font-weight:800}
+.pv-ide-grid{display:grid;grid-template-columns:110px minmax(0,1fr);height:100%;min-height:0}
+.pv-ide-explorer{
+  background:#192a43;border-right:1px solid #355174;min-width:0;
+  padding:10px 0;overflow:hidden;
+}
+.pv-ide-explorer-title{font-size:8.5px;letter-spacing:.07em;font-weight:900;color:#bad0ed;padding:0 7px 8px}
+.pv-tree-root{font-size:9px;font-weight:800;color:#e3f0ff;padding:5px 7px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.pv-tree-item{font-size:8.5px;color:#acc2dc;padding:5px 6px 5px 14px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.pv-tree-item.pv-ide-selected{
+  background:#2c5991;border-left:3px solid #95ceff;
+  color:#fff;font-weight:900;padding-left:11px
+}
+.pv-tree-item.pv-ide-selected span{
+  color:#e7f6ff;font-size:7px;display:block;font-weight:800;letter-spacing:.025em
+}
+.pv-ide-code-pane{min-width:0;min-height:0;overflow:hidden;background:#0f1d32}
+.pv-ide-code-caption{
+  padding:7px 9px;font-size:8px;letter-spacing:.01em;
+  color:#a4bddc;background:#15263d;border-bottom:1px solid #263f60;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.pv-ide-code-scroll{max-height:170px;overflow:auto}
+.pv-ide-code-row{
+  display:flex;align-items:stretch;gap:8px;line-height:19px;
+  font-size:8px;white-space:pre;min-width:100%;width:max-content;
+  padding-right:5px
+}
+.pv-ide-code-row em{font-size:8px;font-style:normal;color:#7d9abf;flex:0 0 21px;text-align:right;padding:0 3px 0 0;background:#15263c;border-right:1px solid #2d4160}
+.pv-ide-code-row code{
+  white-space:pre!important;overflow-wrap:normal!important;
+  color:#e4efff!important;background:transparent!important;
+  border:0!important;padding:0!important;margin:0!important;
+  font-family:inherit!important;font-size:8px!important;line-height:19px!important
+}
+.pv-ide-code-row.pv-ide-new{background:#1c4a49;box-shadow:inset 3px 0 0 #77e5bf}
+.pv-ide-code-row.pv-ide-new em{background:#215057;color:#d7fff1}
+.pv-ide-file-found{margin:10px 7px 6px;padding:7px;border:1px solid #417c75;border-radius:6px;background:#214e44;color:#d2ffe6;font-size:8px;line-height:1.45;font-weight:850}
+.pv-ide-file-empty{padding:20px 10px;color:#d6e5f7;font-size:10px;line-height:1.8}
+.pv-ide-file-empty code{font-size:10px;color:#b6d8ff;background:none;border:0}
+.pv-ide-term{padding:12px 13px;height:100%;box-sizing:border-box;overflow:auto;color:#d6e6f9}
+.pv-ide-term-title{display:block;font-size:9px;font-weight:900;color:#bcd4f2;border-bottom:1px solid #334962;padding-bottom:9px;margin-bottom:12px}
+.pv-ide-term-line{font-size:9px;line-height:1.95;white-space:normal;color:#c7d7e7;overflow-wrap:anywhere}
+.pv-ide-term-line strong{color:#fafcff}
+.pv-ide-term-line.pv-ide-success{color:#a9eacc;font-weight:850;background:#1d453c;padding:1px 7px;border-left:3px solid #77dbac}
+.pv-ide-muted{color:#98adc9}
+.pv-ide-term-suggest{margin-top:12px;padding:9px 10px;background:#27466a;border-left:3px solid #8fb9e8;border-radius:5px;font-size:9px;font-weight:700;color:#e4f3ff}
+.pv-ide-term-suggest strong{color:#fff}
+.pv-ide-term-tip{font-size:8.5px;line-height:1.55;margin:10px 0 0;color:#b4c9e4}
+.pv-ide-demo-note{font-size:8px;color:#acc1dd;margin-top:10px;line-height:1.45}
+.pv-code-difference{
+  margin:15px 0 18px;padding:14px;
+  border:1px solid var(--border);border-radius:12px;background:var(--surface);
+  max-width:100%;min-width:0
+}
+.pv-code-difference header{display:flex;align-items:center;gap:9px;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.pv-code-difference header span{font-size:9px;letter-spacing:.065em;color:var(--text-soft);font-weight:900}
+.pv-code-difference header strong{font-size:12px;color:var(--heading);line-height:1.5}
+.pv-diff-row{display:grid;grid-template-columns:minmax(0,1fr) 25px minmax(0,1fr);gap:9px;align-items:stretch}
+.pv-diff-row>div{padding:12px;border:1px solid var(--border);background:var(--surface-soft);border-radius:9px;min-width:0}
+.pv-diff-row .pv-diff-new{border-left:3px solid #4da58f}
+.pv-diff-row small{font-size:9px;color:var(--text-soft);font-weight:900;letter-spacing:.03em}
+.pv-diff-row p{font-size:11px;line-height:1.65;color:var(--heading);margin:6px 0 0;font-weight:700;overflow-wrap:anywhere}
+.pv-diff-arrow{display:grid;place-items:center;color:var(--blue);font-size:19px;font-weight:900}
+.pv-diff-detail{font-size:11px;line-height:1.75;color:var(--text-soft);margin:12px 0 5px}
+.pv-diff-detail strong{color:var(--heading)}
+.pv-diff-warning{font-size:9px;line-height:1.65;color:var(--text-soft)}
+@media(max-width:760px){
+ .pv-ide-grid{grid-template-columns:96px minmax(0,1fr)}
+ .pv-tree-item{font-size:8px}
+}
+@media(max-width:480px){
+ .pv-diff-row{grid-template-columns:1fr}
+ .pv-diff-arrow{transform:rotate(90deg);height:20px}
+ .pv-code-difference{padding:12px}
+ .pv-editor-tab{gap:4px}
+ .pv-ide-grid{grid-template-columns:89px minmax(0,1fr)}
+ .pv-ide-code-row,.pv-ide-code-row code{font-size:7.5px!important}
+}
+@media(prefers-reduced-motion:reduce){.pv-ide-grid *, .pv-code-difference *{transition:none!important}}
