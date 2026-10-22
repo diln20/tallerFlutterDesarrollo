@@ -1139,3 +1139,10 @@ body[data-theme=dark] #proyecto .form-step-number{background:#3a69aa}
   #proyecto .form-stage{break-inside:avoid;box-shadow:none}
   #proyecto .form-outcome-grid{grid-template-columns:repeat(3,1fr)}
 }
+
+/* Consola de depuración ilustrativa: el mensaje sale fuera de la pantalla del móvil. */
+.pv-debug-console{margin:14px 0 9px;border:1px solid #365d82;border-radius:12px;background:#132337;color:#d4eeff;padding:14px 17px}
+.pv-debug-console strong{display:block;font-size:11px;color:#98c8ea;font-weight:850;margin-bottom:7px}
+.pv-debug-console code{display:block;font-size:12px;line-height:1.8;overflow-wrap:anywhere;color:#aff5cf;background:transparent;padding:0}
+.pv-debug-console p{font-size:10px;color:#bfd0e7;line-height:1.6;margin:8px 0 0}
+@media(max-width:600px){.pv-debug-console{padding:12px}}
