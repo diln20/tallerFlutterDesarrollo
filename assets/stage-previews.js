@@ -186,7 +186,7 @@
     responsive:[0,0,4,5],
     estado:[0,2,3,4],
     formularios:[0,1,2,3],
-    proyecto:[0,1,2,3,4,5,6,7,8,8],
+    proyecto:[0,1,2,3,4,5,6,7,8,0,8],
     bloc:[]
   };
   function linkCodeBlocks(){
