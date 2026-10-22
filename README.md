@@ -38,6 +38,19 @@ Las referencias de línea pueden variar según los cambios particulares que haga
 
 > **Capturas antiguas:** si un navegador muestra los pasos «Preparar FormState y controller», «Dibujar TextFormField» o «Validar un campo vacío», corresponde a una versión anterior y más avanzada. Ahora el módulo 09 trabaja con `Text`, `TextField`, `ElevatedButton` y después `TextEditingController`; no requiere `Form` ni `validator`. Se incorporó también una aclaración desplegable para ubicar esos fragmentos antiguos, sin mezclarlos con la práctica básica. Puede ser necesario actualizar con **Ctrl + F5**.
 
+### Resaltado de instrucciones (líneas de cambio)
+
+En **todos los 44 bloques del material escrito** y en las **51 etapas «Antes / Después»**, el código identifica visualmente las líneas relevantes, no solo su sintaxis:
+
+- **Verde:** instrucciones o widgets que se **añaden** en el paso.
+- **Ámbar:** líneas que hay que **modificar o reemplazar**.
+- **Azul:** líneas que se deben **observar o comprobar**; no se añaden una segunda vez.
+- **Cian:** comandos para ejecutar en la terminal.
+
+Una leyenda sobre cada bloque explica la acción y el número de líneas señaladas. En los archivos finales de etapas acumulativas se distinguen los cambios frente a la etapa anterior. La práctica de formulario se compara directamente con el código base, no con la práctica opcional de filtros.
+
+El marcado se genera con elementos de visualización que **no alteran el texto copiado**: `Copiar código` mantiene intactas las instrucciones, su indentación y sus saltos de línea. Este mecanismo también funciona al navegar entre pasos de las simulaciones y en los ejemplos del catálogo de widgets.
+
 ## Barrido de consistencia y ubicación de todos los fragmentos
 
 Ahora **todos los bloques de código del curso** tienen una ficha de ubicación, al igual que **todos los pasos de las simulaciones «Antes / Después»**. En cada ficha se indica:
