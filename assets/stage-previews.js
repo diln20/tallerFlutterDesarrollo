@@ -18,19 +18,89 @@
     11:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true,simpleForm:true}
   };
   const state=desc=>({...S[desc.stage],...desc});
-  function editorUI(v){
-    return `<div class="pv-editor">
-      <div class="pv-editor-title"><span>● ● ●</span> VS Code · ejemplo visual</div>
-      <div class="pv-editor-tab">▦　main.dart　　pubspec.yaml</div>
-      <div class="pv-editor-lines">
-        <div><em>01</em> <b>import</b> 'package:flutter/material.dart';</div>
-        <div><em>02</em></div><div><em>03</em> <b>void</b> main() {</div>
-        <div><em>04</em>　runApp(<b>const</b> MainApp());</div><div><em>05</em> }</div>
-        <div><em>06</em></div><div><em>07</em> <b>class</b> MainApp...</div>
-      </div>
-      <div class="pv-editor-status">${v.opened?'lib/main.dart localizado':'Abre el proyecto actividad2a'}${v.ready?' · ✓ Dependencias preparadas':''}</div>
-    </div>`;
+    function editorUI(v,which,highlight){
+  const mode=v.editorMode||'workspace';
+  const opened=Boolean(v.opened);
+  const codeStage=Number.isInteger(v.codeStage)?v.codeStage:0;
+  const stageCode=[
+    {text:"import 'package:flutter/material.dart';",tier:1},
+    {text:"",tier:0},
+    {text:"void main() {",tier:2},
+    {text:"  runApp(const MainApp());",tier:2},
+    {text:"}",tier:2},
+    {text:"",tier:0},
+    {text:"class MainApp extends StatelessWidget {",tier:3},
+    {text:"  const MainApp({super.key});",tier:3},
+    {text:"  // Aquí añadiremos build en el siguiente paso.",tier:3},
+    {text:"}",tier:3}
+  ];
+  const line=(text,n,isNew)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}"><em>${String(n).padStart(2,'0')}</em><code>${esc(text)||' '}</code></div>`;
+  const folder=`<aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR</div>
+      <div class="pv-tree-root">▾ actividad2a</div>
+      <div class="pv-tree-item">▸ android</div>
+      <div class="pv-tree-item">▾ lib</div>
+      <div class="pv-tree-item pv-ide-selected">▤ main.dart <span>ABIERTO</span></div>
+      <div class="pv-tree-item">▸ web</div>
+      <div class="pv-tree-item">◇ pubspec.yaml</div></aside>`;
+  const title=`<div class="pv-editor-title"><span aria-hidden="true">● ● ●</span> VS Code · ilustración didáctica</div>`;
+  const tabs=opened?`<div class="pv-editor-tab"><span>▤ main.dart</span><span>▣ pubspec.yaml</span></div>`:
+    `<div class="pv-editor-tab"><span>Inicio de VS Code</span><span>Sin archivos abiertos</span></div>`;
+  let content='',footer='';
+  if(mode==='workspace'&&!opened){
+    content=`<div class="pv-ide-welcome"><div class="pv-ide-welcome-icon">◇</div>
+      <strong>Sin carpeta de proyecto abierta</strong>
+      <p>En el Explorador todavía no aparece <b>actividad2a</b> ni puedes seleccionar <b>lib/main.dart</b>.</p>
+      <div class="pv-ide-welcome-hint">Archivo → Abrir carpeta…</div></div>`;
+    footer='PENDIENTE · Abrir actividad2a';
+  } else if(mode==='workspace'){
+    content=`<div class="pv-ide-grid">${folder}
+      <div class="pv-ide-code-pane"><div class="pv-ide-code-caption">lib/main.dart · archivo original de clase</div>
+        ${line("import 'package:flutter/material.dart';",1,true)}
+        ${line("",2,false)}
+        ${line("void main() {",3,false)}
+        ${line("  runApp(const MainApp());",4,false)}
+        ${line("}",5,false)}
+        ${line("",6,false)}
+        ${line("class MainApp extends StatelessWidget {",7,false)}
+        <div class="pv-ide-file-found">✓ Archivo seleccionado: lib/main.dart</div>
+      </div></div>`;
+    footer='UBICADO · actividad2a / lib / main.dart';
+  } else if(mode==='dependencies'){
+    const command= v.ready?
+       `<div class="pv-ide-term-line pv-ide-command">PS actividad2a&gt; <strong>flutter pub get</strong></div>
+        <div class="pv-ide-term-line">Resolving dependencies...</div>
+        <div class="pv-ide-term-line">Downloading packages...</div>
+        <div class="pv-ide-term-line pv-ide-success">✓ Got dependencies!</div>`:
+       `<div class="pv-ide-term-line">PS actividad2a&gt; <span class="pv-ide-muted">[escribe aquí el comando]</span></div>
+        <div class="pv-ide-term-suggest">Pendiente: <strong>flutter pub get</strong></div>
+        <p class="pv-ide-term-tip">Todavía no se han preparado las dependencias en esta representación.</p>`;
+    content=`<div class="pv-ide-term"><strong class="pv-ide-term-title">TERMINAL · POWERSHELL</strong>${command}
+      <div class="pv-ide-demo-note">Salida de ejemplo: esta página NO ejecuta comandos</div>
+      </div>`;
+    footer=v.ready?'EJEMPLO · Dependencias resueltas':'PENDIENTE · Ejecutar flutter pub get';
+  } else if(mode==='run'){
+    content=`<div class="pv-ide-term"><strong class="pv-ide-term-title">TERMINAL · POWERSHELL</strong>
+      <div class="pv-ide-term-line">PS actividad2a&gt; <strong>flutter pub get</strong></div>
+      <div class="pv-ide-term-line pv-ide-success">✓ Dependencias preparadas (simulación)</div>
+      <div class="pv-ide-term-suggest">Siguiente comando: <strong>flutter run</strong></div>
+      <p class="pv-ide-term-tip">La pantalla aún no se ha iniciado. En «Después» verás cómo se representa la aplicación original.</p>
+      </div>`;
+    footer='PENDIENTE · Iniciar la aplicación';
+  } else if(mode==='dart'){
+    const visible=stageCode.filter(x=>x.tier<=codeStage);
+    const code=codeStage>0?visible.map((x,i)=>line(x.text,i+1,x.tier===codeStage&&which==='after')).join(''):
+      '<div class="pv-ide-file-empty">El archivo de práctica está vacío.<br>La primera instrucción será <code>import</code>.</div>';
+    content=`<div class="pv-ide-grid">${folder}<div class="pv-ide-code-pane">
+      <div class="pv-ide-code-caption">${codeStage===0?'Antes de escribir Dart':'Contenido acumulado en main.dart'}</div>
+      <div class="pv-ide-code-scroll">${code}</div></div></div>`;
+    footer=codeStage===0?'ETAPA 00 · Archivo de práctica vacío':
+      `ETAPA 0${codeStage} · ${codeStage===1?'Importación':codeStage===2?'Función main()':'Encabezado de MainApp'}${codeStage===3?' · build pendiente':''}`;
   }
+  return `<div class="pv-editor pv-editor-${mode}" data-pv-editor-mode="${mode}" data-pv-editor-stage="${codeStage}">
+    ${title}${tabs}<div class="pv-ide-viewport">${content}</div>
+    <div class="pv-editor-status">${esc(footer)}</div>
+  </div>`;
+}
   function searchUI(v,which,highlight,r){
     const value=which==='after'?r.query:(v.query||'');
     return `<div class="pv-search${v.searchInline?' pv-search-inline':''}${v.outlined?' pv-bordered':''}${highlight==='search'&&which==='after'?' pv-glow':''}">
@@ -67,7 +137,7 @@
     </section>`;
   }
   function screenUI(v,which,highlight,r){
-    if(v.editor)return editorUI(v);
+    if(v.editor)return editorUI(v,which,highlight);
     const centered=v.centered?' pv-centered':'';
     const bodyHL=highlight==='body'&&which==='after'?' pv-body-glow':'';
     const noteHL=(kind)=>highlight===kind&&which==='after'?' pv-glow':'';
