@@ -57,11 +57,11 @@ class _MainAppState extends State<MainApp> {
                 ),
                 const SizedBox(height: 12),
                 TextField(
-            onChanged: (valor) {
-              setState(() {
-                busqueda = valor;
-              });
-            },
+                  onChanged: (valor) {
+                    setState(() {
+                      busqueda = valor;
+                    });
+                  },
                   decoration: const InputDecoration(
                     hintText: 'Buscar marca o modelo',
                     border: OutlineInputBorder(),
