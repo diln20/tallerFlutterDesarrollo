@@ -7,7 +7,7 @@
 
 ## Vistas progresivas de la aplicación «Tienda»
 
-Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiando tu aplicación»**, con **51 pasos** en total:
+El taller contiene ahora **14 módulos**, con **72 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
 
 - Pantallas **Antes / Después** para comparar los efectos de un cambio.
 - Contorno amarillo alrededor del widget que aparece o cuya presentación se modifica.
@@ -27,6 +27,19 @@ La comparación ya no repite el mismo código o la misma imagen cuando el paso o
 - **Cambios de interfaz:** la comparación enseña visualmente el widget añadido o modificado. Todas las salidas del editor, terminal y móvil son simulaciones didácticas, no capturas ni ejecuciones del equipo real.
 
 **Exactitud pedagógica:** la vista es una simulación visual HTML y está identificada como tal. No representa una captura ni una ejecución real de Flutter. Los primeros módulos muestran la construcción del código de clase y los pasos 06–10 describen mejoras propuestas; algunos cambios de Dart (como declarar `StatefulWidget` o una variable) **no generan ningún cambio visual inmediato**, y así se señala explícitamente.
+
+## Continuación del taller: carpetas, reutilización, validación y primer objeto
+
+La nueva ruta de clases sigue el orden establecido, sin mezclar aún la rama opcional de filtros:
+
+**01–05 → Primer formulario (P1) → Crear carpetas (P2) → Reutilizar widgets (P3) → Validar el campo (P4) → Crear el primer objeto (P5).**
+
+- **P2 — Crear carpetas:** crear únicamente `lib/pages/`, `lib/widgets/`, `lib/models/`, `lib/services/`, `lib/repositories/` y `lib/bloc/`. Explicar la finalidad futura de cada carpeta. **No crear clases, mover main.dart ni agregar lógica en esta etapa.** En Git las carpetas vacías no suelen aparecer hasta que contienen un archivo.
+- **P3 — Reutilización:** ahora sí utilizar `lib/widgets/` con el archivo `titulo_seccion.dart`, que contiene un `StatelessWidget` con el parámetro `required this.texto`. En `main.dart` se importa y se usa **dos veces**, sin cambiar el aspecto ni el funcionamiento del formulario.
+- **P4 — Validación:** transformar únicamente el segundo campo en `TextFormField`, declarar `GlobalKey<FormState>`, colocarlo dentro de `Form`, agregar `validator` y llamar `validate()` desde `onPressed`. Se prueban entradas vacías, de menos de tres caracteres y válidas.
+- **P5 — Primer objeto:** crear `lib/models/vehiculo.dart`, definir la clase `Vehiculo` con `String nombre` y `bool disponible`, importarla y construir `final vehiculo = Vehiculo(nombre: nombre)` después de validar. `debugPrint` enseña las propiedades del objeto. **Todavía no se guarda en una lista ni en una base de datos.**
+
+Cada bloque incluye archivo, ubicación exacta, qué buscar con Ctrl + F, acción (crear, añadir o reemplazar), explicación del contenido y comparación final. Los archivos Dart de `etapas/` son **copias de referencia**, no una segunda carpeta `lib` que haya que mezclar con el proyecto de los estudiantes.
 
 ## Dónde va cada fragmento del primer formulario
 
@@ -84,7 +97,7 @@ Ahora **todos los bloques de código del curso** tienen una ficha de ubicación,
 
 El **catálogo de widgets** muestra una indicación contextual distinta: `AppBar` en `Scaffold.appBar`, `Drawer` en `Scaffold.drawer`, `Expanded` dentro de `Row` o `Column`, `SnackBar` mediante `ScaffoldMessenger`, diálogos mediante `showDialog`, etc. Son ejemplos de consulta, no instrucciones de pegarlos todos en la Tienda.
 
-**Ruta didáctica principal:** módulos 01–05 (código original) → **primer formulario básico** (el archivo sigue llamándose `paso_09_formulario.dart` para no romper enlaces). Las ampliaciones de diseño, `StatefulWidget` para búsqueda y filtros (módulos 06–08) son una **ruta opcional posterior**, y BLoC es conceptual. El formulario básico **no depende** de conocer `for`, `where` ni `List<String>`.
+**Ruta didáctica principal:** módulos 01–05 (código original) → formulario básico P1 → carpetas vacías P2 → reutilización P3 → validación P4 → primer objeto P5. Se conserva el nombre del archivo `paso_09_formulario.dart` para no romper enlaces de referencias previas. Las ampliaciones 06–08 (diseño, búsqueda interactiva y filtros) son una **ruta opcional independiente**, y BLoC continúa siendo conceptual. La práctica P1 no requiere `for`, `where` ni `List<String>`.
 
 **Limitación de verificación:** los ejemplos y ubicaciones se contrastaron contra los archivos versionados del repositorio, incluida la instantánea `codigo-base/main.dart`. Esto no equivale a comprobar el proyecto local de los estudiantes en este momento ni a ejecutar Flutter en su equipo.
 
@@ -122,6 +135,10 @@ La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp
 | 07 | Hacer que el buscador reaccione con `StatefulWidget`, `createState`, `setState` y `onChanged`. | Propuesta para la copia |
 | 08 | Lista de vehículos de prueba y filtro con `where`, `trim`, `toLowerCase`, `contains` y `toList`. | Propuesta para la copia |
 | 09 | Primer formulario inmediato, a partir del código original del módulo 05: `Text`, `TextField`, `ElevatedButton`, conversión a `StatefulWidget`, `TextEditingController`, salida con `debugPrint`, `clear()` y `dispose()`; sin listas, ciclos `for` ni `Form`. | Propuesta para la copia |
+| P2 | Crear las seis carpetas organizativas vacías y explicar su propósito sin mover clases ni escribir lógica. | Guía paso a paso |
+| P3 | Reutilizar un widget de texto creado en `lib/widgets/titulo_seccion.dart` y utilizado dos veces. | Guía y código final |
+| P4 | Validar el campo con `Form`, `TextFormField`, `GlobalKey<FormState>` y `validator`. | Guía y código final |
+| P5 | Definir el modelo `Vehiculo`, instanciarlo con el nombre validado y leer sus propiedades. | Guía y código final |
 | 10 | Comprender eventos, estados y responsabilidad de cada parte de la Tienda con BLoC (sin adelantar código). | Propuesta conceptual |
 
 **En particular, el módulo 09** incluye los fragmentos completos, botones «Copiar código», explicación de parámetros y signos de Dart, instrucciones de reemplazo (para no duplicar widgets), simulaciones antes/después y un `main.dart` final de comparación. También aclara que `...` en explicaciones puede representar contenido omitido y **no debe pegarse como un marcador de código**; los ejemplos para copiar no contienen código sustituido por puntos suspensivos.
@@ -140,8 +157,13 @@ Los módulos 02–08 son reconstrucciones y ampliaciones opcionales de la misma 
 | 07 | [`paso_07_estado.dart`](etapas/paso_07_estado.dart) | Captura del texto de búsqueda |
 | 08 | [`paso_08_filtro.dart`](etapas/paso_08_filtro.dart) | Filtrar nombres de vehículos de prueba |
 | 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | La misma Tienda original más Text, TextField y botón: leer e imprimir el texto en consola, limpiar campo y liberar recursos |
+| P3 · componente | [`paso_10_titulo_seccion.dart`](etapas/paso_10_titulo_seccion.dart) | Definición reutilizable de `TituloSeccion` destinada a `lib/widgets/` |
+| P3 · Tienda | [`paso_10_reutilizacion.dart`](etapas/paso_10_reutilizacion.dart) | Importar y utilizar `TituloSeccion` en dos títulos de la aplicación |
+| P4 · Tienda | [`paso_11_validacion.dart`](etapas/paso_11_validacion.dart) | `Form` con reglas de nombre obligatorio y longitud mínima de tres caracteres |
+| P5 · modelo | [`paso_12_vehiculo.dart`](etapas/paso_12_vehiculo.dart) | Clase de datos `Vehiculo` destinada a `lib/models/` |
+| P5 · Tienda | [`paso_12_objeto.dart`](etapas/paso_12_objeto.dart) | Botón validado que crea el objeto y muestra sus propiedades |
 
-Los archivos de las etapas 06 a 09 describen **posibles prácticas siguientes**, no avances que el docente ya haya realizado con sus estudiantes.
+Los archivos de las etapas 06 a 12 describen **prácticas de enseñanza propuestas** y referencias verificables en GitHub; no implican que ya estén implementadas en el computador de los estudiantes. Las carpetas P2 se crean durante la clase y no contienen archivos hasta las siguientes etapas.
 
 ## Catálogo visual de widgets Flutter
 
