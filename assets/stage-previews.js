@@ -152,7 +152,7 @@
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
       <div class="pv-code-explain">
-        <div class="pv-code-intro"><div><strong>¿Qué código provoca este efecto?</strong><p>Fragmento que se estudia en este paso.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
+        <div class="pv-code-intro"><div><strong>¿Qué código provoca este efecto?</strong><p>Identifica las líneas resaltadas: verde para añadir, ámbar para reemplazar y azul para observar. La guía inferior indica dónde van en main.dart.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
         <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
