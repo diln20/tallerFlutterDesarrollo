@@ -11,13 +11,13 @@
       steps:[
         S('Ubicar lib/main.dart','Se localiza el archivo original con la clase MainApp. Todavía no se cambia ningún widget.',
           "actividad2a/\n  pubspec.yaml\n  lib/\n    main.dart",
-          {stage:0,opened:false},{stage:0,opened:true},'editor',{visual:false}),
+          {stage:0,opened:false,editorMode:'workspace'},{stage:0,opened:true,editorMode:'workspace'},'editor',{visual:false,note:'Mira el panel EXPLORADOR: antes no había ninguna carpeta abierta; después aparece actividad2a → lib → main.dart seleccionado. El código aún no se modifica.'}),
         S('Comprobar dependencias','flutter pub get prepara paquetes. No modifica la apariencia de la Tienda.',
           "flutter pub get",
-          {stage:0,opened:true},{stage:0,opened:true,ready:true},'editor',{visual:false}),
+          {stage:0,opened:true,editorMode:'dependencies',ready:false},{stage:0,opened:true,editorMode:'dependencies',ready:true},'editor',{visual:false,note:'El antes muestra el comando pendiente; el después representa una salida ilustrativa de flutter pub get. No se ejecutan comandos desde la guía.'}),
         S('Ejecutar actividad2a','flutter run abre la pantalla que existe en el proyecto: AppBar «Tienda», textos, iconos y un campo de búsqueda todavía sin lógica.',
           "flutter run",
-          {stage:0,opened:true,ready:true},{stage:5},'body',
+          {stage:0,opened:true,ready:true,editorMode:'run'},{stage:5},'body',
           {note:'La pantalla representa la versión original de la clase, no un avance inventado.'})
       ]
     },
@@ -27,16 +27,16 @@
       steps:[
         S('Importar Material','La importación pone a disposición los widgets Material. Todavía no hay nada dibujado.',
           "import 'package:flutter/material.dart';",
-          {stage:0,opened:false},{stage:0,opened:true,editorLabel:'material.dart importado'},'editor',{visual:false}),
+          {stage:0,opened:true,editorMode:'dart',codeStage:0},{stage:0,opened:true,editorMode:'dart',codeStage:1},'editor',{visual:false,note:'Antes: archivo de práctica vacío. Después: aparece solamente el import; ni main() ni MainApp se escriben en este paso.'}),
         S('Escribir main() y runApp','main() arranca el programa y runApp recibe MainApp; sin definir MainApp todavía no podemos ejecutarlo.',
           "void main() {\n  runApp(const MainApp());\n}",
-          {stage:0,opened:true},{stage:0,opened:true,editorLabel:'main() definido'},'editor',{visual:false}),
+          {stage:0,opened:true,editorMode:'dart',codeStage:1},{stage:0,opened:true,editorMode:'dart',codeStage:2},'editor',{visual:false,note:'El import permanece. Las líneas nuevas son void main(), runApp(const MainApp()) y sus llaves. La clase MainApp se definirá más adelante.'}),
         S('Crear StatelessWidget','MainApp extiende StatelessWidget y crea su constructor. Todavía falta el método build para devolver widgets.',
           "class MainApp extends StatelessWidget {\n  const MainApp({super.key});\n  // Falta build(...)\n}",
-          {stage:0,opened:true},{stage:0,opened:true,editorLabel:'MainApp definido'},'editor',{visual:false}),
+          {stage:0,opened:true,editorMode:'dart',codeStage:2},{stage:0,opened:true,editorMode:'dart',codeStage:3},'editor',{visual:false,note:'El cambio es código: aparece la declaración de MainApp y su constructor. Esta etapa aún NO es ejecutable porque falta implementar build.'}),
         S('Construir la primera pantalla','MaterialApp, Scaffold, Center y Text permiten ejecutar el primer ejemplo: «Primer widget».',
           "return const MaterialApp(\n  home: Scaffold(\n    body: Center(\n      child: Text('Primer widget'),\n    ),\n  ),\n);",
-          {stage:0,opened:true},{stage:2},'firstText'),
+          {stage:0,opened:true,editorMode:'dart',codeStage:3},{stage:2},'firstText'),
         S('Entender const y super.key','Son parte del constructor y de la creación del widget. Añadir o quitar un const válido no dibuja nuevos controles.',
           "const MainApp({super.key});\nrunApp(const MainApp());",
           {stage:2},{stage:2},'firstText',{visual:false})
