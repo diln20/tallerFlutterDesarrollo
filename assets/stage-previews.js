@@ -140,6 +140,7 @@
       </div>
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
+        ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el formulario completo.</span>':''}
         <span class="pv-result-status">${internal?'Este paso prepara lógica o estructura y no introduce nuevos elementos visuales.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
@@ -155,6 +156,19 @@
       </div>
     </section>`;
     document.dispatchEvent(new CustomEvent('flutterlab:catalog-code'));
+    // Recorre el propio teléfono hasta el elemento cambiado, sin mover el scroll del documento.
+    if(typeof window.requestAnimationFrame==='function') {
+      window.requestAnimationFrame(()=>{
+        const screen=slot.querySelector('.pv-after .pv-app-screen');
+        const changed=slot.querySelector('.pv-after .pv-glow');
+        if(!screen||!changed||!screen.getBoundingClientRect||!changed.getBoundingClientRect)return;
+        const box=screen.getBoundingClientRect();
+        const target=changed.getBoundingClientRect();
+        if(target.bottom>box.bottom-16 || target.top<box.top+13){
+          screen.scrollTop+=target.top-box.top-58;
+        }
+      });
+    }
   }
   const maps={
     preparacion:[1,2,0,2],
