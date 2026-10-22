@@ -13,13 +13,19 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String busqueda = '';
-  String nuevoVehiculo = '';
+  final TextEditingController nuevoVehiculoController = TextEditingController();
   final List<String> vehiculos = [
     'Renault 9',
     'Renault 21',
     'Mazda 3',
     'Chevrolet Spark',
   ];
+
+  @override
+  void dispose() {
+    nuevoVehiculoController.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -83,9 +89,7 @@ class _MainAppState extends State<MainApp> {
                 const Text('Agregar un vehículo'),
                 const SizedBox(height: 10),
                 TextField(
-                  onChanged: (valor) {
-                    nuevoVehiculo = valor;
-                  },
+                  controller: nuevoVehiculoController,
                   decoration: const InputDecoration(
                     hintText: 'Ej. Toyota Corolla',
                     border: OutlineInputBorder(),
@@ -94,11 +98,12 @@ class _MainAppState extends State<MainApp> {
                 const SizedBox(height: 12),
                 ElevatedButton(
                   onPressed: () {
-                    final nombre = nuevoVehiculo.trim();
+                    final nombre = nuevoVehiculoController.text.trim();
                     if (nombre.isEmpty) return;
                     setState(() {
                       vehiculos.add(nombre);
                     });
+                    nuevoVehiculoController.clear();
                   },
                   child: const Text('Agregar vehículo'),
                 ),
