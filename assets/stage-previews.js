@@ -14,7 +14,8 @@
     6:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true},
     7:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true},
     8:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true},
-    9:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true}
+    9:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true},
+    11:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true,simpleForm:true}
   };
   const state=desc=>({...S[desc.stage],...desc});
   function editorUI(v){
@@ -55,10 +56,10 @@
     const ready=v.formReady!==false;
     return `<section class="pv-form">
       ${showTitle?`<strong class="${highlight==='form-title'&&which==='after'?'pv-glow':''}">Agregar un vehículo</strong>`:''}
-      ${showField?`<label class="${highlight==='form-field'&&which==='after'?'pv-glow':''}">Nombre del vehículo</label>
+      ${showField?`${v.simpleForm?'':`<label class="${highlight==='form-field'&&which==='after'?'pv-glow':''}">Nombre del vehículo</label>`}
       <input type="text" data-pv-model="${which}" value="${which==='after'?esc(r.model):''}"
         class="${highlight==='form-field'&&which==='after'?'pv-glow':''}"
-        placeholder="Ej. Toyota Corolla" autocomplete="off"
+        placeholder="${v.simpleForm?'Nombre del vehículo':'Ej. Toyota Corolla'}" autocomplete="off"
         ${which==='before'?'readonly tabindex="-1"':''}>`:''}
       ${showButton?`<button type="button" class="pv-submit${highlight==='button'&&which==='after'?' pv-glow':''}"
         ${which==='after'&&ready?'data-pv-submit':''}
@@ -111,7 +112,7 @@
       {...oldRuntime,phase}:
       {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
         model:'',invalid:!!after.validationError,snackbar:after.snackbar||'',
-        clearAfterSave:!!after.clearAfterSave};
+        clearAfterSave:!!after.clearAfterSave,debugMessage:''};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
@@ -143,6 +144,7 @@
           <div class="pv-preview-area">${screenUI(after,'after',item.highlight,runtime)}</div>
         </div>
       </div>
+      ${id==='proyecto'?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
@@ -184,7 +186,7 @@
     responsive:[0,0,4,5],
     estado:[0,2,3,4],
     formularios:[0,1,2,3],
-    proyecto:[0,0,1,2,3,4,5,6,6,7,8],
+    proyecto:[0,1,2,3,4,5,6,7,8,8],
     bloc:[]
   };
   function linkCodeBlocks(){
@@ -213,6 +215,8 @@
       const count=after.querySelector('[data-pv-count]');
       if(count)count.textContent=match.length+' resultado'+(match.length===1?'':'s');
     }
+    const debug=wrapper.querySelector('[data-pv-debug-console]');
+    if(debug){debug.hidden=!r.debugMessage;const line=debug.querySelector('[data-pv-debug-message]');if(line)line.textContent=r.debugMessage||'';}
     const error=after.querySelector('[data-pv-error]');if(error)error.hidden=!r.invalid;
     let snackbar=after.querySelector('[data-pv-snackbar]');
     if(snackbar)snackbar.textContent='✓ '+r.snackbar;
@@ -258,7 +262,8 @@
       const id=submit.closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       const name=r.model.trim();
       if(!name)return;
-      r.addedCars.push(name);
+      if(id==='proyecto') r.debugMessage='Vehículo escrito: '+name;
+      else r.addedCars.push(name);
       r.invalid=false;
       r.snackbar='';
       if(r.clearAfterSave) {
