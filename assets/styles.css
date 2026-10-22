@@ -1092,3 +1092,50 @@ body[data-theme=dark] .pv-result-status{color:#e5b872}
   .pv-home-announcement{align-items:flex-start;flex-direction:column}
   .pv-home-announcement p{flex:auto}
 }
+/* Taller Flutter, módulo 09: guía de formulario legible y progresiva. */
+#proyecto .form-outcome-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:23px 0 20px}
+#proyecto .form-outcome-grid>div{min-width:0;border-radius:15px;padding:18px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
+#proyecto .form-outcome-grid span{display:block;font-size:10px;color:var(--blue);letter-spacing:.075em;font-weight:800;margin-bottom:7px}
+#proyecto .form-outcome-grid strong{display:block;font-size:14px;color:var(--heading);line-height:1.5}
+#proyecto .form-outcome-grid p{font-size:11px;line-height:1.7;margin:8px 0 0}
+#proyecto .form-copy-tip{border-left:4px solid var(--blue);margin:18px 0 25px}
+#proyecto .form-copy-tip>p:last-child{margin-bottom:0}
+#proyecto .form-stage{position:relative;margin:24px 0;border:1px solid var(--border);border-radius:18px;background:var(--surface);padding:clamp(18px,2.4vw,27px);box-shadow:0 8px 27px rgba(24,45,85,.045);scroll-margin-top:90px}
+#proyecto .form-stage-head{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+#proyecto .form-step-number{display:grid;place-items:center;width:41px;height:41px;flex:0 0 41px;border-radius:13px;background:#294b86;color:#fff;font-size:13px;font-weight:850;font-family:Manrope,Arial,sans-serif}
+#proyecto .form-stage-head h2{font-size:clamp(16px,2vw,20px);margin:0;line-height:1.36}
+#proyecto .form-stage>p{font-size:12px;line-height:1.84;max-width:880px;margin-bottom:16px}
+#proyecto .form-stage .code-label{font-size:11px;letter-spacing:0}
+#proyecto .form-stage .code-block{margin-bottom:17px!important;max-height:none;font-size:12px;line-height:1.95}
+#proyecto .form-stage .copy-button{font-size:11px;min-height:34px;padding:6px 12px}
+#proyecto .form-meaning-table th{font-size:11px}
+#proyecto .form-meaning-table td{font-size:11.5px;line-height:1.75;vertical-align:top}
+#proyecto .form-meaning-table td:first-child{width:37%;max-width:270px;min-width:150px}
+#proyecto .form-meaning-table td:first-child code{overflow-wrap:anywhere;white-space:normal}
+#proyecto .form-expected{margin:15px 0 0;padding:14px 16px;border-radius:12px;background:var(--blue-soft);border:1px solid #c9dcfc}
+#proyecto .form-expected strong{display:block;font-size:11px;color:#1d4a91;font-weight:850}
+#proyecto .form-expected p{font-size:11px;color:#344c6b;margin:5px 0 0;line-height:1.75}
+#proyecto .form-explain-all .form-meaning-table tr{break-inside:avoid}
+#proyecto .form-explain-all .form-meaning-table td:first-child{width:34%}
+#proyecto .form-complete-source{border-top:1px solid var(--border);margin-top:28px}
+#proyecto .form-complete-source .deep-details-body pre{max-height:660px;overflow:auto}
+body[data-theme=dark] #proyecto .form-expected{background:#192c4b;border-color:#375c89}
+body[data-theme=dark] #proyecto .form-expected strong{color:#9cc8fd}
+body[data-theme=dark] #proyecto .form-expected p{color:#d0e1f7}
+body[data-theme=dark] #proyecto .form-step-number{background:#3a69aa}
+@media(max-width:850px){
+  #proyecto .form-outcome-grid{grid-template-columns:1fr}
+  #proyecto .form-outcome-grid>div{padding:15px}
+}
+@media(max-width:580px){
+  #proyecto .form-stage{padding:16px 12px;margin:17px 0;border-radius:13px}
+  #proyecto .form-stage-head{gap:10px;align-items:start}
+  #proyecto .form-step-number{width:35px;height:35px;flex-basis:35px;border-radius:10px;font-size:12px}
+  #proyecto .form-meaning-table th,#proyecto .form-meaning-table td{padding:8px}
+  #proyecto .form-meaning-table td:first-child{min-width:120px}
+  #proyecto .form-stage .code-block{font-size:11px}
+}
+@media print{
+  #proyecto .form-stage{break-inside:avoid;box-shadow:none}
+  #proyecto .form-outcome-grid{grid-template-columns:repeat(3,1fr)}
+}
