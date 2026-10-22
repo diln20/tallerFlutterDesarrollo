@@ -103,6 +103,93 @@
           {note:'El resultado no cambia: en el main.dart original todavía no hay onChanged ni catálogo.'})
       ]
     },
+    carpetas: {
+      name:'Crear y entender carpetas',
+      kind:'proposed',
+      steps:[
+        S("Crear pages/","Se añade la carpeta vacía lib/pages/. Su propósito futuro será: pantallas completas, para otra clase. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/pages'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":0},{"stage":0,"opened":true,"editorMode":"folders","folderCount":1},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe pages. El comando PowerShell es una alternativa."}),
+        S("Crear widgets/","Se añade la carpeta vacía lib/widgets/. Su propósito futuro será: widgets reutilizables, que veremos a continuación. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/widgets'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":1},{"stage":0,"opened":true,"editorMode":"folders","folderCount":2},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe widgets. El comando PowerShell es una alternativa."}),
+        S("Crear models/","Se añade la carpeta vacía lib/models/. Su propósito futuro será: clases de datos como Vehiculo, que vendrán después. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/models'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":2},{"stage":0,"opened":true,"editorMode":"folders","folderCount":3},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe models. El comando PowerShell es una alternativa."}),
+        S("Crear services/","Se añade la carpeta vacía lib/services/. Su propósito futuro será: consumo de APIs, aún sin implementar. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/services'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":3},{"stage":0,"opened":true,"editorMode":"folders","folderCount":4},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe services. El comando PowerShell es una alternativa."}),
+        S("Crear repositories/","Se añade la carpeta vacía lib/repositories/. Su propósito futuro será: forma de obtener/guardar datos, para más adelante. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/repositories'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":4},{"stage":0,"opened":true,"editorMode":"folders","folderCount":5},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe repositories. El comando PowerShell es una alternativa."}),
+        S("Crear bloc/","Se añade la carpeta vacía lib/bloc/. Su propósito futuro será: lógica y estados del patrón BLoC, que no estamos implementando. No se mueve main.dart ni se crea código.",
+          "New-Item -ItemType Directory -Force -Path 'lib/bloc'",
+          {"stage":0,"opened":true,"editorMode":"folders","folderCount":5},{"stage":0,"opened":true,"editorMode":"folders","folderCount":6},"folders",{"visual":false,"note":"En VS Code: clic derecho sobre lib → Nueva carpeta → escribe bloc. El comando PowerShell es una alternativa."})
+      ]
+    },
+    reutilizacion: {
+      name:'Reutilizar widgets de la Tienda',
+      kind:'proposed',
+      steps:[
+        S("Crear titulo_seccion.dart","El archivo nuevo aparece en lib/widgets/; no se modifica main.dart.",
+          "lib/widgets/titulo_seccion.dart",
+          {"stage":0,"opened":true,"editorMode":"newfile","fileName":"titulo_seccion.dart","filePresent":false,"fileCode":false},{"stage":0,"opened":true,"editorMode":"newfile","fileName":"titulo_seccion.dart","filePresent":true,"fileCode":false},"editor",{"visual":false,"note":"Primero creamos el archivo en la carpeta widgets, sin mover el código actual."}),
+        S("Definir TituloSeccion","Escribimos una clase StatelessWidget reutilizable, con el argumento texto y build que devuelve Text(texto).",
+          "class TituloSeccion extends StatelessWidget {\n  const TituloSeccion({super.key, required this.texto});\n  final String texto;\n  @override\n  Widget build(BuildContext context) => Text(texto);\n}",
+          {"stage":0,"opened":true,"editorMode":"newfile","fileName":"titulo_seccion.dart","filePresent":true,"fileCode":false},{"stage":0,"opened":true,"editorMode":"newfile","fileName":"titulo_seccion.dart","filePresent":true,"fileCode":true},"editor",{"visual":false,"note":"Es un extracto para reconocer lo nuevo; la versión completa está en el bloque de la lección."}),
+        S("Importar el widget","main.dart reconoce el archivo de la carpeta widgets. Importar no modifica la apariencia.",
+          "import 'widgets/titulo_seccion.dart';",
+          {"stage":11},{"stage":11},"form-title",{"visual":false,"beforeCode":"main.dart importa solamente material.dart","afterCode":"main.dart también importa widgets/titulo_seccion.dart"}),
+        S("Reutilizar el título inicial","Cambiamos Text('Hello dsfdsWorld') por TituloSeccion(texto: ...). El contenido visual sigue siendo el mismo.",
+          "const TituloSeccion(texto: 'Hello dsfdsWorld'),",
+          {"stage":11},{"stage":11},"firstText",{"visual":false,"beforeCode":"Text('Hello dsfdsWorld')","afterCode":"TituloSeccion(texto: 'Hello dsfdsWorld')"}),
+        S("Reutilizar el título del formulario","Una sola clase TituloSeccion se utiliza dos veces con argumentos texto diferentes.",
+          "const TituloSeccion(texto: 'Agregar un vehículo'),",
+          {"stage":11},{"stage":11},"form-title",{"visual":false,"beforeCode":"Text('Agregar un vehículo')","afterCode":"TituloSeccion(texto: 'Agregar un vehículo')"})
+      ]
+    },
+    validacion: {
+      name:'Validar el primer formulario',
+      kind:'proposed',
+      steps:[
+        S("TextField a TextFormField","El segundo campo cambia de tipo para permitir validator, pero todavía no hay error visible.",
+          "TextFormField(\n  controller: vehiculoController,\n  decoration: const InputDecoration(\n    hintText: 'Nombre del vehículo',\n    border: OutlineInputBorder(),\n  ),\n)",
+          {"stage":11,"validationEnabled":false},{"stage":11,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"TextField del formulario","afterCode":"TextFormField del formulario (sin validator todavía)"}),
+        S("Declarar GlobalKey","Creamos una llave que permitirá llamar validate() sobre el Form; no se agrega ningún control visual.",
+          "final GlobalKey<FormState> formularioKey = GlobalKey<FormState>();",
+          {"stage":11,"validationEnabled":true},{"stage":11,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"State con vehiculoController","afterCode":"State con vehiculoController y formularioKey"}),
+        S("Envolver el campo con Form","Form(key: formularioKey) agrupa el TextFormField, mientras ElevatedButton sigue debajo en Column.",
+          "Form(\n  key: formularioKey,\n  child: TextFormField(\n    controller: vehiculoController,\n    decoration: const InputDecoration(hintText: 'Nombre del vehículo'),\n  ),\n)",
+          {"stage":11,"validationEnabled":true},{"stage":11,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"TextFormField independiente","afterCode":"Form(key: formularioKey, child: TextFormField(...))"}),
+        S("Añadir validator","Se definen reglas de nombre requerido y longitud mínima. El error aparecerá cuando se llame a validate().",
+          "validator: (valor) {\n  if (valor == null || valor.trim().isEmpty) return 'Escribe un nombre';\n  if (valor.trim().length < 3) return 'Mínimo 3 caracteres';\n  return null;\n},",
+          {"stage":11,"validationEnabled":true},{"stage":11,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"TextFormField sin regla de validación","afterCode":"TextFormField con validator: devuelve un error o null"}),
+        S("Llamar validate() desde el botón","Pulsar con el campo vacío muestra «Escribe un nombre»; «AB» pide mínimo 3 caracteres y un nombre válido se procesa.",
+          "if (formularioKey.currentState?.validate() != true) {\n  return;\n}",
+          {"stage":11,"validationEnabled":true,"validationError":false},{"stage":11,"validationEnabled":true,"validationError":true},"form-field",{"interactive":true,"note":"Prueba escribir dos letras y pulsar el botón. El error es una simulación de validator, no una ejecución real."})
+      ]
+    },
+    objeto: {
+      name:'Construir el primer objeto Vehiculo',
+      kind:'proposed',
+      steps:[
+        S("Crear vehiculo.dart","El archivo de datos aparece en lib/models/; crear el archivo no crea objetos todavía.",
+          "lib/models/vehiculo.dart",
+          {"stage":0,"opened":true,"editorMode":"newfile","fileName":"vehiculo.dart","filePresent":false,"fileCode":false},{"stage":0,"opened":true,"editorMode":"newfile","fileName":"vehiculo.dart","filePresent":true,"fileCode":false},"editor",{"visual":false,"note":"La carpeta models permaneció vacía hasta ahora."}),
+        S("Definir la clase Vehiculo","La clase define nombre y disponible; todavía no se crea ninguna instancia del modelo.",
+          "class Vehiculo {\n  const Vehiculo({required this.nombre, this.disponible = true});\n  final String nombre;\n  final bool disponible;\n}",
+          {"stage":0,"opened":true,"editorMode":"newfile","fileName":"vehiculo.dart","filePresent":true,"fileCode":false},{"stage":0,"opened":true,"editorMode":"newfile","fileName":"vehiculo.dart","filePresent":true,"fileCode":true},"editor",{"visual":false,"note":"La clase contiene datos y constructor, pero no un método build."}),
+        S("Importar el modelo","main.dart puede utilizar la clase Vehiculo, pero importar la clase no crea un objeto.",
+          "import 'models/vehiculo.dart';",
+          {"stage":11,"validationEnabled":true},{"stage":11,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"main.dart sin import de Vehiculo","afterCode":"main.dart con import 'models/vehiculo.dart'"}),
+        S("Instanciar Vehiculo","Después de validar, el botón crea un objeto a partir del nombre que escribió el usuario.",
+          "final vehiculo = Vehiculo(nombre: nombre);",
+          {"stage":11,"validationEnabled":true},{"stage":11,"validationEnabled":true},"button",{"visual":false,"beforeCode":"El botón tiene final nombre, pero no construye objetos","afterCode":"El botón crea final vehiculo = Vehiculo(nombre: nombre)"}),
+        S("Mostrar sus propiedades","debugPrint utiliza vehiculo.nombre y vehiculo.disponible. No guarda objetos en una lista ni base de datos.",
+          "debugPrint('Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}');",
+          {"stage":11,"validationEnabled":true,"formReady":true},{"stage":11,"validationEnabled":true,"formReady":true},"button",{"visual":false,"interactive":true,"beforeCode":"debugPrint muestra solo el nombre escrito","afterCode":"debugPrint muestra las propiedades del objeto Vehiculo; disponible=true","note":"Escribe «Renault 9» y pulsa el botón para simular la salida en consola."})
+      ]
+    },
     responsive: {
       name:'Mejorar el diseño de la misma Tienda',
       kind:'proposed',
