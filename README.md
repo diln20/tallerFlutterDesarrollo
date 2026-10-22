@@ -51,6 +51,18 @@ Una leyenda sobre cada bloque explica la acción y el número de líneas señala
 
 El marcado se genera con elementos de visualización que **no alteran el texto copiado**: `Copiar código` mantiene intactas las instrucciones, su indentación y sus saltos de línea. Este mecanismo también funciona al navegar entre pasos de las simulaciones y en los ejemplos del catálogo de widgets.
 
+### Explicación detallada de cada instrucción
+
+El sitio incluye debajo de cada ejemplo (lecciones, simulaciones Antes/Después y catálogo) un apartado desplegable **«Explicación del código, línea por línea»**:
+
+- Explica cada línea no vacía: widgets, funciones, variables, propiedades, operadores y comandos de terminal.
+- Aclara qué cierran `)`, `]`, `}` y las comas, tomando en cuenta las estructuras abiertas dentro del fragmento.
+- Diferencia el `TextField` original del segundo campo con `TextEditingController`, por qué se declara en `State`, y qué hacen `controller.text`, `debugPrint`, `clear()` y `dispose()`.
+- En los ejemplos conceptuales indica cuándo se trata de esquemas o código incompleto que no debe copiarse.
+- Los apartados se mantienen cerrados por defecto, pero el estudiante puede abrirlos sin abandonar el paso. No alteran «Copiar código» ni requieren editar el programa original.
+
+**Corrección didáctica:** en la práctica del primer formulario no se registra ningún vehículo en una lista. El botón imprime el nombre en la consola y limpia el campo. El módulo de filtros es una ampliación independiente; la explicación de BLoC utiliza esos casos como ejemplos futuros, sin afirmar que estén integrados.
+
 ## Barrido de consistencia y ubicación de todos los fragmentos
 
 Ahora **todos los bloques de código del curso** tienen una ficha de ubicación, al igual que **todos los pasos de las simulaciones «Antes / Después»**. En cada ficha se indica:
