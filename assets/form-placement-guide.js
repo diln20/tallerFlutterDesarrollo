@@ -46,7 +46,7 @@
         '<span>Las líneas resaltadas corresponden al cambio</span></div>'+
       '<div class="fg-source-window" role="group" aria-label="Código integrado con números de línea">'+
         formatLines(source,from,to,info.spot)+'</div>'+
-      '<p class="fg-location-tip">'+escapeHTML(info.extra)+'</p>'+
+      '<p class="fg-location-tip">'+escapeHTML(info.extra)+' <strong>Importante:</strong> los números indican las líneas de esta versión de práctica; si ya editaste tu archivo, encuentra el lugar usando el texto de «Busca con Ctrl + F».</p>'+
       '<div class="fg-location-footer">'+
        '<details class="fg-expand"><summary>Ver todo el main.dart como queda al terminar este paso</summary>'+
          '<p>Vista de lectura con números de línea. Para copiar un cambio utiliza el botón «Copiar código» del fragmento de arriba. No copies líneas duplicadas.</p>'+
