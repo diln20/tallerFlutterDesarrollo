@@ -466,3 +466,55 @@ body[data-theme="dark"] .final-code{border-color:#406887}
   .lesson-table{min-width:unset}
   .source-row{page-break-inside:avoid}
 }
+
+
+/* Colores de sintaxis inspirados en un editor moderno; legibles en fondo oscuro. */
+.code-block{
+  background:#0d182b;
+  color:#e8f0fa;
+  border-color:#30445f;
+}
+.code-block code,
+.source-walkthrough code.line-code{
+  font-variant-ligatures:none;
+}
+.code-block code .syntax-keyword,
+.source-walkthrough .syntax-keyword {color:#d4a6ff;font-weight:650}
+.code-block code .syntax-type,
+.source-walkthrough .syntax-type {color:#78c8ff}
+.code-block code .syntax-function,
+.source-walkthrough .syntax-function {color:#9cbcff}
+.code-block code .syntax-property,
+.source-walkthrough .syntax-property {color:#ffcf86}
+.code-block code .syntax-string,
+.source-walkthrough .syntax-string {color:#a9e8a4}
+.code-block code .syntax-number,
+.source-walkthrough .syntax-number {color:#ffad85}
+.code-block code .syntax-comment,
+.source-walkthrough .syntax-comment {color:#9cadc3;font-style:italic}
+.code-block code .syntax-annotation,
+.source-walkthrough .syntax-annotation {color:#ffd18a}
+.code-block code .syntax-literal,
+.source-walkthrough .syntax-literal {color:#ff99b5}
+.code-block code .syntax-punctuation,
+.source-walkthrough .syntax-punctuation {color:#c5d3e5}
+.code-block code[data-language="shell"] .syntax-function{color:#80e0f6;font-weight:700}
+.copy-button{color:#d5ecff;background:#223b5b;border-color:#456789}
+.copy-button:hover{background:#31557b;color:#fff}
+
+/* Las 42 líneas explicadas también muestran código coloreado. */
+.source-walkthrough{background:#0d182b;border-color:#30445f}
+.source-row{border-bottom-color:#2b415e}
+.source-row:nth-child(even){background:#14243c}
+.source-row code.line-code{
+  color:#e8f0fa;
+  background:transparent;
+  padding:5px 0;
+  border-radius:0;
+  font-weight:500;
+}
+.source-row .line-no{background:#253e61;color:#d4e8ff}
+.source-row .line-explanation p{color:#c4d4eb}
+.source-row .line-group{color:#89dafa}
+body[data-theme="dark"] .source-row .line-no{background:#253e61;color:#d4e8ff}
+body[data-theme="dark"] .source-row code.line-code{background:transparent;color:#e8f0fa}
