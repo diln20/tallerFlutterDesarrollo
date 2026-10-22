@@ -4,9 +4,9 @@
 
   const ROUTES = [
     'inicio', 'preparacion', 'punto-entrada', 'estructura', 'diseno',
-    'campo-texto', 'responsive', 'estado', 'formularios', 'proyecto', 'bloc'
+    'campo-texto', 'responsive', 'estado', 'formularios', 'proyecto', 'bloc', 'catalogo-widgets'
   ];
-  const LESSONS = ROUTES.filter((route) => route !== 'inicio');
+  const LESSONS = ROUTES.filter((route) => route !== 'inicio' && route !== 'catalogo-widgets');
   const STORAGE_PREFIX = 'tallerFlutterDesarrollo.v1.';
   const sidebar = document.getElementById('sidebar');
   const menuOpen = document.getElementById('sidebar-open');
@@ -360,6 +360,10 @@
     }
   });
 
+  document.addEventListener('flutterlab:catalog-code', () => {
+    installSyntaxHighlighting();
+    installCopyButtons();
+  });
   installSyntaxHighlighting();
   installCopyButtons();
   initChecklistStorage();
