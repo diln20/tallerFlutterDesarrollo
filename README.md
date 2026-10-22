@@ -17,6 +17,15 @@ Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiand
 - Primer formulario simulado en **9 pasos**, ahora construido directamente desde el `main.dart` original de 42 líneas: `Text`, `TextField` y `ElevatedButton` se insertan después de la `Row` real. Luego se enseña el cambio a `StatefulWidget`, `TextEditingController`, la acción `debugPrint`, `clear()` y `dispose()`, sin listas ni `for`.
 - En teléfonos pequeños, selector entre Antes y Después en lugar de comprimir ambas pantallas.
 
+### Antes y después: diferencias comprobables
+
+La comparación ya no repite el mismo código o la misma imagen cuando el paso ocurre en el editor o en la terminal:
+
+- **Preparación:** primero VS Code sin carpeta; después el Explorador con `actividad2a → lib → main.dart` seleccionado. En el siguiente paso, el comando `flutter pub get` pasa de pendiente a una **salida ilustrativa** (la página no ejecuta órdenes); `flutter run` lleva a la representación de la Tienda.
+- **Primer Dart:** las instrucciones `import`, `main()`, `runApp` y `MainApp` aparecen progresivamente. Nunca se muestra un archivo completo antes de que el estudiante haya añadido sus partes.
+- **Cambios internos sin efecto visual:** cuando solo cambia una variable, un controlador, `StatefulWidget` o un método, se presenta un **mapa Antes → Después del código**, indicando claramente que la pantalla de Flutter continúa igual. Los pasos de lectura se identifican como tales, sin inventar nuevas modificaciones.
+- **Cambios de interfaz:** la comparación enseña visualmente el widget añadido o modificado. Todas las salidas del editor, terminal y móvil son simulaciones didácticas, no capturas ni ejecuciones del equipo real.
+
 **Exactitud pedagógica:** la vista es una simulación visual HTML y está identificada como tal. No representa una captura ni una ejecución real de Flutter. Los primeros módulos muestran la construcción del código de clase y los pasos 06–10 describen mejoras propuestas; algunos cambios de Dart (como declarar `StatefulWidget` o una variable) **no generan ningún cambio visual inmediato**, y así se señala explícitamente.
 
 ## Dónde va cada fragmento del primer formulario
