@@ -101,6 +101,35 @@
     <div class="pv-editor-status">${esc(footer)}</div>
   </div>`;
 }
+    function nonVisualUI(id,index){
+ const matrix={
+  'punto-entrada':{4:['Reconocer sin escribir código nuevo','const y super.key ya estaban presentes','Entiendes para qué sirven y cuándo usar const','No se agrega ni se elimina ningún widget.']},
+  estructura:{0:['Ubicar lo que ya existía','Scaffold ya muestra «Primer widget»','Identificamos dónde están body, Center y Text','Este paso es de lectura: no modifica la interfaz ni necesita pegar código.']},
+  'campo-texto':{0:['Partir de la fila existente','Row con icono, espacio y texto','Reconoces dónde se añadirá Expanded con TextField','El buscador aún no se ha incorporado en esta etapa.']},
+  responsive:{1:['Preparar desplazamiento','Column sin contenedor desplazable','SingleChildScrollView envuelve la misma Column','El scroll solo es evidente si el contenido supera la altura disponible.'],
+    2:['Configurar la alineación','Column con alineación predeterminada','Column con crossAxisAlignment.stretch','El efecto se apreciará al reorganizar los widgets siguientes.']},
+  estado:{0:['Cambiar la clase principal','MainApp: StatelessWidget','MainApp: StatefulWidget y _MainAppState','El árbol de widgets se conserva; cambia la estructura del programa.'],
+    1:['Declarar estado','_MainAppState sin busqueda','_MainAppState guarda String busqueda = \'\';','La nueva variable no se muestra hasta que agreguemos un Text que la lea.'],
+    2:['Leer lo escrito','TextField sin onChanged','TextField con onChanged que actualiza busqueda mediante setState','Ya se procesa la entrada, pero todavía falta el widget que muestra ese valor.']},
+  formularios:{0:['Agregar datos de ejemplo','State sin catálogo','State con cuatro nombres dentro de List<String>','La lista existe en el código, pero todavía no se está dibujando.'],
+    1:['Calcular coincidencias','build sin resultados','build calcula resultados usando where y busqueda','Hasta añadir ListTile, la pantalla no muestra estos resultados.']},
+  proyecto:{3:['Preparar el estado','MainApp: StatelessWidget','MainApp: StatefulWidget y _MainAppState','Se conserva el contenido del método build y toda la pantalla de la Tienda.'],
+    4:['Crear el controlador','State sin controlador de nombre','State con vehiculoController declarado una vez','La apariencia del campo no cambia por declarar el objeto.'],
+    5:['Enlazar el campo','Segundo TextField sin controller','Segundo TextField con controller: vehiculoController','Visualmente es el mismo campo, pero ahora podemos leer su texto y limpiarlo.'],
+    8:['Liberar recursos','State sin método dispose propio','dispose() libera vehiculoController y llama super.dispose()','La limpieza sucede al finalizar el State, no al dibujar ni pulsar.']},
+  bloc:{0:['Comparar arquitectura futura','State agrupa la lógica de búsqueda','Evento → BLoC → Estado separaría responsabilidades','Es una explicación conceptual: BLoC aún no está implementado.']}
+ };
+ const d=matrix[id]?.[index];if(!d)return '';
+ const [name,before,after,detail]=d;
+ return `<section class="pv-code-difference" aria-label="Diferencia real de este paso">
+    <header><span>DIFERENCIA REAL DEL PASO</span><strong>${esc(name)}</strong></header>
+    <div class="pv-diff-row"><div class="pv-diff-old"><small>ANTES</small><p>${esc(before)}</p></div>
+      <span class="pv-diff-arrow" aria-hidden="true">→</span>
+      <div class="pv-diff-new"><small>DESPUÉS</small><p>${esc(after)}</p></div></div>
+    <p class="pv-diff-detail">${esc(detail)} <strong>El fragmento exacto y su ubicación se explican debajo.</strong></p>
+    <small class="pv-diff-warning">Mapa conceptual para comparar; no es código para copiar.</small>
+  </section>`;
+}
   function searchUI(v,which,highlight,r){
     const value=which==='after'?r.query:(v.query||'');
     return `<div class="pv-search${v.searchInline?' pv-search-inline':''}${v.outlined?' pv-bordered':''}${highlight==='search'&&which==='after'?' pv-glow':''}">
@@ -185,6 +214,8 @@
         clearAfterSave:!!after.clearAfterSave,debugMessage:''};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
+    const editorTransition=internal&&before.editor&&after.editor;
+    const effectType=editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
     slot.innerHTML=`<section class="pv-shell" data-pv-module="${id}">
       <header class="pv-header"><div><span class="pv-kicker">${status[item.kind||cfg.kind]}</span>
@@ -196,7 +227,7 @@
         ${cfg.steps.map((s,n)=>`<button type="button" class="pv-step${n===i?' pv-active':''}" data-pv-step="${n}" aria-pressed="${n===i}"><span>${String(n+1).padStart(2,'0')}</span>${esc(s.name)}</button>`).join('')}
       </nav>
       <div class="pv-effect"><div class="pv-effect-top"><strong>${esc(item.name)}</strong>
-          <span class="pv-effect-type${internal?' pv-internal':''}">${internal?'Sin cambio visual inmediato':'Cambio representado'}</span></div>
+          <span class="pv-effect-type${internal?' pv-internal':''}">${esc(effectType)}</span></div>
         <p>${esc(item.effect)}</p>${item.note?`<p class="pv-special-note">${esc(item.note)}</p>`:''}
       </div>
       <div class="pv-mobile-toggle" aria-label="Comparar las dos versiones">
@@ -210,19 +241,20 @@
             {...runtime,query:before.query||'',addedCars:before.added?[before.added]:[],invalid:!!before.validationError})}</div>
         </div>
         <div class="pv-side pv-after${phase==='after'?' pv-selected':''}" data-pv-side="after">
-          <div class="pv-side-heading"><strong>DESPUÉS</strong><span>${internal?'Interfaz igual; cambia el código':'Elemento modificado resaltado'}</span></div>
+          <div class="pv-side-heading"><strong>DESPUÉS</strong><span>${editorTransition?'Ahora puedes identificar el cambio':internal?'Misma pantalla; cambia el código':'Elemento modificado resaltado'}</span></div>
           <div class="pv-preview-area">${screenUI(after,'after',item.highlight,runtime)}</div>
         </div>
       </div>
-      ${id==='proyecto'?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
+      ${internal&&!editorTransition?nonVisualUI(id,i):''}
+       ${id==='proyecto'?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
-        <span class="pv-result-status">${internal?'Este paso prepara lógica o estructura y no introduce nuevos elementos visuales.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
+        <span class="pv-result-status">${editorTransition?'Observa el cambio en el VS Code o terminal simulados; Flutter aún no cambia.':internal?'La pantalla sigue igual: revisa el mapa de la diferencia real y el fragmento Dart.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
       <div class="pv-code-explain">
-        <div class="pv-code-intro"><div><strong>¿Qué código provoca este efecto?</strong><p>Identifica las líneas resaltadas: verde para añadir, ámbar para reemplazar y azul para observar. La guía inferior indica dónde van en main.dart.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
+        <div class="pv-code-intro"><div><strong>${id==='preparacion'?'¿Qué archivo localizar o comando ejecutar?':id==='bloc'?'¿Qué idea representa el paso?':'¿Qué código corresponde a este paso?'}</strong><p>La vista o el mapa muestran el cambio real. Las líneas coloreadas y la guía inferior indican qué añadir, reemplazar u observar.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
         <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
