@@ -58,6 +58,22 @@ Los ejemplos son **versiones acumulativas de la misma Tienda**, y sirven para co
 
 Los archivos de las etapas 06 a 09 describen **posibles prácticas siguientes**, no avances que el docente ya haya realizado con sus estudiantes.
 
+## Catálogo visual de widgets Flutter
+
+En el menú lateral encontrarás la sección **Catálogo de widgets**:
+
+- **128 widgets de referencia** organizados en 10 categorías: estructura y navegación, diseño, texto e imágenes, botones y formularios, listas, mensajes, gestos, estado/asíncrono, animación y Cupertino.
+- **Vista previa conceptual** de cada widget elaborada con HTML y CSS para comprender su apariencia. Estas ilustraciones no sustituyen a ejecutar los widgets en Flutter.
+- **Propiedades explicadas** con nombre, tipo y propósito, buscables desde el cuadro de detalle.
+- **Ejemplo en Dart** de cada widget y enlace a su documentación oficial en `api.flutter.dev`.
+- **Simulador de AppBar** para modificar el título, el color de fondo, el centrado, el icono inicial, los botones de acciones, la altura y la elevación. El ejemplo de código cambia junto a los controles.
+- **Todas las 34 propiedades del constructor AppBar** también se muestran en el módulo 03 sobre la estructura de la pantalla `actividad2a`.
+- Los componentes ya empleados en `actividad2a` están marcados «En actividad2a» para favorecer la secuencia didáctica.
+
+La biblioteca no pretende sustituir el inventario completo de Flutter, que continúa evolucionando. Para el índice íntegro y actualizado: https://docs.flutter.dev/reference/widgets
+
+**Acceso directo:** https://diln20.github.io/tallerFlutterDesarrollo/#catalogo-widgets
+
 ## Cómo usar la página
 
 - Menú por módulos, enlaces directos y buscador que revisa **también las explicaciones internas**.
