@@ -113,7 +113,7 @@
     for(const [id,items]of Object.entries(data.preview)){
       if(id==='proyecto')continue; // Ya tiene una guía más extensa con código incremental.
       const host=document.getElementById('pv-'+id);
-      if(!host)return; // Se ejecutará también al terminar de montar las vistas.
+      if(!host)continue; // Otros modulos pueden no estar montados todavia.
       const preview=host.querySelector('.pv-shell');
       if(!preview)continue;
       const chosen=preview.querySelector('.pv-step[data-pv-step][aria-pressed="true"]');
