@@ -221,6 +221,10 @@
 
   function installCopyButtons() {
     document.querySelectorAll('pre.code-block').forEach((pre) => {
+      if (pre.dataset.codeReadonly === 'true') {
+        pre.querySelector('button.copy-button')?.remove();
+        return;
+      }
       if (pre.querySelector('button.copy-button')) return;
       const code = pre.querySelector('code');
       if (!code) return;
