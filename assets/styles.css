@@ -1073,3 +1073,22 @@ body[data-theme=dark] .pv-result-status{color:#e5b872}
   .pv-step-list,.pv-nav-bottom,.pv-code-link{display:none}
   .pv-compare{grid-template-columns:1fr 1fr}
 }
+
+
+/* Acceso a la evolución progresiva en el inicio del curso. */
+.pv-home-announcement{
+  display:flex;flex-wrap:wrap;align-items:center;gap:11px 21px;
+  margin:22px 0 2px;padding:19px 22px;
+  background:var(--surface);border:1px solid var(--border);
+  border-left:4px solid #4985c7;border-radius:11px
+}
+.pv-home-announcement strong{font-size:13px;color:var(--heading)}
+.pv-home-announcement p{flex:1 1 320px;margin:0;font-size:11px;line-height:1.8;color:var(--text-soft)}
+.pv-home-announcement a{font-size:11px;font-weight:850;color:var(--blue);white-space:normal;text-decoration:none}
+.pv-home-announcement a:hover{text-decoration:underline}
+.deep-details-body>.pv-code-link{margin-top:12px}
+.pv-code-link{border-radius:9px;margin-top:0}
+@media(max-width:620px){
+  .pv-home-announcement{align-items:flex-start;flex-direction:column}
+  .pv-home-announcement p{flex:auto}
+}
