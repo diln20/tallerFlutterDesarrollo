@@ -12,6 +12,10 @@
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="stylesheet" href="./assets/styles.css">
   <script src="./assets/app.js" defer></script>
+  <script src="./assets/widgets-core.js" defer></script>
+  <script src="./assets/widgets-controls.js" defer></script>
+  <script src="./assets/widgets-advanced.js" defer></script>
+  <script src="./assets/widget-catalog.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -39,6 +43,10 @@
       <nav class="nav-list" id="lesson-nav" aria-label="Módulos">
         <div class="nav-group-label">EMPEZAR AQUÍ</div>
         <a class="nav-link is-active" href="#inicio" data-route="inicio" data-search="inicio portada recorrido ruta guía"><span class="nav-symbol" aria-hidden="true">⌂</span><span>Inicio del taller</span></a>
+        <div class="nav-group-label">BIBLIOTECA PARA CONSULTAR</div>
+        <a class="nav-link wc-sidebar-entry" href="#catalogo-widgets" data-route="catalogo-widgets" data-search="catalogo biblioteca widgets flutter propiedades AppBar vista previa componentes botones listas formularios diseño">
+          <span class="nav-symbol" aria-hidden="true">▦</span><span>Catálogo de widgets</span><span class="wc-sidebar-count" aria-label="128 widgets">128</span>
+        </a>
         <div class="nav-group-label">LO QUE YA VIMOS EN CLASE</div>
         <a class="nav-link" href="#preparacion" data-route="preparacion" data-search="preparacion instalación flutter doctor proyecto ejecutar emulador"><span class="lesson-index">01</span><span>Preparar el proyecto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#punto-entrada" data-route="punto-entrada" data-search="main dart runapp import flutter statelesswidget super key const build"><span class="lesson-index">02</span><span>Entender main.dart</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -332,7 +340,49 @@ class MainApp extends StatelessWidget {
 <h3>6. Problemas que conviene reconocer</h3>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Síntoma</th><th scope="col">Causa probable</th><th scope="col">Pista de solución</th></tr></thead><tbody><tr><td>La pantalla no tiene título.</td><td>El <code>AppBar</code> está ausente o no está conectado a <code>appBar:</code>.</td><td>Comprueba la estructura exacta de <code>Scaffold</code>.</td></tr><tr><td>Aparece el título, pero no el cuerpo.</td><td>Puede faltar <code>body:</code> o estar mal cerrado su widget.</td><td>Localiza dónde abre y cierra el cuerpo.</td></tr><tr><td><code>The named parameter ... isn't defined</code>.</td><td>Se colocó un argumento en un widget que no lo acepta, o se escribió mal.</td><td>Revisa el widget propietario de ese argumento.</td></tr><tr><td>El texto dice otra cosa distinta del esperado.</td><td>Se cambió la cadena literal entre comillas.</td><td>Compara con el <code>main.dart</code> de referencia.</td></tr></tbody></table></div>
 <div class="guided-check"><strong>Comprobación de comprensión</strong><p>¿Cuál es la diferencia entre <code>appBar</code> y <code>body</code>? ¿Por qué <code>Text('Tienda')</code> está dentro de <code>AppBar</code>? ¿En qué línea cambiarías el texto central sin modificar la barra?</p><details><summary>Ver orientación</summary><p><code>appBar</code> recibe el widget de la barra superior; <code>body</code> recibe el contenido principal. El <code>Text('Tienda')</code> es el título de AppBar. El texto central está en el <code>Text</code> que aparece como hijo de <code>Center</code> dentro de <code>body</code>.</p></details></div>
-</div><h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
+</div><div class="deep-dive wc-appbar-lesson" id="appbar-guia-props">
+          <div class="deep-heading"><span>REFERENCIA COMPLETA · APPBAR EN ACTIVIDAD2A</span>
+            <h2>AppBar: para qué sirve cada una de sus propiedades</h2>
+            <p>En la clase solo escribimos <code>AppBar(title: const Text('Tienda'))</code>. Sin cambiar esa versión, aquí tienes las opciones que podrás agregar después: iconos, título, colores, elevación, altura, pestañas y accesibilidad.</p>
+          </div>
+          <h3>1. Partimos exactamente de lo que ya vimos</h3>
+          <div class="code-label">Código que ya existe en actividad2a</div><pre class="code-block"><code>appBar: AppBar(title: const Text('Tienda')),</code></pre>
+          <p><code>appBar:</code> es una propiedad de <code>Scaffold</code>. A su derecha colocamos un widget <code>AppBar</code>, cuyo argumento <code>title:</code> recibe un widget <code>Text</code>. La palabra <code>const</code> se aplica al Text porque su constructor y su argumento son constantes.</p>
+          <h3>2. Una ampliación guiada, sin alterar el original</h3>
+          <div class="code-label">Propuesta para la copia de actividad2a-guia</div><pre class="code-block"><code>appBar: AppBar(
+  title: const Text('Tienda'),
+  centerTitle: true,
+  backgroundColor: Colors.indigo,
+  foregroundColor: Colors.white,
+  elevation: 2,
+  toolbarHeight: 64,
+  actions: [
+    IconButton(
+      tooltip: 'Buscar vehículo',
+      onPressed: () {},
+      icon: const Icon(Icons.search),
+    ),
+  ],
+),</code></pre>
+          <div class="line-notes numbered">
+            <div><strong><code>title</code></strong><p>El título de la pantalla. En nuestro caso es el mismo Text('Tienda') de siempre.</p></div>
+            <div><strong><code>centerTitle: true</code></strong><p>Pide que el título se muestre centrado. Sin definirlo, la posición puede cambiar según el sistema o el tema.</p></div>
+            <div><strong><code>backgroundColor</code></strong><p>Cambia el color del fondo de la barra, aquí a índigo.</p></div>
+            <div><strong><code>foregroundColor</code></strong><p>Establece el color general del texto e iconos de la barra, aquí blanco para mejorar el contraste.</p></div>
+            <div><strong><code>elevation: 2</code></strong><p>Configura una elevación de 2 píxeles lógicos para el efecto visual de profundidad. Puede depender del estilo Material activo.</p></div>
+            <div><strong><code>toolbarHeight: 64</code></strong><p>Da 64 píxeles lógicos de alto a la barra de herramientas; la altura habitual es 56.</p></div>
+            <div><strong><code>actions: [...]</code></strong><p>Agrega widgets de acción a la derecha. Usamos una lista de botones de búsqueda.</p></div>
+            <div><strong><code>onPressed: () {}</code></strong><p>Es la función que recibe el botón. Por ahora está vacía: el icono se puede tocar, pero todavía no ejecuta una búsqueda. La funcionalidad llegará en otro paso.</p></div>
+          </div>
+          <h3>3. Practica con la vista previa de AppBar</h3>
+          <p>En el catálogo podrás cambiar el título, el color, el centrado, los botones, la altura y la elevación. La simulación actualizará también un fragmento de Dart que podrás copiar.</p>
+          <button class="wc-open-appbar" id="open-appbar-explorer" type="button">Abrir simulador interactivo de AppBar →</button>
+          <h3>4. Tabla de todas las propiedades del constructor</h3>
+          <p>Esta tabla explica las 34 propiedades disponibles en el constructor de <code>AppBar</code> según la documentación oficial consultada. Las propiedades avanzadas, como <code>systemOverlayStyle</code> o <code>notificationPredicate</code>, se pueden estudiar más adelante.</p>
+          <div id="appbar-properties-table" class="wc-appbar-property-host"></div>
+          <div class="notice notice-info"><strong>¿Y si tengo un Drawer o varias páginas?</strong><p>Cuando <code>automaticallyImplyLeading</code> está activo, AppBar puede incluir automáticamente el icono para abrir un Drawer o el botón de regreso. Si escribes un <code>leading</code> propio, ese comportamiento automático cambia. Por eso debes estudiar primero el concepto de navegación.</p></div>
+          <p><a href="https://api.flutter.dev/flutter/material/AppBar/AppBar.html" target="_blank" rel="noopener noreferrer">Ver la firma del constructor AppBar en la documentación oficial ↗</a></p>
+        </div><h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
           <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dibuja tu propia jerarquía</h3><p>Representa en una hoja el árbol de widgets desde <code>MainApp</code> hasta el primer <code>Text</code> del cuerpo. Usa flechas para indicar qué widget está dentro de cuál.</p><details><summary>Ver orientación</summary><p>MainApp → MaterialApp → Scaffold → body → Center → Column → Text.</p></details></div>
           <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_03_tienda.dart" target="_blank" rel="noopener noreferrer">Construir la barra Tienda: paso_03_tienda.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="estructura">Marcar módulo como completado</button><a class="next-link" href="#diseno">Siguiente: Organizar widgets →</a></div>
@@ -1413,10 +1463,32 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="guided-check"><strong>Reto: explicar BLoC sin escribir código</strong><p>El estudiante introduce «Mazda». Describe los pasos desde que se escribe hasta que aparece «Mazda 3» en pantalla. Luego explica qué ocurriría al escribir «ModeloInexistente».</p><details><summary>Ver orientación</summary><p>La interfaz emite la búsqueda, la lógica encuentra las coincidencias y produce un estado que contiene Mazda 3. Para «ModeloInexistente», la lógica devuelve una lista vacía o un estado sin resultados y la pantalla muestra el mensaje correspondiente.</p></details></div>
 <div class="notice notice-info"><strong>Estado del repositorio</strong><p>El código base de actividad2a no tiene BLoC ni dependencias adicionales. Aquí se explica el concepto; la implementación podrá añadirse a la copia de la guía una vez que las versiones anteriores estén dominadas.</p></div>
 </div><div class="lesson-end"><button class="button button-complete" data-complete="bloc">Marcar módulo como completado</button><a class="next-link" href="#inicio">Siguiente: Volver al inicio →</a></div></section>
+<section class="page catalog-page" id="catalogo-widgets" aria-labelledby="catalogo-title">
+          <div class="wc-page-hero">
+            <div class="wc-hero-intro">
+              <span class="wc-eyebrow">BIBLIOTECA VISUAL DE FLUTTER</span>
+              <h1 id="catalogo-title">Catálogo de widgets <span>con vista previa</span></h1>
+              <p>Aprende qué hace cada widget, cómo se ve y cuáles son sus propiedades. Puedes buscar por nombre, propiedad o función. Los widgets que ya utilizas en <code>actividad2a</code> están identificados.</p>
+              <div class="wc-hero-facts"><span><strong id="catalog-total">128</strong> widgets didácticos</span><span><strong>10</strong> categorías</span><span><strong>34</strong> propiedades de AppBar</span></div>
+            </div>
+            <div class="wc-hero-art" aria-hidden="true"><div class="wc-art-phone"><div class="wc-art-appbar"><span>☰</span><strong>Tienda</strong><span>⌕</span></div><div class="wc-art-body"><div>🚘</div><span>Buscar marca o modelo</span><p></p><p></p></div></div><div class="wc-art-label">Material · AppBar</div></div>
+          </div>
+          <div class="wc-catalog-intro">
+            <div><h2>Explora los componentes</h2><p>Selecciona una tarjeta para ver la simulación en grande, las propiedades, el código Dart y su documentación oficial.</p></div>
+            <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">Índice oficial completo de Flutter ↗</a>
+          </div>
+          <div class="wc-search-bar"><label for="catalog-search">Buscar por widget, propiedad o uso</label><div class="wc-search-line"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Ej. AppBar, TextField, backgroundColor, formularios…" autocomplete="off"><button id="catalog-clear" type="button" hidden>Limpiar</button></div></div>
+          <div class="wc-filter-row" id="catalog-filters" role="group" aria-label="Filtrar por categoría"></div>
+          <div class="wc-results-header"><strong id="catalog-count" aria-live="polite">Cargando widgets…</strong><span>Ejemplos de Dart y propiedades explicadas</span></div>
+          <div class="wc-catalog-grid" id="catalog-grid"></div>
+          <div id="catalog-empty" class="wc-empty" hidden><strong>No encontramos widgets con ese texto.</strong><p>Prueba otra palabra, como «layout», «AppBar», «text» o «color».</p></div>
+          <div class="wc-catalog-footer"><strong>¿Buscas absolutamente todos los widgets del SDK?</strong><p>Esta biblioteca reúne 128 componentes relevantes para el taller y aplicaciones Flutter habituales; Flutter incluye muchos más, y su catálogo crece. Para consultar el inventario íntegro y actualizado, utiliza el <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">índice oficial de Flutter ↗</a>.</p></div>
+        </section>
       </main>
       <footer class="page-footer"><span>FlutterLab · Taller de Desarrollo Móvil</span><span>Guía viva basada en <code>actividad2a</code> · <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer">Ver el código fuente ↗</a></span></footer>
     </div>
   </div>
+  <dialog id="widget-detail" class="wc-detail-dialog" aria-labelledby="wc-detail-title"></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <noscript><p class="noscript">Esta guía utiliza JavaScript para navegar entre los módulos y guardar tu progreso. Actívalo para usar todas las funciones.</p></noscript>
 </body>
