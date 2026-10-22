@@ -1,7 +1,7 @@
 (function flutterStagePreviews(){
   'use strict';
   const data=window.FlutterLabStageData||{};
-  const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','responsive','estado','formularios','proyecto','bloc'];
+  const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','responsive','estado','formularios','bloc'];
   const baseCars=['Renault 9','Renault 21','Mazda 3','Chevrolet Spark'];
   const runtimeMap=new Map();
   const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -86,6 +86,50 @@
       <p class="pv-ide-term-tip">La pantalla aún no se ha iniciado. En «Después» verás cómo se representa la aplicación original.</p>
       </div>`;
     footer='PENDIENTE · Iniciar la aplicación';
+  } else if(mode==='folders'){
+    const names=['pages','widgets','models','services','repositories','bloc'];
+    const count=Math.max(0,Math.min(names.length,Number(v.folderCount)||0));
+    const rows=names.map((name,i)=>i<count?
+      '<div class="pv-tree-item pv-folder-created'+(i===count-1&&which==='after'?' pv-folder-new':'')+'">▣ '+esc(name)+'/</div>':
+      '<div class="pv-tree-item pv-folder-pending">○ '+esc(name)+'/ · pendiente</div>').join('');
+    content='<div class="pv-ide-folder-tree">'+
+      '<div class="pv-ide-explorer-title">EXPLORADOR · actividad2a</div>'+
+      '<div class="pv-tree-root">▾ actividad2a</div>'+
+      '<div class="pv-tree-item">▾ lib/</div>'+
+      '<div class="pv-tree-item pv-folder-original">▤ main.dart · no mover</div>'+
+      rows+
+      '<div class="pv-tree-item pv-folder-original">◇ pubspec.yaml · raíz del proyecto</div>'+
+      '<div class="pv-folder-footnote">Solo carpetas vacías: no se han añadido archivos ni funcionalidades.</div></div>';
+    footer='CARPETAS CREADAS · '+count+' / 6 · main.dart conservado';
+  } else if(mode==='newfile'){
+    const file=String(v.fileName||'archivo.dart');
+    const dir=file==='vehiculo.dart'?'models':'widgets';
+    const exists=Boolean(v.filePresent);
+    const filled=Boolean(v.fileCode);
+    const example=file==='vehiculo.dart'?
+      ['class Vehiculo {','  const Vehiculo({required this.nombre, this.disponible = true});',
+       '  final String nombre;','  final bool disponible;','}']:
+      ["import 'package:flutter/material.dart';",
+       'class TituloSeccion extends StatelessWidget {',
+       '  const TituloSeccion({super.key, required this.texto});',
+       '  final String texto;','  @override',
+       '  Widget build(BuildContext context) => Text(texto);','}'];
+    const codes=filled?example.map((text,i)=>line(text,i+1,which==='after')).join(''):
+      '<div class="pv-ide-file-empty">'+(exists?'El archivo está creado. El siguiente paso será escribir su clase.':
+      'Todavía no existe este archivo en la carpeta '+esc(dir)+'.')+'</div>';
+    content='<div class="pv-ide-grid"><aside class="pv-ide-explorer">'+
+      '<div class="pv-ide-explorer-title">EXPLORADOR</div>'+
+      '<div class="pv-tree-root">▾ actividad2a</div>'+
+      '<div class="pv-tree-item">▾ lib/</div>'+
+      '<div class="pv-tree-item">▾ '+esc(dir)+'/</div>'+
+      (exists?'<div class="pv-tree-item pv-ide-selected">▤ '+esc(file)+'</div>':
+      '<div class="pv-tree-item pv-folder-pending">○ Sin archivo todavía</div>')+
+      '<div class="pv-tree-item">▤ main.dart · intacto</div>'+
+      '</aside><div class="pv-ide-code-pane">'+
+      '<div class="pv-ide-code-caption">'+esc(dir)+'/'+esc(file)+'</div>'+
+      '<div class="pv-ide-code-scroll">'+codes+'</div></div></div>';
+    footer=exists?'ARCHIVO CREADO · lib/'+dir+'/'+file:
+      'PENDIENTE · Crear '+file;
   } else if(mode==='dart'){
     const visible=stageCode.filter(x=>x.tier<=codeStage);
     const code=codeStage>0?visible.map((x,i)=>line(x.text,i+1,x.tier===codeStage&&which==='after')).join(''):
@@ -101,7 +145,7 @@
     <div class="pv-editor-status">${esc(footer)}</div>
   </div>`;
 }
-    function nonVisualUI(id,index){
+    function nonVisualUI(id,index,item){
  const matrix={
   'punto-entrada':{4:['Reconocer sin escribir código nuevo','const y super.key ya estaban presentes','Entiendes para qué sirven y cuándo usar const','No se agrega ni se elimina ningún widget.']},
   estructura:{0:['Ubicar lo que ya existía','Scaffold ya muestra «Primer widget»','Identificamos dónde están body, Center y Text','Este paso es de lectura: no modifica la interfaz ni necesita pegar código.']},
@@ -119,7 +163,7 @@
     8:['Liberar recursos','State sin método dispose propio','dispose() libera vehiculoController y llama super.dispose()','La limpieza sucede al finalizar el State, no al dibujar ni pulsar.']},
   bloc:{0:['Comparar arquitectura futura','State agrupa la lógica de búsqueda','Evento → BLoC → Estado separaría responsabilidades','Es una explicación conceptual: BLoC aún no está implementado.']}
  };
- const d=matrix[id]?.[index];if(!d)return '';
+ const d=matrix[id]?.[index] || (item?.beforeCode&&item?.afterCode?[item.name,item.beforeCode,item.afterCode,item.effect]:null);if(!d)return '';
  const [name,before,after,detail]=d;
  return `<section class="pv-code-difference" aria-label="Diferencia real de este paso">
     <header><span>DIFERENCIA REAL DEL PASO</span><strong>${esc(name)}</strong></header>
@@ -153,13 +197,14 @@
     const showField=v.formField!==false;
     const showButton=v.addButton!==false;
     const ready=v.formReady!==false;
+    const errorText=r.validationMessage||(r.model&&r.model.trim().length<3?'Mínimo 3 caracteres':'Escribe un nombre');
     return `<section class="pv-form">
       ${showTitle?`<strong class="${highlight==='form-title'&&which==='after'?'pv-glow':''}">Agregar un vehículo</strong>`:''}
       ${showField?`${v.simpleForm?'':`<label class="${highlight==='form-field'&&which==='after'?'pv-glow':''}">Nombre del vehículo</label>`}
       <input type="text" data-pv-model="${which}" value="${which==='after'?esc(r.model):''}"
         class="${highlight==='form-field'&&which==='after'?'pv-glow':''}"
         placeholder="${v.simpleForm?'Nombre del vehículo':'Ej. Toyota Corolla'}" autocomplete="off"
-        ${which==='before'?'readonly tabindex="-1"':''}>`:''}
+        ${which==='before'?'readonly tabindex="-1"':''}>${v.validationEnabled&&which==='after'?`<div class="pv-validation" data-pv-error ${r.invalid?'':'hidden'}>${esc(errorText)}</div>`:''}`:''}
       ${showButton?`<button type="button" class="pv-submit${highlight==='button'&&which==='after'?' pv-glow':''}"
         ${which==='after'&&ready?'data-pv-submit':''}
         ${which==='before'?'disabled':''}>Agregar vehículo</button>`:''}
@@ -210,7 +255,7 @@
     const runtime=preserveState&&oldRuntime?.step===i?
       {...oldRuntime,phase}:
       {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
-        model:'',invalid:!!after.validationError,snackbar:after.snackbar||'',
+        model:'',invalid:!!after.validationError,validationMessage:'Escribe un nombre',snackbar:after.snackbar||'',
         clearAfterSave:!!after.clearAfterSave,debugMessage:''};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
@@ -245,8 +290,8 @@
           <div class="pv-preview-area">${screenUI(after,'after',item.highlight,runtime)}</div>
         </div>
       </div>
-      ${internal&&!editorTransition?nonVisualUI(id,i):''}
-       ${id==='proyecto'?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
+      ${internal&&!editorTransition?nonVisualUI(id,i,item):''}
+       ${['proyecto','validacion','objeto'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
@@ -255,7 +300,7 @@
       </div>
       <div class="pv-code-explain">
         <div class="pv-code-intro"><div><strong>${id==='preparacion'?'¿Qué archivo localizar o comando ejecutar?':id==='bloc'?'¿Qué idea representa el paso?':'¿Qué código corresponde a este paso?'}</strong><p>La vista o el mapa muestran el cambio real. Las líneas coloreadas y la guía inferior indican qué añadir, reemplazar u observar.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
-        <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':'Dart'} · ${esc(item.name)}</div>
+        <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':id==='carpetas'?'PowerShell · carpetas':id==='reutilizacion'&&i===0||id==='objeto'&&i===0?'Ruta de archivo':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
       <div class="pv-nav-bottom">
@@ -289,6 +334,10 @@
     estado:[0,2,3,4],
     formularios:[0,1,2,3],
     proyecto:[0,1,2,3,4,5,6,7,8,0,8],
+    carpetas:[0,0,1,2,3,4,5],
+    reutilizacion:[0,1,2,3,4,4,4],
+    validacion:[0,1,2,3,4,4,4],
+    objeto:[0,1,2,3,4,4,4],
     bloc:[]
   };
   function linkCodeBlocks(){
@@ -319,7 +368,7 @@
     }
     const debug=wrapper.querySelector('[data-pv-debug-console]');
     if(debug){debug.hidden=!r.debugMessage;const line=debug.querySelector('[data-pv-debug-message]');if(line)line.textContent=r.debugMessage||'';}
-    const error=after.querySelector('[data-pv-error]');if(error)error.hidden=!r.invalid;
+    const error=after.querySelector('[data-pv-error]');if(error){error.hidden=!r.invalid;error.textContent=r.validationMessage||'Escribe un nombre';}
     let snackbar=after.querySelector('[data-pv-snackbar]');
     if(snackbar)snackbar.textContent='✓ '+r.snackbar;
     else if(r.snackbar){
@@ -363,12 +412,22 @@
     if(submit){
       const id=submit.closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       const name=r.model.trim();
+      if(id==='validacion'||id==='objeto'){
+        if(name.length<3){
+          r.invalid=true;
+          r.validationMessage=name.length?'Mínimo 3 caracteres':'Escribe un nombre';
+          r.debugMessage='';
+          updateResults(id);
+          return;
+        }
+      }
       if(!name)return;
-      if(id==='proyecto') r.debugMessage='Vehículo escrito: '+name;
+      if(id==='objeto') r.debugMessage='Vehículo creado: '+name+' - Disponible: true';
+      else if(['proyecto','validacion','reutilizacion'].includes(id)) r.debugMessage='Vehículo escrito: '+name;
       else r.addedCars.push(name);
       r.invalid=false;
       r.snackbar='';
-      if(r.clearAfterSave) {
+      if(r.clearAfterSave||id==='validacion'||id==='objeto') {
         r.model='';
         const field=submit.closest('[data-pv-side]')?.querySelector('[data-pv-model="after"]');
         if(field)field.value='';
