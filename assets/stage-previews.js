@@ -88,7 +88,7 @@
           ${v.results?carsUI(v,which,highlight,r):''}
           ${v.form?formUI(v,which,highlight,r):''}
         </div>
-        ${v.blocFlow?'<div class="pv-bloc-flow">Evento → BLoC → Estado <small>(concepto)</small></div>':''}
+        ${''}
         ${v.loading?'<div class="pv-loading"><span class="pv-spinner"></span> Buscando vehículos...</div>':''}
         ${(which==='after'&&r.snackbar)||(which==='before'&&v.snackbar)?
           `<div class="pv-snackbar" data-pv-snackbar>✓ ${esc(which==='after'?r.snackbar:v.snackbar)}</div>`:''}
@@ -96,14 +96,17 @@
       <div class="pv-home-indicator"><span></span></div>
     </div>`;
   }
-  function render(id,index,phase='after'){
+  function render(id,index,phase='after',preserveState=false){
     const cfg=data[id],slot=document.getElementById('pv-'+id);
     if(!cfg||!slot)return;
     const i=Math.max(0,Math.min(index,cfg.steps.length-1));
     const item=cfg.steps[i];
     const before=state(item.before),after=state(item.after);
-    const runtime={id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
-      model:'',invalid:!!after.validationError,snackbar:after.snackbar||''};
+    const oldRuntime=runtimeMap.get(id);
+    const runtime=preserveState&&oldRuntime?.step===i?
+      {...oldRuntime,phase}:
+      {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
+        model:'',invalid:!!after.validationError,snackbar:after.snackbar||''};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
@@ -135,13 +138,14 @@
           <div class="pv-preview-area">${screenUI(after,'after',item.highlight,runtime)}</div>
         </div>
       </div>
+      ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         <span class="pv-result-status">${internal?'Este paso prepara lógica o estructura y no introduce nuevos elementos visuales.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
       <div class="pv-code-explain">
         <div class="pv-code-intro"><div><strong>¿Qué código provoca este efecto?</strong><p>Fragmento que se estudia en este paso.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
-        <div class="code-label">Dart · ${esc(item.name)}</div>
+        <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
       <div class="pv-nav-bottom">
@@ -222,7 +226,7 @@
       const id=(step||dir||phase).closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       if(step)render(id,Number(step.dataset.pvStep),r.phase);
       else if(dir)render(id,r.step+(dir.hasAttribute('data-pv-next')?1:-1),r.phase);
-      else render(id,r.step,phase.dataset.pvPhase);
+      else render(id,r.step,phase.dataset.pvPhase,true);
       return;
     }
     if(jump){
