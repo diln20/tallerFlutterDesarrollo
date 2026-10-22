@@ -265,9 +265,9 @@ class MainApp extends StatelessWidget {
 }</code></pre>
 <p>En el siguiente módulo aprenderemos qué significan <code>MaterialApp</code>, <code>Scaffold</code>, <code>Center</code> y <code>Text</code>. Por ahora, identifícalos solo como los elementos que permiten mostrar «Primer widget» en pantalla.</p>
 <h3>5. Cómo formar una llamada con argumentos nombrados</h3>
-<div class="code-label">Ejemplo pequeño · Text y SizedBox</div><pre class="code-block"><code>const Text('Tienda')
-const SizedBox(height: 20)</code></pre>
-<p>En el primero, el texto es un argumento <strong>posicional</strong>: va directamente entre paréntesis. En el segundo, <code>height: 20</code> es un argumento <strong>nombrado</strong>: escribes su nombre, dos puntos y el valor. La palabra <code>const</code> es válida porque ambos ejemplos tienen constructores y valores que lo permiten.</p>
+<div class="code-label">Lectura guiada · widgets que luego irán dentro de children</div><pre class="code-block"><code>const Text('Tienda'),
+const SizedBox(height: 20),</code></pre>
+<p>Estos dos widgets se muestran para explicar sintaxis: <strong>no los pegues todavía</strong>, porque construiremos la <code>Column.children</code> en el módulo 04. Las comas indicarían cómo se separan dentro de esa lista. En el primero, el texto es un argumento <strong>posicional</strong>: va directamente entre paréntesis. En el segundo, <code>height: 20</code> es un argumento <strong>nombrado</strong>: escribes su nombre, dos puntos y el valor. La palabra <code>const</code> es válida porque ambos ejemplos tienen constructores y valores que lo permiten.</p>
 <h3>6. Errores al comenzar a escribir Dart</h3>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Problema</th><th scope="col">Por qué sucede</th><th scope="col">Cómo se corrige</th></tr></thead><tbody><tr><td><code>Expected to find ';'</code></td><td>Falta un punto y coma después de una instrucción.</td><td>Revisa el final de <code>runApp(...);</code> y el <code>return ...;</code>.</td></tr><tr><td><code>Expected to find ')'</code></td><td>Hay un paréntesis de apertura sin cerrar.</td><td>Empareja cada <code>(</code> con su <code>)</code> e indenta el código.</td></tr><tr><td><code>Undefined name 'MainApp'</code> o nombre no definido</td><td>Hay un error al escribir la clase o su referencia.</td><td>Comprueba las mayúsculas de <code>MainApp</code>, que Dart distingue de <code>mainApp</code>.</td></tr><tr><td>Error cerca de <code>children</code></td><td>Se confundieron corchetes con paréntesis o se omitió una coma.</td><td><code>children</code> espera una lista entre <code>[ ]</code>, cuyos elementos van separados por comas.</td></tr><tr><td>No se reconoce <code>Text</code> o <code>StatelessWidget</code></td><td>Puede faltar la importación de Material.</td><td>Revisa la línea <code>import 'package:flutter/material.dart';</code>.</td></tr></tbody></table></div>
 <div class="guided-check"><strong>Comprobación oral de clase</strong><p>Identifica en el código: una clase, una función, un constructor, una cadena de texto, un argumento nombrado y un argumento posicional.</p><details><summary>Ver una solución</summary><p>Clase: <code>MainApp</code>. Función: <code>main</code>. Constructor: <code>const MainApp({super.key})</code>. Cadena: <code>'Tienda'</code>. Argumento nombrado: <code>home: ...</code>. Argumento posicional: <code>'Tienda'</code> al llamar <code>Text('Tienda')</code>.</p></details></div>
@@ -834,17 +834,34 @@ class MainApp extends StatelessWidget {
   ],
 ),</code></pre>
 <h2>2. Primer cambio: agregar Padding</h2><p>Rodea el contenido actual del <code>body</code> con <code>Padding</code>. Conserva dentro el <code>Center</code> y la <code>Column</code> que ya tiene la Tienda. Modifica una sola cosa y ejecuta Hot Reload.</p>
-<div class="code-label">PROPUESTA · fragmento de la estructura del body</div><pre class="code-block"><code>body: Padding(
+<div class="code-label">PROPUESTA · reemplazar body completo conservando la Row original</div><pre class="code-block"><code>  body: Padding(
   padding: const EdgeInsets.all(16),
   child: Center(
     child: Column(
       children: [
-        // Aquí conservamos los widgets actuales.
+        Text('Hello dsfdsWorld'),
+        const SizedBox(height: 20),
+        Icon(Icons.directions_car),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Icon(Icons.directions_car),
+            const SizedBox(width: 8),
+            Text('Ingenieria de Sistemas'),
+            Expanded(
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Buscar marca o modelo',
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     ),
   ),
 ),</code></pre>
-<div class="line-notes numbered"><div><strong><code>Padding</code></strong><p>Introduce espacio alrededor del widget que contiene.</p></div><div><strong><code>EdgeInsets.all(16)</code></strong><p>Deja 16 píxeles lógicos a cada lado.</p></div><div><strong><code>child</code></strong><p>Es el widget que queda dentro de la nueva envoltura.</p></div><div><strong><code>children</code></strong><p>Mantén los elementos existentes de la Column; el comentario es solo una indicación.</p></div></div>
+<div class="line-notes numbered"><div><strong><code>Padding</code></strong><p>Introduce espacio alrededor del widget que contiene.</p></div><div><strong><code>EdgeInsets.all(16)</code></strong><p>Deja 16 píxeles lógicos a cada lado.</p></div><div><strong><code>child</code></strong><p>Es el widget que queda dentro de la nueva envoltura.</p></div><div><strong><code>children</code></strong><p>Conserva los widgets de la <code>Column</code> tal como están en el bloque completo; no hay código reemplazado por comentarios.</p></div></div>
 <h2>3. Segundo cambio: dar más espacio al buscador</h2><p>En lugar de incluir el <code>TextField</code> junto a todo el texto de la fila, déjalo debajo de ella. Esto sigue ocurriendo dentro de la <code>Column</code> original.</p>
 <div class="code-label">PROPUESTA · reemplazo de la fila original</div><pre class="code-block"><code>Row(
   children: [
@@ -947,8 +964,8 @@ class MainApp extends StatelessWidget {
 
 <h2>1. ¿Por qué ahora necesitamos un estado?</h2><p>Hoy <code>MainApp extends StatelessWidget</code>. Para mostrar en pantalla lo que el usuario escribe, la clase administrará un valor cambiante: <code>busqueda</code>.</p>
 <div class="side-by-side"><div class="compare-card"><span class="compare-icon">□</span><h3>StatelessWidget, versión actual</h3><p>Presenta los widgets que ya existen, sin guardar cambios locales de búsqueda.</p></div><div class="compare-card compare-card-blue"><span class="compare-icon">↻</span><h3>StatefulWidget, nueva propuesta</h3><p>Permite guardar el texto y reconstruir la Tienda cuando cambia.</p></div></div>
-<h2>2. Transformar la clase MainApp</h2><p>Conserva <code>main()</code> y <code>runApp(const MainApp())</code> tal como están. Reemplaza la clase <code>MainApp</code> por una versión con estado; dentro de su método <code>build</code>, conserva la pantalla <code>MaterialApp → Scaffold → Tienda</code> actual.</p>
-<div class="code-label">PROPUESTA · estructura de MainApp con estado</div><pre class="code-block"><code>class MainApp extends StatefulWidget {
+<h2>2. Transformar la clase MainApp</h2><p>Conserva <code>main()</code> y <code>runApp(const MainApp())</code> tal como están. Reemplaza <strong>solo el encabezado</strong>, desde <code>class MainApp extends StatelessWidget</code> hasta <code>Widget build(BuildContext context) {</code> inclusive, por este nuevo encabezado. Conserva todo el método <code>build</code> existente desde <code>return MaterialApp(</code> hasta las llaves de cierre. No dupliques el método.</p>
+<div class="code-label">PROPUESTA · reemplazar solo el encabezado de MainApp y conservar build</div><pre class="code-block"><code>class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
@@ -959,12 +976,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
   String busqueda = '';
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // Conserva aquí la pantalla Scaffold actual.
-    );
-  }
-}</code></pre>
+  Widget build(BuildContext context) {</code></pre>
 <div class="line-notes numbered"><div><strong><code>StatefulWidget</code></strong><p>Permite que el widget tenga un objeto State asociado.</p></div><div><strong><code>createState()</code></strong><p>Crea el objeto encargado de administrar los datos que cambian.</p></div><div><strong><code>State&lt;MainApp&gt;</code></strong><p>Indica que ese estado pertenece a MainApp.</p></div><div><strong><code>String busqueda = ''</code></strong><p>Declara el texto que iremos actualizando; inicialmente está vacío.</p></div><div><strong><code>build</code></strong><p>Continúa construyendo la misma pantalla «Tienda» que conocemos.</p></div></div>
 <h2>3. Agregar onChanged al TextField actual</h2><p>Busca el campo «Buscar marca o modelo» dentro de la <code>Row</code>, o debajo si ya aplicaste el módulo anterior. Agrega un solo argumento nuevo: <code>onChanged</code>.</p>
 <div class="code-label">PROPUESTA · cambiar solo el TextField</div><pre class="code-block"><code>TextField(
@@ -1077,12 +1089,10 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <section class="page lesson" id="formularios" aria-labelledby="formularios-title" data-lesson="8">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 08</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">35–45 min</span></div>
 <h1 id="formularios-title">Filtrar marcas y modelos en la Tienda</h1><p>Usaremos el mismo buscador de actividad2a, ahora con estado, para filtrar una pequeña lista de vehículos de ejemplo.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Esta ampliación <strong>requiere</strong> haber construido antes las propuestas de los módulos 06 y 07: diseño con espacio y buscador con estado. No la pegues directamente sobre el código original de clase. El módulo 09 es otra ruta desde el <code>main.dart</code> original y no necesita este filtro.</p></div></div>
 
-<h2>1. Incorporar una lista de prueba</h2><p>La app original todavía no contiene registros de vehículos. Para aprender a filtrar, crearemos datos <strong>simulados</strong> dentro de <code>_MainAppState</code>, junto a <code>busqueda</code>.</p>
-<div class="code-label">PROPUESTA · variables del State</div><pre class="code-block"><code>String busqueda = '';
-
-final List&lt;String&gt; vehiculos = [
+<h2>1. Incorporar una lista de prueba</h2><p>La app original todavía no contiene registros de vehículos. Para aprender a filtrar, crearemos datos <strong>simulados</strong> dentro de <code>_MainAppState</code>, justo debajo de <code>String busqueda</code> que ya existe desde el módulo 07. <strong>No vuelvas a declarar busqueda.</strong></p>
+<div class="code-label">PROPUESTA · añadir solo vehiculos a _MainAppState después de busqueda</div><pre class="code-block"><code>final List&lt;String&gt; vehiculos = [
   'Renault 9',
   'Renault 21',
   'Mazda 3',
@@ -1121,7 +1131,7 @@ for (final vehiculo in resultados)
 <div><span class="step-counter">6</span><div><strong>Prueba diferentes casos.</strong><p>Escribe <code>renault</code>, <code>mazda</code>, <code>RENAULT</code>, un texto sin coincidencias y un campo vacío. Comprueba el resultado después de cada cambio.</p></div></div>
 </div>
 <h3>La cadena de transformaciones, palabra por palabra</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Código</th><th>Lo que significa</th><th>Ejemplo concreto</th></tr></thead><tbody><tr><td><code>List&lt;String&gt;</code></td><td>Lista de elementos de tipo String.</td><td>Una lista con Renault 9, Renault 21, Mazda 3 y Chevrolet Spark.</td></tr><tr><td><code>final vehiculos</code></td><td>La variable no se reasigna a otra lista.</td><td>La misma lista podrá recibir elementos en el módulo 09.</td></tr><tr><td><code>where(...)</code></td><td>Recorre la colección y selecciona solamente las entradas que cumplen una condición.</td><td>Con «renault» conserva dos modelos.</td></tr><tr><td><code>(vehiculo) { ... }</code></td><td>Función que recibe un vehículo de la lista para evaluarlo.</td><td>Primero se evalúa Renault 9 y luego el resto.</td></tr><tr><td><code>toLowerCase()</code></td><td>Convierte una cadena a minúsculas.</td><td>RENAULT → renault.</td></tr><tr><td><code>trim()</code></td><td>Quita espacios al comienzo y al final.</td><td>«  Renault  » → «Renault».</td></tr><tr><td><code>contains(...)</code></td><td>Comprueba si un texto contiene otro texto.</td><td>«Renault 21» contiene «renault» cuando ambos están en minúsculas.</td></tr><tr><td><code>toList()</code></td><td>Construye una lista con los elementos filtrados.</td><td>La variable <code>resultados</code> contendrá las coincidencias.</td></tr><tr><td><code>resultados.isEmpty</code></td><td>Es verdadero cuando no hay elementos.</td><td>Si se escribe «XYZZ», podemos mostrar un mensaje.</td></tr><tr><td><code>for (final vehiculo in resultados)</code></td><td>Genera un widget por cada elemento de la colección.</td><td>Se muestran dos ListTile con la búsqueda «Renault».</td></tr></tbody></table></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Código</th><th>Lo que significa</th><th>Ejemplo concreto</th></tr></thead><tbody><tr><td><code>List&lt;String&gt;</code></td><td>Lista de elementos de tipo String.</td><td>Una lista con Renault 9, Renault 21, Mazda 3 y Chevrolet Spark.</td></tr><tr><td><code>final vehiculos</code></td><td>La variable no se reasigna a otra lista.</td><td>La lista puede recibir más modelos en esta ampliación; el módulo 09 parte de otro punto de inicio, sin depender de esta lista.</td></tr><tr><td><code>where(...)</code></td><td>Recorre la colección y selecciona solamente las entradas que cumplen una condición.</td><td>Con «renault» conserva dos modelos.</td></tr><tr><td><code>(vehiculo) { ... }</code></td><td>Función que recibe un vehículo de la lista para evaluarlo.</td><td>Primero se evalúa Renault 9 y luego el resto.</td></tr><tr><td><code>toLowerCase()</code></td><td>Convierte una cadena a minúsculas.</td><td>RENAULT → renault.</td></tr><tr><td><code>trim()</code></td><td>Quita espacios al comienzo y al final.</td><td>«  Renault  » → «Renault».</td></tr><tr><td><code>contains(...)</code></td><td>Comprueba si un texto contiene otro texto.</td><td>«Renault 21» contiene «renault» cuando ambos están en minúsculas.</td></tr><tr><td><code>toList()</code></td><td>Construye una lista con los elementos filtrados.</td><td>La variable <code>resultados</code> contendrá las coincidencias.</td></tr><tr><td><code>resultados.isEmpty</code></td><td>Es verdadero cuando no hay elementos.</td><td>Si se escribe «XYZZ», podemos mostrar un mensaje.</td></tr><tr><td><code>for (final vehiculo in resultados)</code></td><td>Genera un widget por cada elemento de la colección.</td><td>Se muestran dos ListTile con la búsqueda «Renault».</td></tr></tbody></table></div>
 <h3>¿Qué significa cada signo de la expresión?</h3><p>El punto <code>.</code> permite llamar métodos sobre una cadena o colección: <code>busqueda.trim()</code>, <code>vehiculo.toLowerCase()</code> y <code>resultados.isEmpty</code> usan el punto para acceder a un método o propiedad del valor anterior. Los paréntesis de <code>contains(...)</code> contienen el texto que se busca. El signo <code>=</code> guarda la lista filtrada en la variable <code>resultados</code>.</p>
 <h3>Comparar el recorrido de una búsqueda</h3>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Dato escrito</th><th>Texto utilizado al comparar</th><th>Resultados esperados</th></tr></thead><tbody><tr><td><code>Renault</code></td><td><code>renault</code></td><td>Renault 9 y Renault 21.</td></tr><tr><td><code>  MAZDA  </code></td><td><code>mazda</code></td><td>Mazda 3.</td></tr><tr><td><code>spark</code></td><td><code>spark</code></td><td>Chevrolet Spark.</td></tr><tr><td><code>xyz</code></td><td><code>xyz</code></td><td>Ningún vehículo, con mensaje de «No se encontraron vehículos».</td></tr><tr><td>Cadena vacía</td><td>Cadena vacía</td><td>Los cuatro vehículos; en Dart, cualquier cadena contiene la cadena vacía.</td></tr></tbody></table></div>
@@ -1186,11 +1196,11 @@ class _MainAppState extends State&lt;MainApp&gt; {
                 ),
                 const SizedBox(height: 12),
                 TextField(
-            onChanged: (valor) {
-              setState(() {
-                busqueda = valor;
-              });
-            },
+                  onChanged: (valor) {
+                    setState(() {
+                      busqueda = valor;
+                    });
+                  },
                   decoration: const InputDecoration(
                     hintText: 'Buscar marca o modelo',
                     border: OutlineInputBorder(),
@@ -1214,9 +1224,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
       ),
     );
   }
-}
-</code></pre></div></details>
-</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Siguiente: Primer formulario sencillo →</a></div></section>
+}</code></pre></div></details>
+</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Ruta independiente: formulario desde el código original →</a></div></section>
 
         
 <section class="page lesson" id="proyecto" aria-labelledby="proyecto-title" data-lesson="9">
