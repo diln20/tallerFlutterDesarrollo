@@ -105,6 +105,7 @@
     if(/^final\s+List<String>\s+vehiculos/.test(q))return 'Declara una lista de cadenas String para guardar nombres de vehículos. final impide reasignar la variable a otra lista, pero su contenido puede cambiar.';
     if(/^final\s+resultados\s*=\s*vehiculos\.where/.test(q))return 'Calcula las coincidencias de búsqueda: where recorre la colección y conserva los vehículos para los cuales la condición es verdadera.';
     if(/^return\s+vehiculo\.toLowerCase\(\)\.contains/.test(q))return 'Convierte el nombre del vehículo a minúsculas y comprueba si contiene el texto de búsqueda. return entrega verdadero o falso a where.';
+    if(/^vehiculo\.toLowerCase\(\)\.contains/.test(q))return 'Comprueba si el nombre del vehículo (en minúsculas) contiene la cadena de búsqueda; contiene devuelve verdadero o falso.';
     if(/^busqueda\.trim\(\)\.toLowerCase/.test(q))return 'Quita espacios sobrantes de la búsqueda y convierte el texto a minúsculas, para comparar sin distinguir mayúsculas.';
     if(/^if\s*\(resultados\.isEmpty/.test(q))return 'Comprueba si el filtro produjo cero coincidencias; si es así, el widget siguiente muestra un mensaje.';
     if(/^for\s*\(final\s+vehiculo\s+in\s+resultados/.test(q))return 'Recorre los resultados uno a uno. Por cada nombre, construimos un ListTile dentro de la lista children de Column.';
@@ -116,7 +117,7 @@
       return 'Devuelve el widget raíz MaterialApp desde build; configura el entorno Material de la aplicación.';
     if(/^return\s+/.test(q))return 'Devuelve el valor o la expresión calculada por esta función.';
     if(/^home\s*:\s*Scaffold/.test(q))return 'Define la pantalla inicial de MaterialApp: en este caso un Scaffold.';
-    if(/^Scaffold\s*\(/.test(q))return 'Construye la estructura de una pantalla Material con áreas como appBar y body.';
+    if(/^Scaffold\s*\(/.test(q)||q==='Scaffold')return 'Construye o señala la estructura de una pantalla Material con áreas como appBar y body.';
     if(/^appBar\s*:/.test(q))return 'Asigna la barra superior del Scaffold. AppBar recibe el título y puede tener otros controles o propiedades.';
     if(/^title\s*:/.test(q))return 'Define el título que muestra AppBar, normalmente un Text con el nombre de la pantalla.';
     if(/^body\s*:/.test(q))return 'Define el contenido principal bajo la barra superior. El widget que sigue ocupa esa zona de la pantalla.';
