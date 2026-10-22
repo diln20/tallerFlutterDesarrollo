@@ -12,6 +12,7 @@
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="stylesheet" href="./assets/styles.css?v=20261022-explicacion">
   <link rel="stylesheet" href="./assets/preview-differences.css?v=comparacion-visible-v2">
+  <link rel="stylesheet" href="./assets/next-lessons.css?v=etapas-carpetas-20261022">
   <link rel="stylesheet" href="./assets/form-placement-guide.css?v=20261022-explicacion">
   <link rel="stylesheet" href="./assets/code-placement-all.css?v=20261022-explicacion">
   <link rel="stylesheet" href="./assets/code-line-highlights.css?v=20261022-explicacion">
@@ -68,7 +69,12 @@
         <a class="nav-link" href="#diseno" data-route="diseno" data-search="Column Row Center Icon children SizedBox widgets layout"><span class="lesson-index">04</span><span>Organizar los widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">SIGUIENTE PRÁCTICA CON EL CÓDIGO ORIGINAL</div>
-        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="primera practica formulario actividad2a Text TextField botón controller debugPrint sin for"><span class="lesson-index">★</span><span>Primer formulario</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="primera practica formulario actividad2a Text TextField botón controller debugPrint sin for"><span class="lesson-index">P1</span><span>Primer formulario</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <div class="nav-group-label">CONTINUAR LA TIENDA PASO A PASO</div>
+        <a class="nav-link" href="#carpetas" data-route="carpetas" data-search="carpetas pages widgets models services repositories bloc organizar archivos crear vacias sin mover main dart"><span class="lesson-index">P2</span><span>Crear y explicar carpetas</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#reutilizacion" data-route="reutilizacion" data-search="reutilización widgets TituloSeccion StatelessWidget required import archivo componente reutilizable"><span class="lesson-index">P3</span><span>Reutilizar widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#validacion" data-route="validacion" data-search="validar campo Form TextFormField GlobalKey FormState validator validate formulario"><span class="lesson-index">P4</span><span>Validación del campo</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#objeto" data-route="objeto" data-search="primer objeto class Vehiculo modelo String bool final required instancia constructor"><span class="lesson-index">P5</span><span>Crear primer objeto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">AMPLIACIONES OPCIONALES DE LA MISMA TIENDA</div>
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -78,7 +84,7 @@
         <p id="no-search-results" class="no-search-results" hidden>No se encontraron módulos con ese texto.</p>
       </nav>
       <div class="sidebar-bottom">
-        <div class="progress-heading"><strong>Tu avance</strong><span id="sidebar-progress-text">0 / 10</span></div>
+        <div class="progress-heading"><strong>Tu avance</strong><span id="sidebar-progress-text">0 / 14</span></div>
         <div class="progress-track"><span id="sidebar-progress-bar"></span></div>
         <p>Se guarda solo en este navegador.</p>
         <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer" class="repo-link">Ver repositorio <span aria-hidden="true">↗</span></a>
@@ -104,7 +110,7 @@
               <h1 id="inicio-title">Aprende Flutter <span>construyendo,</span> no solo leyendo.</h1>
               <p>Construye la misma aplicación «Tienda» de actividad2a, línea por línea. Después podrás añadirle funciones a ese mismo proyecto, sin saltar a otro ejemplo.</p>
               <div class="hero-actions"><a class="button button-primary" href="#preparacion">Empezar el taller <span aria-hidden="true">→</span></a><a class="button button-ghost" href="#punto-entrada">Explorar el código</a></div>
-              <div class="hero-facts"><span><strong>10</strong> módulos</span><span><strong>1</strong> misma Tienda</span><span><strong>100%</strong> práctico</span></div>
+              <div class="hero-facts"><span><strong>14</strong> módulos</span><span><strong>1</strong> misma Tienda</span><span><strong>100%</strong> práctico</span></div>
             </div>
             <div class="hero-visual" aria-label="Vista ilustrativa del proyecto Flutter actual">
               <div class="float-card float-card-top"><span class="float-dot violet"></span> MainApp · StatelessWidget</div>
@@ -130,7 +136,7 @@
             <div class="stat-card"><span class="stat-icon orange">◎</span><div><strong>Aprender haciendo</strong><p>Prueba y reto en cada tema</p></div></div>
             <div class="stat-card"><span class="stat-icon purple">✓</span><div><strong>Tu ritmo</strong><p>Marca lo que ya dominaste</p></div></div>
           </div>
-          <div class="notice notice-tip"><strong>Base verificada: actividad2a</strong><p>Lo que ya existe hoy es una pantalla «Tienda» con <code>StatelessWidget</code>, iconos de automóvil, una <code>Row</code> y el campo «Buscar marca o modelo». Aún no hay lista de vehículos, filtrado real, formulario ni BLoC. <a href="./codigo-base/main.dart" target="_blank" rel="noopener noreferrer">Consultar el archivo original ↗</a></p></div><div class="section-heading"><div><span class="overline">PLAN DE APRENDIZAJE</span><h2>Tu ruta de aprendizaje</h2><p>Primero reconstruimos los widgets que realmente están en <code>actividad2a</code>; después ampliamos esa misma Tienda.</p></div><span class="mini-tag">10 módulos</span></div>
+          <div class="notice notice-tip"><strong>Base verificada: actividad2a</strong><p>Lo que ya existe hoy es una pantalla «Tienda» con <code>StatelessWidget</code>, iconos de automóvil, una <code>Row</code> y el campo «Buscar marca o modelo». Aún no hay lista de vehículos, filtrado real, formulario ni BLoC. <a href="./codigo-base/main.dart" target="_blank" rel="noopener noreferrer">Consultar el archivo original ↗</a></p></div><div class="section-heading"><div><span class="overline">PLAN DE APRENDIZAJE</span><h2>Tu ruta de aprendizaje</h2><p>Primero reconstruimos los widgets que realmente están en <code>actividad2a</code>; después ampliamos esa misma Tienda.</p></div><span class="mini-tag">14 módulos</span></div>
           <div class="module-grid">
             <a href="#preparacion" class="module-card"><span class="module-top"><span class="module-number">01</span><span class="status-pill seen">Código de clase</span></span><h3>Preparar el proyecto</h3><p>Verificar Flutter, abrir la carpeta y ejecutar la aplicación.</p><span class="module-footer">Comenzar <span aria-hidden="true">↗</span></span></a>
             <a href="#punto-entrada" class="module-card"><span class="module-top"><span class="module-number">02</span><span class="status-pill seen">Código de clase</span></span><h3>Entender main.dart</h3><p>Comprender el punto de entrada, runApp, const y super.key.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
@@ -138,6 +144,10 @@
             <a href="#diseno" class="module-card"><span class="module-top"><span class="module-number">04</span><span class="status-pill seen">Código de clase</span></span><h3>Organizar los widgets</h3><p>Column, Row, Icon, Center y separación visual.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
             <a href="#campo-texto" class="module-card"><span class="module-top"><span class="module-number">05</span><span class="status-pill seen">Código de clase</span></span><h3>Primer campo de texto</h3><p>TextField, Expanded y texto de ayuda.</p><span class="module-footer">Explorar <span aria-hidden="true">↗</span></span></a>
             <a href="#proyecto" class="module-card"><span class="module-top"><span class="module-number">PRÁCTICA</span><span class="status-pill planned">Después del código de clase</span></span><h3>Primer formulario</h3><p>Agregar Text, TextField y botón; leer el nombre y mostrarlo en consola, sin listas todavía.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
+            <a href="#carpetas" class="module-card"><span class="module-top"><span class="module-number">P2</span><span class="status-pill planned">Solo organización</span></span><h3>Crear carpetas</h3><p>Crear pages, widgets, models, services, repositories y bloc. Explicar su utilidad sin poner código dentro.</p><span class="module-footer">Ver paso a paso <span aria-hidden="true">↗</span></span></a>
+            <a href="#reutilizacion" class="module-card"><span class="module-top"><span class="module-number">P3</span><span class="status-pill planned">Primera reutilización</span></span><h3>Reutilizar widgets</h3><p>Crear TituloSeccion una sola vez y usarlo dos veces en la misma Tienda.</p><span class="module-footer">Ver paso a paso <span aria-hidden="true">↗</span></span></a>
+            <a href="#validacion" class="module-card"><span class="module-top"><span class="module-number">P4</span><span class="status-pill planned">Formulario validado</span></span><h3>Validar el campo</h3><p>Aprender Form, TextFormField y validator sin cambiar el buscador original.</p><span class="module-footer">Ver paso a paso <span aria-hidden="true">↗</span></span></a>
+            <a href="#objeto" class="module-card"><span class="module-top"><span class="module-number">P5</span><span class="status-pill planned">Primer modelo</span></span><h3>Crear el primer objeto</h3><p>Definir Vehiculo, construir una instancia y leer sus propiedades, sin guardar registros.</p><span class="module-footer">Ver paso a paso <span aria-hidden="true">↗</span></span></a>
             <a href="#responsive" class="module-card"><span class="module-top"><span class="module-number">06</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Diseño adaptable</h3><p>Organizar mejor la pantalla actual de Tienda.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
             <a href="#estado" class="module-card"><span class="module-top"><span class="module-number">07</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Buscador interactivo</h3><p>StatefulWidget y setState para el TextField actual.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
             <a href="#formularios" class="module-card"><span class="module-top"><span class="module-number">08</span><span class="status-pill planned">Siguiente etapa</span></span><h3>Filtrar los vehículos</h3><p>Buscar en una lista de marcas y modelos.</p><span class="module-footer">Ver propuesta <span aria-hidden="true">↗</span></span></a>
