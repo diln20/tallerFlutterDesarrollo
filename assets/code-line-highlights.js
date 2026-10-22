@@ -68,6 +68,32 @@
       ['vehiculoController.clear();'],
       ['void dispose()', 'vehiculoController.dispose()', 'super.dispose()']
     ],
+    carpetas:[
+      ['New-Item', 'lib/pages'],['New-Item','lib/widgets'],['New-Item','lib/models'],
+      ['New-Item','lib/services'],['New-Item','lib/repositories'],['New-Item','lib/bloc']
+    ],
+    reutilizacion:[
+      ['lib/widgets/titulo_seccion.dart'],
+      ['class TituloSeccion', 'required this.texto', 'final String texto', 'Text(texto)'],
+      ["import 'widgets/titulo_seccion.dart'"],
+      ["TituloSeccion(texto: 'Hello dsfdsWorld')"],
+      ["TituloSeccion(texto: 'Agregar un vehículo')"]
+    ],
+    validacion:[
+      ['TextFormField(', 'controller:', 'hintText:'],
+      ['GlobalKey<FormState>', 'formularioKey'],
+      ['Form(', 'key: formularioKey', 'TextFormField('],
+      ['validator:', 'isEmpty', 'length < 3', 'return null'],
+      ['currentState?.validate()', 'return;']
+    ],
+    objeto:[
+      ['lib/models/vehiculo.dart'],
+      ['class Vehiculo', 'required this.nombre', 'disponible = true', 'final String', 'final bool'],
+      ["import 'models/vehiculo.dart'"],
+      ['final vehiculo = Vehiculo(nombre: nombre)'],
+      ['Vehículo creado:', 'vehiculo.nombre', 'vehiculo.disponible']
+    ],
+
     bloc:[
       ['Interfaz → Evento → BLoC → Estado → Interfaz'],
       ["BuscarVehiculos('Renault')", 'VehiculosEncontrados('],
@@ -128,9 +154,40 @@
     proyecto:[
       ['Row(', "Text('Agregar un vehículo')"],
       null
+    ],
+    carpetas:[
+      ['pages/', 'widgets/', 'models/', 'services/', 'repositories/', 'bloc/'],
+      ['New-Item'],['New-Item'],['New-Item'],['New-Item'],['New-Item'],['New-Item']
+    ],
+    reutilizacion:[
+      ['lib/widgets/titulo_seccion.dart'],
+      ['class TituloSeccion', 'required this.texto', 'final String texto'],
+      ["import 'widgets/titulo_seccion.dart'"],
+      ["TituloSeccion(texto: 'Hello dsfdsWorld')"],
+      ["TituloSeccion(texto: 'Agregar un vehículo')"],
+      ['class TituloSeccion', 'return Text(texto)'],
+      null
+    ],
+    validacion:[
+      ['TextFormField(', 'controller:'],
+      ['GlobalKey<FormState>', 'formularioKey'],
+      ['Form(', 'key: formularioKey', 'TextFormField('],
+      ['validator:', 'isEmpty', 'length < 3', 'return null'],
+      ['currentState?.validate()', 'return;'],
+      ['Form(', 'key: formularioKey', 'validator:'],
+      null
+    ],
+    objeto:[
+      ['lib/models/vehiculo.dart'],
+      ['class Vehiculo', 'final String', 'final bool', 'required this.nombre'],
+      ["import 'models/vehiculo.dart'"],
+      ['final vehiculo = Vehiculo(nombre: nombre)'],
+      ['Vehículo creado:', 'vehiculo.nombre'],
+      ['class Vehiculo', 'final String', 'final bool'],
+      null
     ]
   };
-  const previous={p03:'p02',p04:'p03',p05:'p04',p06:'p05',p07:'p06',p08:'p07',p09:'p05'};
+  const previous={p03:'p02',p04:'p03',p05:'p04',p06:'p05',p07:'p06',p08:'p07',p09:'p05',p10:'p09',p11:'p10',p12:'p11'};
 
   function meaningful(s){
     const t=s.trim();
