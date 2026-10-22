@@ -110,7 +110,8 @@
     const runtime=preserveState&&oldRuntime?.step===i?
       {...oldRuntime,phase}:
       {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
-        model:'',invalid:!!after.validationError,snackbar:after.snackbar||''};
+        model:'',invalid:!!after.validationError,snackbar:after.snackbar||'',
+        clearAfterSave:!!after.clearAfterSave};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
@@ -183,7 +184,7 @@
     responsive:[0,0,4,5],
     estado:[0,2,3,4],
     formularios:[0,1,2,3],
-    proyecto:[0,1,2,3,4,5,6],
+    proyecto:[0,0,1,2,3,4,5,6,6,7,8],
     bloc:[]
   };
   function linkCodeBlocks(){
@@ -260,7 +261,11 @@
       r.addedCars.push(name);
       r.invalid=false;
       r.snackbar='';
-      // Primera práctica: el campo se conserva después de agregar un modelo.
+      if(r.clearAfterSave) {
+        r.model='';
+        const field=submit.closest('[data-pv-side]')?.querySelector('[data-pv-model="after"]');
+        if(field)field.value='';
+      }
       updateResults(id);
     }
   });
