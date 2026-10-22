@@ -89,3 +89,24 @@ body[data-theme="dark"] .folder-purpose .folder-icon{background:#1d473d;color:#8
 @media(max-width:750px){.next-intro-grid,.next-case-grid{grid-template-columns:1fr}.folder-purpose-grid{grid-template-columns:1fr}.next-compare{grid-template-columns:1fr}}
 @media(max-width:450px){.next-step{padding:14px 10px}.next-where-details{padding:9px}.next-step-top{gap:9px}.next-step h3{font-size:16px}.next-folder-overview{padding:14px}.folder-purpose{padding:10px}}
 @media print{.next-step{break-inside:avoid;box-shadow:none}.next-folder-overview{break-inside:avoid}}
+
+
+/* Vista Antes/Despues del Explorador para carpetas aun vacias y archivos nuevos. */
+.pv-ide-folder-tree{background:#182b43;height:100%;overflow:auto;padding:10px 11px;color:#dceafa}
+.pv-ide-folder-tree .pv-tree-root{padding:5px 4px;color:#e5f2ff}
+.pv-ide-folder-tree .pv-tree-item{font-size:9.5px;line-height:1.55;padding-left:20px}
+.pv-folder-created{color:#b9edcf!important}
+.pv-folder-pending{color:#839bb8!important;opacity:.75}
+.pv-ide-folder-tree .pv-folder-new{background:#235349;color:#dbfff0!important;border-radius:5px;border-left:3px solid #81e0b3;font-weight:800}
+.pv-folder-original{color:#b9cbe2!important}
+.pv-folder-footnote{margin:10px 1px 0;padding:8px 9px;background:#263e5d;border-radius:7px;border:1px solid #3d5877;color:#d7e7f6;font-size:8.5px;line-height:1.65}
+.pv-validation{
+ display:block;font-size:9px;line-height:1.55;
+ font-weight:850;color:#a91e43!important;padding:5px 7px;
+ margin-top:-2px;border-radius:5px;background:#fff0f3;
+ border-left:3px solid #e65c7d;
+}
+.pv-validation[hidden]{display:none!important}
+.pv-form input[aria-invalid="true"]{border-color:#e65c7d}
+.pv-debug-console:not([hidden]){margin-top:13px}
+@media(max-width:650px){.pv-ide-folder-tree{padding:8px}.pv-ide-folder-tree .pv-tree-item{font-size:9px}}
