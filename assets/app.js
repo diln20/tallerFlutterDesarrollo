@@ -119,6 +119,106 @@
     setMenuOpen(false);
   }
 
+
+  // Resaltado de sintaxis de Dart y PowerShell sin dependencias externas.
+  // Conserva el texto original para que el botón Copiar siga funcionando.
+  const DART_KEYWORDS = new Set([
+    'abstract','as','assert','async','await','break','case','catch','class',
+    'const','continue','covariant','default','deferred','do','dynamic','else',
+    'enum','export','extends','extension','external','factory','false','final',
+    'finally','for','get','hide','if','implements','import','in','is','late',
+    'library','mixin','new','on','operator','part','required','rethrow','return',
+    'set','show','static','super','switch','sync','this','throw','true','try',
+    'typedef','var','void','while','with','yield'
+  ]);
+  const DART_LITERALS = new Set(['true','false','null']);
+  const DART_TYPES = new Set(['int','double','num','bool','String','Object','dynamic','Never']);
+  const DART_TOKEN = /\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|r?'''[\s\S]*?'''|r?"""[\s\S]*?"""|r?'(?:\\.|[^'\\])*'|r?"(?:\\.|[^"\\])*"|@[A-Za-z_]\w*|\b\d+(?:\.\d+)?\b|[A-Za-z_$][A-Za-z_$0-9]*|=>|\?\.|\?\?|&&|\|\||==|!=|<=|>=|[{}()[\],.;:=<>]/g;
+  const SHELL_TOKEN = /#[^\r\n]*|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|(?:Get|Test|Set|New|Remove|Write)-[A-Za-z]+|\B--?[A-Za-z][\w-]*|\b\d+(?:\.\d+)?\b|[A-Za-z_][\w-]*/g;
+  const SHELL_COMMANDS = new Set(['flutter','dart','cd','Get-Location','Get-ChildItem','Test-Path','Set-Location','Write-Host']);
+
+  function syntaxLanguage(pre, source) {
+    const label = pre.previousElementSibling?.classList.contains('code-label')
+      ? pre.previousElementSibling.textContent.toLocaleLowerCase('es')
+      : '';
+    if (/esquema|diagrama|jerarquía|orden de cierres|correspondencia|visualización/i.test(label) ||
+        /[├└│─→]/.test(source)) return 'plain';
+    if (/powershell|terminal|comandos?|diagnóstico/i.test(label) ||
+        /^\s*(?:flutter\s+(?:run|doctor|devices|pub|create|analyze)|dart\s+|cd\s+|Get-Location\b|Get-ChildItem\b|Test-Path\b)/m.test(source)) return 'shell';
+    return 'dart';
+  }
+
+  function classifyDart(token, source, end) {
+    if (token.startsWith('//') || token.startsWith('/*')) return 'comment';
+    if (/^(?:r?['"])/.test(token)) return 'string';
+    if (token.startsWith('@')) return 'annotation';
+    if (/^\d/.test(token)) return 'number';
+    if (DART_LITERALS.has(token)) return 'literal';
+    if (DART_KEYWORDS.has(token)) return 'keyword';
+    if (DART_TYPES.has(token) || /^[A-Z][A-Za-z_$0-9]*$/.test(token)) return 'type';
+    if (/^[A-Za-z_$]/.test(token)) {
+      const next = source.slice(end).match(/^\s*(.)/)?.[1];
+      if (next === ':') return 'property';
+      if (next === '(') return 'function';
+      return '';
+    }
+    return 'punctuation';
+  }
+
+  function classifyShell(token) {
+    if (token.startsWith('#')) return 'comment';
+    if (token.startsWith("'") || token.startsWith('"')) return 'string';
+    if (token.startsWith('-')) return 'property';
+    if (/^\d/.test(token)) return 'number';
+    if (SHELL_COMMANDS.has(token)) return 'function';
+    return '';
+  }
+
+  function colorizeCode(element, language) {
+    if (!element || element.dataset.highlighted === 'true' || language === 'plain') return;
+    const original = element.textContent;
+    const tokens = language === 'shell' ? SHELL_TOKEN : DART_TOKEN;
+    tokens.lastIndex = 0;
+    const fragment = document.createDocumentFragment();
+    let cursor = 0;
+    let match;
+
+    while ((match = tokens.exec(original)) !== null) {
+      if (match.index > cursor) {
+        fragment.appendChild(document.createTextNode(original.slice(cursor, match.index)));
+      }
+      const value = match[0];
+      const category = language === 'shell'
+        ? classifyShell(value)
+        : classifyDart(value, original, tokens.lastIndex);
+      if (category) {
+        const colored = document.createElement('span');
+        colored.className = 'syntax-' + category;
+        colored.textContent = value;
+        fragment.appendChild(colored);
+      } else {
+        fragment.appendChild(document.createTextNode(value));
+      }
+      cursor = tokens.lastIndex;
+    }
+    if (cursor < original.length) {
+      fragment.appendChild(document.createTextNode(original.slice(cursor)));
+    }
+
+    element.replaceChildren(fragment);
+    element.dataset.highlighted = 'true';
+    element.dataset.language = language;
+  }
+
+  function installSyntaxHighlighting() {
+    document.querySelectorAll('pre.code-block > code').forEach((code) => {
+      colorizeCode(code, syntaxLanguage(code.parentElement, code.textContent));
+    });
+    document.querySelectorAll('.source-walkthrough code.line-code').forEach((code) => {
+      colorizeCode(code, 'dart');
+    });
+  }
+
   function installCopyButtons() {
     document.querySelectorAll('pre.code-block').forEach((pre) => {
       if (pre.querySelector('button.copy-button')) return;
@@ -260,6 +360,7 @@
     }
   });
 
+  installSyntaxHighlighting();
   installCopyButtons();
   initChecklistStorage();
   initNavigationSearch();
