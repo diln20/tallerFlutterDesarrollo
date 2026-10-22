@@ -229,8 +229,12 @@
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.type = 'button';
-      button.setAttribute('aria-label', 'Copiar este ejemplo de código');
-      button.textContent = 'Copiar';
+      const isFirstForm = Boolean(pre.closest('#proyecto, [data-pv-module="proyecto"]'));
+      const copyLabel = isFirstForm ? 'Copiar código' : 'Copiar';
+      button.setAttribute('aria-label', isFirstForm
+        ? 'Copiar el bloque completo de código de esta etapa'
+        : 'Copiar este ejemplo de código');
+      button.textContent = copyLabel;
       button.addEventListener('click', async () => {
         const value = code.textContent.replace(/\n$/, '');
         try {
@@ -257,7 +261,7 @@
             showToast('Selecciona el código para copiarlo manualmente');
           }
         }
-        window.setTimeout(() => { button.textContent = 'Copiar'; }, 1800);
+        window.setTimeout(() => { button.textContent = copyLabel; }, 1800);
       });
       pre.appendChild(button);
     });
