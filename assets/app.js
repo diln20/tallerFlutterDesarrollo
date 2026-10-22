@@ -4,7 +4,8 @@
 
   const ROUTES = [
     'inicio', 'preparacion', 'punto-entrada', 'estructura', 'diseno',
-    'campo-texto', 'responsive', 'estado', 'formularios', 'proyecto', 'bloc', 'catalogo-widgets'
+    'campo-texto', 'proyecto', 'carpetas', 'reutilizacion', 'validacion',
+    'objeto', 'responsive', 'estado', 'formularios', 'bloc', 'catalogo-widgets'
   ];
   const LESSONS = ROUTES.filter((route) => route !== 'inicio' && route !== 'catalogo-widgets');
   const STORAGE_PREFIX = 'tallerFlutterDesarrollo.v1.';
