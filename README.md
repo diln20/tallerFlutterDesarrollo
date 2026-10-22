@@ -19,6 +19,21 @@ Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiand
 
 **Exactitud pedagógica:** la vista es una simulación visual HTML y está identificada como tal. No representa una captura ni una ejecución real de Flutter. Los primeros módulos muestran la construcción del código de clase y los pasos 06–10 describen mejoras propuestas; algunos cambios de Dart (como declarar `StatefulWidget` o una variable) **no generan ningún cambio visual inmediato**, y así se señala explícitamente.
 
+## Dónde va cada fragmento del primer formulario
+
+En el **módulo 09** aparecen ayudas de ubicación para los nueve pasos, tanto en el contenido escrito como bajo la simulación «Así va cambiando tu aplicación»:
+
+- Archivo de destino: `lib/main.dart`.
+- Clase, método y widget contenedor exactos donde se debe trabajar.
+- Texto ancla que se puede encontrar con **Ctrl + F**.
+- Acción explícita: **AÑADIR**, **REEMPLAZAR**, **INSERTAR LÍNEA**, **DECLARAR**, **AÑADIR MÉTODO** o **COMPROBAR**.
+- **Código contextual numerado**, con las líneas recién insertadas o modificadas resaltadas y una opción desplegable para ver el `main.dart` tal como queda después de ese paso.
+- Enlace directo a las líneas correspondientes del archivo Dart final.
+
+Las referencias de línea pueden variar según los cambios particulares que haga cada estudiante; por ello la indicación principal es el **ancla de código y la estructura del widget**, no depender de un número fijo.
+
+> **Capturas antiguas:** si un navegador muestra los pasos «Preparar FormState y controller», «Dibujar TextFormField» o «Validar un campo vacío», corresponde a una versión anterior y más avanzada. Ahora el módulo 09 trabaja con `Text`, `TextField`, `ElevatedButton` y después `TextEditingController`; no requiere `Form` ni `validator`. Se incorporó también una aclaración desplegable para ubicar esos fragmentos antiguos, sin mezclarlos con la práctica básica. Puede ser necesario actualizar con **Ctrl + F5**.
+
 ## Cómo estudiar con esta guía
 
 1. **Lee primero el objetivo.** Cada módulo parte de algo que ya aprendiste.
