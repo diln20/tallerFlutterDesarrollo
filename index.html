@@ -989,9 +989,525 @@ class _MainAppState extends State&lt;MainApp&gt; {
     );
   }
 }</code></pre></div></details></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Siguiente ampliación opcional: diseño adaptable →</a></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#carpetas">Siguiente: crear y entender las carpetas →</a></div>
 </section>
 
+<section class="page lesson next-module" id="carpetas" aria-labelledby="carpetas-title" data-lesson="ETAPA 2">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 2</span><span class="status-pill planned">Nueva práctica de clase</span></div>
+<h1 id="carpetas-title">Crear y entender las carpetas de Flutter</h1><p>Después del primer formulario vamos a organizar el proyecto para que pueda crecer. En este módulo <strong>solo creamos carpetas vacías y entendemos sus responsabilidades</strong>: no movemos <code>main.dart</code>, no añadimos clases y no instalamos paquetes.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>La pantalla de la Tienda debe seguir funcionando igual. Estas carpetas no hacen nada por sí solas y no hay obligación de utilizarlas en esta etapa.</p></div></div>
+<div class="next-intro-grid"><div class="next-intro-card"><span>AHORA</span><strong>Crear las carpetas</strong><p>En <code>lib/</code>, sin escribir código dentro.</p></div><div class="next-intro-card"><span>DESPUÉS</span><strong>Entender su uso</strong><p>Identificar qué podría ir en cada una.</p></div><div class="next-intro-card"><span>AÚN NO</span><strong>Mover o implementar</strong><p>No tocar las clases ni alterar el formulario.</p></div></div>
+<div class="notice notice-info"><strong>Antes de crear las carpetas</strong><p>Abre una <strong>copia de práctica</strong> de <code>actividad2a</code> en VS Code. En el Explorador, selecciona <code>lib</code> y utiliza <strong>Nueva carpeta</strong>. Alternativamente, abre PowerShell en la raíz donde está <code>pubspec.yaml</code>. Estos seis comandos son una alternativa a los clics, no debes hacer ambos procedimientos dos veces.</p></div>
+<div class="next-folder-overview"><div class="deep-heading"><span>REFERENCIA VISUAL</span><h2>Así quedará el árbol de carpetas</h2><p>El archivo <code>main.dart</code> sigue en el mismo lugar. Los directorios <code>test</code> y <code>assets</code> se explican aparte: <code>assets</code> solo se crea si más adelante necesitamos recursos como imágenes.</p></div>
+<div class="code-label">Esquema de lectura · estructura de carpetas (NO copiar en Dart)</div><pre class="code-block"><code>actividad2a/
+├── lib/
+│   ├── main.dart          ← CONSERVAR; NO MOVER
+│   ├── pages/             ← pantallas (más adelante)
+│   ├── widgets/           ← componentes reutilizables
+│   ├── models/            ← clases de datos
+│   ├── services/          ← comunicación con APIs
+│   ├── repositories/      ← acceso y persistencia de datos
+│   └── bloc/              ← lógica y estados (en el futuro)
+├── test/                  ← puede existir desde flutter create
+└── pubspec.yaml          ← ya forma parte del proyecto</code></pre>
+<div class="folder-purpose-grid"><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>pages/</strong><span>Las pantallas completas</span><p>Por ejemplo, una página de inicio o de detalle; todavía seguimos trabajando en <code>main.dart</code>.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>widgets/</strong><span>Las piezas reutilizables de interfaz</span><p>Se utilizará en la siguiente práctica para crear <code>TituloSeccion</code> sin duplicar la misma estructura.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>models/</strong><span>Las clases que describen los datos</span><p>Más adelante guardaremos aquí la definición de <code>Vehiculo</code>. Una clase no es todavía una base de datos.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>services/</strong><span>La comunicación con servicios externos</span><p>Se podría usar para consumir una API; hoy no creamos solicitudes HTTP ni conectamos servicios.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>repositories/</strong><span>Cómo obtener o guardar información</span><p>Podría organizar las operaciones con archivos, bases de datos o servicios; no hay persistencia en esta clase.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>bloc/</strong><span>La lógica y los estados separados de la interfaz</span><p>Se estudiará cuando corresponda el patrón BLoC. Crear la carpeta no implementa BLoC.</p></div></div></div></div>
+<div class="notice notice-warning"><strong>No confundir</strong><p><code>pages/</code>, <code>widgets/</code>, <code>models/</code>, <code>services/</code>, <code>repositories/</code> y <code>bloc/</code> son nombres organizativos, no carpetas que Flutter cree automáticamente ni que tengan funcionalidad por sí solas. Git tampoco almacena normalmente carpetas vacías hasta que contienen algún archivo versionado; no vamos a llenar carpetas artificialmente en esta práctica.</p></div>
+<div class="next-section-heading"><span>CREACIÓN PASO A PASO</span><h2>Una carpeta a la vez</h2></div><article class="next-step" id="carpetas-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear la carpeta <code>pages</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>pages</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/pages</code></div></div></div><div class="code-label">PowerShell · crear solo lib/pages</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/pages&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/pages/</code> en el Explorador, pero permanece vacía. Por ejemplo, una página de inicio o de detalle; todavía seguimos trabajando en <code>main.dart</code>.</p></div></article>
+<article class="next-step" id="carpetas-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Crear la carpeta <code>widgets</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>widgets</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">PowerShell · crear solo lib/widgets</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/widgets&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/widgets/</code> en el Explorador, pero permanece vacía. Se utilizará en la siguiente práctica para crear <code>TituloSeccion</code> sin duplicar la misma estructura.</p></div></article>
+<article class="next-step" id="carpetas-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Crear la carpeta <code>models</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>models</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/models</code></div></div></div><div class="code-label">PowerShell · crear solo lib/models</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/models&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/models/</code> en el Explorador, pero permanece vacía. Más adelante guardaremos aquí la definición de <code>Vehiculo</code>. Una clase no es todavía una base de datos.</p></div></article>
+<article class="next-step" id="carpetas-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Crear la carpeta <code>services</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>services</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/services</code></div></div></div><div class="code-label">PowerShell · crear solo lib/services</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/services&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/services/</code> en el Explorador, pero permanece vacía. Se podría usar para consumir una API; hoy no creamos solicitudes HTTP ni conectamos servicios.</p></div></article>
+<article class="next-step" id="carpetas-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Crear la carpeta <code>repositories</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>repositories</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/repositories</code></div></div></div><div class="code-label">PowerShell · crear solo lib/repositories</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/repositories&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/repositories/</code> en el Explorador, pero permanece vacía. Podría organizar las operaciones con archivos, bases de datos o servicios; no hay persistencia en esta clase.</p></div></article>
+<article class="next-step" id="carpetas-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Crear la carpeta <code>bloc</code></h3></div>
+ <p>Si usas VS Code, escribe solamente <strong>bloc</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/bloc</code></div></div></div><div class="code-label">PowerShell · crear solo lib/bloc</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/bloc&#39;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/bloc/</code> en el Explorador, pero permanece vacía. Se estudiará cuando corresponda el patrón BLoC. Crear la carpeta no implementa BLoC.</p></div></article>
+<div class="next-stop"><strong>Detenerse aquí antes de usar las carpetas</strong><p>Comprueba en VS Code que las seis carpetas estén dentro de <code>lib/</code> y vacías. <code>main.dart</code> debe seguir intacto. No escribas todavía <code>pages/home.dart</code>, ni modelos, APIs, repositorios o BLoC; eso será en otras clases.</p></div>
+<div class="checklist" data-checklist="carpetas"><label><input type="checkbox"> Creé las seis carpetas dentro de lib.</label><label><input type="checkbox"> No moví main.dart ni el formulario.</label><label><input type="checkbox"> Puedo explicar el propósito de cada carpeta sin decir que ya está funcionando.</label><label><input type="checkbox"> Entiendo que una carpeta vacía no equivale a una funcionalidad implementada.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD A MANO</span><h3>Dibuja la estructura y explica sus responsabilidades</h3><p>En una hoja, dibuja el árbol <code>lib/</code> con sus seis carpetas. Al lado escribe una frase propia que explique para qué servirá cada una. No implementes archivos ni códigos en ellas.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="carpetas">Marcar módulo como completado</button><a class="next-link" href="#reutilizacion">Siguiente: crear el primer widget reutilizable →</a></div></section>
+
+<section class="page lesson next-module" id="reutilizacion" aria-labelledby="reutilizacion-title" data-lesson="ETAPA 3">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 3</span><span class="status-pill planned">Nueva práctica de clase</span></div>
+<h1 id="reutilizacion-title">Reutilizar widgets: nuestro primer componente</h1><p>Ahora sí empezamos a utilizar una de las carpetas creadas. Aprenderemos a convertir un <code>Text</code> repetido en una clase <code>TituloSeccion</code> que podremos usar en distintos lugares.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>Crear un componente que reciba un parámetro <code>texto</code> y sirva para mostrar dos títulos distintos sin repetir su implementación.</p></div></div>
+<div class="notice notice-info"><strong>Punto de partida obligatorio</strong><p>Continúa desde <a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">el <code>main.dart</code> final del primer formulario</a>, no desde el módulo opcional de filtros. Solo utilizaremos <code>lib/widgets/</code>; las demás carpetas siguen vacías.</p></div>
+<div class="next-compare"><div><small>ANTES</small><code>Text('Hello dsfdsWorld')</code><code>Text('Agregar un vehículo')</code><p>Dos widgets escritos de manera independiente.</p></div><div><small>DESPUÉS</small><code>TituloSeccion(texto: 'Hello dsfdsWorld')</code><code>TituloSeccion(texto: 'Agregar un vehículo')</code><p>Dos usos de una misma clase, con argumentos diferentes.</p></div></div>
+<div class="next-section-heading"><span>CONSTRUIR SIN SALTOS</span><h2>Del archivo vacío al primer widget reutilizable</h2></div><article class="next-step" id="reutilizacion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear el archivo del componente</h3></div>
+ <p>Ahora sí utilizaremos <code>widgets/</code>, una de las carpetas creadas en la etapa anterior. Crea el archivo <code>titulo_seccion.dart</code>. El nombre va en minúsculas y con guion bajo porque es un archivo Dart; todavía no cambies <code>main.dart</code>.</p><div class="next-where"><div class="next-where-action">CREAR UN ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/titulo_seccion.dart</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → lib → widgets → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">Archivo nuevo · ubicación</div><pre class="code-block"><code>lib/widgets/titulo_seccion.dart</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>El archivo no está en <code>lib/pages/</code> ni al lado de <code>pubspec.yaml</code>. Se crea dentro de <code>lib/widgets</code>.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>El archivo existe, aunque todavía no hay un widget importado en la Tienda.</p></div></article>
+<article class="next-step" id="reutilizacion-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Construir TituloSeccion</h3></div>
+ <p>Copia el código completo en ese archivo nuevo. Esta clase es un <code>StatelessWidget</code> como los que ya conocimos; recibe una cadena <code>texto</code> y devuelve un <code>Text(texto)</code>.</p><div class="next-where"><div class="next-where-action">ESCRIBIR CÓDIGO COMPLETO EN EL ARCHIVO NUEVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/titulo_seccion.dart</code></div><div><strong>Ubicación:</strong> Todo el archivo nuevo; no dentro de MainApp</div><div><strong>Busca con Ctrl + F:</strong> <code>titulo_seccion.dart</code></div></div></div><div class="code-label">Dart · lib/widgets/titulo_seccion.dart</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class TituloSeccion extends StatelessWidget {
+  const TituloSeccion({
+    super.key,
+    required this.texto,
+  });
+
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(texto);
+  }
+}
+</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>import</code> trae Material. <code>class TituloSeccion</code> define el tipo reutilizable. <code>final String texto</code> conserva el dato. <code>required this.texto</code> obliga a quien lo use a indicar su texto. <code>build</code> devuelve el widget visual. <code>super.key</code> reenvía la clave al padre.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>La clase está definida, pero todavía no modifica la pantalla; falta importarla y utilizarla en main.dart.</p></div></article>
+<article class="next-step" id="reutilizacion-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Importar el nuevo widget</h3></div>
+ <p>Regresa a <code>main.dart</code>. Justo debajo del import de Material, añade este segundo import. No reemplaces el import original.</p><div class="next-where"><div class="next-where-action">AÑADIR UNA LÍNEA DESPUÉS DEL IMPORT EXISTENTE</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Parte superior del archivo, fuera de cualquier clase</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;package:flutter/material.dart&#39;;</code></div></div></div><div class="code-label">Dart · AÑADIR en la parte superior</div><pre class="code-block"><code>import &#39;widgets/titulo_seccion.dart&#39;;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La ruta entre comillas es relativa a <code>lib/main.dart</code>. El punto y coma finaliza la instrucción. No se importa con <code>etapas/</code>, porque esa carpeta del repositorio solo contiene referencias.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Dart ya puede encontrar la clase <code>TituloSeccion</code>. La interfaz todavía es idéntica.</p></div></article>
+<article class="next-step" id="reutilizacion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Sustituir el primer Text</h3></div>
+ <p>Busca el primer <code>Text('Hello dsfdsWorld')</code> dentro de <code>Column.children</code> y <strong>reemplázalo</strong> con el siguiente widget. No agregues un segundo título.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL TEXTO INICIAL</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> MainApp.build → Scaffold.body → Center → Column.children</div><div><strong>Busca con Ctrl + F:</strong> <code>Text(&#39;Hello dsfdsWorld&#39;)</code></div></div></div><div class="code-label">Dart · reemplazar Text existente</div><pre class="code-block"><code>const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>TituloSeccion</code> es nuestro widget. <code>texto:</code> es un argumento con nombre que recibe el valor String. La clase utiliza ese valor al ejecutar <code>Text(texto)</code>. <code>const</code> se permite porque el valor es constante.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>El mismo título aparece en pantalla; ahora lo dibuja nuestra clase reutilizable.</p></div></article>
+<article class="next-step" id="reutilizacion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Utilizar el mismo widget otra vez</h3></div>
+ <p>Busca el título del formulario y <strong>reemplaza solo esa línea</strong> por otra instancia de <code>TituloSeccion</code>. No dupliques la clase ni cambies el TextField o el botón.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL TÍTULO DEL FORMULARIO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → después de la Row original de búsqueda</div><div><strong>Busca con Ctrl + F:</strong> <code>const Text(&#39;Agregar un vehículo&#39;)</code></div></div></div><div class="code-label">Dart · segundo uso del mismo widget</div><pre class="code-block"><code>const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La clase se escribió <strong>una sola vez</strong> en <code>lib/widgets/titulo_seccion.dart</code>, pero se utiliza <strong>dos veces</strong> con valores diferentes. Esa es la reutilización de widgets.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Hay dos títulos visibles y ambos están construidos con la misma clase. El formulario continúa funcionando.</p></div></article>
+<div class="deep-dive"><div class="deep-heading"><span>COMPROBAR EL RESULTADO</span><h2>Los dos archivos después de la práctica</h2><p>Estos son archivos de referencia: el componente corresponde a <code>lib/widgets/titulo_seccion.dart</code> y el archivo principal a <code>lib/main.dart</code>.</p></div>
+<details class="deep-details"><summary>Ver el widget reutilizable completo</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/widgets/titulo_seccion.dart</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class TituloSeccion extends StatelessWidget {
+  const TituloSeccion({
+    super.key,
+    required this.texto,
+  });
+
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(texto);
+  }
+}
+</code></pre></div></details>
+<details class="deep-details"><summary>Ver main.dart completo al terminar</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/main.dart</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              TextField(
+                controller: vehiculoController,
+                decoration: const InputDecoration(
+                  hintText: &#39;Nombre del vehículo&#39;,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final nombre = vehiculoController.text.trim();
+                  if (nombre.isEmpty) return;
+                  debugPrint(&#39;Vehículo escrito: $nombre&#39;);
+                  vehiculoController.clear();
+                },
+                child: const Text(&#39;Agregar vehículo&#39;),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_10_reutilizacion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a> · <a href="./etapas/paso_10_titulo_seccion.dart" target="_blank" rel="noopener noreferrer">Abrir TituloSeccion ↗</a></p></div>
+<div class="checklist" data-checklist="reutilizacion"><label><input type="checkbox"> El archivo del widget existe dentro de lib/widgets/.</label><label><input type="checkbox"> El componente tiene un parámetro required String.</label><label><input type="checkbox"> main.dart importa el widget sin duplicar clases.</label><label><input type="checkbox"> Utilicé TituloSeccion dos veces con valores distintos.</label><label><input type="checkbox"> La pantalla se ve igual que antes y el botón sigue funcionando.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar solamente un argumento</h3><p>Cambia únicamente el texto del primer <code>TituloSeccion</code> por «Bienvenidos a la Tienda», ejecuta Hot Reload y explica por qué el segundo título no cambia.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="reutilizacion">Marcar módulo como completado</button><a class="next-link" href="#validacion">Siguiente: validar un campo →</a></div></section>
+
+<section class="page lesson next-module" id="validacion" aria-labelledby="validacion-title" data-lesson="ETAPA 4">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 4</span><span class="status-pill planned">Nueva práctica de clase</span></div>
+<h1 id="validacion-title">Validar el campo del primer formulario</h1><p>El formulario básico ya funciona. Ahora aprenderemos a revisar lo que escribe el estudiante y mostrar mensajes de error antes de continuar. Vamos a utilizar <code>Form</code>, <code>TextFormField</code>, <code>GlobalKey&lt;FormState&gt;</code> y <code>validator</code>, <strong>uno por uno</strong>.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>El campo debe pedir un nombre obligatorio de al menos tres caracteres (sin contar espacios al inicio o al final). Un nombre inválido no debe procesarse.</p></div></div>
+<div class="notice notice-info"><strong>Desde dónde continuamos</strong><p>Partimos del resultado de <a href="./etapas/paso_10_reutilizacion.dart" target="_blank" rel="noopener noreferrer">la práctica de reutilización</a>. Sigue existiendo el buscador original y el segundo campo del formulario. <strong>Solo validaremos el segundo campo</strong>; no convertiremos el buscador en formulario.</p></div>
+<div class="next-compare"><div><small>ANTES</small><code>TextField(...)</code><p>Permite escribir, pero no muestra un error al pulsar el botón.</p></div><div><small>DESPUÉS</small><code>Form → TextFormField → validator</code><p>Comprueba que exista un nombre y tenga mínimo tres caracteres.</p></div></div>
+<div class="next-section-heading"><span>APRENDER PASO A PASO</span><h2>Un concepto por modificación</h2></div><article class="next-step" id="validacion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Conocer TextFormField</h3></div>
+ <p>El campo original fue un <code>TextField</code>. Para poder asociarlo más adelante a reglas de validación, cambia <strong>solo el segundo TextField</strong> por <code>TextFormField</code> usando este bloque.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL SEGUNDO CAMPO, NO EL BUSCADOR</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → campo que dice Nombre del vehículo</div><div><strong>Busca con Ctrl + F:</strong> <code>hintText: &#39;Nombre del vehículo&#39;</code></div></div></div><div class="code-label">Dart · reemplazar un widget completo</div><pre class="code-block"><code>TextFormField(
+  controller: vehiculoController,
+  decoration: const InputDecoration(
+    hintText: &#39;Nombre del vehículo&#39;,
+    border: OutlineInputBorder(),
+  ),
+),</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>TextFormField</code> permite tener una función <code>validator</code>. Sigue siendo una caja de texto y conserva el <code>controller</code> anterior. Todavía no agregues <code>validator</code> ni llames <code>validate</code>.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>El campo se ve igual y se puede escribir. Todavía no aparece ningún error.</p></div></article>
+<article class="next-step" id="validacion-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Crear la llave GlobalKey</h3></div>
+ <p>Debajo de la declaración del controlador, crea esta variable. La llave sirve para obtener el estado del <code>Form</code> desde el botón.</p><div class="next-where"><div class="next-where-action">AÑADIR UN ATRIBUTO EN EL STATE</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Dentro de _MainAppState, junto a vehiculoController, fuera de build</div><div><strong>Busca con Ctrl + F:</strong> <code>final TextEditingController vehiculoController</code></div></div></div><div class="code-label">Dart · añadir atributo a _MainAppState</div><pre class="code-block"><code>final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>GlobalKey&lt;FormState&gt;</code> guarda la referencia al estado de un formulario. <code>&lt;FormState&gt;</code> es un tipo genérico, <code>final</code> evita reasignar la llave y los paréntesis construyen el objeto. Se declara <strong>una sola vez</strong>, nunca dentro de build.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aún no cambia la interfaz. La llave está preparada para conectar el formulario.</p></div></article>
+<article class="next-step" id="validacion-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Envolver el campo con Form</h3></div>
+ <p>Sustituye el widget <code>TextFormField</code> que agregaste en el primer paso por un <code>Form</code> que lo contiene. <strong>No muevas ni dupliques el ElevatedButton</strong>: puede permanecer como hermano del formulario dentro de Column.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL TextFormField DEL PASO 1</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → el segundo campo</div><div><strong>Busca con Ctrl + F:</strong> <code>TextFormField(</code></div></div></div><div class="code-label">Dart · Form que contiene el campo</div><pre class="code-block"><code>Form(
+  key: formularioKey,
+  child: TextFormField(
+    controller: vehiculoController,
+    decoration: const InputDecoration(
+      hintText: &#39;Nombre del vehículo&#39;,
+      border: OutlineInputBorder(),
+    ),
+  ),
+),</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>Form(</code> agrupa el campo. <code>key: formularioKey</code> conecta la instancia con nuestra llave. <code>child:</code> coloca dentro al <code>TextFormField</code>. El botón puede acceder al Form a través de la llave aunque no sea hijo del Form.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>La pantalla se mantiene visualmente igual. Ya hay un formulario real, aunque aún falta definir la regla.</p></div></article>
+<article class="next-step" id="validacion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Escribir la regla validator</h3></div>
+ <p>Dentro del <code>TextFormField</code>, después de <code>decoration: ...</code>, añade la función <code>validator</code>. No reemplaces el buscador original.</p><div class="next-where"><div class="next-where-action">AÑADIR EL ARGUMENTO validator DENTRO DE TextFormField</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Form → child: TextFormField → debajo de decoration y antes del cierre del campo</div><div><strong>Busca con Ctrl + F:</strong> <code>hintText: &#39;Nombre del vehículo&#39;</code></div></div></div><div class="code-label">Dart · añadir solo el argumento validator</div><pre class="code-block"><code>validator: (valor) {
+  if (valor == null || valor.trim().isEmpty) {
+    return &#39;Escribe un nombre&#39;;
+  }
+  if (valor.trim().length &lt; 3) {
+    return &#39;Mínimo 3 caracteres&#39;;
+  }
+  return null;
+},</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>valor</code> es el texto que Form pasa al validador. <code>valor == null</code> comprueba si no llegó texto; <code>||</code> significa «o»; <code>trim()</code> quita espacios; <code>isEmpty</code> detecta una cadena vacía; <code>length &lt; 3</code> exige tres caracteres. Devolver un <code>String</code> significa error; <code>return null</code> significa válido.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>La regla está lista. El mensaje aparecerá cuando se llame a validate() desde el botón.</p></div></article>
+<article class="next-step" id="validacion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Ejecutar la validación desde el botón</h3></div>
+ <p>Ahora cambia el código del botón. <strong>Elimina la comprobación anterior</strong> <code>if (nombre.isEmpty) return;</code>, porque será reemplazada por <code>formularioKey.currentState?.validate()</code>. Conserva <code>debugPrint</code> y <code>clear()</code>.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO LA FUNCIÓN onPressed</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> ElevatedButton «Agregar vehículo» → onPressed</div><div><strong>Busca con Ctrl + F:</strong> <code>if (nombre.isEmpty) return;</code></div></div></div><div class="code-label">Dart · reemplazar onPressed completo</div><pre class="code-block"><code>onPressed: () {
+  if (formularioKey.currentState?.validate() != true) {
+    return;
+  }
+  final nombre = vehiculoController.text.trim();
+  debugPrint(&#39;Vehículo escrito: $nombre&#39;);
+  vehiculoController.clear();
+},</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>currentState</code> obtiene el estado asociado con la llave. <code>?.</code> permite acceso seguro si todavía no existe; <code>validate()</code> ejecuta <code>validator</code>. <code>!= true</code> significa que el resultado no fue verdadero: en ese caso <code>return</code> detiene el botón. Un resultado válido permite imprimir y limpiar.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Ahora sí puedes ver el error al pulsar con el campo vacío o un nombre demasiado corto.</p></div></article>
+<div class="next-check-cases"><h2>Tres pruebas que debes ejecutar</h2><div class="next-case-grid">
+<div><span>PRUEBA 01</span><strong>Campo vacío</strong><p>Pulsa «Agregar vehículo» sin escribir nada. Debe aparecer <code>Escribe un nombre</code> debajo de ese campo.</p></div>
+<div><span>PRUEBA 02</span><strong>Escribir «AB»</strong><p>El botón debe mostrar <code>Mínimo 3 caracteres</code>; no se imprime un vehículo válido.</p></div>
+<div><span>PRUEBA 03</span><strong>Escribir «Renault 9»</strong><p>El campo pasa la validación, <code>debugPrint</code> muestra el nombre en consola y <code>clear()</code> vacía la entrada.</p></div>
+</div></div>
+<div class="notice notice-warning"><strong>¿Por qué no cambiamos todo de una vez?</strong><p><code>Form</code> organiza la validación, <code>TextFormField</code> guarda la regla, <code>validator</code> devuelve un error o <code>null</code>, y <code>validate()</code> comprueba el conjunto. Si los pegamos a la vez, no aprenderíamos la función de cada pieza. No guardamos registros todavía.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>RESULTADO FINAL</span><h2>Así queda el formulario validado</h2><p>Si tienes una diferencia, busca cada fragmento en el paso donde se introdujo antes de reemplazar el archivo entero.</p></div>
+<details class="deep-details"><summary>Ver el Form final con el validator</summary><div class="deep-details-body"><div class="code-label">Dart · Form completo dentro de Column.children</div><pre class="code-block"><code>Form(
+  key: formularioKey,
+  child: TextFormField(
+    controller: vehiculoController,
+    decoration: const InputDecoration(
+      hintText: &#39;Nombre del vehículo&#39;,
+      border: OutlineInputBorder(),
+    ),
+    validator: (valor) {
+      if (valor == null || valor.trim().isEmpty) {
+        return &#39;Escribe un nombre&#39;;
+      }
+      if (valor.trim().length &lt; 3) {
+        return &#39;Mínimo 3 caracteres&#39;;
+      }
+      return null;
+    },
+  ),
+),</code></pre></div></details>
+<details class="deep-details"><summary>Ver main.dart completo de la etapa</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/main.dart después de validar</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: TextFormField(
+                  controller: vehiculoController,
+                  decoration: const InputDecoration(
+                    hintText: &#39;Nombre del vehículo&#39;,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.trim().isEmpty) {
+                      return &#39;Escribe un nombre&#39;;
+                    }
+                    if (valor.trim().length &lt; 3) {
+                      return &#39;Mínimo 3 caracteres&#39;;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  if (formularioKey.currentState?.validate() != true) {
+                    return;
+                  }
+                  final nombre = vehiculoController.text.trim();
+                  debugPrint(&#39;Vehículo escrito: $nombre&#39;);
+                  vehiculoController.clear();
+                },
+                child: const Text(&#39;Agregar vehículo&#39;),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_11_validacion.dart" target="_blank" rel="noopener noreferrer">Consultar archivo de referencia ↗</a></p></div>
+<div class="checklist" data-checklist="validacion"><label><input type="checkbox"> Cambié solo el segundo TextField a TextFormField.</label><label><input type="checkbox"> Declaré GlobalKey fuera de build.</label><label><input type="checkbox"> El Form contiene el campo y tiene su key.</label><label><input type="checkbox"> Entiendo cuándo validator devuelve un String o null.</label><label><input type="checkbox"> Probé los tres casos: vacío, corto y válido.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Modificar una única regla</h3><p>Cambia temporalmente el mínimo de tres a cinco caracteres. Predice qué pasará con «Kia» y «Mazda». Comprueba el resultado, explica la condición y después regresa a tres.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="validacion">Marcar módulo como completado</button><a class="next-link" href="#objeto">Siguiente: crear el primer objeto →</a></div></section>
+
+<section class="page lesson next-module" id="objeto" aria-labelledby="objeto-title" data-lesson="ETAPA 5">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 5</span><span class="status-pill planned">Nueva práctica de clase</span></div>
+<h1 id="objeto-title">Crear el primer objeto de la Tienda</h1><p>Después de validar el nombre, vamos a crear una clase de datos y construir nuestro primer objeto <code>Vehiculo</code>. Empezaremos con dos propiedades sencillas: <code>nombre</code> y <code>disponible</code>.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>Comprender la diferencia entre <strong>clase</strong> (el molde) y <strong>objeto</strong> (una instancia con valores), y utilizar los datos de un formulario validado para crear uno.</p></div></div>
+<div class="notice notice-info"><strong>Prerequisitos de esta clase</strong><p>Conserva los archivos de las prácticas anteriores: <code>lib/widgets/titulo_seccion.dart</code> y el <code>main.dart</code> con <code>Form</code> y <code>validator</code>. Ahora utilizaremos <code>models/</code>; <code>pages/</code>, <code>services/</code>, <code>repositories/</code> y <code>bloc/</code> siguen sin utilizarse.</p></div>
+<div class="next-compare"><div><small>CLASE = MOLDE</small><code>class Vehiculo { ... }</code><p>Describe cómo será un vehículo y qué datos tendrá.</p></div><div><small>OBJETO = EJEMPLAR</small><code>final vehiculo = Vehiculo(nombre: nombre);</code><p>Construye un vehículo con el dato escrito en el formulario.</p></div></div>
+<div class="next-section-heading"><span>DE UNA CLASE A UNA INSTANCIA</span><h2>Construir el primer objeto paso a paso</h2></div><article class="next-step" id="objeto-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear el archivo de la clase Vehiculo</h3></div>
+ <p>Ahora utilizaremos <code>models/</code>, que permaneció vacía en la etapa de carpetas. Crea <code>vehiculo.dart</code>. El archivo nuevo define datos, no dibuja la pantalla.</p><div class="next-where"><div class="next-where-action">CREAR UN ARCHIVO EN LA CARPETA models</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/models/vehiculo.dart</code></div><div><strong>Ubicación:</strong> Explorador → lib → models → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/models</code></div></div></div><div class="code-label">Ruta del archivo nuevo · solo referencia</div><pre class="code-block"><code>lib/models/vehiculo.dart</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La carpeta <code>models</code> se usa para clases que representan información. Un <strong>modelo</strong> no es lo mismo que un widget de pantalla.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>El archivo existe, pero no altera el formulario.</p></div></article>
+<article class="next-step" id="objeto-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Escribir la clase Vehiculo</h3></div>
+ <p>Copia la siguiente clase dentro de <code>lib/models/vehiculo.dart</code>. A diferencia de <code>StatelessWidget</code>, esta clase solo guarda datos; por eso no tiene un método <code>build</code>.</p><div class="next-where"><div class="next-where-action">ESCRIBIR EL CONTENIDO COMPLETO DEL ARCHIVO NUEVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/models/vehiculo.dart</code></div><div><strong>Ubicación:</strong> Todo el archivo; no dentro de main.dart</div><div><strong>Busca con Ctrl + F:</strong> <code>vehiculo.dart</code></div></div></div><div class="code-label">Dart · clase Vehiculo completa</div><pre class="code-block"><code>class Vehiculo {
+  const Vehiculo({
+    required this.nombre,
+    this.disponible = true,
+  });
+
+  final String nombre;
+  final bool disponible;
+}
+</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>class Vehiculo</code> crea un nuevo tipo. <code>final String nombre</code> guarda el nombre y <code>final bool disponible</code> guarda verdadero o falso. El constructor <code>const Vehiculo</code> recibe <code>required this.nombre</code>; si no se especifica disponibilidad, <code>this.disponible = true</code> asigna el valor inicial. <code>final</code> evita reasignar las propiedades.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>La clase existe, pero no se ha creado todavía ningún objeto de ese tipo.</p></div></article>
+<article class="next-step" id="objeto-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Importar el modelo en main.dart</h3></div>
+ <p>Regresa a la parte superior de <code>main.dart</code> y agrega la importación de la clase. Deja intactos los imports anteriores.</p><div class="next-where"><div class="next-where-action">AÑADIR IMPORT EN LA CABECERA DE main.dart</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Debajo de import &#39;widgets/titulo_seccion.dart&#39;;</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;widgets/titulo_seccion.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir un import</div><pre class="code-block"><code>import &#39;models/vehiculo.dart&#39;;</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La ruta <code>models/vehiculo.dart</code> es relativa a <code>lib/main.dart</code>. Importar una clase permite usar su nombre en el archivo; <strong>importar no crea un objeto</strong>.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>MainApp puede referirse a Vehiculo, aunque todavía no construye uno.</p></div></article>
+<article class="next-step" id="objeto-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Crear el objeto dentro de onPressed</h3></div>
+ <p>Después de validar el campo y leer el nombre, añade una instancia de nuestro modelo. Esta variable no guarda una lista ni modifica la pantalla.</p><div class="next-where"><div class="next-where-action">AÑADIR UNA INSTRUCCIÓN JUSTO DESPUÉS DE final nombre</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> ElevatedButton → onPressed → después de obtener nombre</div><div><strong>Busca con Ctrl + F:</strong> <code>final nombre = vehiculoController.text.trim();</code></div></div></div><div class="code-label">Dart · añadir primera instancia</div><pre class="code-block"><code>final vehiculo = Vehiculo(nombre: nombre);</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>Vehiculo(...)</code> llama al constructor; <code>nombre:</code> es un argumento con nombre y el segundo <code>nombre</code> es nuestra variable local. <code>final vehiculo</code> guarda una referencia al <strong>primer objeto</strong> de esa clase durante la ejecución del botón.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Ya existe un objeto en memoria con su nombre y disponible=true, pero todavía no se guarda en ninguna parte.</p></div></article>
+<article class="next-step" id="objeto-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Leer las propiedades del objeto</h3></div>
+ <p>Busca la línea de impresión anterior y sustitúyela por una salida que consulte los datos del objeto creado. Mantén el <code>clear()</code> al final.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL debugPrint ANTIGUO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> ElevatedButton → onPressed → después de final vehiculo</div><div><strong>Busca con Ctrl + F:</strong> <code>debugPrint(&#39;Vehículo escrito: $nombre&#39;);</code></div></div></div><div class="code-label">Dart · reemplazar solamente debugPrint</div><pre class="code-block"><code>debugPrint(
+  &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+);</code></pre>
+ <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>vehiculo.nombre</code> lee la propiedad <code>nombre</code> del objeto; <code>vehiculo.disponible</code> lee el valor booleano. <code>${...}</code> incorpora una expresión dentro de una cadena String. <code>debugPrint</code> muestra el resultado en consola, no en una lista de pantalla.</p></div>
+ <div class="next-step-result"><strong>Resultado de este paso</strong><p>Escribe «Renault 9», pulsa el botón y observa: «Vehículo creado: Renault 9 - Disponible: true». El campo queda vacío.</p></div></article>
+<div class="next-check-cases"><h2>Prueba del primer objeto</h2><div class="next-case-grid"><div><span>ENTRADA</span><strong>Renault 9</strong><p>Escribe el nombre en el formulario y pulsa el botón.</p></div><div><span>OBJETO EN MEMORIA</span><strong>Vehiculo</strong><p><code>nombre = 'Renault 9'</code><br><code>disponible = true</code></p></div><div><span>SALIDA EN CONSOLA</span><strong>debugPrint</strong><p><code>Vehículo creado: Renault 9 - Disponible: true</code></p></div></div></div>
+<div class="notice notice-warning"><strong>Muy importante: crear un objeto no es guardar un registro</strong><p>Este objeto se crea dentro de <code>onPressed</code> y se utiliza ahí mismo. No se conserva en una lista permanente ni en una base de datos; al cerrar la aplicación no queda almacenado. Más adelante aprenderemos colecciones, servicios o repositorios cuando corresponda.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>COMPARAR ARCHIVOS</span><h2>Así quedan el modelo y main.dart</h2></div><details class="deep-details"><summary>Ver lib/models/vehiculo.dart completo</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/models/vehiculo.dart</div><pre class="code-block"><code>class Vehiculo {
+  const Vehiculo({
+    required this.nombre,
+    this.disponible = true,
+  });
+
+  final String nombre;
+  final bool disponible;
+}
+</code></pre></div></details><details class="deep-details"><summary>Ver main.dart completo que crea el objeto</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/main.dart con el primer objeto</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;models/vehiculo.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: TextFormField(
+                  controller: vehiculoController,
+                  decoration: const InputDecoration(
+                    hintText: &#39;Nombre del vehículo&#39;,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.trim().isEmpty) {
+                      return &#39;Escribe un nombre&#39;;
+                    }
+                    if (valor.trim().length &lt; 3) {
+                      return &#39;Mínimo 3 caracteres&#39;;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  if (formularioKey.currentState?.validate() != true) {
+                    return;
+                  }
+                  final nombre = vehiculoController.text.trim();
+                  final vehiculo = Vehiculo(nombre: nombre);
+                  debugPrint(
+                    &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+                  );
+                  vehiculoController.clear();
+                },
+                child: const Text(&#39;Agregar vehículo&#39;),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_12_vehiculo.dart" target="_blank" rel="noopener noreferrer">Abrir la clase Vehiculo ↗</a> · <a href="./etapas/paso_12_objeto.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a></p></div>
+<div class="checklist" data-checklist="objeto"><label><input type="checkbox"> Creé lib/models/vehiculo.dart.</label><label><input type="checkbox"> Entiendo String, bool, final, const y required del modelo.</label><label><input type="checkbox"> Importé el modelo en main.dart.</label><label><input type="checkbox"> Construí Vehiculo(nombre: nombre) solo después de validar.</label><label><input type="checkbox"> Mostré las propiedades en consola sin decir que están guardadas.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Crear dos objetos diferentes, uno después del otro</h3><p>Escribe «Renault 9» y luego «Mazda 3». Para cada ejecución, identifica qué dato recibe el constructor y por qué los objetos tienen un nombre diferente aunque utilicen la misma clase.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Ampliación opcional: mejorar el diseño →</a></div></section>
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>En actividad2a tenemos una fila con un icono, un texto y el campo de búsqueda. Vamos a mejorar su presentación para celulares, sin empezar otra aplicación.</p></div>
