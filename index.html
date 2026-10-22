@@ -837,32 +837,32 @@ class MainApp extends StatelessWidget {
   ],
 ),</code></pre>
 <h2>2. Primer cambio: agregar Padding</h2><p>Rodea el contenido actual del <code>body</code> con <code>Padding</code>. Conserva dentro el <code>Center</code> y la <code>Column</code> que ya tiene la Tienda. Modifica una sola cosa y ejecuta Hot Reload.</p>
-<div class="code-label">PROPUESTA · reemplazar body completo conservando la Row original</div><pre class="code-block"><code>  body: Padding(
-  padding: const EdgeInsets.all(16),
-  child: Center(
-    child: Column(
-      children: [
-        Text('Hello dsfdsWorld'),
-        const SizedBox(height: 20),
-        Icon(Icons.directions_car),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Icon(Icons.directions_car),
-            const SizedBox(width: 8),
-            Text('Ingenieria de Sistemas'),
-            Expanded(
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Buscar marca o modelo',
+<div class="code-label">PROPUESTA · reemplazar body completo conservando la Row original</div><pre class="code-block"><code>body: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Center(
+      child: Column(
+        children: [
+          Text('Hello dsfdsWorld'),
+          const SizedBox(height: 20),
+          Icon(Icons.directions_car),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(Icons.directions_car),
+              const SizedBox(width: 8),
+              Text('Ingenieria de Sistemas'),
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Buscar marca o modelo',
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     ),
-  ),
 ),</code></pre>
 <div class="line-notes numbered"><div><strong><code>Padding</code></strong><p>Introduce espacio alrededor del widget que contiene.</p></div><div><strong><code>EdgeInsets.all(16)</code></strong><p>Deja 16 píxeles lógicos a cada lado.</p></div><div><strong><code>child</code></strong><p>Es el widget que queda dentro de la nueva envoltura.</p></div><div><strong><code>children</code></strong><p>Conserva los widgets de la <code>Column</code> tal como están en el bloque completo; no hay código reemplazado por comentarios.</p></div></div>
 <h2>3. Segundo cambio: dar más espacio al buscador</h2><p>En lugar de incluir el <code>TextField</code> junto a todo el texto de la fila, déjalo debajo de ella. Esto sigue ocurriendo dentro de la <code>Column</code> original.</p>
