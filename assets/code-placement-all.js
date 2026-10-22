@@ -11,9 +11,10 @@
   };
   const escape=(s)=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const repo='https://github.com/diln20/tallerFlutterDesarrollo/blob/main/';
-  const fileLabel=(meta)=>meta.kind==='terminal'?'Terminal / PowerShell':
+  const fileLabel=(meta)=>meta.file||(
+    meta.kind==='terminal'?'Terminal / PowerShell':
     meta.kind==='esquema'&&!meta.reference?'Pizarra / lectura':
-    'lib/main.dart (en la copia del estudiante)';
+    'lib/main.dart (en la copia del estudiante)');
   const colorKind=(kind)=>readOnly.has(kind)?'reference':kind==='terminal'?'terminal':kind==='completo'?'complete':'action';
   function chooseFocus(reference,meta,codeText){
     if(!reference)return null;
