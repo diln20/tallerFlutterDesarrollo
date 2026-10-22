@@ -1,0 +1,91 @@
+/* Nuevas etapas pedagógicas: estructura, widgets, validación y primer objeto. */
+.next-module{max-width:100%}
+.next-module .lesson-heading h1{max-width:960px}
+.next-intro-grid,.next-case-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:13px;margin:19px 0 23px
+}
+.next-intro-card,.next-case-grid>div{
+ padding:18px;background:var(--surface-soft);border:1px solid var(--border);
+ border-radius:14px;min-width:0
+}
+.next-intro-card>span,.next-case-grid>div>span{
+ display:block;font-size:10px;letter-spacing:.055em;color:var(--blue);
+ font-weight:900;margin-bottom:9px
+}
+.next-intro-card strong,.next-case-grid>div>strong{
+ display:block;color:var(--heading);font-size:14px;line-height:1.45
+}
+.next-intro-card p,.next-case-grid>div>p{
+ color:var(--text-soft);font-size:11.5px;line-height:1.78;margin:8px 0 0
+}
+.next-folder-overview{
+ margin:24px 0 28px;padding:clamp(17px,3vw,25px);
+ background:var(--surface-soft);border:1px solid var(--border);border-radius:17px
+}
+.next-folder-overview .deep-heading{margin-bottom:16px}
+.next-folder-overview .code-block{max-height:none!important;margin-bottom:19px!important;line-height:1.7;font-size:11px}
+.folder-purpose-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.folder-purpose{display:flex;gap:12px;padding:14px;border-radius:12px;background:var(--surface);border:1px solid var(--border);min-width:0}
+.folder-purpose>div{min-width:0}
+.folder-purpose .folder-icon{
+ flex:0 0 32px;height:32px;display:grid;place-items:center;
+ border-radius:10px;background:#ddf1ee;color:#13766c;font-weight:900;font-size:18px
+}
+.folder-purpose strong{font-size:12px;display:block;color:var(--heading);margin-bottom:3px}
+.folder-purpose span:not(.folder-icon){font-size:10.5px;display:block;color:var(--blue);font-weight:800}
+.folder-purpose p{font-size:10.5px;line-height:1.65;margin:5px 0 0;color:var(--text-soft)}
+.next-section-heading{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--border);margin:30px 0 17px;padding-bottom:11px}
+.next-section-heading span{font-size:10px;letter-spacing:.075em;color:var(--blue);font-weight:900}
+.next-section-heading h2{font-size:clamp(18px,2.1vw,23px);margin:0}
+.next-step{
+ padding:clamp(16px,2.7vw,23px);border:1px solid var(--border);
+ border-radius:15px;background:var(--surface);margin:19px 0 23px;
+ box-shadow:0 6px 24px rgba(25,52,86,.036);scroll-margin-top:75px
+}
+.next-step-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.next-step-number{
+ display:inline-grid;place-items:center;flex:0 0 35px;width:35px;height:35px;
+ border-radius:9px;background:#e5f3f1;color:#176e67;border:1px solid #b6dbd5;
+ font-weight:900;font-size:12px;font-variant-numeric:tabular-nums
+}
+.next-step h3{font-size:clamp(16px,2vw,19px);margin:5px 0 0;line-height:1.4}
+.next-step>p{font-size:11.7px;line-height:1.85;color:var(--text-soft);margin:0 0 15px}
+.next-where{border:1px solid #bdd3e6;border-radius:11px;background:#f1f7ff;margin:12px 0 15px;overflow:hidden}
+.next-where-action{
+ font-size:10px;font-weight:900;letter-spacing:.045em;color:#174c81;
+ background:#dfebfd;border-bottom:1px solid #bdd3e6;padding:8px 12px;
+}
+.next-where-details{display:grid;gap:7px;padding:10px 12px;font-size:11px;color:#385371;line-height:1.8;overflow-wrap:anywhere}
+.next-where-details strong{color:#15395f}
+.next-where-details code{overflow-wrap:anywhere;white-space:normal}
+.next-step .code-label{font-size:10.5px}
+.next-step .code-block{max-height:440px;font-size:11.5px!important;line-height:1.9;overflow:auto;margin-bottom:12px!important}
+.next-step-meaning,.next-step-result{margin:10px 0 0;padding:11px 13px;border-radius:10px;font-size:11px;line-height:1.8}
+.next-step-meaning{background:var(--surface-soft);border:1px solid var(--border)}
+.next-step-result{background:#ecf7f3;border:1px solid #c5e7d7}
+.next-step-meaning strong,.next-step-result strong{font-size:10px;color:var(--heading);font-weight:900;display:block;margin-bottom:4px}
+.next-step-meaning p,.next-step-result p{margin:0;font-size:11px;line-height:1.78}
+.next-step-result p{color:#215f4e}
+.next-stop{padding:18px;background:#f3f8f7;border:1px solid #acd9cc;border-radius:13px;margin:26px 0}
+.next-stop strong{color:#145e52;font-size:13px;display:block;margin-bottom:7px}
+.next-stop p{font-size:11px;line-height:1.8;color:#40635c;margin:0}
+.next-compare{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:23px 0}
+.next-compare>div{padding:17px;border-radius:13px;background:var(--surface-soft);border:1px solid var(--border);min-width:0}
+.next-compare>div:last-child{border-left:3px solid #2ea995}
+.next-compare small{display:block;color:var(--blue);font-size:10px;font-weight:900;margin-bottom:10px}
+.next-compare code{display:block;margin:6px 0;padding:7px!important;white-space:normal;overflow-wrap:anywhere}
+.next-compare p{font-size:11px;line-height:1.7;margin:9px 0 0;color:var(--text-soft)}
+.next-check-cases{margin:27px 0 21px}
+.next-check-cases h2{font-size:clamp(17px,2vw,22px);margin-bottom:13px}
+.next-module .deep-dive{margin-top:22px}
+.next-module .deep-details .code-block{max-height:560px;overflow:auto}
+body[data-theme="dark"] .next-where{background:#162a46;border-color:#42658d}
+body[data-theme="dark"] .next-where-action{background:#223f62;color:#d0e5ff;border-color:#42658d}
+body[data-theme="dark"] .next-where-details,body[data-theme="dark"] .next-where-details strong{color:#d3e2f7}
+body[data-theme="dark"] .next-step-result,body[data-theme="dark"] .next-stop{background:#18362f;border-color:#2b7866}
+body[data-theme="dark"] .next-step-result p,body[data-theme="dark"] .next-stop p,body[data-theme="dark"] .next-stop strong{color:#c2efde}
+body[data-theme="dark"] .folder-purpose .folder-icon{background:#1d473d;color:#88e5bc}
+@media(max-width:750px){.next-intro-grid,.next-case-grid{grid-template-columns:1fr}.folder-purpose-grid{grid-template-columns:1fr}.next-compare{grid-template-columns:1fr}}
+@media(max-width:450px){.next-step{padding:14px 10px}.next-where-details{padding:9px}.next-step-top{gap:9px}.next-step h3{font-size:16px}.next-folder-overview{padding:14px}.folder-purpose{padding:10px}}
+@media print{.next-step{break-inside:avoid;box-shadow:none}.next-folder-overview{break-inside:avoid}}
