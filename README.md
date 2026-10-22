@@ -14,12 +14,16 @@ Cada uno de los **10 módulos** presenta ahora una sección **«Así va cambiand
 - El fragmento Dart responsable y una explicación del efecto.
 - Navegación por pasos, con botones «Anterior», «Siguiente» y acceso directo desde los bloques de código a su cambio correspondiente.
 - Campo de búsqueda simulado que permite escribir y visualizar el estado, las coincidencias o el mensaje sin resultados.
-- Primer formulario simulado en **9 pasos**: aparecen `Text`, `TextField` y `ElevatedButton`, y después se introduce `TextEditingController`, su vínculo al campo, `controller.text`, `clear()` y `dispose()` sin usar todavía `Form` ni validadores.
+- Primer formulario simulado en **9 pasos**, ahora construido directamente desde el `main.dart` original de 42 líneas: `Text`, `TextField` y `ElevatedButton` se insertan después de la `Row` real. Luego se enseña el cambio a `StatefulWidget`, `TextEditingController`, la acción `debugPrint`, `clear()` y `dispose()`, sin listas ni `for`.
 - En teléfonos pequeños, selector entre Antes y Después en lugar de comprimir ambas pantallas.
 
 **Exactitud pedagógica:** la vista es una simulación visual HTML y está identificada como tal. No representa una captura ni una ejecución real de Flutter. Los primeros módulos muestran la construcción del código de clase y los pasos 06–10 describen mejoras propuestas; algunos cambios de Dart (como declarar `StatefulWidget` o una variable) **no generan ningún cambio visual inmediato**, y así se señala explícitamente.
 
 ## Dónde va cada fragmento del primer formulario
+
+**Corrección de secuencia:** el `for (final vehiculo in resultados)` mostrado anteriormente fue una propuesta del módulo 08; no pertenece al proyecto original. El módulo 09 se ha reconstruido directamente desde [`codigo-base/main.dart`](codigo-base/main.dart): inserta su primer `Text` después de la `Row` existente. El botón imprime con `debugPrint` en la consola de Flutter, sin añadir elementos a una lista.
+
+
 
 En el **módulo 09** aparecen ayudas de ubicación para los nueve pasos, tanto en el contenido escrito como bajo la simulación «Así va cambiando tu aplicación»:
 
@@ -67,14 +71,14 @@ La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp
 | 06 | Mejorar la misma Tienda con `Padding`, `SingleChildScrollView` y distribución adaptable. | Propuesta para la copia |
 | 07 | Hacer que el buscador reaccione con `StatefulWidget`, `createState`, `setState` y `onChanged`. | Propuesta para la copia |
 | 08 | Lista de vehículos de prueba y filtro con `where`, `trim`, `toLowerCase`, `contains` y `toList`. | Propuesta para la copia |
-| 09 | Primer formulario explicado línea a línea con `Text`, `TextField`, `ElevatedButton`, `TextEditingController`, `onPressed`, `setState`, `clear()` y `dispose()`; sin `Form` ni validadores. | Propuesta para la copia |
+| 09 | Primer formulario inmediato, a partir del código original del módulo 05: `Text`, `TextField`, `ElevatedButton`, conversión a `StatefulWidget`, `TextEditingController`, salida con `debugPrint`, `clear()` y `dispose()`; sin listas, ciclos `for` ni `Form`. | Propuesta para la copia |
 | 10 | Comprender eventos, estados y responsabilidad de cada parte de la Tienda con BLoC (sin adelantar código). | Propuesta conceptual |
 
 **En particular, el módulo 09** incluye los fragmentos completos, botones «Copiar código», explicación de parámetros y signos de Dart, instrucciones de reemplazo (para no duplicar widgets), simulaciones antes/después y un `main.dart` final de comparación. También aclara que `...` en explicaciones puede representar contenido omitido y **no debe pegarse como un marcador de código**; los ejemplos para copiar no contienen código sustituido por puntos suspensivos.
 
 ## Archivos completos para verificar el avance
 
-Los ejemplos son **versiones acumulativas de la misma Tienda**, y sirven para comparar el resultado después de construir los fragmentos del módulo.
+Los módulos 02–08 son reconstrucciones y ampliaciones opcionales de la misma Tienda. **La práctica 09 toma como punto de partida el código original del módulo 05**, sin requerir las propuestas 06–08; por eso su `main.dart` no contiene `for`, `resultados` ni una lista de vehículos.
 
 | Etapa | Archivo de ejemplo | Qué representa |
 | --- | --- | --- |
@@ -85,7 +89,7 @@ Los ejemplos son **versiones acumulativas de la misma Tienda**, y sirven para co
 | 06 | [`paso_06_responsive.dart`](etapas/paso_06_responsive.dart) | Reorganización de la misma Tienda |
 | 07 | [`paso_07_estado.dart`](etapas/paso_07_estado.dart) | Captura del texto de búsqueda |
 | 08 | [`paso_08_filtro.dart`](etapas/paso_08_filtro.dart) | Filtrar nombres de vehículos de prueba |
-| 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | Text, TextField y botón: enlazar controlador, añadir vehículos, limpiar campo y liberar recursos |
+| 09 | [`paso_09_formulario.dart`](etapas/paso_09_formulario.dart) | La misma Tienda original más Text, TextField y botón: leer e imprimir el texto en consola, limpiar campo y liberar recursos |
 
 Los archivos de las etapas 06 a 09 describen **posibles prácticas siguientes**, no avances que el docente ya haya realizado con sus estudiantes.
 
