@@ -11,6 +11,9 @@
       return 'una lista de elementos';
     }
     if(kind==='{'){
+      if(/class\s+Vehiculo\b/.test(t))return 'la clase Vehiculo';
+      if(/class\s+TituloSeccion\b/.test(t))return 'la clase TituloSeccion';
+      if(/validator\s*:/.test(t))return 'la función validator del campo';
       if(/class\s+MainApp\b/.test(t))return 'la clase MainApp';
       if(/class\s+_MainAppState\b/.test(t))return 'la clase _MainAppState';
       if(/void\s+main\s*\(/.test(t))return 'la función main';
@@ -76,14 +79,27 @@
     if(/^Get-Location/.test(q))return 'Muestra la ruta actual de PowerShell para comprobar que estás en el proyecto correcto.';
     if(/^Get-ChildItem/.test(q))return 'Lista los archivos y carpetas de la ubicación actual en PowerShell.';
     if(/^Test-Path/.test(q))return 'Comprueba si existe el archivo indicado; devuelve True o False.';
+    if(/^New-Item\s+/.test(q))return 'Es un comando PowerShell, no Dart. New-Item crea un elemento; -ItemType Directory señala que es una carpeta; -Force evita fallar si ya existe; -Path indica la ruta lib/... desde el directorio actual del proyecto.';
+    if(/^import\s+['"]widgets\//.test(q))return 'Importa desde lib/main.dart una clase propia que vive en la carpeta lib/widgets. La ruta es relativa a main.dart; importar permite usar TituloSeccion, pero no lo dibuja automáticamente.';
+    if(/^import\s+['"]models\//.test(q))return 'Importa la clase de datos Vehiculo definida en lib/models/vehiculo.dart. Importarla permite usar el tipo, pero no crea ningún objeto por sí sola.';
     if(/^import\s+/.test(q))return 'Importa una biblioteca. material.dart contiene MaterialApp, Text, Scaffold y los demás widgets Material que utilizamos.';
     if(/^void\s+main\s*\(/.test(q))return 'Declara la función inicial del programa. void indica que no devuelve un valor; la llave abre sus instrucciones.';
     if(/\brunApp\s*\(/.test(q))return 'Entrega a Flutter el widget raíz MainApp para comenzar a construir la interfaz. const es válido si el constructor y sus argumentos son constantes.';
+    if(/^class\s+Vehiculo\s*\{/.test(q))return 'Declara el tipo Vehiculo: un modelo de datos. No es un widget y no necesita build. La llave abre los campos y el constructor de la clase.';
+    if(/^class\s+TituloSeccion\s+extends\s+StatelessWidget/.test(q))return 'Crea una clase propia de widget que hereda de StatelessWidget. Sirve para mostrar títulos con distintos textos sin reescribir la implementación.';
     if(/^class\s+MainApp\s+extends\s+StatelessWidget/.test(q))return 'Declara nuestro widget MainApp y hereda de StatelessWidget. Esta versión no tiene un objeto State mutable propio.';
     if(/^class\s+MainApp\s+extends\s+StatefulWidget/.test(q))return 'Declara MainApp como StatefulWidget: un widget que tendrá un objeto State asociado para administrar datos o recursos.';
     if(/^class\s+_MainAppState/.test(q))return 'Declara la clase State que pertenece a MainApp. El guion bajo hace privado este nombre dentro de su biblioteca Dart.';
     if(/^class\s+[A-Za-z_]\w*\s+extends\s+\w+/.test(q))return 'Declara una nueva clase Dart que hereda del tipo indicado con extends. Es un ejemplo de cómo definir un widget o componente propio.';
     if(/^const\s+MainApp\s*\(/.test(q))return 'Constructor de MainApp. const permite instancias constantes y super.key reenvía al padre una clave opcional de identidad.';
+    if(/^const\s+TituloSeccion\s*\(/.test(q))return 'Constructor de nuestro widget reutilizable. super.key reenvía la clave al padre y required this.texto obliga a proporcionar el argumento texto.';
+    if(/^const\s+Vehiculo\s*\(/.test(q))return 'Constructor del modelo Vehiculo. required this.nombre exige indicar nombre y this.disponible = true define el valor predeterminado de disponibilidad.';
+    if(/^required\s+this\.texto/.test(q))return 'Este argumento con nombre es obligatorio al crear TituloSeccion; se guarda en la propiedad final texto.';
+    if(/^required\s+this\.nombre/.test(q))return 'Este argumento con nombre es obligatorio para construir Vehiculo; se guarda en la propiedad final nombre.';
+    if(/^this\.disponible\s*=\s*true/.test(q))return 'Si al crear Vehiculo no se proporciona disponible, se usa true automáticamente. bool significa verdadero o falso.';
+    if(/^final\s+String\s+texto\s*;/.test(q))return 'Declara una propiedad inmutable de tipo String; guardará el texto que cada uso de TituloSeccion quiere mostrar.';
+    if(/^final\s+String\s+nombre\s*;/.test(q))return 'Declara una propiedad final de tipo String para el nombre del vehículo.';
+    if(/^final\s+bool\s+disponible\s*;/.test(q))return 'Declara una propiedad final booleana: disponible será true o false.';
     if(/^@override/.test(q))return 'Anotación que indica que vamos a implementar o sobrescribir un método definido por el tipo padre.';
     if(/\bState<MainApp>\s+createState\s*\(/.test(q))return 'Crea y devuelve _MainAppState. Los signos < > indican el tipo de widget asociado al State; => es una forma corta de return.';
     if(/^Widget\s+build\s*\(/.test(q))return 'Método que describe los widgets que se muestran. Devuelve un Widget y recibe context, que ubica esta parte en el árbol.';
@@ -91,10 +107,26 @@
     if(/^\s*super\.dispose\s*\(/.test(q))return 'Ejecuta la limpieza heredada de State. Se coloca al final de nuestro método dispose().';
     if(/Controller\.dispose\s*\(/.test(q))return 'Libera el TextEditingController cuando termina el State, evitando conservar recursos que ya no se necesitan.';
     if(/Controller\.clear\s*\(/.test(q))return 'Vacía el TextField conectado al controlador. Se ejecuta después de leer o utilizar el texto escrito.';
+    if(/^final\s+GlobalKey<FormState>\s+/.test(q))return 'Declara una llave de tipo GlobalKey<FormState>. <FormState> especifica el estado de Form; con currentState podremos invocar validate() desde el botón.';
+    if(/^Form\s*\(/.test(q))return 'Construye un Form, contenedor que agrupa campos validables. En esta práctica contiene solo el TextFormField del nombre.';
+    if(/^key\s*:\s*formularioKey/.test(q))return 'Asocia Form con la llave formularioKey creada en _MainAppState para acceder a su estado.';
+    if(/^child\s*:\s*TextFormField/.test(q)||/^TextFormField\s*\(/.test(q))return 'Es el campo de texto validable. Se parece a TextField, pero admite validator y colabora con Form.';
+    if(/^validator\s*:/.test(q))return 'Declara una función que recibe el texto actual del campo (valor). Devuelve String si existe un error y null cuando el texto es válido.';
+    if(/^if\s*\(valor\s*==\s*null\s*\|\|\s*valor\.trim\(\)\.isEmpty/.test(q))return 'Verifica si el valor es null o está vacío después de quitar espacios. || significa O: basta que se cumpla una condición.';
+    if(/^if\s*\(valor\.trim\(\)\.length\s*<\s*3/.test(q))return 'Elimina espacios con trim() y comprueba que la longitud sea menor que 3; si ocurre, el nombre es demasiado corto.';
+    if(/^return\s*['"]Escribe un nombre/.test(q))return 'Devuelve un mensaje de error que TextFormField mostrará debajo del campo cuando se ejecute validate().';
+    if(/^return\s*['"]Mínimo 3 caracteres/.test(q))return 'Devuelve un mensaje de error porque se necesitan al menos tres caracteres para el nombre.';
+    if(/^return\s+null\s*;/.test(q))return 'La validación terminó correctamente. Devolver null significa que este campo no tiene errores.';
+    if(/^if\s*\(formularioKey\.currentState\?\.validate\(\)\s*!=\s*true/.test(q))return 'currentState accede al estado de Form; ?. evita fallar si no existe; validate() llama al validator; != true exige que el resultado sea verdadero para continuar.';
+    if(/^final\s+vehiculo\s*=\s*Vehiculo\(/.test(q))return 'Crea un objeto real de la clase Vehiculo a partir del nombre validado. final vehiculo guarda la referencia local; no se conserva en una lista o base de datos.';
+    if(/^const\s+TituloSeccion\s*\(\{/.test(q))return 'Este es el constructor de TituloSeccion: recibe un texto obligatorio y super.key reenvía la clave opcional al widget padre.';
+    if(/^return\s+Text\(texto\)/.test(q))return 'El método build devuelve un Text usando la propiedad texto que llegó al constructor; no escribe un título fijo dentro de la clase.';
     if(/^final\s+TextEditingController\b/.test(q))return 'Declara una única variable final que contiene el controlador del nuevo campo. Se crea fuera de build para conservarlo y liberarlo con dispose.';
     if(/^controller\s*:/.test(q))return 'Conecta el TextField con el TextEditingController declarado en State, de modo que podamos leer .text y llamar .clear().';
     if(/^\s*final\s+nombre\s*=\s*\w+Controller\.text\.trim\(\)/.test(q))return 'Lee el contenido del campo con .text, elimina espacios de los extremos usando .trim() y guarda el resultado en la variable local final nombre.';
     if(/^\s*if\s*\(nombre\.isEmpty\)\s*return/.test(q))return 'Si el nombre está vacío, return termina la función onPressed sin continuar. Es una comprobación sencilla, no un formulario con validator.';
+    if(/^debugPrint\s*\(/.test(q)&&q.includes('Vehículo creado'))return 'Escribe en consola las propiedades del primer objeto Vehiculo. ${vehiculo.nombre} y ${vehiculo.disponible} insertan valores del objeto en el texto; no lo guarda en una lista ni base de datos.';
+
     if(/^debugPrint\s*\(/.test(q))return 'Escribe un mensaje en la consola de depuración de Flutter. El signo $ inserta el contenido de la variable dentro del texto.';
     if(/^onPressed\s*:/.test(q))return q.includes('{}')?
       'Define la acción de pulsar el botón, pero la función anónima () {} está vacía: todavía no hace nada.':
