@@ -59,11 +59,13 @@
         <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#diseno" data-route="diseno" data-search="Column Row Center Icon children SizedBox widgets layout"><span class="lesson-index">04</span><span>Organizar los widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <div class="nav-group-label">AMPLIACIONES DE LA MISMA TIENDA</div>
+        <div class="nav-group-label">SIGUIENTE PRÁCTICA CON EL CÓDIGO ORIGINAL</div>
+        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="primera practica formulario actividad2a Text TextField botón controller debugPrint sin for"><span class="lesson-index">★</span><span>Primer formulario</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <div class="nav-group-label">AMPLIACIONES OPCIONALES DE LA MISMA TIENDA</div>
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#formularios" data-route="formularios" data-search="actividad2a tienda lista filtrar modelos where trim contains"><span class="lesson-index">08</span><span>Filtrar vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="actividad2a tienda Text TextField ElevatedButton controller TextEditingController dispose clear onPressed botón modelo básico"><span class="lesson-index">09</span><span>Campo y botón</span><span class="nav-check" aria-hidden="true">✓</span></a>
+
         <a class="nav-link" href="#bloc" data-route="bloc" data-search="actividad2a tienda BLoC patrones eventos filtrar resultados"><span class="lesson-index">10</span><span>Tienda con BLoC</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <p id="no-search-results" class="no-search-results" hidden>No se encontraron módulos con ese texto.</p>
       </nav>
@@ -807,7 +809,7 @@ class MainApp extends StatelessWidget {
 <div class="guided-check"><strong>Comprobación de 5 preguntas</strong><p>¿Cuál es el primer <code>children</code>? ¿En qué línea está el segundo icono de carro? ¿Dónde se define el texto de ayuda? ¿Qué línea cierra el campo? ¿Cuál aporta espacio flexible?</p><details><summary>Ver respuestas esperadas</summary><p>Líneas 17, 24, 30, 32 y 27 respectivamente.</p></details></div>
 </div><h2>6. Comprueba lo que viste</h2><div class="checklist" data-checklist="campo-texto"><label><input type="checkbox"> El campo me permite escribir.</label><label><input type="checkbox"> Comprendo por qué el campo está dentro de <code>Expanded</code>.</label><label><input type="checkbox"> Puedo distinguir texto de ayuda y texto real.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Reconoce las diferencias</h3><p>Explica qué pasaría si la <code>Row</code> tuviera textos muy largos y el <code>TextField</code> no dispusiera de espacio flexible.</p><details><summary>Ver orientación</summary><p>La fila podría sobrepasar el ancho de la pantalla. <code>Expanded</code> permite que el campo use el espacio flexible disponible, aunque también debemos cuidar los otros elementos.</p></details></div>
-          <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_05_buscador.dart" target="_blank" rel="noopener noreferrer">Llegar al código original exacto: paso_05_buscador.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="campo-texto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Siguiente: Mejorar el diseño →</a></div>
+          <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_05_buscador.dart" target="_blank" rel="noopener noreferrer">Llegar al código original exacto: paso_05_buscador.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="campo-texto">Marcar módulo como completado</button><a class="next-link" href="#proyecto">Siguiente: Nuestro primer formulario básico →</a></div>
         </section>
 
         
@@ -1218,147 +1220,85 @@ class _MainAppState extends State&lt;MainApp&gt; {
 
         
 <section class="page lesson" id="proyecto" aria-labelledby="proyecto-title" data-lesson="9">
-<div class="lesson-heading">
-  <div class="lesson-meta"><span class="lesson-id">MÓDULO 09</span><span class="status-pill planned">Siguiente práctica · construcción gradual</span><span class="lesson-time">50–60 minutos con pruebas</span></div>
-  <h1 id="proyecto-title">Primer formulario: Text, TextField, botón y controller</h1>
-  <p>Esta es la continuación de la misma <strong>Tienda</strong> del módulo 08. Primero construimos tres widgets sencillos. Después, cuando ya los vemos funcionando, aprendemos <code>TextEditingController</code> para leer y limpiar el campo, y <code>dispose()</code> para liberar el controlador. Cada paso explica qué escribir, dónde colocarlo, qué significa y cómo comprobarlo.</p>
-</div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Sin adelantar formularios avanzados</strong><p>No utilizaremos todavía <code>Form</code>, <code>TextFormField</code>, <code>GlobalKey</code> ni <code>validator</code>. Tampoco crearemos otra aplicación. Partimos de <a href="./etapas/paso_08_filtro.dart" target="_blank" rel="noopener noreferrer"><code>paso_08_filtro.dart</code></a>.</p></div></div>
-
-<div class="form-outcome-grid">
-  <div><span>01 · DIBUJAR</span><strong>Text + TextField + botón</strong><p>La interfaz comienza con elementos que el estudiante ya puede reconocer.</p></div>
-  <div><span>02 · CONECTAR</span><strong>Controller + onPressed</strong><p>Leer lo escrito, comprobar que no esté vacío y agregarlo a la lista.</p></div>
-  <div><span>03 · TERMINAR</span><strong>clear + dispose</strong><p>Vaciar el campo después de agregar y liberar recursos al cerrar la pantalla.</p></div>
-</div>
-<div class="notice notice-info form-copy-tip"><strong>Antes de copiar cualquier bloque</strong>
-  <p>En cada bloque de código aparece el botón <strong>«Copiar código»</strong>. Cópialo y pégalo en el lugar que señala el paso. Cuando diga <strong>«Reemplaza»</strong>, borra la versión anterior de ese widget y pega la nueva: no dejes dos campos o dos botones iguales. Un bloque de paso solo contiene la parte a insertar; al final hay un <strong>main.dart completo</strong> para copiar todo de una vez después de aprender los pasos.</p>
-  <p><strong>¿Qué significan los tres puntos <code>...</code>?</strong> En un tutorial, a veces indican «aquí omitimos instrucciones»; <strong>no deben copiarse</strong> para rellenar un widget. Dart también utiliza los tres puntos como operador real de expansión dentro de colecciones, pero no lo necesitamos en este formulario. Todos los bloques oscuros de esta práctica están escritos sin sustituir instrucciones por puntos suspensivos.</p>
-</div>
-<div class="notice notice-info"><strong>Ubicación exacta</strong><p>Abre <code>lib/main.dart</code> de tu proyecto de práctica. Dentro de la clase <code>_MainAppState</code> ya existen <code>busqueda</code> y <code>vehiculos</code>. Más abajo, dentro de la <code>Column</code> de <code>body</code>, busca <code>for (final vehiculo in resultados)</code> y el <code>ListTile</code> que aparece debajo. Agregaremos los nuevos widgets <strong>después del <code>ListTile</code>, antes de la línea que cierra <code>children</code> con <code>]</code></strong>. Conserva el buscador original.</p></div>
-
-<section class="form-stage" aria-labelledby="form-stage-1"><div class="form-stage-head"><span class="form-step-number">01</span><h2 id="form-stage-1">Agregar un texto fijo con Text</h2></div>
-<p>Justo después del último <code>ListTile</code>, añade estas dos líneas como nuevos elementos de la lista <code>children</code>:</p>
-<div class="code-label">PASO 1 · insertar al final de children</div><pre class="code-block"><code>const SizedBox(height: 20),
-const Text(&#39;Agregar un vehículo&#39;),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>const SizedBox(height: 20)</code></td><td>Deja <strong>20 píxeles lógicos</strong> de separación con los resultados anteriores. El espacio también es un widget.</td></tr><tr><td><code>const</code></td><td>Indica que Flutter puede crear estos widgets con valores constantes porque el texto y la altura no cambian.</td></tr><tr><td><code>Text(&#39;Agregar un vehículo&#39;)</code></td><td>Muestra las palabras entre comillas. <code>Text</code> es el widget; su texto es un <code>String</code>.</td></tr><tr><td><code>height: 20</code></td><td>El nombre <code>height</code> recibe el valor <code>20</code>. Los dos puntos <code>:</code> separan el nombre del valor.</td></tr><tr><td><code>),</code></td><td>Cada <code>)</code> cierra una llamada y cada coma <code>,</code> separa este widget del siguiente dentro de <code>children</code>.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Aparece el texto «Agregar un vehículo» debajo de la lista. No tenemos campo ni botón todavía.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-2"><div class="form-stage-head"><span class="form-step-number">02</span><h2 id="form-stage-2">Agregar un TextField para escribir el nombre</h2></div>
-<p>Pega este bloque <strong>debajo del Text</strong>. Ya has utilizado <code>TextField</code> en el buscador; ahora será el campo donde escribiremos el modelo nuevo.</p>
-<div class="code-label">PASO 2 · pegar después del Text</div><pre class="code-block"><code>const SizedBox(height: 10),
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">SIGUIENTE CLASE · FORMULARIO BÁSICO</span><span class="status-pill planned">Basado en el código real de actividad2a</span><span class="lesson-time">9 pasos</span></div><h1 id="proyecto-title">Text, TextField y botón en la misma Tienda</h1><p>Partimos del código original que tienes con tus estudiantes. La <code>MainApp</code> original es un <code>StatelessWidget</code> y en la pantalla hay una <code>Row</code> con el campo «Buscar marca o modelo». El formulario nuevo se agrega <strong>después de esa Row</strong>, no después de un ciclo.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>No tienes que haber hecho los módulos 06, 07 y 08.</strong><p>Esos módulos proponen mejoras posteriores. El <code>for (final vehiculo in resultados)</code> nació en la práctica opcional de filtrado, pero <strong>NO existe en el main.dart original</strong>. En esta etapa no usaremos ningún <code>for</code>, <code>List</code> ni filtro.</p></div></div>
+<div class="form-outcome-grid"><div><span>PARTE 1</span><strong>Text, TextField y botón</strong><p>Aprender a ubicar y mostrar los widgets.</p></div><div><span>PARTE 2</span><strong>State y controller</strong><p>Preparar el programa para leer el texto.</p></div><div><span>PARTE 3</span><strong>debugPrint y clear</strong><p>Imprimir lo escrito en la consola y limpiar la caja.</p></div></div>
+<div class="notice notice-info form-copy-tip"><strong>Cómo copiar sin confundir los fragmentos</strong><p>Usa «Copiar código» en cada recuadro. Si el paso dice <strong>AÑADIR</strong>, inserta las líneas en la ubicación indicada. Si dice <strong>REEMPLAZAR</strong>, sustituye ese widget o encabezado, sin crear duplicados. Debajo de cada fragmento aparece «Así queda integrado en main.dart» con líneas resaltadas y código anterior y posterior.</p><p>No copies marcadores como <code>...</code> de otros tutoriales para completar partes omitidas. Los bloques de esta práctica están escritos sin puntos suspensivos que sustituyan instrucciones.</p></div>
+<section class="form-stage" aria-labelledby="form-stage-1"><div class="form-stage-head"><span class="form-step-number">01</span><h2 id="form-stage-1">Agregar el título Text</h2></div><p>Busca <code>hintText: 'Buscar marca o modelo'</code>. Ese campo está dentro de <code>Expanded</code> y de una <code>Row</code>. Pega este título <strong>después del cierre de la Row</strong>, pero todavía dentro de <code>Column.children</code>. No necesitas ningún <code>for</code>.</p><div class="code-label">PASO 1 · AÑADIR debajo de la Row original</div><pre class="code-block"><code>const SizedBox(height: 20),
+const Text(&#39;Agregar un vehículo&#39;),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>Text</code></td><td>Muestra el título fijo.</td></tr><tr><td><code>SizedBox(height: 20)</code></td><td>Separa el título de la Row del buscador.</td></tr><tr><td><code>const</code></td><td>Permite crear widgets cuyos argumentos son constantes.</td></tr><tr><td><code>,</code></td><td>Separa cada widget de la lista de hijos.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>Aparece el texto «Agregar un vehículo» debajo del buscador.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-2"><div class="form-stage-head"><span class="form-step-number">02</span><h2 id="form-stage-2">Agregar un segundo TextField</h2></div><p>Pega este bloque inmediatamente después del <code>Text('Agregar un vehículo')</code> del paso anterior. <strong>No reemplaces</strong> el TextField que ya tenías en la Row.</p><div class="code-label">PASO 2 · AÑADIR debajo del título</div><pre class="code-block"><code>const SizedBox(height: 10),
 TextField(
   decoration: const InputDecoration(
-    hintText: &#39;Ej. Toyota Corolla&#39;,
+    hintText: &#39;Nombre del vehículo&#39;,
     border: OutlineInputBorder(),
   ),
-),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>const SizedBox(height: 10)</code></td><td>Separa el título del campo con diez píxeles.</td></tr><tr><td><code>TextField(</code></td><td>Crea la caja donde se puede escribir. Aquí no usamos <code>const</code> para el campo porque después le enlazaremos un controlador.</td></tr><tr><td><code>decoration:</code></td><td>Es la propiedad que define la presentación visual de la caja.</td></tr><tr><td><code>const InputDecoration(</code></td><td>Permite configurar el mensaje de ayuda y el borde, que no cambiarán durante esta práctica.</td></tr><tr><td><code>hintText: &#39;Ej. Toyota Corolla&#39;</code></td><td>Muestra una sugerencia mientras el campo está vacío; no es el valor real guardado.</td></tr><tr><td><code>border: OutlineInputBorder()</code></td><td>Dibuja el contorno. Los paréntesis vacíos de <code>OutlineInputBorder()</code> usan las opciones predeterminadas.</td></tr><tr><td><code>),</code></td><td>Hay cierres diferentes: primero termina <code>InputDecoration</code> y luego <code>TextField</code>. No sobran paréntesis.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Ahora aparece la caja y puedes escribir. Todavía no se añade ningún vehículo a la lista.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-3"><div class="form-stage-head"><span class="form-step-number">03</span><h2 id="form-stage-3">Agregar ElevatedButton, todavía sin funcionamiento</h2></div>
-<p>Debajo del segundo <code>TextField</code> añade el botón. Su función <code>onPressed</code> empieza vacía para comprobar primero la interfaz.</p>
-<div class="code-label">PASO 3 · insertar debajo del nuevo TextField</div><pre class="code-block"><code>const SizedBox(height: 12),
+),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>TextField</code></td><td>Es una nueva caja de entrada.</td></tr><tr><td><code>InputDecoration</code></td><td>Configura la presentación del campo.</td></tr><tr><td><code>hintText</code></td><td>Muestra la sugerencia mientras está vacío.</td></tr><tr><td><code>OutlineInputBorder()</code></td><td>Dibuja su borde.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>Ahora tienes dos TextField: el original para buscar y el nuevo para escribir el nombre.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-3"><div class="form-stage-head"><span class="form-step-number">03</span><h2 id="form-stage-3">Agregar un botón básico</h2></div><p>Pega el botón debajo del segundo TextField. Por ahora <code>onPressed</code> está vacío porque primero aprenderemos a dibujar los tres widgets.</p><div class="code-label">PASO 3 · AÑADIR después del nuevo TextField</div><pre class="code-block"><code>const SizedBox(height: 12),
 ElevatedButton(
   onPressed: () {},
   child: const Text(&#39;Agregar vehículo&#39;),
-),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>ElevatedButton(</code></td><td>Crea un botón de Material. Flutter se encarga de dibujarlo.</td></tr><tr><td><code>onPressed: () {}</code></td><td>Es una función que no recibe parámetros y, por ahora, no ejecuta instrucciones. Los paréntesis <code>()</code> están vacíos y las llaves <code>{}</code> también.</td></tr><tr><td><code>child: const Text(&#39;Agregar vehículo&#39;)</code></td><td>El argumento <code>child</code> indica qué va dentro del botón; aquí mostramos el texto «Agregar vehículo».</td></tr><tr><td><code>const SizedBox(height: 12)</code></td><td>Separa la caja de texto y el botón, para que no queden pegados.</td></tr><tr><td><code>}, y ),</code></td><td>La llave <code>}</code> cierra la función, la coma separa la propiedad y el paréntesis cierra el widget.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Se ven título, campo y botón. Al pulsar el botón no sucede nada porque todavía no hemos programado su acción.</p></div></section>
+),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>ElevatedButton</code></td><td>Dibuja el botón.</td></tr><tr><td><code>onPressed: () {}</code></td><td>Es una función sin parámetros ni instrucciones, por eso aún no realiza una acción.</td></tr><tr><td><code>child: const Text(...)</code></td><td>Es el texto visible dentro del botón.</td></tr><tr><td><code>SizedBox(height: 12)</code></td><td>Deja espacio entre la caja y el botón.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>Puedes pulsar el botón, pero no imprime ni guarda nada todavía.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-4"><div class="form-stage-head"><span class="form-step-number">04</span><h2 id="form-stage-4">Cambiar StatelessWidget a StatefulWidget</h2></div><p>El código de clase usa <code>MainApp extends StatelessWidget</code>. Busca desde esa línea hasta <code>Widget build(BuildContext context) {</code> inclusive y <strong>reemplaza solo ese encabezado</strong> por el siguiente. Conserva todo lo que está dentro de <code>build</code> desde <code>return MaterialApp(</code> hasta el final.</p><div class="code-label">PASO 4 · REEMPLAZAR encabezado de MainApp; conservar build</div><pre class="code-block"><code>class MainApp extends StatefulWidget {
+  const MainApp({super.key});
 
-<section class="form-stage" aria-labelledby="form-stage-4"><div class="form-stage-head"><span class="form-step-number">04</span><h2 id="form-stage-4">¿Qué es un TextEditingController y dónde se crea?</h2></div>
-<p>Cuando ya vemos la caja y el botón, necesitamos una forma de <strong>leer qué escribió el usuario</strong> y luego borrar el campo. Un <code>TextEditingController</code> es el objeto que se encarga de seguir el contenido de esa caja. Es como tener una referencia al texto.</p>
-<p>Dentro de <code>_MainAppState</code>, <strong>fuera de <code>build</code></strong> y cerca de la variable <code>busqueda</code>, escribe esta declaración:</p>
-<div class="code-label">PASO 4 · agregar dentro de _MainAppState, antes de build</div><pre class="code-block"><code>final TextEditingController nuevoVehiculoController = TextEditingController();</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>final</code></td><td>Significa que esta variable no apuntará a otro controlador. El contenido interno del controlador <strong>sí puede cambiar</strong>.</td></tr><tr><td><code>TextEditingController</code></td><td>Es el tipo de objeto que controla una entrada de texto.</td></tr><tr><td><code>nuevoVehiculoController</code></td><td>Es el nombre que elegimos. Es importante escribirlo exactamente igual en el campo, el botón y <code>dispose</code>.</td></tr><tr><td><code>=</code></td><td>Asigna a la variable la nueva instancia que se construye a la derecha.</td></tr><tr><td><code>TextEditingController()</code></td><td>Crea el objeto controlador, inicialmente con texto vacío. Los paréntesis llaman a su constructor.</td></tr><tr><td><code>;</code></td><td>Marca el final de esta declaración de variable.</td></tr><tr><td><code>Dentro de State, no dentro de build</code></td><td><code>build</code> puede ejecutarse muchas veces. Si creamos el controlador ahí, perderíamos la referencia anterior al reconstruir la pantalla.</td></tr></tbody></table></div>
-<div class="notice notice-info"><strong>¿Y onChanged?</strong><p>El buscador del paso 07 ya usa <code>onChanged</code> y <code>setState</code> para actualizar los resultados mientras escribimos. Este nuevo campo usará un <code>controller</code> porque, además de leer su texto, queremos <strong>limpiarlo</strong> desde el botón. No necesitamos usar ambas técnicas en el mismo campo.</p></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>No hay un cambio visual todavía: acabamos de crear una variable, pero no la hemos asociado a la caja.</p></div></section>
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
 
-<section class="form-stage" aria-labelledby="form-stage-5"><div class="form-stage-head"><span class="form-step-number">05</span><h2 id="form-stage-5">Conectar controller al nuevo TextField</h2></div>
-<p>Busca <strong>el segundo TextField</strong>, el que muestra la ayuda «Ej. Toyota Corolla». <strong>Reemplaza ese TextField completo</strong> por este bloque. No modifiques el campo de búsqueda.</p>
-<div class="code-label">PASO 5 · reemplazar el TextField de registro</div><pre class="code-block"><code>TextField(
-  controller: nuevoVehiculoController,
+class _MainAppState extends State&lt;MainApp&gt; {
+  @override
+  Widget build(BuildContext context) {</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>StatefulWidget</code></td><td>Crea un widget con estado asociado.</td></tr><tr><td><code>createState()</code></td><td>Devuelve la clase que mantiene su estado.</td></tr><tr><td><code>_MainAppState</code></td><td>Contendrá nuestro controlador y el build original.</td></tr><tr><td><code>@override</code></td><td>Indica la implementación de un método heredado.</td></tr><tr><td><code>super.key</code></td><td>Reenvía la clave opcional a la clase base.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>No cambia el aspecto de la Tienda, pero ya podemos gestionar un controlador dentro de State.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-5"><div class="form-stage-head"><span class="form-step-number">05</span><h2 id="form-stage-5">Declarar el controlador</h2></div><p>Justo después de <code>class _MainAppState extends State&lt;MainApp&gt; {</code> y antes del <code>@override</code> de <code>build</code>, escribe esta variable. No va dentro de build ni dentro de TextField.</p><div class="code-label">PASO 5 · DECLARAR en _MainAppState, antes de build</div><pre class="code-block"><code>final TextEditingController vehiculoController = TextEditingController();</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>TextEditingController</code></td><td>Es un objeto que permite conocer y cambiar el contenido de una caja de texto.</td></tr><tr><td><code>vehiculoController</code></td><td>Es el nombre del controlador para usarlo después.</td></tr><tr><td><code>final</code></td><td>No permite reasignar la variable a otro controlador.</td></tr><tr><td><code>TextEditingController()</code></td><td>Construye el objeto inicial.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>No aparece ningún cambio visual; solo creamos el controlador.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-6"><div class="form-stage-head"><span class="form-step-number">06</span><h2 id="form-stage-6">Conectar controller al TextField</h2></div><p>Busca el campo con <code>hintText: 'Nombre del vehículo'</code> y sustitúyelo por esta versión con <code>controller</code>. El buscador original de la Row permanece igual.</p><div class="code-label">PASO 6 · REEMPLAZAR el segundo TextField</div><pre class="code-block"><code>TextField(
+  controller: vehiculoController,
   decoration: const InputDecoration(
-    hintText: &#39;Ej. Toyota Corolla&#39;,
+    hintText: &#39;Nombre del vehículo&#39;,
     border: OutlineInputBorder(),
   ),
-),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>controller:</code></td><td>Es una propiedad de <code>TextField</code>. Nos permite indicar qué controlador está conectado a ese campo.</td></tr><tr><td><code>nuevoVehiculoController</code></td><td>Es el mismo objeto creado en el paso 4, no una cadena entre comillas.</td></tr><tr><td><code>controller: nuevoVehiculoController,</code></td><td>Conecta el campo con el controlador. Desde ahora, cuando se escribe en la caja, el controlador conoce el texto.</td></tr><tr><td><code>decoration: const InputDecoration(</code></td><td>Conservamos exactamente el mismo mensaje de ayuda y borde. Solo añadimos la línea <code>controller</code>.</td></tr><tr><td><code>.text</code></td><td>Todavía no lo usamos en este paso. Más adelante, <code>nuevoVehiculoController.text</code> devolverá el contenido actual del campo.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>El TextField se ve igual; la diferencia es interna. Ahora podremos leerlo desde el botón.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-6"><div class="form-stage-head"><span class="form-step-number">06</span><h2 id="form-stage-6">Leer el texto y agregarlo al pulsar el botón</h2></div>
-<p>Reemplaza <strong>el ElevatedButton del paso 3</strong> por el siguiente botón completo. Por ahora el campo todavía conservará el nombre después de agregarlo: así distinguimos el efecto de guardar y el de limpiar.</p>
-<div class="code-label">PASO 6 · reemplazar el botón sin acción</div><pre class="code-block"><code>ElevatedButton(
+),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>controller:</code></td><td>Es un parámetro de TextField.</td></tr><tr><td><code>vehiculoController</code></td><td>Es el objeto creado en _MainAppState.</td></tr><tr><td><code>decoration</code></td><td>Continúa definiendo la misma pista y el borde.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>El campo se ve igual, pero ahora el código puede leer su texto.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-7"><div class="form-stage-head"><span class="form-step-number">07</span><h2 id="form-stage-7">Programar onPressed</h2></div><p>Busca <code>onPressed: () {}</code> del botón «Agregar vehículo» y sustituye el botón por el siguiente. Lee lo escrito y muéstralo en la <strong>consola de Flutter</strong> con <code>debugPrint</code>. No se agregará a una lista aún.</p><div class="code-label">PASO 7 · REEMPLAZAR el botón que antes no hacía nada</div><pre class="code-block"><code>ElevatedButton(
   onPressed: () {
-    final nombre = nuevoVehiculoController.text.trim();
+    final nombre = vehiculoController.text.trim();
     if (nombre.isEmpty) return;
-    setState(() {
-      vehiculos.add(nombre);
-    });
+    debugPrint(&#39;Vehículo escrito: $nombre&#39;);
   },
   child: const Text(&#39;Agregar vehículo&#39;),
-),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>onPressed: () {</code></td><td>Flutter ejecuta el interior de este bloque cuando se pulsa el botón, no mientras se escribe.</td></tr><tr><td><code>nuevoVehiculoController.text</code></td><td>Lee el texto que el estudiante escribió en el TextField conectado al controlador.</td></tr><tr><td><code>.trim()</code></td><td>Elimina espacios al comienzo y al final. Ya lo aprendimos al filtrar vehículos.</td></tr><tr><td><code>final nombre = nuevoVehiculoController.text.trim();</code></td><td>Declara la variable local <code>nombre</code> y guarda el resultado de leer el campo y quitar espacios. Aquí aparece la línea <strong>completa, sin abreviaciones</strong>.</td></tr><tr><td><code>if (nombre.isEmpty) return;</code></td><td>Si el nombre queda vacío, <code>isEmpty</code> es verdadero y <code>return</code> termina la acción sin agregar nada.</td></tr><tr><td><code>setState(() {</code></td><td>Indica a Flutter que cambiaremos datos que aparecen en pantalla, para que luego actualice la interfaz.</td></tr><tr><td><code>vehiculos.add(nombre);</code></td><td>Agrega el nombre a la lista existente <code>vehiculos</code>. <code>add</code> es un método de las listas de Dart.</td></tr><tr><td><code>});</code></td><td>Cierra la función que recibió <code>setState</code>, luego la llamada y finalmente la instrucción.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Escribe «Toyota Corolla» y pulsa el botón. Sin filtro activo, el nuevo nombre aparece en la lista. El campo conserva el texto todavía.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-7"><div class="form-stage-head"><span class="form-step-number">07</span><h2 id="form-stage-7">Limpiar el TextField con clear()</h2></div>
-<p>Ahora queremos que el usuario pueda escribir otro vehículo sin tener que borrar el anterior. Para ello, al final de <code>onPressed</code>, <strong>después de agregarlo</strong>, usa <code>nuevoVehiculoController.clear();</code>. Reemplaza el botón del paso anterior por esta versión definitiva:</p>
-<div class="code-label">PASO 7 · ElevatedButton completo, con clear</div><pre class="code-block"><code>ElevatedButton(
+),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>onPressed</code></td><td>Se ejecuta al pulsar el botón.</td></tr><tr><td><code>vehiculoController.text</code></td><td>Obtiene lo escrito en el segundo campo.</td></tr><tr><td><code>trim()</code></td><td>Quita espacios al comienzo y al final.</td></tr><tr><td><code>if (nombre.isEmpty) return;</code></td><td>Evita procesar un nombre vacío.</td></tr><tr><td><code>debugPrint</code></td><td>Imprime un mensaje en la consola de desarrollo.</td></tr><tr><td><code>$nombre</code></td><td>Inserta el valor de la variable dentro del mensaje.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>Escribe Toyota Corolla, pulsa el botón y lee «Vehículo escrito: Toyota Corolla» en la consola de VS Code o Flutter.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-8"><div class="form-stage-head"><span class="form-step-number">08</span><h2 id="form-stage-8">Limpiar el campo con clear()</h2></div><p>Sustituye el botón anterior por esta variante con la instrucción <code>vehiculoController.clear()</code> justo después de <code>debugPrint</code>. No es necesario cambiar nada más.</p><div class="code-label">PASO 8 · REEMPLAZAR el mismo ElevatedButton</div><pre class="code-block"><code>ElevatedButton(
   onPressed: () {
-    final nombre = nuevoVehiculoController.text.trim();
+    final nombre = vehiculoController.text.trim();
     if (nombre.isEmpty) return;
-    setState(() {
-      vehiculos.add(nombre);
-    });
-    nuevoVehiculoController.clear();
+    debugPrint(&#39;Vehículo escrito: $nombre&#39;);
+    vehiculoController.clear();
   },
   child: const Text(&#39;Agregar vehículo&#39;),
-),</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>nuevoVehiculoController.clear();</code></td><td>Borra lo escrito en el TextField conectado al controlador. <strong>No</strong> elimina los datos de la lista de vehículos.</td></tr><tr><td><code>Orden de ejecución</code></td><td>Primero leemos <code>.text</code>, luego agregamos a la lista con <code>setState</code> y <strong>al final</strong> limpiamos la caja. Si limpiáramos antes, el nombre se perdería.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Al pulsar «Agregar vehículo», el nombre queda en la lista y la caja vuelve a estar vacía. Podemos escribir otro vehículo.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-8"><div class="form-stage-head"><span class="form-step-number">08</span><h2 id="form-stage-8">Explicar y escribir dispose() y super.dispose()</h2></div>
-<p>El controlador usa recursos mientras existe la pantalla. Cuando Flutter retira el objeto <code>State</code> definitivamente, debemos liberarlos. Dentro de <code>_MainAppState</code>, <strong>fuera de <code>build</code></strong>, inserta este método después de declarar las variables y antes de <code>build</code>:</p>
-<div class="code-label">PASO 8 · método completo de limpieza</div><pre class="code-block"><code>@override
+),</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>clear()</code></td><td>Vacía la caja conectada al controlador.</td></tr><tr><td><code>Orden de ejecución</code></td><td>Primero leemos, luego imprimimos y al final limpiamos.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>El nombre se imprime en la consola y el campo queda vacío.</p></div></section>
+<section class="form-stage" aria-labelledby="form-stage-9"><div class="form-stage-head"><span class="form-step-number">09</span><h2 id="form-stage-9">Liberar recursos con dispose()</h2></div><p>Después de declarar <code>vehiculoController</code>, y antes del método <code>build</code>, añade este método dentro de <code>_MainAppState</code>. No lo escribas dentro del botón ni de build.</p><div class="code-label">PASO 9 · AÑADIR método antes del build de _MainAppState</div><pre class="code-block"><code>@override
 void dispose() {
-  nuevoVehiculoController.dispose();
+  vehiculoController.dispose();
   super.dispose();
-}</code></pre>
-<div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>@override</code></td><td>Indica que sobrescribimos un método que existe en la clase padre <code>State</code>. Flutter puede comprobar que lo escribimos correctamente.</td></tr><tr><td><code>void dispose()</code></td><td>Es el método que Flutter llama cuando termina definitivamente la vida de ese objeto State. <code>void</code> significa que no devuelve un valor.</td></tr><tr><td><code>nuevoVehiculoController.dispose();</code></td><td>Libera los recursos del controlador. Esta línea no va dentro del botón, porque necesitamos el controlador durante toda la actividad.</td></tr><tr><td><code>super.dispose();</code></td><td>Llama al método de limpieza de la clase padre. Lo escribimos al final de nuestro <code>dispose()</code>.</td></tr><tr><td><code>{ y }</code></td><td>Las llaves indican dónde comienza y termina el método. No debemos sustituir el contenido por puntos suspensivos.</td></tr></tbody></table></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>No se ve ningún cambio, pero el controlador queda administrado correctamente.</p></div></section>
-
-<section class="form-stage" aria-labelledby="form-stage-9"><div class="form-stage-head"><span class="form-step-number">09</span><h2 id="form-stage-9">Comprobar todo desde el teléfono</h2></div>
-<p>Reinicia o ejecuta la Tienda y revisa este recorrido: escribir <strong>Toyota Corolla</strong> → pulsar <strong>Agregar vehículo</strong> → comprobar la lista → comprobar que el campo queda vacío → buscar <strong>Toyota</strong> en el buscador original.</p>
-<div class="checklist" data-checklist="proyecto">
-  <label><input type="checkbox"> Conservé el buscador y la lista del paso 08.</label>
-  <label><input type="checkbox"> El título «Agregar un vehículo» aparece debajo de los resultados.</label>
-  <label><input type="checkbox"> Puedo escribir en el segundo TextField.</label>
-  <label><input type="checkbox"> Al pulsar el botón agrego un nombre nuevo a <code>vehiculos</code>.</label>
-  <label><input type="checkbox"> <code>clear()</code> deja vacío el campo después de agregarlo.</label>
-  <label><input type="checkbox"> Puedo explicar qué hace <code>controller.text</code>, <code>setState</code>, <code>dispose()</code> y <code>super.dispose()</code>.</label>
-  <label><input type="checkbox"> No pegué puntos suspensivos ni dupliqué el botón o el TextField al reemplazarlos.</label>
-</div>
-<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Agregar Kia Picanto y explicar el código</h3><p>Escribe «Kia Picanto», presiona «Agregar vehículo» y búscalo en la lista. Luego cambia el título fijo por «Registrar vehículo» y reemplaza el <code>hintText</code> por otro ejemplo. Explica por qué el campo se limpia.</p><details><summary>Ver respuesta orientativa</summary><p>El controller conoce el texto escrito porque está conectado al TextField. El botón lo lee con <code>.text</code>, lo agrega con <code>vehiculos.add(nombre)</code> y finalmente llama <code>clear()</code> para vaciar el campo.</p></details></div>
-<div class="form-expected"><strong>Resultado de este paso</strong><p>Al terminar debes poder explicar la construcción completa del formulario sencillo, sin depender del archivo final de referencia.</p></div></section>
-
-<div class="deep-dive form-explain-all">
-  <div class="deep-heading"><span>REPASO DETALLADO · NO OMITIR INSTRUCCIONES</span><h2>Diccionario de cada signo, método y widget</h2><p>Aquí aclaramos también los signos que se suelen ver al copiar ejemplos. Los nombres de widgets anteriores se recuerdan brevemente para entender el programa completo.</p></div>
-  <h3>Palabras y operaciones del nuevo formulario</h3>
-  <div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>Text</code></td><td>Dibuja palabras fijas; no recibe texto del usuario.</td></tr><tr><td><code>TextField</code></td><td>Permite escribir. No agrega registros por sí mismo.</td></tr><tr><td><code>ElevatedButton</code></td><td>Botón de Material que puede ejecutar una función al pulsarlo.</td></tr><tr><td><code>TextEditingController</code></td><td>Objeto que controla y permite consultar o cambiar el texto de un campo.</td></tr><tr><td><code>controller</code></td><td>Propiedad de TextField para asociarlo a un controlador.</td></tr><tr><td><code>.text</code></td><td>Devuelve el String que se encuentra actualmente en el controlador.</td></tr><tr><td><code>.clear()</code></td><td>Borra el contenido del campo vinculado.</td></tr><tr><td><code>.dispose()</code></td><td>Libera un controlador cuando ya no se utilizará.</td></tr><tr><td><code>super.dispose()</code></td><td>Completa la limpieza del objeto State padre.</td></tr><tr><td><code>onPressed</code></td><td>Es el evento del botón: contiene qué hacer cuando alguien lo pulsa.</td></tr><tr><td><code>onChanged</code></td><td>Sigue funcionando en el buscador original para actualizar su variable al escribir.</td></tr><tr><td><code>setState</code></td><td>Permite reconstruir visualmente el contenido dependiente de los datos modificados.</td></tr><tr><td><code>vehiculos.add(nombre)</code></td><td>Introduce un elemento nuevo en la lista que ya teníamos.</td></tr><tr><td><code>isEmpty</code></td><td>Indica si un String quedó vacío; lo usamos para detener una inserción sin nombre.</td></tr><tr><td><code>trim()</code></td><td>Quita espacios de los extremos de una cadena.</td></tr></tbody></table></div>
-  <h3>Signos que aparecen en Dart</h3>
-  <div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>()</code></td><td>Se usan al llamar constructores o métodos y para escribir los parámetros de una función.</td></tr><tr><td><code>{}</code></td><td>Delimitan las instrucciones de un bloque, método o función anónima.</td></tr><tr><td><code>[]</code></td><td>Delimitan los elementos de una lista, como <code>children</code> o <code>vehiculos</code>.</td></tr><tr><td><code>,</code></td><td>Separa argumentos y elementos de una lista de widgets.</td></tr><tr><td><code>;</code></td><td>Finaliza una declaración o una llamada usada como instrucción.</td></tr><tr><td><code>:</code></td><td>Separa la propiedad o argumento con nombre de su valor.</td></tr><tr><td><code>=</code></td><td>Asigna un valor a una variable; no representa una comparación.</td></tr><tr><td><code>&#39;.&#39;</code></td><td>No confundas las comillas: <code>'Toyota Corolla'</code> es un String literal; en cambio <code>nombre</code> sin comillas es una variable.</td></tr><tr><td><code>.</code></td><td>Permite acceder a miembros: <code>controlador.text</code>, <code>nombre.trim()</code>, <code>vehiculos.add(nombre)</code>.</td></tr><tr><td><code>final</code></td><td>Impide reasignar una variable; el objeto controlador puede continuar cambiando internamente.</td></tr><tr><td><code>const</code></td><td>Crea expresiones constantes, por ejemplo un <code>Text</code> fijo o <code>InputDecoration</code> con valores fijos.</td></tr><tr><td><code>@override</code></td><td>Marca una implementación de un método heredado, como <code>build</code> o <code>dispose</code>.</td></tr><tr><td><code>=&gt;</code></td><td>Es una forma corta de devolver una expresión desde una función, ya utilizada en <code>createState</code>.</td></tr><tr><td><code>$busqueda</code></td><td>En una cadena de texto, el signo <code>$</code> permite incluir el valor de la variable busqueda.</td></tr><tr><td><code>...</code></td><td>En explicaciones puede ser una abreviación del código omitido, que <strong>no debemos pegar</strong>. El operador de expansión real de Dart se estudiará después.</td></tr><tr><td><code>TextOverflow.ellipsis</code></td><td>Ya aparecía en el código de la Tienda: es una opción para acortar visualmente textos largos. El nombre <code>ellipsis</code> no significa que falte código para copiar.</td></tr></tbody></table></div>
-  <h3>Recordatorio del main.dart que ya veníamos construyendo</h3>
-  <div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>import &#39;package:flutter/material.dart&#39;;</code></td><td>Importa las clases Material para construir la pantalla.</td></tr><tr><td><code>void main() y runApp</code></td><td>Inician el programa y colocan en pantalla el widget principal.</td></tr><tr><td><code>MainApp extends StatefulWidget</code></td><td>Permite mantener un objeto State asociado a la interfaz para cambiarla.</td></tr><tr><td><code>super.key</code></td><td>En el constructor <code>MainApp</code> transmite una clave opcional a la clase padre.</td></tr><tr><td><code>createState()</code></td><td>Crea <code>_MainAppState</code>, que guarda las variables de la pantalla.</td></tr><tr><td><code>build(BuildContext context)</code></td><td>Describe los widgets que deben mostrarse; <code>context</code> identifica su ubicación en el árbol.</td></tr><tr><td><code>MaterialApp y Scaffold</code></td><td>Proporcionan la aplicación Material y la estructura visual de una pantalla.</td></tr><tr><td><code>AppBar</code></td><td>Muestra la barra superior con el título Tienda.</td></tr><tr><td><code>Column, Row y Expanded</code></td><td>Organizan los widgets en vertical, en horizontal y utilizando espacio disponible.</td></tr><tr><td><code>SingleChildScrollView</code></td><td>Permite desplazarse si el formulario y la lista superan la altura del teléfono.</td></tr><tr><td><code>ListTile</code></td><td>Presenta cada vehículo como un elemento visual de la lista.</td></tr><tr><td><code>where, contains y toList</code></td><td>Permiten filtrar los vehículos a partir de lo que escribe el usuario.</td></tr><tr><td><code>if (resultados.isEmpty)</code></td><td>Muestra un mensaje cuando el filtro no encuentra modelos.</td></tr><tr><td><code>for (final vehiculo in resultados)</code></td><td>Dibuja un elemento para cada vehículo encontrado.</td></tr><tr><td><code>TextOverflow.ellipsis</code></td><td>Es el comportamiento ya establecido cuando el texto excede el espacio de su widget.</td></tr></tbody></table></div>
-  <h3>Problemas comunes al copiar y ejecutar</h3>
-  <div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>¿Qué aparece en el código?</th><th>Explicación sencilla</th></tr></thead><tbody><tr><td><code>No se ve el segundo TextField</code></td><td>Revisa que lo agregaste dentro de <code>children: [</code> y antes del cierre <code>]</code>.</td></tr><tr><td><code>Undefined name &#39;nuevoVehiculoController&#39;</code></td><td>Declara el controlador en <code>_MainAppState</code>, no dentro de <code>build</code>; comprueba el nombre exacto.</td></tr><tr><td><code>El botón sigue sin hacer nada</code></td><td>Reemplaza el <code>onPressed: () {}</code> inicial por el bloque completo del paso 6 o 7.</td></tr><tr><td><code>The named parameter &#39;controller&#39; isn&#39;t defined</code></td><td>Revisa que estés escribiendo <code>controller</code> dentro de un <code>TextField</code>, no como propiedad de <code>Column</code>.</td></tr><tr><td><code>Aparecen dos botones o dos cajas</code></td><td>Los pasos 5 y 7 dicen <strong>reemplazar</strong>. Borra la versión anterior antes de pegar la nueva.</td></tr><tr><td><code>El nombre se agrega pero no se ve</code></td><td>Borra el filtro del buscador original; el nuevo nombre puede estar oculto porque no coincide con él.</td></tr><tr><td><code>Se duplica el mismo nombre</code></td><td>En esta versión no implementamos detección de duplicados; se aprenderá después.</td></tr><tr><td><code>Al reiniciar se pierden los vehículos</code></td><td>Todavía trabajamos con memoria de la app; no existe almacenamiento permanente.</td></tr><tr><td><code>Copié puntos suspensivos y aparece un error</code></td><td>Los ejemplos didácticos pueden abreviar con <code>...</code>; no pegues esos caracteres como sustituto de instrucciones.</td></tr><tr><td><code>dispose() no existe</code></td><td>Asegúrate de que <code>dispose()</code> está dentro de <code>_MainAppState</code>, fuera de <code>build</code>.</td></tr></tbody></table></div>
-</div>
-<div class="notice notice-warning"><strong>Alcance de la práctica</strong><p>Solo evitamos cadenas vacías con una condición simple. No hay todavía validaciones de <code>Form</code>, mensajes <code>SnackBar</code>, almacenamiento persistente ni prevención de duplicados. Se incorporarán más adelante, sin saltar al tema siguiente.</p></div>
-<div class="deep-dive form-complete-source">
-  <div class="deep-heading"><span>ARCHIVO COMPLETO · CONSULTAR AL FINAL</span><h2>Comparar con el main.dart terminado</h2><p>Después de construir los pasos, verifica que tu archivo tiene el mismo contenido. Se conserva la Tienda anterior y solo se suma este formulario básico.</p></div>
-  <details class="deep-details final-code">
-    <summary>Mostrar el archivo completo para revisar y copiar</summary>
-    <div class="deep-details-body">
-      <p>También puedes abrir <a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">el archivo Dart de referencia ↗</a>. El bloque completo de abajo contiene el código que puede usarse para comprobar la práctica, sin espacios sustituidos por puntos suspensivos.</p>
-      <div class="code-label">main.dart completo · práctica 09</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+}</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>@override</code></td><td>Indica que implementamos un método heredado.</td></tr><tr><td><code>void dispose()</code></td><td>Flutter lo llama al retirar definitivamente ese State.</td></tr><tr><td><code>vehiculoController.dispose()</code></td><td>Libera el controlador.</td></tr><tr><td><code>super.dispose()</code></td><td>Completa la limpieza de la clase base.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>No aparece ningún cambio visible; el controlador queda correctamente administrado.</p></div></section>
+<div class="deep-dive"><div class="deep-heading"><span>PARA LOCALIZAR EL PRIMER CAMBIO</span><h2>Así termina la Row original y empieza el formulario</h2><p>Busca <code>hintText: 'Buscar marca o modelo'</code> y sigue las llaves y paréntesis que cierran <code>Expanded</code> y <code>Row</code>. Justo después de <code>Row</code> añadimos el título y luego los demás widgets.</p></div><div class="code-label">Row original y primer cambio completo</div><pre class="code-block"><code>Row(
+  children: [
+    Icon(Icons.directions_car),
+    const SizedBox(width: 8),
+    Text(&#39;Ingenieria de Sistemas&#39;),
+    Expanded(
+      child: TextField(
+        decoration: const InputDecoration(
+          hintText: &#39;Buscar marca o modelo&#39;,
+        ),
+      ),
+    ),
+  ],
+),
+const SizedBox(height: 20),
+const Text(&#39;Agregar un vehículo&#39;),</code></pre>
+<h3>Recordatorio de la sintaxis</h3><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>children: [</code></td><td>Abre una lista de widgets.</td></tr><tr><td><code>(), {}, []</code></td><td>Delimitan llamadas de funciones, bloques y listas.</td></tr><tr><td><code>, y ;</code></td><td>Separan argumentos y terminan instrucciones, respectivamente.</td></tr><tr><td><code>controller.text</code></td><td>Lee lo escrito.</td></tr><tr><td><code>controller.clear()</code></td><td>Limpia lo escrito.</td></tr><tr><td><code>$nombre</code></td><td>Inserta una variable dentro de un String.</td></tr><tr><td><code>...</code></td><td>En tutoriales puede indicar código omitido; no se utiliza aquí para copiar.</td></tr></tbody></table></div></div>
+<div class="checklist" data-checklist="proyecto"><label><input type="checkbox"> Localicé la Row existente sin buscar un ciclo for.</label><label><input type="checkbox"> Agregué los tres widgets directamente después de la Row.</label><label><input type="checkbox"> Comprendo por qué cambiamos MainApp a StatefulWidget.</label><label><input type="checkbox"> Puedo leer el contenido del segundo TextField con controller.text.</label><label><input type="checkbox"> El botón imprime el nombre en la consola, no en una lista.</label><label><input type="checkbox"> clear() limpia el TextField y dispose() libera el controller.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Probar un vehículo nuevo</h3><p>Escribe «Kia Picanto», pulsa el botón y comprueba en la consola de Flutter que aparece el mensaje. Explica por qué el campo se limpia y señala dónde está la Row original.</p><details><summary>Respuesta orientativa</summary><p>La Row original sigue al principio de Column.children. El controller enlaza el nuevo TextField con el botón. debugPrint muestra el texto en la consola y clear() deja la caja vacía.</p></details></div>
+<div class="notice notice-warning"><strong>Para otra práctica</strong><p>Más adelante podemos enseñar <code>for</code>, listas, <code>Form</code>, validadores y mostrar resultados en la propia pantalla. Nada de eso es necesario para este primer formulario.</p></div>
+<div class="deep-dive form-complete-source"><div class="deep-heading"><span>COMPARACIÓN FINAL</span><h2>El main.dart completo después del formulario</h2><p>Este es el archivo original con los cambios de los nueve pasos. Úsalo para revisar después de construirlos.</p></div><details class="deep-details final-code"><summary>Mostrar y copiar el código completo</summary><div class="deep-details-body"><p><a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">Abrir archivo Dart de referencia ↗</a></p><div class="code-label">main.dart final · Tienda original y formulario</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 
 void main() {
   runApp(const MainApp());
@@ -1372,115 +1312,69 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State&lt;MainApp&gt; {
-  String busqueda = &#39;&#39;;
-  final TextEditingController nuevoVehiculoController = TextEditingController();
-  final List&lt;String&gt; vehiculos = [
-    &#39;Renault 9&#39;,
-    &#39;Renault 21&#39;,
-    &#39;Mazda 3&#39;,
-    &#39;Chevrolet Spark&#39;,
-  ];
+  final TextEditingController vehiculoController = TextEditingController();
 
   @override
   void dispose() {
-    nuevoVehiculoController.dispose();
+    vehiculoController.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final resultados = vehiculos.where((vehiculo) {
-      return vehiculo.toLowerCase().contains(
-        busqueda.trim().toLowerCase(),
-      );
-    }).toList();
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(&#39;Hello dsfdsWorld&#39;),
-                const SizedBox(height: 20),
-                const Icon(Icons.directions_car),
-                const SizedBox(height: 8),
-                const Row(
-                  children: [
-                    Icon(Icons.directions_car),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        &#39;Ingenieria de Sistemas&#39;,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+        body: Center(
+          child: Column(
+            children: [
+              Text(&#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  onChanged: (valor) {
-                    setState(() {
-                      busqueda = valor;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    hintText: &#39;Buscar marca o modelo&#39;,
-                    border: OutlineInputBorder(),
                   ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(&#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              TextField(
+                controller: vehiculoController,
+                decoration: const InputDecoration(
+                  hintText: &#39;Nombre del vehículo&#39;,
+                  border: OutlineInputBorder(),
                 ),
-                const SizedBox(height: 12),
-                Text(&#39;Estás buscando: $busqueda&#39;),
-                const SizedBox(height: 16),
-                const Text(&#39;Vehículos encontrados:&#39;),
-                if (resultados.isEmpty)
-                  const Text(&#39;No se encontraron vehículos.&#39;),
-                for (final vehiculo in resultados)
-                  ListTile(
-                    leading: const Icon(Icons.directions_car),
-                    title: Text(vehiculo),
-                  ),
-                const SizedBox(height: 20),
-                const Text(&#39;Agregar un vehículo&#39;),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: nuevoVehiculoController,
-                  decoration: const InputDecoration(
-                    hintText: &#39;Ej. Toyota Corolla&#39;,
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () {
-                    final nombre = nuevoVehiculoController.text.trim();
-                    if (nombre.isEmpty) return;
-                    setState(() {
-                      vehiculos.add(nombre);
-                    });
-                    nuevoVehiculoController.clear();
-                  },
-                  child: const Text(&#39;Agregar vehículo&#39;),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final nombre = vehiculoController.text.trim();
+                  if (nombre.isEmpty) return;
+                  debugPrint(&#39;Vehículo escrito: $nombre&#39;);
+                  vehiculoController.clear();
+                },
+                child: const Text(&#39;Agregar vehículo&#39;),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-}</code></pre>
-    </div>
-  </details>
-</div>
-<div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: Introducción conceptual a BLoC →</a></div>
+}</code></pre></div></details></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="proyecto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Siguiente ampliación opcional: diseño adaptable →</a></div>
 </section>
-
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="bloc-title">Organizar la Tienda con el patrón BLoC</h1><p>Solo después de que funcionen la búsqueda y el formulario, podremos separar la lógica de los widgets de la misma aplicación.</p></div>
