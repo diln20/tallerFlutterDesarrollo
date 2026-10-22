@@ -91,6 +91,8 @@
     if(/^class\s+MainApp\s+extends\s+StatefulWidget/.test(q))return 'Declara MainApp como StatefulWidget: un widget que tendrá un objeto State asociado para administrar datos o recursos.';
     if(/^class\s+_MainAppState/.test(q))return 'Declara la clase State que pertenece a MainApp. El guion bajo hace privado este nombre dentro de su biblioteca Dart.';
     if(/^class\s+[A-Za-z_]\w*\s+extends\s+\w+/.test(q))return 'Declara una nueva clase Dart que hereda del tipo indicado con extends. Es un ejemplo de cómo definir un widget o componente propio.';
+    if(/^super\.key,?$/.test(q))return 'Reenvía al constructor padre la clave opcional del widget. La coma separa este argumento de los siguientes, cuando existan.';
+    if(/^return\s*;$/.test(q))return 'Termina inmediatamente la función actual. En onPressed se usa para detener el botón cuando el formulario no supera la validación.';
     if(/^const\s+MainApp\s*\(/.test(q))return 'Constructor de MainApp. const permite instancias constantes y super.key reenvía al padre una clave opcional de identidad.';
     if(/^const\s+TituloSeccion\s*\(/.test(q))return 'Constructor de nuestro widget reutilizable. super.key reenvía la clave al padre y required this.texto obliga a proporcionar el argumento texto.';
     if(/^const\s+Vehiculo\s*\(/.test(q))return 'Constructor del modelo Vehiculo. required this.nombre exige indicar nombre y this.disponible = true define el valor predeterminado de disponibilidad.';
