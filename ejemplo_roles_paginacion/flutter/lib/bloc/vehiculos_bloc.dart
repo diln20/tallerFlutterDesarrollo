@@ -78,12 +78,16 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
             disponible: original.disponible,
           );
         }
-        await _cargar(emit, numero: state.pagina.pagina);
-        emit(state.copyWith(
-          enviando: false,
-          limpiarEdicion: true,
-          revisionGuardado: state.revisionGuardado + 1,
-        ));
+        final cargado = await _cargar(emit, numero: state.pagina.pagina);
+        if (cargado) {
+          emit(state.copyWith(
+            enviando: false,
+            limpiarEdicion: true,
+            revisionGuardado: state.revisionGuardado + 1,
+          ));
+        } else {
+          emit(state.copyWith(enviando: false));
+        }
       } catch (error) {
         emit(state.copyWith(enviando: false, error: _mensaje(error)));
       }
@@ -94,8 +98,11 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       emit(state.copyWith(enviando: true, borrarError: true));
       try {
         await api.eliminar(evento.id);
-        await _cargar(emit, numero: state.pagina.pagina);
-        emit(state.copyWith(enviando: false, limpiarEdicion: true));
+        final cargado = await _cargar(emit, numero: state.pagina.pagina);
+        emit(state.copyWith(
+          enviando: false,
+          limpiarEdicion: cargado,
+        ));
       } catch (error) {
         emit(state.copyWith(enviando: false, error: _mensaje(error)));
       }
@@ -104,13 +111,13 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
 
   final VehiculosApi api;
 
-  Future<void> _cargar(
+  Future<bool> _cargar(
     Emitter<VehiculosEstado> emit, {
     required int numero,
     int? tamano,
     String? buscar,
   }) async {
-    if (!state.autenticado) return;
+    if (!state.autenticado) return false;
     final tamanoSolicitado = tamano ?? state.pagina.tamano;
     final filtro = buscar ?? state.busqueda;
     emit(state.copyWith(cargando: true, borrarError: true));
@@ -134,6 +141,7 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
         cargando: false,
         limpiarEdicion: true,
       ));
+      return true;
     } catch (error) {
       emit(state.copyWith(
         pagina: PaginaVehiculos.vacia(
@@ -144,6 +152,7 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
         cargando: false,
         error: _mensaje(error),
       ));
+      return false;
     }
   }
 
