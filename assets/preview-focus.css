@@ -246,6 +246,12 @@ body[data-theme=dark] .pv-side-heading .pv-focus-open {
   .pv-focus-dialog .pv-preview-area {padding: 7px;}
   .pv-focus-dialog .pv-editor {min-height: 360px;}
   .pv-focus-dialog .pv-ide-grid {grid-template-columns: 100px minmax(0,1fr);}
+  /* La lectura del código tiene prioridad sobre el árbol en teléfonos. */
+  .pv-focus-dialog .pv-ide-grid {grid-template-columns:minmax(0,1fr);}
+  .pv-focus-dialog .pv-ide-explorer {display:none;}
+  .pv-focus-dialog .pv-ide-code-row,
+  .pv-focus-dialog .pv-ide-code-row code {font-size:12px!important;line-height:27px!important;}
+
   .pv-focus-dialog .pv-ide-code-row,
   .pv-focus-dialog .pv-ide-code-row code {font-size: 11.5px!important;line-height: 25px!important;}
   .pv-focus-dialog .pv-tree-item {font-size: 10px;padding: 8px 4px 8px 11px;}
