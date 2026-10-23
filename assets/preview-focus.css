@@ -1,0 +1,260 @@
+/* FlutterLab · lectura accesible de comparaciones Antes y Después.
+   Se aplica después de preview-accessibility.css sin cambiar los ejemplos. */
+.pv-large-view .pv-preview-area {
+  min-height: 590px;
+  padding: 24px;
+}
+.pv-large-view .pv-editor {
+  min-height: 520px;
+  height: 520px;
+  border-radius: 13px;
+}
+.pv-large-view .pv-ide-grid {
+  grid-template-columns: minmax(175px,23%) minmax(0,1fr);
+}
+.pv-large-view .pv-ide-code-row,
+.pv-large-view .pv-ide-code-row code {
+  font-size: 14px!important;
+  line-height: 30px!important;
+}
+.pv-large-view .pv-ide-code-scroll {
+  max-height: none;
+  overflow: auto;
+}
+.pv-large-view .pv-tree-item {
+  font-size: 13px;
+}
+.pv-large-view .pv-ide-code-caption {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.pv-side-heading .pv-focus-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  min-width: 155px;
+  margin-left: auto;
+  padding: 9px 13px;
+  background: #fff;
+  border: 1px solid #9bb7dd;
+  border-radius: 9px;
+  color: #204b80;
+  font: 800 12px/1.3 "DM Sans",system-ui,sans-serif;
+}
+.pv-side-heading .pv-focus-open:hover {
+  background: #eaf2ff;
+  border-color: #316cb2;
+}
+.pv-side-heading .pv-focus-open:focus-visible {
+  outline: 3px solid #e8a43e;
+  outline-offset: 2px;
+}
+body[data-theme=dark] .pv-side-heading .pv-focus-open {
+  background: #274465;
+  color: #f0f6ff;
+  border-color: #6595ca;
+}
+.pv-large-view .pv-side-heading {align-items: center;}
+.pv-large-view .pv-side-heading>span {font-size: 12px;}
+.pv-view-controls strong {font-size: 13px;}
+.pv-view-controls span {font-size: 12px;}
+.pv-focus-dialog {
+  width: min(1300px,calc(100vw - 28px));
+  height: min(94dvh,960px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #91afd1;
+  border-radius: 17px;
+  color: #12253e;
+  background: #f4f7fc;
+  box-shadow: 0 30px 100px #05132c8c;
+}
+.pv-focus-dialog::backdrop {
+  background: rgba(7,17,34,.84);
+  backdrop-filter: blur(5px);
+}
+.pv-focus-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.pv-focus-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 18px;
+  background: #fff;
+  border-bottom: 1px solid #cbd8e7;
+  flex: 0 0 auto;
+}
+.pv-focus-toolbar>div {min-width: 0;}
+.pv-focus-toolbar strong {
+  display: block;
+  font: 800 clamp(14px,1.5vw,19px)/1.4 "Manrope",system-ui,sans-serif;
+  color: #152d49;
+}
+.pv-focus-toolbar small {
+  display: block;
+  font: 500 12px/1.6 "DM Sans",system-ui,sans-serif;
+  color: #586f8b;
+  margin-top: 2px;
+}
+.pv-focus-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 17px;
+  min-height: 44px;
+  border: 1px solid #8baace;
+  background: #183b65;
+  color: #fff;
+  border-radius: 9px;
+  font: 800 13px "DM Sans",system-ui,sans-serif;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.pv-focus-close:hover {background: #284f83;}
+.pv-focus-close:focus-visible {outline: 3px solid #e8a43e;outline-offset: 3px;}
+.pv-focus-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  place-items: stretch;
+  overflow: auto;
+  background: #e8eff9;
+  padding: 16px;
+}
+.pv-focus-dialog .pv-preview-area {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  padding: 16px;
+  overflow: auto;
+  border-radius: 11px;
+  background: #edf3fb;
+}
+.pv-focus-dialog .pv-editor {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 385px;
+  border-width: 3px;
+  border-radius: 12px;
+}
+.pv-focus-dialog .pv-editor-title {font-size: 15px;padding: 14px 17px;}
+.pv-focus-dialog .pv-editor-tab {font-size: 14px;padding: 13px 17px;}
+.pv-focus-dialog .pv-editor-status {font-size: 13px;line-height: 1.5;padding: 12px 16px;}
+.pv-focus-dialog .pv-ide-viewport {overflow: auto;}
+.pv-focus-dialog .pv-ide-grid {
+  grid-template-columns: minmax(210px,23%) minmax(0,1fr);
+  min-height: 100%;
+}
+.pv-focus-dialog .pv-ide-explorer {overflow:auto;padding: 15px 0;}
+.pv-focus-dialog .pv-ide-explorer-title {font-size:12px;padding: 0 13px 12px;}
+.pv-focus-dialog .pv-tree-root {font-size: 15px;padding: 10px 13px;}
+.pv-focus-dialog .pv-tree-item {font-size: 14px;line-height: 1.6;padding: 10px 13px 10px 24px;}
+.pv-focus-dialog .pv-tree-item.pv-ide-selected {padding-left: 21px;}
+.pv-focus-dialog .pv-tree-item.pv-ide-selected span {font-size: 11px;}
+.pv-focus-dialog .pv-ide-code-pane {overflow: auto;}
+.pv-focus-dialog .pv-ide-code-caption {font-size: 14px;padding: 13px 16px;}
+.pv-focus-dialog .pv-ide-code-scroll {max-height: none;overflow:auto;}
+.pv-focus-dialog .pv-ide-code-row,
+.pv-focus-dialog .pv-ide-code-row code {font-size: 16px!important;line-height: 34px!important;}
+.pv-focus-dialog .pv-ide-code-row em {font-size: 13px;flex-basis: 34px;}
+.pv-focus-dialog .pv-ide-file-empty,
+.pv-focus-dialog .pv-ide-file-found {font-size: 15px;line-height: 1.7;}
+.pv-focus-dialog .pv-ide-welcome {padding: 35px;gap: 17px;}
+.pv-focus-dialog .pv-ide-welcome strong {font-size: 20px;}
+.pv-focus-dialog .pv-ide-welcome p {font-size: 16px;max-width: 640px;}
+.pv-focus-dialog .pv-ide-welcome-hint {font-size: 15px;}
+.pv-focus-dialog .pv-ide-term {padding: 24px;}
+.pv-focus-dialog .pv-ide-term-title {font-size: 15px;}
+.pv-focus-dialog .pv-ide-term-line {font-size: 16px;}
+.pv-focus-dialog .pv-ide-term-suggest,
+.pv-focus-dialog .pv-ide-term-tip {font-size: 14px;}
+.pv-focus-dialog .pv-ide-folder-tree {padding: 22px;}
+.pv-focus-dialog .pv-ide-folder-tree .pv-tree-item {font-size: 15px;}
+.pv-focus-dialog .pv-folder-footnote {font-size: 14px;}
+.pv-focus-dialog .pv-device {
+  width: min(100%,455px);
+  height: min(100%,700px);
+  min-height: 370px;
+}
+.pv-focus-dialog .pv-status {height: 25px;font-size: 11px;}
+.pv-focus-dialog .pv-appbar {min-height: 60px;}
+.pv-focus-dialog .pv-appbar strong {font-size: 17px;}
+.pv-focus-dialog .pv-body-text {font-size: 15px;}
+.pv-focus-dialog .pv-row-text {font-size: 12px;}
+.pv-focus-dialog .pv-search input {font-size: 13px;}
+.pv-focus-dialog .pv-car-item {font-size: 13px;}
+.pv-focus-dialog .pv-form input {font-size: 14px;}
+.pv-focus-dialog .pv-nav-page-content>p {font-size: 14px;}
+.pv-focus-dialog .pv-submit {font-size: 13px;}
+.pv-focus-dialog [data-pv-submit],
+.pv-focus-dialog [data-pv-nav],
+.pv-focus-dialog input,
+.pv-focus-dialog .pv-search input {
+  pointer-events: none;
+}
+.pv-focus-dialog .pv-footer-hint {
+  font-size: 11px;
+  color: #586c86;
+  line-height: 1.6;
+  padding: 8px 18px 10px;
+  background: #fff;
+  border-top: 1px solid #d6e0ee;
+}
+@media (max-width:760px) {
+  .pv-large-view .pv-preview-area {padding: 13px;min-height: 540px;}
+  .pv-large-view .pv-editor {height: 495px;min-height: 495px;}
+  .pv-large-view .pv-ide-code-row,
+  .pv-large-view .pv-ide-code-row code {font-size: 12px!important;line-height: 27px!important;}
+  .pv-large-view .pv-ide-grid {grid-template-columns: minmax(112px,28%) minmax(0,1fr);}
+  .pv-large-view .pv-tree-item {font-size: 11px;}
+  .pv-focus-content {padding: 8px;}
+  .pv-focus-dialog .pv-editor-title {font-size: 12px;}
+  .pv-focus-dialog .pv-editor-tab {font-size: 11px;}
+  .pv-focus-dialog .pv-ide-grid {grid-template-columns: minmax(116px,28%) minmax(0,1fr);}
+  .pv-focus-dialog .pv-ide-code-row,
+  .pv-focus-dialog .pv-ide-code-row code {font-size: 13px!important;line-height: 28px!important;}
+  .pv-focus-dialog .pv-tree-root {font-size: 12px;}
+  .pv-focus-dialog .pv-tree-item {font-size: 11px;padding-left: 12px;}
+  .pv-focus-dialog .pv-ide-explorer-title {font-size: 10px;}
+  .pv-focus-dialog .pv-ide-code-caption {font-size: 11px;}
+  .pv-focus-dialog .pv-ide-welcome p {font-size: 13px;}
+  .pv-focus-dialog .pv-ide-term-line {font-size: 13px;}
+}
+@media (max-width:620px) {
+  .pv-large-view .pv-preview-area {min-height: 525px;padding: 10px 7px;}
+  .pv-large-view .pv-editor {height: 485px;min-height: 485px;}
+  .pv-large-view .pv-ide-grid {grid-template-columns: 104px minmax(0,1fr);}
+  .pv-side-heading .pv-focus-open {width:100%;margin-left:0;}
+  .pv-focus-dialog {width: calc(100vw - 12px);height: min(97dvh,960px);}
+  .pv-focus-toolbar {padding: 12px;gap: 7px;}
+  .pv-focus-toolbar strong {font-size: 13px;}
+  .pv-focus-toolbar small {font-size: 10px;}
+  .pv-focus-close {padding: 9px 12px;font-size: 12px;}
+  .pv-focus-content {padding: 4px;}
+  .pv-focus-dialog .pv-preview-area {padding: 7px;}
+  .pv-focus-dialog .pv-editor {min-height: 360px;}
+  .pv-focus-dialog .pv-ide-grid {grid-template-columns: 100px minmax(0,1fr);}
+  .pv-focus-dialog .pv-ide-code-row,
+  .pv-focus-dialog .pv-ide-code-row code {font-size: 11.5px!important;line-height: 25px!important;}
+  .pv-focus-dialog .pv-tree-item {font-size: 10px;padding: 8px 4px 8px 11px;}
+  .pv-focus-dialog .pv-ide-code-row em {flex-basis: 25px;font-size: 10px;}
+  .pv-focus-dialog .pv-device {width: min(100%,350px);height: min(100%,640px);}
+}
+@media (prefers-reduced-motion:reduce) {
+  .pv-focus-dialog * {animation: none!important;transition: none!important;}
+}
+@media print {
+  .pv-focus-open,.pv-focus-dialog {display: none!important;}
+}

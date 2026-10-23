@@ -219,3 +219,9 @@ El sitio utiliza `index.html`, `assets/styles.css` y `assets/app.js`. Está publ
 ## Criterio de actualización
 
 El proyecto **`actividad2a` del docente se conserva intacto**. La copia `actividad2a-guia` sirve para construir y verificar propuestas antes de incorporarlas a clase. Las explicaciones siempre deben respetar el orden didáctico, los conceptos ya vistos y el código auténtico. Las capturas deben proceder de pruebas reales y distinguirse de las ilustraciones.
+
+## Comparaciones legibles a pantalla completa (octubre de 2026)
+
+En todos los pasos «Así va cambiando tu aplicación», **Antes** y **Después** se muestran por separado, a todo el ancho, con texto más grande y mejor espacio para visualizar el explorador y los fragmentos Dart. Cada panel ahora incluye **Ver en pantalla completa**, que abre un visor de lectura; puede cerrarse con **Cerrar** o **Esc**. El botón **Vista compacta** conserva la comparación de dos columnas para quien la prefiera.
+
+Los editores y teléfonos de estas comparaciones son ilustraciones HTML; el modo ampliado **no los convierte en capturas reales de Flutter ni ejecuta Dart**. Los formularios simulados conservan su interacción en la vista normal, no en el visor de lectura. La revisión visual se hace con Mi Terminal Commander.
