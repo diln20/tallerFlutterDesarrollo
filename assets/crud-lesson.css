@@ -2,3 +2,7 @@
 .code-tooltip-term{position:relative;display:inline!important;border:0!important;background:transparent!important;padding:0!important;margin:0!important;font:inherit!important;color:inherit!important;text-decoration:underline dotted #64d8c9;text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:help;outline-offset:3px}
 .code-tooltip-term:is(:hover,:focus)::after{content:attr(data-explain);position:absolute;z-index:200;left:0;bottom:calc(100% + 10px);min-width:240px;max-width:min(360px,80vw);width:max-content;white-space:normal;overflow-wrap:anywhere;background:#0a1c2e;color:#f1f8fc;font:500 12px/1.6 system-ui,sans-serif!important;padding:11px 13px;border:1px solid #4e8292;border-radius:10px;box-shadow:0 9px 24px #081c3299;pointer-events:none}
 @media(max-width:620px){.code-tooltip-term:is(:hover,:focus)::after{left:-35px;max-width:245px;min-width:0;width:230px}#crud .next-step{padding:14px}}
+/* Tooltip flotante: no se corta dentro de los bloques de codigo con scroll. */
+.code-tooltip-term:is(:hover,:focus)::after{content:none!important;display:none!important}
+.flutter-codigo-tooltip{position:fixed;z-index:9999;max-width:min(370px,calc(100vw - 16px));width:max-content;pointer-events:none;white-space:normal;background:#102438;color:#f2f8fd;border:1px solid #5b9dba;box-shadow:0 12px 35px rgba(5,20,38,.35);border-radius:11px;padding:12px 14px;font:500 13px/1.58 system-ui,sans-serif;overflow-wrap:anywhere}
+.flutter-codigo-tooltip[hidden]{display:none}
