@@ -1,0 +1,54 @@
+/* Pasos de lectura y cambios internos: no repetir una falsa comparacion de dos teléfonos. */
+.pv-code-focus{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(280px,.88fr);gap:16px;align-items:stretch;min-width:0;margin:14px 0 20px}
+.pv-code-focus-display,.pv-code-focus-explanation{border:1px solid var(--border);border-radius:14px;background:var(--surface-soft);min-width:0;overflow:hidden}
+.pv-code-focus-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border-bottom:1px solid var(--border);background:#e9f1fc}
+.pv-code-focus-heading>span,.pv-code-focus-tag{font-size:10px;font-weight:900;letter-spacing:.055em;color:#245995}
+.pv-code-focus-heading strong{font-size:12px;line-height:1.5;color:var(--heading);text-align:right}
+.pv-code-focus-screen{min-height:380px;padding:15px;background:#edf3fc;display:grid;place-items:center}
+.pv-code-focus-screen .pv-device,.pv-large-view .pv-code-focus-screen .pv-device{height:340px;width:min(100%,255px);border-width:6px}
+.pv-code-focus-editor{padding:13px;background:#edf3fc}
+.pv-code-focus .pv-editor,.pv-large-view .pv-code-focus .pv-editor{width:100%;max-width:none;height:455px;min-height:455px}
+.pv-code-focus .pv-ide-grid{grid-template-columns:minmax(118px,27%) minmax(0,1fr)}
+.pv-code-focus .pv-ide-code-scroll{max-height:360px}
+.pv-code-focus .pv-ide-code-row,.pv-code-focus .pv-ide-code-row code{font-size:12px!important;line-height:24px!important}
+.pv-code-focus .pv-tree-root,.pv-code-focus .pv-tree-item{font-size:10px}
+.pv-code-focus .pv-ide-code-caption{font-size:11px}
+.pv-code-focus-explanation{padding:19px 18px}
+.pv-code-focus-explanation h3{font-size:18px;line-height:1.4;color:var(--heading);margin:9px 0}
+.pv-code-focus-explanation>p{color:var(--text-soft);font-size:12px;line-height:1.8}
+.pv-code-focus-explanation .pv-code-difference{box-shadow:none;margin:15px 0;padding:12px}
+.pv-code-focus-explanation .pv-code-difference header strong{font-size:11px}
+.pv-code-focus-explanation .pv-diff-row{grid-template-columns:minmax(0,1fr);gap:8px}
+.pv-code-focus-explanation .pv-diff-arrow{display:none}
+.pv-code-focus-explanation .pv-diff-old,.pv-code-focus-explanation .pv-diff-new{min-width:0}
+.pv-code-focus-explanation .pv-diff-old small,.pv-code-focus-explanation .pv-diff-new small{font-size:10px}
+.pv-code-focus-explanation .pv-diff-old p,.pv-code-focus-explanation .pv-diff-new p{overflow-wrap:anywhere}
+.pv-code-focus-explanation .pv-diff-warning{display:block;font-size:10px}
+.pv-code-focus-tip{border-top:1px solid var(--border);padding-top:12px}
+/* Primeros tres pasos de la ruta ilustran Windows, VS Code y su terminal. */
+.pv-prep-windows{padding:17px;height:100%;background:#14243b;color:#d8ebff}
+.pv-prep-path{display:flex;justify-content:space-between;gap:7px;color:#aacbef;font-size:12px;font-weight:850;border-bottom:1px solid #385171;padding-bottom:11px}
+.pv-prep-path span{color:#e9f5ff}
+.pv-prep-files{padding:12px 0;display:grid;gap:9px}
+.pv-prep-folder-row{display:flex;align-items:center;gap:9px;font-size:13px;color:#f0f6ff}
+.pv-prep-folder-row span{font-size:20px}
+.pv-prep-new{margin-left:18px;padding:10px;border-radius:8px;background:#234969;border-left:3px solid #80cdf0}
+.pv-prep-new strong{overflow-wrap:anywhere}
+.pv-prep-new small{font-size:10px;color:#adf0d5;margin-left:auto}
+.pv-prep-empty{border:1px dashed #587390;padding:13px;border-radius:9px;color:#bed0e7;font-size:12px}
+.pv-prep-empty strong{display:block;margin-top:8px;color:#fff}
+.pv-prep-windows p{font-size:11px;color:#a6bfdc;line-height:1.7}
+@media(max-width:880px){.pv-code-focus{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:620px){
+  .pv-code-focus-heading{flex-direction:column;align-items:flex-start}
+  .pv-code-focus-heading strong{text-align:left}
+  .pv-code-focus-screen{min-height:320px;padding:11px}
+  .pv-code-focus-editor{padding:7px}
+  .pv-code-focus .pv-ide-grid{grid-template-columns:minmax(0,1fr)}
+  .pv-code-focus .pv-ide-explorer{display:none}
+  .pv-code-focus .pv-ide-code-row,.pv-code-focus .pv-ide-code-row code{font-size:12px!important;line-height:25px!important}
+  .pv-code-focus .pv-editor,.pv-large-view .pv-code-focus .pv-editor{height:475px;min-height:475px}
+  .pv-code-focus-explanation{padding:14px}
+  .pv-prep-windows{padding:12px}
+  .pv-prep-new{margin-left:0;flex-wrap:wrap}
+}

@@ -234,9 +234,9 @@
  const [name,before,after,detail]=d;
  return `<section class="pv-code-difference" aria-label="Diferencia real de este paso">
     <header><span>DIFERENCIA REAL DEL PASO</span><strong>${esc(name)}</strong></header>
-    <div class="pv-diff-row"><div class="pv-diff-old"><small>ANTES</small><p>${esc(before)}</p></div>
+    <div class="pv-diff-row"><div class="pv-diff-old"><small>${item.readOnly?'YA EXISTÍA EN MAIN.DART':'ANTES'}</small><p>${esc(before)}</p></div>
       <span class="pv-diff-arrow" aria-hidden="true">→</span>
-      <div class="pv-diff-new"><small>DESPUÉS</small><p>${esc(after)}</p></div></div>
+      <div class="pv-diff-new"><small>${item.readOnly?'AHORA PUEDES EXPLICAR':'DESPUÉS'}</small><p>${esc(after)}</p></div></div>
     <p class="pv-diff-detail">${esc(detail)} <strong>El fragmento exacto y su ubicación se explican debajo.</strong></p>
     <small class="pv-diff-warning">Mapa conceptual para comparar; no es código para copiar.</small>
   </section>`;
@@ -335,6 +335,31 @@
       <div class="pv-home-indicator"><span></span></div>
     </div>`;
   }
+  const renderStudy=function renderStudy(item,id,index,after,runtime,screenUI,editorUI,nonVisualUI,esc){
+ const onlyReading=Boolean(item.singleReadOnly);
+ const preview=onlyReading
+   ?editorUI({editorMode:"dart",opened:true,codeStage:5},"after","editor")
+   :screenUI(after,"before",null,{...runtime,query:after.query||""});
+ const explanation=nonVisualUI(id,index,item);
+ return `<section class="pv-code-focus" aria-label="Lección de código sin cambio visual">
+   <div class="pv-code-focus-display">
+     <div class="pv-code-focus-heading">
+       <span>${onlyReading?"LECTURA DEL ARCHIVO EXISTENTE":"PANTALLA ACTUAL"}</span>
+       <strong>${onlyReading?"main.dart · líneas para comprender":"Sin cambios visibles en Flutter"}</strong>
+     </div>
+     <div class="${onlyReading?"pv-code-focus-editor":"pv-code-focus-screen"}">${preview}</div>
+   </div>
+   <div class="pv-code-focus-explanation">
+     <span class="pv-code-focus-tag">${item.readOnly?"OBSERVAR · NO PEGUES CÓDIGO":"CAMBIO INTERNO · NO VISUAL"}</span>
+     <h3>${onlyReading?"¿Qué hacen const y super.key?":"¿Por qué la pantalla sigue igual?"}</h3>
+     <p>${onlyReading
+       ?"Estas instrucciones ya estaban en main.dart cuando Flutter creó el proyecto. Las líneas azules indican qué estudiar; no estás agregando widgets."
+       :"En este paso se reconoce o modifica una parte interna. La diferencia está en la estructura o la lógica; no en el dibujo de la pantalla."}</p>
+     ${explanation}
+     ${onlyReading?'<p class="pv-code-focus-tip"><strong>Resultado:</strong> la app sigue mostrando «Primer widget». Ahora puedes explicar qué significa <code>const</code> y por qué se usa <code>super.key</code>. No se hizo ninguna modificación visual.</p>':''}
+   </div>
+ </section>`;
+};
   function render(id,index,phase='after',preserveState=false){
     const cfg=data[id],slot=document.getElementById('pv-'+id);
     if(!cfg||!slot)return;
@@ -366,6 +391,7 @@
           <span class="pv-effect-type${internal?' pv-internal':''}">${esc(effectType)}</span></div>
         <p>${esc(item.effect)}</p>${item.note?`<p class="pv-special-note">${esc(item.note)}</p>`:''}
       </div>
+      ${internal&&!editorTransition?renderStudy(item,id,i,after,runtime,screenUI,editorUI,nonVisualUI,esc):`
       <div class="pv-mobile-toggle" aria-label="Comparar las dos versiones">
         <button type="button" data-pv-phase="before" aria-pressed="${phase==='before'}" class="${phase==='before'?'active':''}">Antes</button>
         <button type="button" data-pv-phase="after" aria-pressed="${phase==='after'}" class="${phase==='after'?'active':''}">Después</button>
@@ -382,7 +408,7 @@
           <div class="pv-preview-area">${screenUI(after,'after',item.highlight,runtime)}</div>
         </div>
       </div>
-      ${internal&&!editorTransition?nonVisualUI(id,i,item):''}
+`}
        ${['proyecto','validacion','objeto','extraccion'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
