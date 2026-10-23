@@ -10,14 +10,14 @@
   const S={
     0:{editor:true,opened:false,ready:false},
     2:{appbar:false,centered:true,bodyText:'Primer widget'},
-    3:{appbar:true,centered:true,bodyText:'Hello dsfdsWorld'},
-    4:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8},
-    5:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true},
-    6:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true},
-    7:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true},
-    8:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true},
-    9:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true},
-    11:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true,simpleForm:true}
+    3:{appbar:true,centered:true,bodyText:'Primer widget'},
+    4:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8},
+    5:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true},
+    6:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true},
+    7:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true},
+    8:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true},
+    9:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:false,hintText:true,padding:16,scroll:true,outlined:true,rowFlexible:true,reactive:true,results:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true},
+    11:{appbar:true,bodyText:'Primer widget',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true,simpleForm:true}
   };
   const state=desc=>({...S[desc.stage],...desc});
   const prepDemo=function prepDemo(v){
