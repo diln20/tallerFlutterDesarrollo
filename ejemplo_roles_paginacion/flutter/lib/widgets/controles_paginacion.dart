@@ -18,6 +18,7 @@ class ControlesPaginacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paginas = pagina.totalPaginas;
+    final paginaVisible = paginas == 0 ? 0 : pagina.pagina;
     final puedeRetroceder = !cargando && pagina.pagina > 1;
     final puedeAvanzar = !cargando && pagina.pagina < paginas;
 
@@ -51,7 +52,7 @@ class ControlesPaginacion extends StatelessWidget {
           icon: const Icon(Icons.chevron_left),
         ),
         Text(
-          'Página ' + pagina.pagina.toString() + ' de ' +
+          'Página ' + paginaVisible.toString() + ' de ' +
               (paginas == 0 ? '0' : paginas.toString()),
           semanticsLabel: 'Página ' + pagina.pagina.toString() +
               ' de ' + paginas.toString(),
