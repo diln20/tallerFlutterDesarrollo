@@ -224,6 +224,10 @@
     if(/^[A-Z][\w]*(?:\.\w+)?\s*\(/.test(q))return 'Construye el widget o llama a un constructor con nombre (por ejemplo .count o .asset). Los argumentos dentro de los paréntesis configuran su comportamiento.';
     if(/^\w+\s*\(/.test(q))return 'Llama al constructor o método indicado. Los paréntesis contienen sus argumentos.';
     if(/^['"]/.test(q))return 'Es un elemento de texto dentro de una lista; las comillas delimitan una cadena String y la coma separa elementos.';
+    if(/^context\s*,\s*$/.test(q))return 'Pasa el BuildContext actual como primer argumento de Navigator.push. Debe provenir de una pantalla o Builder ubicado debajo de MaterialApp.';
+    if(/^[▲▼]/.test(q))return 'Flecha de un esquema didáctico: indica avanzar con Navigator.push o regresar con Navigator.pop. No pertenece a la sintaxis Dart.';
+    if(/^(?:widgets\/|widgets\/:)/.test(q))return 'Representa la carpeta lib/widgets y sus componentes reutilizables en el árbol de archivos. No es una instrucción Dart.';
+    if(/^(?:Tienda|AcercaPage|AyudaPage)$/.test(q))return 'Nombre de una pantalla dentro del esquema de navegación: se muestra para identificar el recorrido del usuario, no para copiar en un archivo.';
     return 'Forma parte de la expresión o estructura de este ejemplo. Léela junto con las líneas anteriores y posteriores y revisa dónde se inserta el fragmento.';
   }
   root.explainLine=explanation;
