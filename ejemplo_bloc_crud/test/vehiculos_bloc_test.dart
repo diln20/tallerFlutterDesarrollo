@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tienda_bloc_crud/bloc/vehiculos_bloc.dart';
-import 'package:tienda_bloc_crud/bloc/vehiculos_evento.dart';
+import '../lib/bloc/vehiculos_bloc.dart';
+import '../lib/bloc/vehiculos_evento.dart';
 
 void main() {
   test('crear, editar, buscar y eliminar conservan el estado', () async {
