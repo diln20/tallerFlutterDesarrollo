@@ -19,6 +19,46 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   final TextEditingController vehiculoController = TextEditingController();
   final GlobalKey<FormState> formularioKey = GlobalKey<FormState>();
+  final List<Vehiculo> vehiculos = [];
+  int? indiceEnEdicion;
+
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }
+
+  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }
 
   @override
   void dispose() {
@@ -63,18 +103,38 @@ class _MainAppState extends State<MainApp> {
               ),
               const SizedBox(height: 12),
               BotonTienda(
-                texto: 'Agregar vehículo',
-                alPresionar: () {
-                  if (formularioKey.currentState?.validate() != true) {
-                    return;
-                  }
-                  final nombre = vehiculoController.text.trim();
-                  final vehiculo = Vehiculo(nombre: nombre);
-                  debugPrint(
-                    'Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}',
-                  );
-                  vehiculoController.clear();
-                },
+                texto: indiceEnEdicion == null ? 'Agregar vehículo' : 'Guardar cambios',
+                alPresionar: guardarVehiculo,
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: vehiculos.length,
+                  itemBuilder: (context, indice) {
+                    final vehiculo = vehiculos[indice];
+                    return ListTile(
+                      title: Text(vehiculo.nombre),
+                      subtitle: Text(vehiculo.disponible
+                          ? 'Disponible'
+                          : 'No disponible'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            tooltip: 'Editar vehículo',
+                            onPressed: () => comenzarEdicion(indice),
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            tooltip: 'Eliminar vehículo',
+                            onPressed: () => borrarVehiculo(indice),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               Builder(
