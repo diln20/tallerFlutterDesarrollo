@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="./assets/preview-accessibility.css?v=20261023-ampliado">
   <link rel="stylesheet" href="./assets/preview-vscode-icons.css?v=20261023-v1">
   <link rel="stylesheet" href="./assets/preview-focus.css?v=20261023-lectura-grande-movil">
-  <link rel="stylesheet" href="./assets/project-start-ui.css?v=20261023-actividad2">
+  <link rel="stylesheet" href="./assets/project-start-ui.css?v=20261023-vscode-carpetas-01">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
 </head>
 <body>
@@ -173,27 +173,74 @@
         <div class="pv-home-announcement"><strong>Nuevo: observa la evolución de la Tienda</strong><p>Para aprender cada cambio, los módulos ahora incluyen una vista previa interactiva «Antes / Después». Sigue las etapas y observa qué widget o propiedad transforma la Tienda.</p><a href="#punto-entrada">Empezar con la primera vista previa →</a></div></section>
 
         <section class="page lesson" id="preparacion" aria-labelledby="preparacion-title" data-lesson="1">
-          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 01</span><span class="status-pill seen">Ruta guiada</span><span class="lesson-time">15–20 min</span></div><h1 id="preparacion-title">Crear y ejecutar actividad2</h1><p>Primero crearemos una aplicación Flutter nueva, sin modificar <code>actividad2a</code>. Después identificaremos sus archivos y ejecutaremos la plantilla mínima.</p></div>
-          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Crear <code>actividad2</code>, reconocer los archivos generados y ejecutar la pantalla inicial antes de construir la Tienda.</p></div></div>
+          <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 01</span><span class="status-pill seen">Ruta guiada</span><span class="lesson-time">15–20 min</span></div><h1 id="preparacion-title">Preparar VS Code y crear actividad2</h1><p>Crea la carpeta <code>DesarrolloMovilFlutter</code>, ábrela desde VS Code y utiliza su terminal integrada para generar <code>actividad2</code>. Después estudiarás los archivos creados por Flutter.</p></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Crear tu carpeta de trabajo, abrirla en Visual Studio Code, ejecutar <code>flutter create --empty actividad2</code> desde su terminal y comprobar la aplicación inicial.</p></div></div>
           <section class="start-flow" aria-labelledby="start-flow-title">
-  <div class="start-flow-top"><div><span class="start-flow-kicker">PRIMERA ACCIÓN · TU PROYECTO</span><h2 id="start-flow-title">Crea la carpeta actividad2</h2><p>Abre la terminal en la carpeta donde guardas tus proyectos Flutter, <strong>fuera de cualquier proyecto existente</strong>. Ejecuta este comando una sola vez:</p></div><span class="start-flow-destination">actividad2/ <small>Proyecto del estudiante</small></span></div>
-  <div class="start-command-shell"><div class="start-command-bar"><span class="start-command-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Terminal · carpeta padre</span><button class="start-copy" type="button" data-start-copy="flutter create --empty actividad2">Copiar comando</button></div><pre><code>flutter create --empty actividad2</code></pre></div>
-  <p class="start-flow-warning"><strong>Ojo:</strong> <code>--empty</code> no significa «sin código». Flutter genera una aplicación mínima que ya contiene <code>import</code>, <code>main()</code>, <code>MainApp</code> y una pantalla <strong>«Hello World!»</strong>. No repitas esas declaraciones cuando estudies el módulo 02. Si la carpeta ya existe, <strong>no vuelvas a crear el proyecto</strong>: ábrelo directamente.</p>
-  <div class="start-flow-stages" aria-label="Secuencia de inicio"><div><span>01</span><strong>Verificar</strong><small>flutter doctor</small></div><div><span>02</span><strong>Crear</strong><small>flutter create</small></div><div><span>03</span><strong>Explorar</strong><small>lib/main.dart</small></div><div><span>04</span><strong>Ejecutar</strong><small>flutter run</small></div></div>
-  <p class="start-flow-source">Consulta también la <a href="https://docs.flutter.dev/reference/create-new-app" target="_blank" rel="noopener noreferrer">guía oficial de creación de proyectos Flutter ↗</a>.</p>
-</section><h2>1. Reconocer los archivos generados</h2><p>El comando anterior crea la carpeta <code>actividad2/</code> y deja una aplicación mínima lista. Por ahora nos interesan estas tres piezas:</p>
+  <div class="start-flow-top">
+    <div>
+      <span class="start-flow-kicker">GUÍA PASO A PASO · WINDOWS Y VISUAL STUDIO CODE</span>
+      <h2 id="start-flow-title">Primero prepara DesarrolloMovilFlutter</h2>
+      <p>Antes de escribir comandos, crea una carpeta para guardar tus ejercicios y ábrela en Visual Studio Code. <strong>No necesitas tener un proyecto Flutter creado todavía.</strong></p>
+    </div>
+    <span class="start-flow-destination">DesarrolloMovilFlutter/ <small>Carpeta principal de tus prácticas</small></span>
+  </div>
+  <div class="start-vscode-steps" aria-label="Cómo comenzar en Visual Studio Code">
+    <article class="start-vscode-step">
+      <span class="start-vscode-number">01</span>
+      <div><h3>Crea la carpeta en Windows</h3><p>Abre el <strong>Explorador de archivos</strong>, entra a Documentos (o el lugar donde guardarás el curso), haz <strong>clic derecho → Nuevo → Carpeta</strong> y escribe exactamente <code>DesarrolloMovilFlutter</code>.</p>
+      <p class="start-vscode-check"><strong>Debes tener:</strong> <code>Documentos/DesarrolloMovilFlutter/</code> (todavía sin el proyecto <code>actividad2</code>).</p></div>
+    </article>
+    <article class="start-vscode-step">
+      <span class="start-vscode-number">02</span>
+      <div><h3>Abre esa carpeta en Visual Studio Code</h3><p>Abre VS Code. En el menú superior elige <strong>Archivo → Abrir carpeta…</strong>, selecciona <code>DesarrolloMovilFlutter</code> y confirma. En el panel <strong>Explorador</strong> debe aparecer el nombre de esa carpeta.</p>
+      <p class="start-vscode-check">Abre la <strong>carpeta principal</strong>, no <code>actividad2</code>: Flutter la creará después.</p></div>
+    </article>
+    <article class="start-vscode-step">
+      <span class="start-vscode-number">03</span>
+      <div><h3>Abre la terminal integrada de VS Code</h3><p>En la barra de menús selecciona <strong>Terminal → Nuevo terminal</strong>. Aparecerá una terminal en la parte inferior de VS Code. Si usas Windows, puedes elegir <strong>PowerShell</strong>.</p>
+      <p class="start-vscode-check">Ejecuta <code>Get-Location</code> para comprobar que la ruta termina en <code>DesarrolloMovilFlutter</code>. También puedes ejecutar <code>flutter doctor</code> para verificar Flutter.</p></div>
+    </article>
+    <article class="start-vscode-step start-vscode-step-primary">
+      <span class="start-vscode-number">04</span>
+      <div><h3>Ahora sí: crea el proyecto Flutter</h3><p>Sin salir de esa terminal y estando dentro de <code>DesarrolloMovilFlutter</code>, ejecuta el siguiente comando. Se creará una carpeta <code>actividad2</code> <strong>dentro</strong> de tu carpeta principal.</p></div>
+    </article>
+  </div>
+  <div class="start-command-shell" aria-label="Comando para crear actividad2 en la terminal integrada">
+    <div class="start-command-bar"><span class="start-command-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>VS Code · Terminal PowerShell · DesarrolloMovilFlutter</span><button class="start-copy" type="button" data-start-copy="flutter create --empty actividad2">Copiar comando</button></div>
+    <pre><code>flutter create --empty actividad2</code></pre>
+  </div>
+  <div class="start-folder-outcome">
+    <div class="start-folder-tree" aria-label="Carpetas después de crear la aplicación"><strong>Así quedan las carpetas</strong><pre>DesarrolloMovilFlutter/
+└── actividad2/
+    ├── lib/
+    │   └── main.dart
+    ├── android/
+    ├── web/
+    └── pubspec.yaml</pre></div>
+    <div class="start-folder-next"><strong>05 · Entra al proyecto y pruébalo</strong><p>En <strong>esa misma terminal</strong>, escribe estos comandos en orden. Si Flutter pregunta por el dispositivo, selecciona uno disponible.</p>
+      <div class="start-after-command"><code>cd actividad2
+flutter run</code></div>
+      <p>Se mostrará <strong>«Hello World!»</strong>. Después podrás abrir <code>actividad2/lib/main.dart</code> en el Explorador de VS Code y continuar con el módulo 02.</p>
+    </div>
+  </div>
+  <p class="start-flow-warning"><strong>Recuerda:</strong> <code>--empty</code> genera una aplicación mínima con <code>main()</code> y <code>MainApp</code>. No deja <code>main.dart</code> vacío ni debes volver a pegar esas declaraciones. <strong>Si ya tienes <code>actividad2</code> con tus ejercicios, no repitas el comando de creación.</strong></p>
+  <p class="start-flow-source">Ayuda: <a href="https://code.visualstudio.com/docs/getstarted/getting-started" target="_blank" rel="noopener noreferrer">guía de VS Code ↗</a> y <a href="https://docs.flutter.dev/reference/create-new-app" target="_blank" rel="noopener noreferrer">crear un proyecto Flutter ↗</a>.</p>
+</section><h2>1. Identificar los archivos que Flutter acaba de crear</h2><p>En el Explorador de VS Code expande <code>DesarrolloMovilFlutter → actividad2</code>. Encontrarás los archivos del nuevo proyecto. Por ahora identifica estos elementos:</p>
           <div class="concept-grid"><div class="concept"><strong><code>lib/main.dart</code></strong><p>Es el archivo donde se encuentra el código Dart principal de la aplicación.</p></div><div class="concept"><strong><code>pubspec.yaml</code></strong><p>Define el nombre del proyecto, la versión y las dependencias necesarias.</p></div><div class="concept"><strong><code>android/</code> y <code>web/</code></strong><p>Contienen archivos de soporte para ejecutar Flutter en distintas plataformas.</p></div></div>
-          <h2>2. Comprobar Flutter</h2><p>Abre PowerShell o la terminal de tu editor y ejecuta el diagnóstico. No modifica tus archivos.</p>
+          <h2>2. Comprender los comandos de diagnóstico</h2><p>Estos comandos puedes ejecutarlos en la terminal integrada de VS Code <strong>antes de crear <code>actividad2</code></strong>. Comprueban la instalación y los dispositivos; no modifican tus archivos.</p>
           <div class="code-label">Terminal · verificar instalación</div><pre class="code-block"><code>flutter doctor
 flutter devices</code></pre>
           <div class="line-notes"><div><strong>flutter doctor</strong><p>Comprueba la instalación de Flutter y muestra herramientas que podrían faltar.</p></div><div><strong>flutter devices</strong><p>Lista los dispositivos disponibles: emuladores, teléfonos o navegadores compatibles.</p></div></div>
-          <h2>3. Crear, abrir y ejecutar la aplicación</h2><p>Desde la carpeta padre donde guardas tus proyectos (la ruta de Windows es un ejemplo), crea <code>actividad2</code> y luego entra a ella. <strong>No escribas <code>flutter create</code> dentro de una carpeta de proyecto ya existente.</strong></p>
-<div class="code-label">PowerShell · comandos en este orden</div><pre class="code-block"><code>cd "C:\Users\user\Documents\DesarrolloMovilFlutter"
-flutter create --empty actividad2
-cd actividad2
-flutter pub get
+          <h2>3. Ejecutar el proyecto desde la terminal de VS Code</h2>
+<p>El bloque de arriba ya mostró cómo crear <code>DesarrolloMovilFlutter</code> y ejecutar <code>flutter create --empty actividad2</code> desde VS Code. <strong>Ahora, y solo después de que la creación haya terminado</strong>, escribe:</p>
+<div class="code-label">VS Code · terminal ubicada en DesarrolloMovilFlutter</div>
+<pre class="code-block"><code>cd actividad2
 flutter run</code></pre>
-<div class="line-notes"><div><strong>1. cd a la carpeta padre</strong><p>Indica dónde se guardará el proyecto. Si tu ruta es diferente, cambia solo ese <code>cd</code>.</p></div><div><strong>2. flutter create --empty actividad2</strong><p>Flutter crea la nueva carpeta y los archivos de la app mínima.</p></div><div><strong>3. cd actividad2</strong><p>Entra al directorio recién creado, que contiene <code>pubspec.yaml</code>.</p></div><div><strong>4. flutter pub get</strong><p>Comprueba las dependencias. Normalmente <code>flutter create</code> ya las preparó, por lo que repetirlo es opcional.</p></div><div><strong>5. flutter run</strong><p>Inicia la aplicación mínima. Al principio debe aparecer <strong>«Hello World!»</strong>, no todavía «Tienda».</p></div></div>
+<div class="line-notes">
+  <div><strong>Línea 1 · cd actividad2</strong><p>Entras al proyecto recién generado. Comprueba que su carpeta contiene <code>pubspec.yaml</code> y <code>lib/main.dart</code>.</p></div>
+  <div><strong>Línea 2 · flutter run</strong><p>Inicia la aplicación Flutter en el dispositivo disponible. Al comienzo debe mostrar <code>Hello World!</code>.</p></div>
+</div>
+<p>Si Flutter indica que faltan dependencias, puedes ejecutar <code>flutter pub get</code> <strong>desde actividad2</strong>. Normalmente <code>flutter create</code> ya las descarga y no es necesario repetir ese paso.</p>
 <div class="start-source-pair"><div><span>PROYECTO DEL ESTUDIANTE</span><strong><code>actividad2/lib/main.dart</code></strong><p>Aquí modificas el código y guardas tu avance.</p></div><div><span>REFERENCIA DEL DOCENTE</span><strong><code>actividad2a/lib/main.dart</code></strong><p>Solo se consulta para comprobar cómo debería quedar la Tienda.</p></div></div>
 <div class="notice notice-tip"><strong>Atajo de clase</strong><p>Con la aplicación ejecutándose desde la terminal, presiona <kbd>r</kbd> para <em>Hot Reload</em> cuando corresponda. El cambio se aplica sin reiniciar toda la aplicación. <kbd>R</kbd> hace un reinicio más completo.</p></div>
           
@@ -201,33 +248,31 @@ flutter run</code></pre>
   <div class="deep-heading"><span>AMPLIACIÓN DIDÁCTICA · MÓDULO 01</span><h2>Comprender el entorno antes de programar</h2><p>Estos apartados responden a preguntas frecuentes al iniciar Flutter. Se estudian en orden, sin depender de otros proyectos.</p></div>
   <h3>1. ¿Qué diferencia hay entre Flutter, Dart y el editor?</h3>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Elemento</th><th scope="col">Explicación para empezar</th><th scope="col">En nuestra Tienda</th></tr></thead><tbody><tr><td><strong>Dart</strong></td><td>Es el lenguaje de programación: permite definir funciones, clases, variables y condiciones.</td><td>Con Dart escribimos <code>main()</code> y la clase <code>MainApp</code>.</td></tr><tr><td><strong>Flutter</strong></td><td>Es el conjunto de herramientas que usa Dart para construir interfaces que funcionan en distintas plataformas.</td><td>Proporciona widgets como <code>Text</code>, <code>Row</code> y <code>TextField</code>.</td></tr><tr><td><strong>Editor</strong></td><td>Es el programa donde escribimos y organizamos archivos, por ejemplo VS Code o Android Studio.</td><td>Abrimos la carpeta del proyecto y editamos <code>lib/main.dart</code>.</td></tr><tr><td><strong>Emulador o dispositivo</strong></td><td>Es el lugar donde probamos el resultado: puede ser un teléfono Android, un emulador o Chrome.</td><td>Primero aparece «Hello World!»; más adelante comprobaremos «Tienda».</td></tr></tbody></table></div>
-  <h3>2. Saber qué proyecto puedes editar</h3><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Carpeta</th><th scope="col">Para qué sirve</th><th scope="col">¿Dónde practicar?</th></tr></thead><tbody><tr><td><code>actividad2</code></td><td>La aplicación nueva que tú creaste con Flutter.</td><td><strong>Sí.</strong> Todos los ejercicios se realizan aquí.</td></tr><tr><td><code>actividad2a</code></td><td>Versión anterior del docente que utilizamos como referencia.</td><td><strong>No.</strong> Consérvala para comparar.</td></tr><tr><td><code>tallerFlutterDesarrollo</code></td><td>Archivos del sitio web de esta guía.</td><td>No es parte de la app Dart.</td></tr></tbody></table></div><h3>3. Saber dónde estamos en PowerShell</h3>
-  <p>Una terminal siempre trabaja en una carpeta. Si ejecutas <code>flutter run</code> fuera del proyecto, Flutter no encontrará su archivo de configuración. Primero comprueba dónde estás:</p>
+  <h3>2. Saber qué proyecto puedes editar</h3><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Carpeta</th><th scope="col">Para qué sirve</th><th scope="col">¿Dónde practicar?</th></tr></thead><tbody><tr><td><code>actividad2</code></td><td>La aplicación nueva que tú creaste con Flutter.</td><td><strong>Sí.</strong> Todos los ejercicios se realizan aquí.</td></tr><tr><td><code>actividad2a</code></td><td>Versión anterior del docente que utilizamos como referencia.</td><td><strong>No.</strong> Consérvala para comparar.</td></tr><tr><td><code>tallerFlutterDesarrollo</code></td><td>Archivos del sitio web de esta guía.</td><td>No es parte de la app Dart.</td></tr></tbody></table></div><h3>3. Comprobar la ubicación de la terminal integrada</h3>
+  <p>La terminal de VS Code se abre en <code>DesarrolloMovilFlutter</code> si esa es la carpeta que seleccionaste con <strong>Archivo → Abrir carpeta</strong>. Antes de crear el proyecto, <code>Get-Location</code> debe terminar en <code>DesarrolloMovilFlutter</code>; después de ejecutar <code>cd actividad2</code> terminará en <code>DesarrolloMovilFlutter\actividad2</code>.</p>
   <div class="code-label">PowerShell · ubicación y comprobación de archivos</div><pre class="code-block"><code>Get-Location
 Get-ChildItem
 Test-Path .\pubspec.yaml</code></pre>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Instrucción</th><th scope="col">Qué hace</th><th scope="col">Resultado que debes interpretar</th></tr></thead><tbody><tr><td><code>Get-Location</code></td><td>Muestra la carpeta actual de PowerShell.</td><td>La ruta debería terminar en la carpeta del proyecto Flutter que abriste.</td></tr><tr><td><code>Get-ChildItem</code></td><td>Muestra los archivos y subcarpetas de ese lugar.</td><td>Debes encontrar <code>lib</code>, <code>android</code>, <code>web</code> y <code>pubspec.yaml</code>.</td></tr><tr><td><code>Test-Path .\pubspec.yaml</code></td><td>Comprueba si existe <code>pubspec.yaml</code> en la carpeta actual.</td><td><code>True</code> indica que existe; <code>False</code> exige revisar la ruta.</td></tr></tbody></table></div>
   <p>El prefijo <code>.\</code> significa «a partir de esta carpeta» en PowerShell. El comando <code>cd</code> cambia de directorio; no crea ni modifica archivos.</p>
-  <h3>4. Interpretar los comandos iniciales</h3>
-<div class="code-label">Terminal · secuencia de la primera ejecución</div><pre class="code-block"><code>flutter doctor
-flutter devices
-flutter create --empty actividad2
-cd actividad2
-flutter run</code></pre>
-<div class="step-explainer">
-<div><span class="step-counter">1</span><div><strong>Ejecuta <code>flutter doctor</code>.</strong><p>Comprueba que Flutter esté instalado y revisa las advertencias del entorno.</p></div></div>
-<div><span class="step-counter">2</span><div><strong>Consulta <code>flutter devices</code>.</strong><p>Muestra los destinos de ejecución. Si Chrome aparece, puedes seleccionar <code>flutter run -d chrome</code>.</p></div></div>
-<div><span class="step-counter">3</span><div><strong>Crea <code>actividad2</code> desde la carpeta padre.</strong><p><code>flutter create --empty actividad2</code> genera el proyecto una sola vez. No lo vuelvas a ejecutar sobre un ejercicio que ya contiene tus cambios.</p></div></div>
-<div><span class="step-counter">4</span><div><strong>Entra con <code>cd actividad2</code>.</strong><p>Confirma que ves <code>pubspec.yaml</code> y <code>lib/main.dart</code>; si necesitas comprobar dependencias ejecuta <code>flutter pub get</code>.</p></div></div>
-<div><span class="step-counter">5</span><div><strong>Ejecuta <code>flutter run</code>.</strong><p>Inicialmente aparece «Hello World!». El proceso continúa activo para probar; <kbd>r</kbd> solicita Hot Reload, <kbd>R</kbd> Hot Restart y <kbd>q</kbd> finaliza.</p></div></div></div>
+  <h3>4. Interpretar el orden real de trabajo</h3>
+<p>En este esquema los primeros dos pasos se realizan con los menús de Windows y VS Code; los comandos van <strong>dentro de la terminal integrada</strong>, no en <code>main.dart</code>.</p>
+<div class="start-learning-route">
+  <div><strong>Explorador de Windows</strong><span>Crear <code>DesarrolloMovilFlutter</code></span></div>
+  <div><strong>Visual Studio Code</strong><span>Archivo → Abrir carpeta → <code>DesarrolloMovilFlutter</code></span></div>
+  <div><strong>Terminal integrada</strong><span>Terminal → Nuevo terminal; verificar <code>Get-Location</code></span></div>
+  <div><strong>Crear proyecto</strong><span><code>flutter create --empty actividad2</code></span></div>
+  <div><strong>Ejecutar</strong><span><code>cd actividad2</code> y luego <code>flutter run</code></span></div>
+</div>
+<p>Si tienes dudas con Flutter, usa <code>flutter doctor</code> y <code>flutter devices</code> en la terminal. No ejecutes <code>flutter create</code> sobre el proyecto donde ya escribiste código.</p>
 <details class="deep-details"><summary>¿Qué diferencia hay entre Hot Reload, Hot Restart y volver a ejecutar?</summary><div class="deep-details-body"><p><strong>Hot Reload:</strong> intenta actualizar el código visual conservando el estado del programa. Es útil al modificar un texto o una propiedad de interfaz.</p><p><strong>Hot Restart:</strong> vuelve a iniciar el código Dart de la aplicación y reinicia el estado de la app; suele servir cuando el cambio no quedó reflejado con Hot Reload.</p><p><strong>Volver a ejecutar:</strong> cierra el proceso y realiza una nueva ejecución. Algunos cambios de configuración nativa o dependencias requieren un reinicio o una compilación nueva.</p><p>En la terminal de <code>flutter run</code>, <kbd>r</kbd> suele activar Hot Reload, <kbd>R</kbd> Hot Restart y <kbd>q</kbd> termina la ejecución. Estos atajos se usan en esa terminal, no dentro de la pantalla del teléfono.</p></div></details>
   <h3>5. Qué contiene la carpeta del proyecto</h3>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Elemento</th><th scope="col">Función</th><th scope="col">¿Debemos editarlo ahora?</th></tr></thead><tbody><tr><td><code>lib/main.dart</code></td><td>Punto de entrada Dart; al principio contiene la pantalla mínima «Hello World!».</td><td>Sí, en la copia de práctica y por etapas.</td></tr><tr><td><code>pubspec.yaml</code></td><td>Describe el proyecto, su SDK y los paquetes necesarios.</td><td>Leerlo primero; solo editarlo cuando aprendamos a agregar dependencias o recursos.</td></tr><tr><td><code>pubspec.lock</code></td><td>Registra las versiones concretas de los paquetes resueltos.</td><td>No hace falta editarlo manualmente.</td></tr><tr><td><code>android/</code>, <code>ios/</code>, <code>web/</code></td><td>Contienen archivos de soporte específicos de cada plataforma.</td><td>No es necesario cambiarlos para estos primeros widgets.</td></tr><tr><td><code>build/</code></td><td>Almacena archivos generados durante la compilación.</td><td>No escribir ahí el código Dart.</td></tr><tr><td><code>.dart_tool/</code></td><td>Guarda datos de trabajo del SDK y de las herramientas.</td><td>No lo uses para guardar ejercicios.</td></tr></tbody></table></div>
   <h3>6. Diagnóstico guiado de errores comunes</h3>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Lo que aparece o sucede</th><th scope="col">Causa probable</th><th scope="col">Qué comprobar</th></tr></thead><tbody><tr><td><code>flutter</code> no se reconoce como comando</td><td>Flutter no está instalado o su carpeta <code>bin</code> no está en el PATH.</td><td>Comprueba la instalación y abre una terminal nueva después de ajustar el PATH.</td></tr><tr><td><code>No pubspec.yaml file found</code></td><td>Estás ubicado fuera de la raíz del proyecto.</td><td>Ejecuta <code>Get-Location</code> y entra a la carpeta que contiene <code>pubspec.yaml</code>.</td></tr><tr><td>No se encontró ningún dispositivo</td><td>No hay un destino habilitado o conectado.</td><td>Ejecuta <code>flutter devices</code>, inicia el emulador o revisa la detección de Chrome.</td></tr><tr><td>Cambiaste el archivo pero no se refleja</td><td>Puede haberse abierto otro proyecto o requerirse Hot Restart.</td><td>Verifica la ruta de la terminal, el archivo abierto y ejecuta <kbd>R</kbd> si es necesario.</td></tr><tr><td>La consola sigue abierta después de ejecutar</td><td><code>flutter run</code> mantiene un proceso interactivo.</td><td>Es normal; usa <kbd>q</kbd> o termina la ejecución de forma controlada.</td></tr></tbody></table></div>
   <div class="guided-check"><strong>Preguntas para sustentar</strong><p>¿Cómo distingues un error de tu código Dart de un problema del emulador? ¿Por qué debes ejecutar <code>flutter run</code> desde la carpeta del proyecto? ¿Qué archivo indica las dependencias?</p><details><summary>Ver respuestas orientativas</summary><p>Un error de Dart señala una ubicación de código o sintaxis; un problema de entorno suele indicar falta de SDK, herramientas o dispositivo. La carpeta importa porque Flutter busca su configuración, especialmente <code>pubspec.yaml</code>. Las dependencias se declaran en ese archivo.</p></details></div>
-</div><h2>4. Verificar el resultado</h2><div class="checklist" data-checklist="preparacion"><label><input type="checkbox"> Flutter doctor se ejecuta y puedo identificar sus mensajes.</label><label><input type="checkbox"> Encontré <code>lib/main.dart</code> en mi proyecto.</label><label><input type="checkbox"> Ejecuté la app mínima que muestra «Hello World!»; la Tienda se construye después.</label></div>
-          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Identifica las carpetas</h3><p>En una hoja, escribe para qué sirven <code>lib</code>, <code>android</code>, <code>web</code> y <code>pubspec.yaml</code> usando una frase sencilla por cada una.</p><details><summary>Ver orientación de la respuesta</summary><p><code>lib</code> guarda el código Dart; <code>android</code> contiene la configuración de Android; <code>web</code> permite ejecutar en navegador; <code>pubspec.yaml</code> define dependencias y datos del proyecto.</p></details></div>
+</div><h2>4. Verificar el resultado</h2><div class="checklist" data-checklist="preparacion"><label><input type="checkbox"> Creé la carpeta <code>DesarrolloMovilFlutter</code> desde el Explorador de Windows.</label><label><input type="checkbox"> La abrí con <strong>Archivo → Abrir carpeta</strong> en Visual Studio Code.</label><label><input type="checkbox"> Abrí <strong>Terminal → Nuevo terminal</strong> y comprobé que estaba en <code>DesarrolloMovilFlutter</code>.</label><label><input type="checkbox"> Ejecuté <code>flutter create --empty actividad2</code> y encontré <code>actividad2/lib/main.dart</code>.</label><label><input type="checkbox"> Entré a <code>actividad2</code> y ejecuté la app que muestra «Hello World!».</label></div>
+          <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Explica tu estructura de trabajo</h3><p>En una hoja dibuja primero <code>DesarrolloMovilFlutter</code> y dentro <code>actividad2</code>. Añade <code>lib/main.dart</code>, <code>android</code>, <code>web</code> y <code>pubspec.yaml</code>. Escribe en una frase para qué sirve cada elemento e indica dónde ejecutaste <code>flutter create</code>.</p><details><summary>Ver orientación de la respuesta</summary><p><code>DesarrolloMovilFlutter</code> organiza tus ejercicios; <code>actividad2</code> es el proyecto generado desde la terminal integrada de VS Code. <code>lib</code> guarda Dart; <code>android</code> configura Android; <code>web</code> aporta soporte web; <code>pubspec.yaml</code> define los paquetes.</p></details></div>
           <div class="lesson-end"><button class="button button-complete" data-complete="preparacion">Marcar módulo como completado</button><a class="next-link" href="#punto-entrada">Siguiente: Entender main.dart →</a></div>
         </section>
 

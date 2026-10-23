@@ -249,3 +249,7 @@ Las vistas didácticas «Antes/Después» del taller incorporan iconos SVG vecto
 ## Colores Dart consistentes
 
 La paleta VS Code de FlutterLab ahora también se aplica a la plantilla inicial `actividad2/lib/main.dart`, las vistas con números de línea, las ventanas de ubicación y las tablas de explicación de Dart. Las instrucciones de PowerShell y los diagramas no se tratan como Dart. La sintaxis coloreada conserva el código y las líneas didácticas para copiar y estudiar.
+
+## Inicio guiado desde Visual Studio Code
+
+Primero crea manualmente la carpeta `DesarrolloMovilFlutter` en Documentos o una ubicación elegida. En Visual Studio Code selecciona **Archivo → Abrir carpeta** y elige `DesarrolloMovilFlutter`. Después abre **Terminal → Nuevo terminal**; comprueba que `Get-Location` termina en esa carpeta, ejecuta `flutter create --empty actividad2`, y luego `cd actividad2` y `flutter run`. El proyecto se guarda en `DesarrolloMovilFlutter/actividad2/`. El taller no crea físicamente carpetas en el equipo del estudiante.
