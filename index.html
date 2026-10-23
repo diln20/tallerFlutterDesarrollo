@@ -104,6 +104,7 @@
         <div class="nav-group-label">CONTINUACIÓN · INTERFAZ Y VALIDACIÓN</div>
 <a class="nav-link" href="#menu-hamburguesa" data-route="menu-hamburguesa" data-search="P9 Drawer AppBar menú hamburguesa navegación flutter"><span class="lesson-index">P9</span><span>Menú hamburguesa</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#validaciones-esenciales" data-route="validaciones-esenciales" data-search="P10 validadores formulario correo precio año regex tryParse email TextFormField"><span class="lesson-index">P10</span><span>Validaciones de campos</span><span class="nav-check" aria-hidden="true">✓</span></a>
+<a class="nav-link" href="#api-postgres" data-route="api-postgres" data-search="P11 FastAPI Python PostgreSQL Docker SQLModel API REST HTTP JSON BLoC Flutter"><span class="lesson-index">P11</span><span>API con FastAPI y PostgreSQL</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <div class="nav-group-label">RUTA B · ALTERNATIVA DESDE EL MÓDULO 05</div>
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -3337,7 +3338,1205 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
     final texto = (valor ?? &#39;&#39;).trim();
     if (texto.isEmpty) return &#39;Escribe un correo de contacto&#39;;
     if (texto.length &gt; 120) return &#39;Máximo 120 caracteres&#39;;
-    if (!RegExp(r&#39;^[^\s@]+@[^\s@]+\.[^\s@]+<section class="page lesson" id="responsive"#39;).hasMatch(texto)) {
+    if (!RegExp(r&#39;^[^\s@]+@[^\s@]+\.[^\s@]+
+<section class="page lesson next-module advanced-module" id="api-postgres" aria-labelledby="api-postgres-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P11</span><span class="status-pill planned">Flutter + FastAPI + PostgreSQL</span></div>
+<h1 id="api-postgres-title">Guardar los vehículos con una API FastAPI y PostgreSQL</h1>
+<p>Hasta P10, los vehículos desaparecen al cerrar la aplicación porque están en memoria. Ahora aprenderás a guardarlos de forma persistente, conectando <strong>la misma Tienda Flutter</strong> con una API sencilla en Python y una base de datos PostgreSQL. Partiremos desde lo básico, sin asumir conocimientos previos de servidores.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Resultado final de la práctica</strong><p>La aplicación móvil o web podrá <strong>consultar, crear, editar y eliminar</strong> vehículos por HTTP. FastAPI validará los datos y los guardará en PostgreSQL. Tras cerrar y abrir Flutter, los registros continuarán disponibles.</p></div></div>
+<div class="notice notice-warning"><strong>Punto de partida</strong><p>Debes haber terminado <a href="#bloc-crud">BLoC</a>, <a href="#menu-hamburguesa">menú hamburguesa</a> y <a href="#validaciones-esenciales">validación de campos</a>. <code>actividad2</code> continúa siendo tu proyecto Flutter. La API se crea en otra carpeta hermana llamada <code>tienda_api</code> porque <strong>Python y Dart no se escriben en el mismo archivo</strong>. Este es un proyecto local de aprendizaje: todavía no tiene usuarios ni seguridad de producción.</p></div>
+<div class="al-flow" aria-label="Diagrama de comunicación entre Flutter FastAPI y PostgreSQL">
+<div><strong>Flutter (Dart)</strong><span>Interfaz, validadores, BLoC y HTTP</span></div><b aria-hidden="true">→</b>
+<div><strong>FastAPI (Python)</strong><span>Recibe solicitudes y valida datos</span></div><b aria-hidden="true">→</b>
+<div><strong>PostgreSQL</strong><span>Guarda filas permanentes de vehículos</span></div></div>
+<div class="al-compare"><div><strong>Antes de P11</strong><p>«Renault 9» vive en <code>List&lt;Vehiculo&gt;</code>. Cerrar y volver a abrir Flutter borra esa lista.</p></div><div><strong>Después de P11</strong><p>FastAPI guarda «Renault 9» en la tabla <code>vehiculos</code>. El BLoC vuelve a consultarlo al abrir Flutter.</p></div></div>
+<div class="al-demo" id="al-api-demo"><div class="al-demo-head"><strong>Elige una operación HTTP y mira qué viaja</strong><span>Simulación de mensajes JSON · no realiza solicitudes reales</span></div>
+<div class="al-http-row" role="group" aria-label="Operaciones de la API"><button type="button" data-al-method="get" aria-pressed="true">GET · Leer</button><button type="button" data-al-method="post" aria-pressed="false">POST · Crear</button><button type="button" data-al-method="put" aria-pressed="false">PUT · Editar</button><button type="button" data-al-method="delete" aria-pressed="false">DELETE · Eliminar</button></div>
+<div class="al-json-panels"><div><strong>Flutter envía</strong><pre data-al-request>GET /vehiculos</pre></div><div><strong>FastAPI responde</strong><pre data-al-response>200 OK</pre></div></div>
+<p class="al-demo-hint">Las respuestas reales se pueden probar en <code>http://127.0.0.1:8000/docs</code> cuando la API esté ejecutándose en tu computador.</p></div>
+<div class="al-table-scroll"><table class="al-table"><thead><tr><th>Acción en Flutter</th><th>Solicitud a FastAPI</th><th>Qué hace PostgreSQL</th><th>Respuesta</th></tr></thead><tbody>
+<tr><td>Ver carros</td><td><code>GET /vehiculos</code></td><td>Consulta registros</td><td><code>200 OK</code></td></tr>
+<tr><td>Agregar carro</td><td><code>POST /vehiculos</code></td><td>Inserta una fila</td><td><code>201 Created</code></td></tr>
+<tr><td>Editar carro</td><td><code>PUT /vehiculos/1</code></td><td>Actualiza el ID 1</td><td><code>200 OK</code></td></tr>
+<tr><td>Eliminar carro</td><td><code>DELETE /vehiculos/1</code></td><td>Borra la fila ID 1</td><td><code>204 No Content</code></td></tr></tbody></table></div>
+<div class="next-section-heading"><span>PRIMERA PARTE · CREAR EL SERVIDOR</span><h2>FastAPI y PostgreSQL, paso a paso en otra carpeta</h2></div><article class="next-step" id="al-paso-11-1">
+<div class="next-step-top"><span class="next-step-number">01</span><div class="al-step-info"><span class="al-step-kicker">CREAR UNA CARPETA HERMANA DE actividad2</span><h3>Comprender las piezas y crear la carpeta del servidor</h3></div></div>
+<p><strong>Analogía:</strong> Flutter es el vendedor, FastAPI es el encargado que recibe solicitudes y PostgreSQL es la bodega donde se archivan los vehículos. El vendedor nunca entra directamente a la bodega.</p><div class="next-where"><div class="next-where-action">CREAR UNA CARPETA HERMANA DE actividad2</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Explorador de VS Code → <code>DesarrolloMovilFlutter</code></div><div><strong>Busca / ubica:</strong> Carpetas <code>actividad2</code> y nueva <code>tienda_api</code></div></div></div>
+<div class="code-label">Estructura deseada (esquema, no código ejecutable)</div><pre class="code-block" data-code-mode="plain"><code>DesarrolloMovilFlutter/
+├── actividad2/                (Flutter, ya existe)
+│   ├── lib/
+│   └── pubspec.yaml
+└── tienda_api/                (crear ahora)
+    ├── main.py                (Python)
+    ├── requirements.txt       (bibliotecas)
+    ├── compose.yaml           (PostgreSQL con Docker)
+    └── tests/                 (pruebas opcionales)</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p>No ejecutes <code>flutter create</code> otra vez. La API es un proyecto Python separado para que puedas iniciar y detener el servidor sin cambiar el código Dart. Necesitas Python 3.11 o compatible, VS Code, Docker Desktop con Compose y Flutter instalado.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Ves las dos carpetas al mismo nivel. Por ahora la carpeta <code>tienda_api</code> está vacía.</p></div></article>
+<article class="next-step" id="al-paso-11-2">
+<div class="next-step-top"><span class="next-step-number">02</span><div class="al-step-info"><span class="al-step-kicker">CREAR EL ARCHIVO compose.yaml</span><h3>Levantar PostgreSQL con Docker Compose</h3></div></div>
+<p>No hace falta instalar manualmente PostgreSQL para esta práctica si tienes Docker Desktop. Docker descargará una imagen preparada del servidor de base de datos.</p><div class="next-where"><div class="next-where-action">CREAR EL ARCHIVO compose.yaml</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>DesarrolloMovilFlutter/tienda_api/compose.yaml</code></div><div><strong>Busca / ubica:</strong> Dentro de <code>tienda_api</code> → Nuevo archivo → <code>compose.yaml</code></div></div></div>
+<div class="code-label">Pega todo en tienda_api/compose.yaml</div><pre class="code-block" data-code-mode="yaml"><code>services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tienda_flutter_postgres
+    environment:
+      POSTGRES_DB: tienda_flutter
+      POSTGRES_USER: tienda_alumno
+      POSTGRES_PASSWORD: clave_local_123
+    ports:
+      - &quot;127.0.0.1:5434:5432&quot;
+    volumes:
+      - datos_tienda_flutter:/var/lib/postgresql/data
+    healthcheck:
+      test: [&quot;CMD-SHELL&quot;, &quot;pg_isready -U tienda_alumno -d tienda_flutter&quot;]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  datos_tienda_flutter:</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>image: postgres:16-alpine</code> indica qué versión usar; <code>POSTGRES_DB</code> crea la base; <code>POSTGRES_USER</code> el usuario de clase; <code>ports: 127.0.0.1:5434:5432</code> conecta el puerto 5434 del PC con el 5432 del contenedor; <code>volumes</code> mantiene los datos aunque el contenedor se detenga. La contraseña mostrada es <strong>solo de laboratorio</strong>.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Con Docker Desktop abierto, ejecuta <code>docker compose up -d</code> dentro de <code>tienda_api</code> y comprueba con <code>docker compose ps</code> que el servicio PostgreSQL está sano.</p></div></article>
+<article class="next-step" id="al-paso-11-3">
+<div class="next-step-top"><span class="next-step-number">03</span><div class="al-step-info"><span class="al-step-kicker">CREAR requirements.txt Y ENTORNO VIRTUAL</span><h3>Instalar FastAPI y preparar Python</h3></div></div>
+<p><strong>Analogía:</strong> el entorno virtual es una caja de herramientas propia del servidor Python; no cambia Flutter ni instala los paquetes dentro de la carpeta móvil.</p><div class="next-where"><div class="next-where-action">CREAR requirements.txt Y ENTORNO VIRTUAL</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>DesarrolloMovilFlutter/tienda_api/requirements.txt</code> y terminal en esa carpeta</div><div><strong>Busca / ubica:</strong> <code>main.py</code> todavía no existe; primero instalaremos bibliotecas</div></div></div>
+<div class="code-label">CREA requirements.txt con estas dependencias</div><pre class="code-block" data-code-mode="plain"><code>fastapi&gt;=0.115,&lt;1.0
+uvicorn[standard]&gt;=0.34,&lt;1.0
+sqlmodel&gt;=0.0.24,&lt;1.0
+psycopg[binary]&gt;=3.2,&lt;4.0
+pytest&gt;=8,&lt;10
+httpx&gt;=0.27,&lt;1</code></pre><div class="code-label">Terminal de VS Code dentro de tienda_api; ejecuta línea por línea</div><pre class="code-block" data-code-mode="shell"><code>py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+docker compose up -d
+docker compose ps</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>FastAPI</code> define rutas, <code>Uvicorn</code> ejecuta el servidor, <code>SQLModel</code> representa las tablas como clases Python, <code>psycopg</code> habla con PostgreSQL, <code>pytest</code> y <code>httpx</code> sirven para pruebas. <code>.venv</code> evita mezclar paquetes de diferentes proyectos. El comando <code>py</code> es habitual en Windows; si no existe, utiliza <code>python</code>.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Se creó la carpeta .venv, terminó la instalación y Docker muestra el contenedor <code>tienda_flutter_postgres</code> en ejecución.</p></div></article>
+<article class="next-step" id="al-paso-11-4">
+<div class="next-step-top"><span class="next-step-number">04</span><div class="al-step-info"><span class="al-step-kicker">CREAR main.py: MODELOS Y VALIDACIONES</span><h3>Crear un modelo Python con las mismas reglas que Flutter</h3></div></div>
+<p>La API debe comprobar también los datos: una persona podría llamar a la API sin pasar por los validadores de Flutter. Por eso las mismas reglas son necesarias del lado del servidor.</p><div class="next-where"><div class="next-where-action">CREAR main.py: MODELOS Y VALIDACIONES</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>tienda_api/main.py</code> → debajo de los imports y DATABASE_URL</div><div><strong>Busca / ubica:</strong> <code>class VehiculoDatos(SQLModel):</code></div></div></div>
+<div class="code-label">Primeras líneas de main.py: imports y conexión</div><pre class="code-block" data-code-mode="python"><code>import os
+import re
+from contextlib import asynccontextmanager
+from datetime import date
+from typing import Annotated
+
+from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import field_validator
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+# Solo para prácticas locales. En servidores reales usa variables de entorno secretas.
+DATABASE_URL = os.environ.get(
+    &quot;DATABASE_URL&quot;,
+    &quot;postgresql+psycopg://tienda_alumno:clave_local_123@127.0.0.1:5434/tienda_flutter&quot;,
+)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)</code></pre><div class="code-label">AGREGA debajo: clase de datos y validadores</div><pre class="code-block" data-code-mode="python"><code>class VehiculoDatos(SQLModel):
+    nombre: str = Field(min_length=3, max_length=60)
+    anio: int = Field(ge=1900, le=2100)
+    precio: float = Field(gt=0, le=999999999999)
+    correo: str = Field(min_length=5, max_length=120)
+    disponible: bool = True
+
+    @field_validator(&quot;nombre&quot;, &quot;correo&quot;, mode=&quot;before&quot;)
+    @classmethod
+    def quitar_espacios(cls, valor):
+        return valor.strip() if isinstance(valor, str) else valor
+
+    @field_validator(&quot;anio&quot;)
+    @classmethod
+    def comprobar_anio(cls, anio):
+        if anio &gt; date.today().year + 1:
+            raise ValueError(&quot;El año supera el próximo año&quot;)
+        return anio
+
+    @field_validator(&quot;correo&quot;)
+    @classmethod
+    def comprobar_correo(cls, correo):
+        if not re.fullmatch(r&quot;[^\s@]+@[^\s@]+\.[^\s@]+&quot;, correo):
+            raise ValueError(&quot;Escribe un correo de contacto válido&quot;)
+        return correo</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>Field(min_length...)</code> define longitudes, <code>ge</code> mínimo y <code>gt</code> estrictamente mayor. <code>@field_validator</code> agrega reglas: quita espacios, limita el año al siguiente y comprueba el formato básico de correo. FastAPI devuelve <code>422</code> cuando llegan datos inválidos.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Puedes identificar que la clase Python representa los mismos campos que <code>Vehiculo</code> de Flutter: nombre, año, precio, correo y disponible.</p></div></article>
+<article class="next-step" id="al-paso-11-5">
+<div class="next-step-top"><span class="next-step-number">05</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR CLASES DE TABLA, SESIÓN E INICIO</span><h3>Crear la tabla y una sesión para cada solicitud</h3></div></div>
+<p>En PostgreSQL una fila necesita un número que la identifique. Ese número es el <strong>ID</strong>, como el consecutivo de una ficha de inventario. Una sesión permite que cada solicitud lea o escriba datos.</p><div class="next-where"><div class="next-where-action">AGREGAR CLASES DE TABLA, SESIÓN E INICIO</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>tienda_api/main.py</code> → después de <code>VehiculoDatos</code></div><div><strong>Busca / ubica:</strong> <code>class VehiculoTabla</code>, <code>def obtener_sesion</code> y <code>app = FastAPI</code></div></div></div>
+<div class="code-label">AGREGA las clases y la función de sesión después de VehiculoDatos</div><pre class="code-block" data-code-mode="python"><code>class VehiculoTabla(VehiculoDatos, table=True):
+    __tablename__ = &quot;vehiculos&quot;
+    id: int | None = Field(default=None, primary_key=True)
+
+
+class VehiculoEntrada(VehiculoDatos):
+    pass
+
+
+class VehiculoSalida(VehiculoDatos):
+    id: int
+
+
+def obtener_sesion():
+    with Session(engine) as sesion:
+        yield sesion
+
+
+Sesion = Annotated[Session, Depends(obtener_sesion)]</code></pre><div class="code-label">AGREGA la creación de tablas, FastAPI y CORS antes de las rutas</div><pre class="code-block" data-code-mode="python"><code>@asynccontextmanager
+async def iniciar_aplicacion(app: FastAPI):
+    SQLModel.metadata.create_all(engine)
+    yield
+
+
+app = FastAPI(
+    title=&quot;API de la Tienda de Vehículos&quot;,
+    description=&quot;Práctica de Flutter, FastAPI y PostgreSQL&quot;,
+    lifespan=iniciar_aplicacion,
+)
+
+# Solo los orígenes usados por Flutter Web en la clase.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[&quot;http://localhost:5174&quot;, &quot;http://127.0.0.1:5174&quot;],
+    allow_methods=[&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;],
+    allow_headers=[&quot;Content-Type&quot;],
+)</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>VehiculoTabla</code> equivale a la tabla <code>vehiculos</code>. <code>id</code> es la clave primaria que asigna PostgreSQL. <code>create_engine</code> administra la conexión, <code>Session</code> las operaciones, <code>commit()</code> confirma cambios. <code>CORSMiddleware</code> permite que el Flutter Web de clase (puerto 5174) consulte la API desde otro origen.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Ya puedes explicar por qué Flutter no conoce la contraseña ni realiza consultas SQL: eso queda dentro del servidor Python.</p></div></article>
+<article class="next-step" id="al-paso-11-6">
+<div class="next-step-top"><span class="next-step-number">06</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR ENDPOINTS HTTP A main.py</span><h3>Crear las rutas para leer, insertar, modificar y borrar</h3></div></div>
+<p>Cada ruta corresponde a una operación CRUD de la misma Tienda. No necesitas escribir SQL manual para este ejemplo sencillo: SQLModel genera las consultas.</p><div class="next-where"><div class="next-where-action">AGREGAR ENDPOINTS HTTP A main.py</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>tienda_api/main.py</code> → al final del archivo, después de <code>app.add_middleware</code></div><div><strong>Busca / ubica:</strong> Decoradores <code>@app.get</code>, <code>@app.post</code>, <code>@app.put</code> y <code>@app.delete</code></div></div></div>
+<div class="al-substep"><strong>A · AGREGA las rutas de salud, consulta y creación</strong><div class="code-label">GET /salud, GET /vehiculos, POST /vehiculos</div><pre class="code-block" data-code-mode="python"><code>@app.get(&quot;/salud&quot;)
+def salud():
+    return {&quot;estado&quot;: &quot;ok&quot;}
+
+
+@app.get(&quot;/vehiculos&quot;, response_model=list[VehiculoSalida])
+def listar_vehiculos(sesion: Sesion):
+    consulta = select(VehiculoTabla).order_by(VehiculoTabla.id)
+    return sesion.exec(consulta).all()
+
+
+@app.post(&quot;/vehiculos&quot;, response_model=VehiculoSalida, status_code=201)
+def crear_vehiculo(datos: VehiculoEntrada, sesion: Sesion):
+    nuevo = VehiculoTabla.model_validate(datos)
+    sesion.add(nuevo)
+    sesion.commit()
+    sesion.refresh(nuevo)
+    return nuevo</code></pre></div>
+<div class="al-substep"><strong>B · AGREGA las rutas de actualización y eliminación</strong><div class="code-label">PUT /vehiculos/{id}, DELETE /vehiculos/{id}</div><pre class="code-block" data-code-mode="python"><code>@app.put(&quot;/vehiculos/{vehiculo_id}&quot;, response_model=VehiculoSalida)
+def actualizar_vehiculo(vehiculo_id: int, datos: VehiculoEntrada, sesion: Sesion):
+    vehiculo = sesion.get(VehiculoTabla, vehiculo_id)
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail=&quot;Vehículo no encontrado&quot;)
+    for campo, valor in datos.model_dump().items():
+        setattr(vehiculo, campo, valor)
+    sesion.add(vehiculo)
+    sesion.commit()
+    sesion.refresh(vehiculo)
+    return vehiculo
+
+
+@app.delete(&quot;/vehiculos/{vehiculo_id}&quot;, status_code=204)
+def eliminar_vehiculo(vehiculo_id: int, sesion: Sesion):
+    vehiculo = sesion.get(VehiculoTabla, vehiculo_id)
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail=&quot;Vehículo no encontrado&quot;)
+    sesion.delete(vehiculo)
+    sesion.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>@app.post</code> recibe el JSON del cliente; <code>sesion.add</code> prepara el registro y <code>commit</code> lo guarda. <code>sesion.get</code> busca un ID; si no existe, FastAPI responde <code>404</code>. <code>delete</code> retira la fila y <code>204</code> indica éxito sin contenido.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Tu <code>main.py</code> tiene cuatro operaciones CRUD y una ruta de salud. Compara al final con el archivo completo antes de ejecutarlo.</p></div></article>
+<article class="next-step" id="al-paso-11-7">
+<div class="next-step-top"><span class="next-step-number">07</span><div class="al-step-info"><span class="al-step-kicker">INICIAR PYTHON Y PROBAR EN /docs</span><h3>Ejecutar el servidor y usar la documentación Swagger</h3></div></div>
+<p><strong>Analogía:</strong> Swagger es un mostrador de pruebas donde puedes enviar órdenes manualmente, antes de que Flutter lo haga por ti.</p><div class="next-where"><div class="next-where-action">INICIAR PYTHON Y PROBAR EN /docs</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Terminal de VS Code abierta en <code>tienda_api</code></div><div><strong>Busca / ubica:</strong> El archivo <code>main.py</code> ya está completo y PostgreSQL está iniciado</div></div></div>
+<div class="code-label">Terminal: iniciar FastAPI (mantener abierta)</div><pre class="code-block" data-code-mode="shell"><code>.\.venv\Scripts\python.exe -m uvicorn main:app --reload --port 8000</code></pre><div class="code-label">Cuerpo JSON para probar POST /vehiculos desde Swagger</div><pre class="code-block" data-code-mode="json"><code>{
+  &quot;nombre&quot;: &quot;Renault 9&quot;,
+  &quot;anio&quot;: 1994,
+  &quot;precio&quot;: 12000000.50,
+  &quot;correo&quot;: &quot;cliente@ejemplo.com&quot;,
+  &quot;disponible&quot;: true
+}</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p>Abre <code>http://127.0.0.1:8000/docs</code>, despliega POST /vehiculos, pulsa «Try it out», pega el JSON y «Execute». Después usa GET /vehiculos. La URL <code>/salud</code> responde con <code>estado: ok</code>. El puerto 8000 es de FastAPI; PostgreSQL usa 5434 del PC.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>POST devuelve <code>201</code> con un <code>id</code>; GET devuelve una lista que contiene el vehículo. Si 8000 no responde, consulta primero la terminal del servidor.</p></div></article><div class="next-section-heading"><span>SEGUNDA PARTE · CONECTAR FLUTTER</span><h2>Ahora regresa a actividad2: el BLoC hablará con la API</h2></div>
+<div class="al-tip"><strong>Antes de tocar Dart:</strong> deja FastAPI ejecutándose en la terminal de <code>tienda_api</code>. Abre otra ventana o terminal de VS Code en <code>actividad2</code>. Primero prueba la API en Swagger; si el servidor falla, Flutter tampoco podrá conectarse.</div><article class="next-step" id="al-paso-11-8">
+<div class="next-step-top"><span class="next-step-number">08</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR DEPENDENCIA A actividad2</span><h3>Agregar http sin rehacer el proyecto Flutter</h3></div></div>
+<p>Hasta ahora BLoC cambiaba una lista local. Necesitamos una herramienta que haga solicitudes HTTP a FastAPI. Flutter recomienda el paquete <code>http</code> para este tipo de llamadas.</p><div class="next-where"><div class="next-where-action">AGREGAR DEPENDENCIA A actividad2</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Terminal de VS Code dentro de <code>DesarrolloMovilFlutter/actividad2</code></div><div><strong>Busca / ubica:</strong> <code>pubspec.yaml</code> del proyecto Flutter existente</div></div></div>
+<div class="code-label">Ejecuta este comando UNA SOLA VEZ</div><pre class="code-block" data-code-mode="shell"><code>flutter pub add http</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>http</code> permite enviar solicitudes <code>GET</code>, <code>POST</code>, <code>PUT</code> y <code>DELETE</code>. <code>flutter pub add</code> escribe la dependencia en <code>pubspec.yaml</code> y actualiza paquetes. No vuelvas a ejecutar <code>flutter create</code> ni reinstales BLoC.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Tu proyecto mantiene BLoC, menú y formulario P10, y <code>pubspec.yaml</code> incluye <code>http</code>.</p></div></article>
+<article class="next-step" id="al-paso-11-9">
+<div class="next-step-top"><span class="next-step-number">09</span><div class="al-step-info"><span class="al-step-kicker">REEMPLAZAR EL MODELO DART</span><h3>Actualizar el modelo para leer JSON y reconocer cada ID</h3></div></div>
+<p>PostgreSQL asigna un ID a cada carro. Editar o eliminar usando su índice visual puede fallar al buscar, porque la lista visible cambia. Usaremos el <strong>ID del servidor</strong>, que es estable.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL MODELO DART</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/models/vehiculo.dart</code></div><div><strong>Busca / ubica:</strong> <code>class Vehiculo</code> → propiedades y constructor</div></div></div>
+<div class="code-label">Reemplaza el contenido del modelo por el que convierte JSON</div><pre class="code-block" data-code-mode="dart"><code>class Vehiculo {
+  const Vehiculo({
+    required this.id,
+    required this.nombre,
+    required this.anio,
+    required this.precio,
+    required this.correo,
+    required this.disponible,
+  });
+
+  final int id;
+  final String nombre;
+  final int anio;
+  final double precio;
+  final String correo;
+  final bool disponible;
+
+  factory Vehiculo.fromJson(Map&lt;String, dynamic&gt; json) {
+    return Vehiculo(
+      id: json[&#39;id&#39;] as int,
+      nombre: json[&#39;nombre&#39;] as String,
+      anio: json[&#39;anio&#39;] as int,
+      precio: (json[&#39;precio&#39;] as num).toDouble(),
+      correo: json[&#39;correo&#39;] as String,
+      disponible: json[&#39;disponible&#39;] as bool,
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>factory Vehiculo.fromJson</code> construye un objeto Dart desde el JSON recibido. <code>json['id'] as int</code> obtiene el ID, <code>json['nombre'] as String</code> el texto y <code>(json['precio'] as num).toDouble()</code> transforma un número JSON en <code>double</code>, incluso si el servidor devolvió un entero.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Puedes explicar que <code>id=7</code> identifica al mismo vehículo aunque se filtre la lista o cambie su nombre.</p></div></article>
+<article class="next-step" id="al-paso-11-10">
+<div class="next-step-top"><span class="next-step-number">10</span><div class="al-step-info"><span class="al-step-kicker">CREAR lib/repositories/vehiculos_api.dart</span><h3>Crear el repositorio que se comunica por HTTP</h3></div></div>
+<p><strong>Analogía:</strong> el repositorio es el mensajero. La pantalla le pide una operación; él envía HTTP, interpreta la respuesta y entrega objetos Dart. El repositorio <strong>nunca escribe directamente en PostgreSQL</strong>.</p><div class="next-where"><div class="next-where-action">CREAR lib/repositories/vehiculos_api.dart</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/repositories/vehiculos_api.dart</code> (carpeta prevista desde P2)</div><div><strong>Busca / ubica:</strong> Explorador → lib → repositories → Nuevo archivo</div></div></div>
+<div class="al-substep"><strong>A · Crea el archivo e inserta imports, clase y función listar()</strong><div class="code-label">Inicio del repositorio: imports, constructor y GET</div><pre class="code-block" data-code-mode="dart"><code>import &#39;dart:convert&#39;;
+import &#39;package:http/http.dart&#39; as http;
+import &#39;../models/vehiculo.dart&#39;;
+
+class VehiculosApi {
+  VehiculosApi({String? urlBase, http.Client? cliente})
+      : urlBase = urlBase ??
+            const String.fromEnvironment(
+              &#39;API_URL&#39;,
+              defaultValue: &#39;http://10.0.2.2:8000&#39;,
+            ),
+        _cliente = cliente ?? http.Client();
+
+  final String urlBase;
+  final http.Client _cliente;
+
+  Uri get _ruta =&gt; Uri.parse(&#39;$urlBase/vehiculos&#39;);
+
+  Future&lt;List&lt;Vehiculo&gt;&gt; listar() async {
+    final respuesta = await _cliente.get(_ruta);
+    _verificar(respuesta, 200);
+    final datos = jsonDecode(respuesta.body) as List&lt;dynamic&gt;;
+    return datos
+        .map((item) =&gt; Vehiculo.fromJson(item as Map&lt;String, dynamic&gt;))
+        .toList();
+  }</code></pre></div>
+<div class="al-substep"><strong>B · Agrega el método crear()</strong><div class="code-label">POST envía JSON con nombre, año, precio, correo y disponibilidad</div><pre class="code-block" data-code-mode="dart"><code>Future&lt;void&gt; crear({
+    required String nombre,
+    required int anio,
+    required double precio,
+    required String correo,
+  }) async {
+    final respuesta = await _cliente.post(
+      _ruta,
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+      body: jsonEncode({
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: true,
+      }),
+    );
+    _verificar(respuesta, 201);
+  }</code></pre></div>
+<div class="al-substep"><strong>C · Agrega editar() y eliminar()</strong><div class="code-label">PUT y DELETE por ID</div><pre class="code-block" data-code-mode="dart"><code>Future&lt;void&gt; actualizar({
+    required int id,
+    required String nombre,
+    required int anio,
+    required double precio,
+    required String correo,
+    required bool disponible,
+  }) async {
+    final respuesta = await _cliente.put(
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+      body: jsonEncode({
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: disponible,
+      }),
+    );
+    _verificar(respuesta, 200);
+  }
+
+  Future&lt;void&gt; eliminar(int id) async {
+    final respuesta = await _cliente.delete(
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
+    );
+    _verificar(respuesta, 204);
+  }</code></pre></div>
+<div class="al-substep"><strong>D · Al final de la clase, agrega manejo de códigos y cerrar()</strong><div class="code-label">Verificar respuesta y liberar cliente HTTP</div><pre class="code-block" data-code-mode="dart"><code>void _verificar(http.Response respuesta, int esperado) {
+    if (respuesta.statusCode != esperado) {
+      throw Exception(
+        &#39;Error HTTP ${respuesta.statusCode}. Revisa la API y sus datos.&#39;,
+      );
+    }
+  }
+
+  void cerrar() =&gt; _cliente.close();</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>Future</code> es un resultado que llegará después; <code>async</code> y <code>await</code> esperan la red sin bloquear toda la interfaz. <code>jsonEncode</code> convierte un objeto Dart a JSON para enviarlo; <code>jsonDecode</code> lee el JSON recibido. <code>Uri.parse</code> construye la dirección. Si el estado HTTP no es el esperado, se lanza una excepción para que BLoC muestre un error.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>El archivo contiene las cuatro operaciones GET/POST/PUT/DELETE y un <code>cerrar()</code> que libera el cliente de red.</p></div></article>
+<article class="next-step" id="al-paso-11-11">
+<div class="next-step-top"><span class="next-step-number">11</span><div class="al-step-info"><span class="al-step-kicker">ACTUALIZAR EVENTOS, ESTADO Y BLoC</span><h3>Permitir que BLoC espere la API y muestre errores</h3></div></div>
+<p>Aquí conectamos los temas que ya estudiaste. El botón sigue enviando un evento, pero ahora BLoC espera a FastAPI, recibe los datos actualizados y comunica a la pantalla cuándo terminó.</p><div class="next-where"><div class="next-where-action">ACTUALIZAR EVENTOS, ESTADO Y BLoC</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>lib/bloc/vehiculos_evento.dart</code>, <code>vehiculos_estado.dart</code>, <code>vehiculos_bloc.dart</code></div><div><strong>Busca / ubica:</strong> <code>VehiculosCargados</code>, <code>cargando</code>, <code>enviando</code> y <code>await api.listar()</code></div></div></div>
+<div class="al-substep"><strong>A · Agrega un evento para cargar la lista al abrir la Tienda</strong><div class="code-label">Nueva clase dentro de vehiculos_evento.dart</div><pre class="code-block" data-code-mode="dart"><code>class VehiculosCargados extends VehiculosEvento {}</code></pre></div>
+<div class="al-substep"><strong>B · Cambia el estado para reconocer carga, envío y error</strong><div class="code-label">Archivo vehiculos_estado.dart completo</div><pre class="code-block" data-code-mode="dart"><code>import &#39;../models/vehiculo.dart&#39;;
+
+class VehiculosEstado {
+  const VehiculosEstado({
+    required this.vehiculos,
+    required this.visibles,
+    required this.busqueda,
+    this.idEnEdicion,
+    this.cargando = false,
+    this.enviando = false,
+    this.error,
+  });
+
+  final List&lt;Vehiculo&gt; vehiculos;
+  final List&lt;Vehiculo&gt; visibles;
+  final String busqueda;
+  final int? idEnEdicion;
+  final bool cargando;
+  final bool enviando;
+  final String? error;
+}</code></pre></div>
+<div class="al-substep"><strong>C · En vehiculos_bloc.dart conecta la API y el manejo asíncrono</strong><div class="code-label">Manejador que hace GET</div><pre class="code-block" data-code-mode="dart"><code>on&lt;VehiculosCargados&gt;((evento, emit) async {
+      emit(_nuevoEstado(state.vehiculos, cargando: true));
+      try {
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos));
+      } catch (error) {
+        emit(_nuevoEstado(state.vehiculos, error: _mensaje(error)));
+      }
+    });</code></pre><div class="code-label">Manejador que hace POST o PUT y después refresca GET</div><pre class="code-block" data-code-mode="dart"><code>on&lt;VehiculoGuardado&gt;((evento, emit) async {
+      if (state.enviando) return;
+      final id = state.idEnEdicion;
+      emit(_nuevoEstado(
+        state.vehiculos,
+        idEnEdicion: id,
+        enviando: true,
+      ));
+      try {
+        if (id == null) {
+          await api.crear(
+            nombre: evento.nombre,
+            anio: evento.anio,
+            precio: evento.precio,
+            correo: evento.correo,
+          );
+        } else {
+          final anterior = state.vehiculos.firstWhere((v) =&gt; v.id == id);
+          await api.actualizar(
+            id: id,
+            nombre: evento.nombre,
+            anio: evento.anio,
+            precio: evento.precio,
+            correo: evento.correo,
+            disponible: anterior.disponible,
+          );
+        }
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos, idEnEdicion: null));
+      } catch (error) {
+        emit(_nuevoEstado(
+          state.vehiculos,
+          idEnEdicion: state.idEnEdicion,
+          error: _mensaje(error),
+        ));
+      }
+    });</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>cargando</code> sirve para mostrar un indicador mientras llega GET. <code>enviando</code> indica que POST/PUT/DELETE todavía trabajan. <code>try/catch</code> evita que una falla de red bloquee la pantalla; el BLoC emite un nuevo estado con mensaje de error. En las operaciones restantes, <code>VehiculoEliminado</code> debe usar el <strong>ID</strong>, no el índice filtrado; consulta el BLoC completo de referencia.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>El BLoC conoce al repositorio, procesa eventos asincrónicos y tiene estados de éxito, carga y error. Ya no guarda el inventario únicamente con <code>List.add()</code>.</p></div></article>
+<article class="next-step" id="al-paso-11-12">
+<div class="next-step-top"><span class="next-step-number">12</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR SOLO main.dart, CONSERVANDO P9 Y P10</span><h3>Conectar la pantalla, el Drawer y el formulario al BLoC remoto</h3></div></div>
+<p>Tu interfaz sigue siendo la misma Tienda con cuatro campos y menú. La diferencia es que el BlocProvider ahora recibe un repositorio y los botones usan los IDs que FastAPI entregó.</p><div class="next-where"><div class="next-where-action">MODIFICAR SOLO main.dart, CONSERVANDO P9 Y P10</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Busca / ubica:</strong> <code>BlocProvider</code>, <code>comenzarEdicion</code>, <code>BlocBuilder</code> y <code>ListView.builder</code></div></div></div>
+<div class="al-substep"><strong>A · Importa el repositorio en main.dart</strong><div class="code-label">En la zona de imports</div><pre class="code-block" data-code-mode="dart"><code>import &#39;repositories/vehiculos_api.dart&#39;;</code></pre></div>
+<div class="al-substep"><strong>B · Cambia la creación de BlocProvider para cargar datos al inicio</strong><div class="code-label">Dentro de MainApp.build, reemplaza el antiguo create:</div><pre class="code-block" data-code-mode="dart"><code>BlocProvider&lt;VehiculosBloc&gt;(
+  create: (context) =&gt; VehiculosBloc(VehiculosApi())
+    ..add(VehiculosCargados()),
+  child: const MaterialApp(
+    home: TiendaPage(),
+  ),
+)</code></pre></div>
+<div class="al-substep"><strong>C · Identifica y conserva el flujo nuevo de edición por ID</strong><div class="code-label">Localizar vehículo por su ID, no por posición</div><pre class="code-block" data-code-mode="dart"><code>void comenzarEdicion(int id) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final vehiculo = bloc.state.vehiculos.firstWhere((v) =&gt; v.id == id);
+    vehiculoController.text = vehiculo.nombre;
+    anioController.text = vehiculo.anio.toString();
+    precioController.text = vehiculo.precio.toString();
+    correoController.text = vehiculo.correo;
+    bloc.add(EdicionIniciada(id));
+  }</code></pre></div>
+<div class="al-substep"><strong>D · Muestra carga y errores en BlocBuilder</strong><div class="code-label">Cuando la API responde o falla</div><pre class="code-block" data-code-mode="dart"><code>BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  if (estado.error == null) return const SizedBox.shrink();
+                  return Card(
+                    color: Colors.amber.shade50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(child: Text(estado.error!)),
+                          IconButton(
+                            tooltip: &#39;Reintentar&#39;,
+                            icon: const Icon(Icons.refresh),
+                            onPressed: () {
+                              context.read&lt;VehiculosBloc&gt;().add(
+                                VehiculosCargados(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+if (estado.cargando) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (estado.visibles.isEmpty) {
+                      return Center(
+                        child: Text(
+                          estado.vehiculos.isEmpty
+                              ? &#39;Todavía no hay vehículos registrados.&#39;
+                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>..add(VehiculosCargados())</code> es la <strong>cascada de Dart</strong>: crea el BLoC y le envía el evento de carga. <code>BlocBuilder</code> muestra un progreso durante la espera y actualiza la lista con JSON transformado en objetos. <code>idEnEdicion</code> sustituye al índice porque la base puede tener otros registros y filtros.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Tras guardar, la lista se vuelve a consultar. Abre ☰ → Acerca de → Volver: los vehículos siguen visibles porque el mismo BLoC continúa dentro de la aplicación.</p></div></article>
+<article class="next-step" id="al-paso-11-13">
+<div class="next-step-top"><span class="next-step-number">13</span><div class="al-step-info"><span class="al-step-kicker">CONFIGURAR API_URL Y PERMISOS DE RED</span><h3>Elegir la dirección correcta según el dispositivo</h3></div></div>
+<p><strong>Importante:</strong> «localhost» representa el propio dispositivo. En Chrome es tu PC; en el emulador Android se necesita una dirección especial que apunta al PC anfitrión.</p><div class="next-where"><div class="next-where-action">CONFIGURAR API_URL Y PERMISOS DE RED</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2</code> → Terminal VS Code y archivos AndroidManifest.xml</div><div><strong>Busca / ubica:</strong> <code>String.fromEnvironment('API_URL')</code> del repositorio</div></div></div>
+<div class="code-label">Opción A · Emulador Android estándar</div><pre class="code-block" data-code-mode="shell"><code>flutter run</code></pre><div class="code-label">Opción B · Chrome (puerto fijo para CORS)</div><pre class="code-block" data-code-mode="shell"><code>flutter run -d chrome --web-port 5174 --dart-define=API_URL=http://127.0.0.1:8000</code></pre><div class="code-label">Opción C · Celular físico en la red del PC (reemplaza la IP de ejemplo)</div><pre class="code-block" data-code-mode="shell"><code>flutter run --dart-define=API_URL=http://192.168.1.10:8000</code></pre><div class="code-label">Permiso de Internet dentro de android/app/src/main/AndroidManifest.xml</div><pre class="code-block" data-code-mode="xml"><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p>El valor por defecto del ejemplo es <code>http://10.0.2.2:8000</code>, usado por el emulador Android. En un teléfono físico debes usar la IP real del computador (consultar con <code>ipconfig</code>) e iniciar Uvicorn con <code>--host 0.0.0.0</code> solo en tu red de laboratorio. Para probar HTTP local en Android, configura <code>android:usesCleartextTraffic="true"</code> en <code>android/app/src/debug/AndroidManifest.xml</code> y <strong>no en producción</strong>.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>La app puede comunicarse con FastAPI desde el entorno elegido, sin errores CORS (Web) ni «Connection refused» (Android).</p></div></article>
+<article class="next-step" id="al-paso-11-14">
+<div class="next-step-top"><span class="next-step-number">14</span><div class="al-step-info"><span class="al-step-kicker">EJECUTAR PRUEBAS EN AMBOS PROYECTOS</span><h3>Probar persistencia, errores y pruebas automatizadas</h3></div></div>
+<p>Tu trabajo no termina solo al ver un carro: debes probar guardado real, edición, eliminación, datos inválidos y recuperación de la lista después de reiniciar Flutter.</p><div class="next-where"><div class="next-where-action">EJECUTAR PRUEBAS EN AMBOS PROYECTOS</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Terminal de <code>tienda_api</code> y terminal de <code>actividad2</code></div><div><strong>Busca / ubica:</strong> <code>main.py</code>, <code>/docs</code>, <code>pubspec.yaml</code> y carpeta <code>test/</code></div></div></div>
+<div class="code-label">Desde tienda_api: pruebas del servidor</div><pre class="code-block" data-code-mode="shell"><code>.\.venv\Scripts\python.exe -m pytest -q</code></pre><div class="code-label">Desde actividad2: código Flutter y pruebas</div><pre class="code-block" data-code-mode="shell"><code>flutter analyze
+flutter test
+flutter run</code></pre><div class="next-step-meaning"><strong>Explicación sencilla</strong><p>Los tests FastAPI incluidos utilizan una base de pruebas SQLite para revisar reglas y endpoints, sin tocar PostgreSQL. **También verifica manualmente con PostgreSQL** mediante Swagger: crea un vehículo, cierra Flutter y ábrelo de nuevo. El volumen Docker mantiene las filas. No uses <code>docker compose down -v</code> si quieres conservar los ejercicios.</p></div>
+<div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Confirmaste que crear/editar/eliminar funciona, FastAPI valida entradas malas y «Renault 9» persiste después de reiniciar la aplicación.</p></div></article><div class="next-section-heading"><span>MATERIAL DE REFERENCIA COMPLETO</span><h2>Archivos exactos de la API y de Flutter</h2></div>
+<p>Los archivos ya están preparados para que puedas compararlos con los construidos durante la clase. No se sustituye el <code>actividad2a</code> del docente.</p>
+<div class="al-filelinks"><a href="./ejemplo_api_postgres/backend/main.py" target="_blank" rel="noopener noreferrer">main.py FastAPI ↗</a><a href="./ejemplo_api_postgres/backend/compose.yaml" target="_blank" rel="noopener noreferrer">Docker PostgreSQL ↗</a><a href="./ejemplo_api_postgres/backend/requirements.txt" target="_blank" rel="noopener noreferrer">Dependencias Python ↗</a><a href="./ejemplo_api_postgres/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart Flutter ↗</a><a href="./ejemplo_api_postgres/flutter/lib/repositories/vehiculos_api.dart" target="_blank" rel="noopener noreferrer">Repositorio HTTP ↗</a><a href="./ejemplo_api_postgres/flutter/lib/bloc/vehiculos_bloc.dart" target="_blank" rel="noopener noreferrer">BLoC con API ↗</a><a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/ejemplo_api_postgres" target="_blank" rel="noopener noreferrer">Carpeta completa en GitHub ↗</a></div>
+<details class="al-full-reference"><summary>Ver archivo de referencia completo: tienda_api/main.py completo</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">tienda_api/main.py completo</div><pre class="code-block" data-code-mode="python"><code>import os
+import re
+from contextlib import asynccontextmanager
+from datetime import date
+from typing import Annotated
+
+from fastapi import Depends, FastAPI, HTTPException, Response, status
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import field_validator
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+
+# Solo para prácticas locales. En servidores reales usa variables de entorno secretas.
+DATABASE_URL = os.environ.get(
+    &quot;DATABASE_URL&quot;,
+    &quot;postgresql+psycopg://tienda_alumno:clave_local_123@127.0.0.1:5434/tienda_flutter&quot;,
+)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+
+
+class VehiculoDatos(SQLModel):
+    nombre: str = Field(min_length=3, max_length=60)
+    anio: int = Field(ge=1900, le=2100)
+    precio: float = Field(gt=0, le=999999999999)
+    correo: str = Field(min_length=5, max_length=120)
+    disponible: bool = True
+
+    @field_validator(&quot;nombre&quot;, &quot;correo&quot;, mode=&quot;before&quot;)
+    @classmethod
+    def quitar_espacios(cls, valor):
+        return valor.strip() if isinstance(valor, str) else valor
+
+    @field_validator(&quot;anio&quot;)
+    @classmethod
+    def comprobar_anio(cls, anio):
+        if anio &gt; date.today().year + 1:
+            raise ValueError(&quot;El año supera el próximo año&quot;)
+        return anio
+
+    @field_validator(&quot;correo&quot;)
+    @classmethod
+    def comprobar_correo(cls, correo):
+        if not re.fullmatch(r&quot;[^\s@]+@[^\s@]+\.[^\s@]+&quot;, correo):
+            raise ValueError(&quot;Escribe un correo de contacto válido&quot;)
+        return correo
+
+
+class VehiculoTabla(VehiculoDatos, table=True):
+    __tablename__ = &quot;vehiculos&quot;
+    id: int | None = Field(default=None, primary_key=True)
+
+
+class VehiculoEntrada(VehiculoDatos):
+    pass
+
+
+class VehiculoSalida(VehiculoDatos):
+    id: int
+
+
+def obtener_sesion():
+    with Session(engine) as sesion:
+        yield sesion
+
+
+Sesion = Annotated[Session, Depends(obtener_sesion)]
+
+
+@asynccontextmanager
+async def iniciar_aplicacion(app: FastAPI):
+    SQLModel.metadata.create_all(engine)
+    yield
+
+
+app = FastAPI(
+    title=&quot;API de la Tienda de Vehículos&quot;,
+    description=&quot;Práctica de Flutter, FastAPI y PostgreSQL&quot;,
+    lifespan=iniciar_aplicacion,
+)
+
+# Solo los orígenes usados por Flutter Web en la clase.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[&quot;http://localhost:5174&quot;, &quot;http://127.0.0.1:5174&quot;],
+    allow_methods=[&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;],
+    allow_headers=[&quot;Content-Type&quot;],
+)
+
+
+@app.get(&quot;/salud&quot;)
+def salud():
+    return {&quot;estado&quot;: &quot;ok&quot;}
+
+
+@app.get(&quot;/vehiculos&quot;, response_model=list[VehiculoSalida])
+def listar_vehiculos(sesion: Sesion):
+    consulta = select(VehiculoTabla).order_by(VehiculoTabla.id)
+    return sesion.exec(consulta).all()
+
+
+@app.post(&quot;/vehiculos&quot;, response_model=VehiculoSalida, status_code=201)
+def crear_vehiculo(datos: VehiculoEntrada, sesion: Sesion):
+    nuevo = VehiculoTabla.model_validate(datos)
+    sesion.add(nuevo)
+    sesion.commit()
+    sesion.refresh(nuevo)
+    return nuevo
+
+
+@app.put(&quot;/vehiculos/{vehiculo_id}&quot;, response_model=VehiculoSalida)
+def actualizar_vehiculo(vehiculo_id: int, datos: VehiculoEntrada, sesion: Sesion):
+    vehiculo = sesion.get(VehiculoTabla, vehiculo_id)
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail=&quot;Vehículo no encontrado&quot;)
+    for campo, valor in datos.model_dump().items():
+        setattr(vehiculo, campo, valor)
+    sesion.add(vehiculo)
+    sesion.commit()
+    sesion.refresh(vehiculo)
+    return vehiculo
+
+
+@app.delete(&quot;/vehiculos/{vehiculo_id}&quot;, status_code=204)
+def eliminar_vehiculo(vehiculo_id: int, sesion: Sesion):
+    vehiculo = sesion.get(VehiculoTabla, vehiculo_id)
+    if vehiculo is None:
+        raise HTTPException(status_code=404, detail=&quot;Vehículo no encontrado&quot;)
+    sesion.delete(vehiculo)
+    sesion.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)</code></pre></details>
+<details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/repositories/vehiculos_api.dart completo</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/repositories/vehiculos_api.dart completo</div><pre class="code-block" data-code-mode="dart"><code>import &#39;dart:convert&#39;;
+import &#39;package:http/http.dart&#39; as http;
+import &#39;../models/vehiculo.dart&#39;;
+
+class VehiculosApi {
+  VehiculosApi({String? urlBase, http.Client? cliente})
+      : urlBase = urlBase ??
+            const String.fromEnvironment(
+              &#39;API_URL&#39;,
+              defaultValue: &#39;http://10.0.2.2:8000&#39;,
+            ),
+        _cliente = cliente ?? http.Client();
+
+  final String urlBase;
+  final http.Client _cliente;
+
+  Uri get _ruta =&gt; Uri.parse(&#39;$urlBase/vehiculos&#39;);
+
+  Future&lt;List&lt;Vehiculo&gt;&gt; listar() async {
+    final respuesta = await _cliente.get(_ruta);
+    _verificar(respuesta, 200);
+    final datos = jsonDecode(respuesta.body) as List&lt;dynamic&gt;;
+    return datos
+        .map((item) =&gt; Vehiculo.fromJson(item as Map&lt;String, dynamic&gt;))
+        .toList();
+  }
+
+  Future&lt;void&gt; crear({
+    required String nombre,
+    required int anio,
+    required double precio,
+    required String correo,
+  }) async {
+    final respuesta = await _cliente.post(
+      _ruta,
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+      body: jsonEncode({
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: true,
+      }),
+    );
+    _verificar(respuesta, 201);
+  }
+
+  Future&lt;void&gt; actualizar({
+    required int id,
+    required String nombre,
+    required int anio,
+    required double precio,
+    required String correo,
+    required bool disponible,
+  }) async {
+    final respuesta = await _cliente.put(
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+      body: jsonEncode({
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: disponible,
+      }),
+    );
+    _verificar(respuesta, 200);
+  }
+
+  Future&lt;void&gt; eliminar(int id) async {
+    final respuesta = await _cliente.delete(
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
+    );
+    _verificar(respuesta, 204);
+  }
+
+  void _verificar(http.Response respuesta, int esperado) {
+    if (respuesta.statusCode != esperado) {
+      throw Exception(
+        &#39;Error HTTP ${respuesta.statusCode}. Revisa la API y sus datos.&#39;,
+      );
+    }
+  }
+
+  void cerrar() =&gt; _cliente.close();
+}</code></pre></details>
+<details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/bloc/vehiculos_bloc.dart completo</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/bloc/vehiculos_bloc.dart completo</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;../models/vehiculo.dart&#39;;
+import &#39;../repositories/vehiculos_api.dart&#39;;
+import &#39;vehiculos_evento.dart&#39;;
+import &#39;vehiculos_estado.dart&#39;;
+
+class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
+  VehiculosBloc(this.api)
+      : super(
+          const VehiculosEstado(
+            vehiculos: [],
+            visibles: [],
+            busqueda: &#39;&#39;,
+          ),
+        ) {
+    on&lt;VehiculosCargados&gt;((evento, emit) async {
+      emit(_nuevoEstado(state.vehiculos, cargando: true));
+      try {
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos));
+      } catch (error) {
+        emit(_nuevoEstado(state.vehiculos, error: _mensaje(error)));
+      }
+    });
+
+    on&lt;VehiculoGuardado&gt;((evento, emit) async {
+      if (state.enviando) return;
+      final id = state.idEnEdicion;
+      emit(_nuevoEstado(
+        state.vehiculos,
+        idEnEdicion: id,
+        enviando: true,
+      ));
+      try {
+        if (id == null) {
+          await api.crear(
+            nombre: evento.nombre,
+            anio: evento.anio,
+            precio: evento.precio,
+            correo: evento.correo,
+          );
+        } else {
+          final anterior = state.vehiculos.firstWhere((v) =&gt; v.id == id);
+          await api.actualizar(
+            id: id,
+            nombre: evento.nombre,
+            anio: evento.anio,
+            precio: evento.precio,
+            correo: evento.correo,
+            disponible: anterior.disponible,
+          );
+        }
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos, idEnEdicion: null));
+      } catch (error) {
+        emit(_nuevoEstado(
+          state.vehiculos,
+          idEnEdicion: state.idEnEdicion,
+          error: _mensaje(error),
+        ));
+      }
+    });
+
+    on&lt;VehiculoEliminado&gt;((evento, emit) async {
+      if (state.enviando) return;
+      emit(_nuevoEstado(state.vehiculos, enviando: true));
+      try {
+        await api.eliminar(evento.id);
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos, idEnEdicion: null));
+      } catch (error) {
+        emit(_nuevoEstado(
+          state.vehiculos,
+          idEnEdicion: state.idEnEdicion,
+          error: _mensaje(error),
+        ));
+      }
+    });
+
+    on&lt;EdicionIniciada&gt;((evento, emit) {
+      final existe = state.vehiculos.any((v) =&gt; v.id == evento.id);
+      if (existe) {
+        emit(_nuevoEstado(state.vehiculos, idEnEdicion: evento.id));
+      }
+    });
+
+    on&lt;EdicionCancelada&gt;((evento, emit) {
+      emit(_nuevoEstado(state.vehiculos));
+    });
+
+    on&lt;BusquedaCambiada&gt;((evento, emit) {
+      emit(_nuevoEstado(
+        state.vehiculos,
+        busqueda: evento.texto,
+        idEnEdicion: state.idEnEdicion,
+        cargando: state.cargando,
+        enviando: state.enviando,
+        error: state.error,
+      ));
+    });
+  }
+
+  final VehiculosApi api;
+
+  VehiculosEstado _nuevoEstado(
+    List&lt;Vehiculo&gt; vehiculos, {
+    String? busqueda,
+    int? idEnEdicion,
+    bool cargando = false,
+    bool enviando = false,
+    String? error,
+  }) {
+    final actual = busqueda ?? state.busqueda;
+    final texto = actual.trim().toLowerCase();
+    final visibles = vehiculos
+        .where((v) =&gt; v.nombre.toLowerCase().contains(texto))
+        .toList();
+    return VehiculosEstado(
+      vehiculos: List&lt;Vehiculo&gt;.unmodifiable(vehiculos),
+      visibles: List&lt;Vehiculo&gt;.unmodifiable(visibles),
+      busqueda: actual,
+      idEnEdicion: idEnEdicion,
+      cargando: cargando,
+      enviando: enviando,
+      error: error,
+    );
+  }
+
+  String _mensaje(Object error) {
+    return error.toString().replaceFirst(&#39;Exception: &#39;, &#39;&#39;);
+  }
+
+  @override
+  Future&lt;void&gt; close() {
+    api.cerrar();
+    return super.close();
+  }
+}</code></pre></details>
+<details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/main.dart conectado a FastAPI</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/main.dart conectado a FastAPI</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;bloc/vehiculos_bloc.dart&#39;;
+import &#39;bloc/vehiculos_evento.dart&#39;;
+import &#39;bloc/vehiculos_estado.dart&#39;;
+import &#39;pages/acerca_page.dart&#39;;
+import &#39;pages/ayuda_page.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;repositories/vehiculos_api.dart&#39;;
+import &#39;validators/validadores.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider&lt;VehiculosBloc&gt;(
+      create: (context) =&gt; VehiculosBloc(VehiculosApi())
+        ..add(VehiculosCargados()),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: TiendaPage(),
+      ),
+    );
+  }
+}
+
+class TiendaPage extends StatefulWidget {
+  const TiendaPage({super.key});
+
+  @override
+  State&lt;TiendaPage&gt; createState() =&gt; _TiendaPageState();
+}
+
+class _TiendaPageState extends State&lt;TiendaPage&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final TextEditingController anioController = TextEditingController();
+  final TextEditingController precioController = TextEditingController();
+  final TextEditingController correoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    final anio = int.tryParse(anioController.text.trim());
+    final precio = double.tryParse(precioController.text.trim());
+    if (anio == null || precio == null) return;
+
+    context.read&lt;VehiculosBloc&gt;().add(
+      VehiculoGuardado(
+        nombre: vehiculoController.text.trim(),
+        anio: anio,
+        precio: precio,
+        correo: correoController.text.trim(),
+      ),
+    );
+    limpiarCampos();
+  }
+
+  void limpiarCampos() {
+    vehiculoController.clear();
+    anioController.clear();
+    precioController.clear();
+    correoController.clear();
+  }
+
+  void comenzarEdicion(int id) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final vehiculo = bloc.state.vehiculos.firstWhere((v) =&gt; v.id == id);
+    vehiculoController.text = vehiculo.nombre;
+    anioController.text = vehiculo.anio.toString();
+    precioController.text = vehiculo.precio.toString();
+    correoController.text = vehiculo.correo;
+    bloc.add(EdicionIniciada(id));
+  }
+
+  void borrarVehiculo(int id) {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(id));
+  }
+
+  void cancelarEdicion() {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    anioController.dispose();
+    precioController.dispose();
+    correoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Color(0xFF183B61)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.directions_car, color: Colors.white, size: 42),
+                    SizedBox(height: 12),
+                    Text(&#39;Tienda de vehículos&#39;,
+                        style: TextStyle(color: Colors.white, fontSize: 19)),
+                    Text(&#39;Menú de navegación&#39;,
+                        style: TextStyle(color: Colors.white70)),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.storefront),
+                title: const Text(&#39;Tienda&#39;),
+                onTap: () =&gt; Navigator.pop(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text(&#39;Acerca de&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AcercaPage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: const Text(&#39;Ayuda&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AyudaPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+              const SizedBox(height: 12),
+              const Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      &#39;Ingenieria de Sistemas&#39;,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: &#39;Buscar marca o modelo&#39;,
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (texto) {
+                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                },
+              ),
+              const SizedBox(height: 16),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    CampoNombreVehiculo(controller: vehiculoController),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: anioController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Año del vehículo&#39;,
+                        hintText: &#39;2020&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.anio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: precioController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: &#39;Precio&#39;,
+                        hintText: &#39;25000000.50&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.precio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: correoController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Correo de contacto&#39;,
+                        hintText: &#39;cliente@ejemplo.com&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.correo,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: BotonTienda(
+                          texto: estado.enviando
+                              ? &#39;Guardando...&#39;
+                              : (estado.idEnEdicion == null
+                                  ? &#39;Agregar vehículo&#39;
+                                  : &#39;Guardar cambios&#39;),
+                          alPresionar: guardarVehiculo,
+                        ),
+                      ),
+                      if (estado.idEnEdicion != null) ...[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          onPressed: cancelarEdicion,
+                          child: const Text(&#39;Cancelar&#39;),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 14),
+              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  return Text(
+                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                    &#39;Visibles: ${estado.visibles.length}&#39;,
+                  );
+                },
+              ),
+              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  if (estado.error == null) return const SizedBox.shrink();
+                  return Card(
+                    color: Colors.amber.shade50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Expanded(child: Text(estado.error!)),
+                          IconButton(
+                            tooltip: &#39;Reintentar&#39;,
+                            icon: const Icon(Icons.refresh),
+                            onPressed: () {
+                              context.read&lt;VehiculosBloc&gt;().add(
+                                VehiculosCargados(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                  builder: (context, estado) {
+                    if (estado.cargando) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (estado.visibles.isEmpty) {
+                      return Center(
+                        child: Text(
+                          estado.vehiculos.isEmpty
+                              ? &#39;Todavía no hay vehículos registrados.&#39;
+                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: estado.visibles.length,
+                      itemBuilder: (context, indiceVisible) {
+                        final vehiculo = estado.visibles[indiceVisible];
+                        final id = vehiculo.id;
+                        return Card(
+                          child: ListTile(
+                            title: Text(vehiculo.nombre),
+                            isThreeLine: true,
+                            subtitle: Text(
+                              &#39;Año: &#39; + vehiculo.anio.toString() +
+                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
+                              &#39;\nCorreo: &#39; + vehiculo.correo,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  tooltip: &#39;Editar vehículo&#39;,
+                                  onPressed: () =&gt; comenzarEdicion(id),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  tooltip: &#39;Eliminar vehículo&#39;,
+                                  onPressed: () =&gt; borrarVehiculo(id),
+                                  icon: const Icon(Icons.delete_outline),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre></details>
+<div class="notice notice-warning"><strong>Lo que todavía NO hacemos en esta práctica</strong><p>No hay autenticación ni autorización, migraciones de esquema, despliegue público, cifrado de HTTP local ni administración de secretos. La contraseña Docker es demostrativa y la API debe ejecutarse en una red controlada. Para una aplicación real necesitarás HTTPS, usuarios y permisos, copias de seguridad, migraciones y secretos fuera del repositorio.</p></div>
+<div class="al-table-scroll"><table class="al-table"><thead><tr><th>Problema que observa el estudiante</th><th>Primera comprobación</th></tr></thead><tbody>
+<tr><td><code>Connection refused</code> o servidor inaccesible</td><td>¿Uvicorn está abierto en el puerto 8000? ¿La IP corresponde al dispositivo?</td></tr>
+<tr><td>Error <code>422</code></td><td>Revisa nombre, año, precio y correo del JSON.</td></tr>
+<tr><td>Error <code>404</code></td><td>Comprueba si el ID todavía existe después de eliminarlo.</td></tr>
+<tr><td>Error de CORS solo en Chrome</td><td>Usa <code>--web-port 5174</code> y el origen permitido en FastAPI.</td></tr>
+<tr><td>PostgreSQL no arranca</td><td>Docker Desktop abierto, <code>docker compose ps</code> y puerto 5434 disponible.</td></tr>
+<tr><td>Se pierde la lista al reiniciar Flutter</td><td>Verifica que el BLoC emite <code>VehiculosCargados</code> y que GET devuelve datos.</td></tr>
+</tbody></table></div>
+<div class="exercise"><span class="exercise-label">RETO TRANSVERSAL · TIENDA COMPLETA</span><h3>Demuestra el flujo de punta a punta</h3><p>Desde Flutter crea un carro con nombre, año, precio y correo. Verifica desde <code>/docs</code> que quedó en la base; búscalo en la app, edítalo, ciérrala por completo y vuelve a abrirla. Comprueba que sigue actualizado, elimínalo y consulta que ya no aparece. Dibuja el recorrido <strong>Flutter → evento BLoC → repositorio HTTP → FastAPI → PostgreSQL → respuesta JSON → pantalla</strong>.</p></div>
+<div class="checklist" data-checklist="api-postgres"><label><input type="checkbox"> Creé tienda_api fuera de actividad2.</label><label><input type="checkbox"> Levanté PostgreSQL con Docker Compose.</label><label><input type="checkbox"> FastAPI responde en /docs y /vehiculos.</label><label><input type="checkbox"> Agregué http y VehiculosApi al mismo proyecto Flutter.</label><label><input type="checkbox"> BLoC muestra estados de carga y error.</label><label><input type="checkbox"> Los registros persisten al cerrar y abrir Flutter.</label><label><input type="checkbox"> Puedo explicar por qué Flutter no se conecta directamente a PostgreSQL.</label></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="api-postgres">Marcar módulo como completado</button><a class="next-link" href="#inicio">Volver al inicio del taller →</a></div>
+</section>
+<section class="page lesson" id="responsive"#39;).hasMatch(texto)) {
       return &#39;Escribe un correo válido: ejemplo@correo.com&#39;;
     }
     return null;
