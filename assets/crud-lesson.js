@@ -24,5 +24,59 @@ function decorate(root=document){
    code.dataset.conceptReady='yes';
  }
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>decorate(),{once:true});else decorate();
+function instalarTooltips() {
+  const panel = document.createElement('div');
+  panel.id = 'flutter-codigo-tooltip';
+  panel.className = 'flutter-codigo-tooltip';
+  panel.setAttribute('role', 'tooltip');
+  panel.hidden = true;
+  document.body.append(panel);
+  let activo = null;
+  function ubicar() {
+    if (!activo || panel.hidden) return;
+    const box = activo.getBoundingClientRect();
+    const width = panel.offsetWidth;
+    const height = panel.offsetHeight;
+    const left = Math.max(8, Math.min(box.left, window.innerWidth - width - 8));
+    let top = box.top - height - 9;
+    if (top < 8) top = box.bottom + 9;
+    panel.style.left = left + 'px';
+    panel.style.top = Math.min(top, window.innerHeight - height - 8) + 'px';
+  }
+  function abrir(term) {
+    if (activo === term) { ubicar(); return; }
+    cerrar();
+    activo = term;
+    panel.textContent = term.dataset.explain || '';
+    term.setAttribute('aria-describedby', panel.id);
+    panel.hidden = false;
+    ubicar();
+  }
+  function cerrar() {
+    if (activo) activo.removeAttribute('aria-describedby');
+    activo = null;
+    panel.hidden = true;
+  }
+  document.addEventListener('pointerover', e => {
+    const term = e.target.closest?.('.code-tooltip-term');
+    if (term) abrir(term);
+  });
+  document.addEventListener('pointerout', e => {
+    if (activo && (e.target === activo || activo.contains(e.target))) cerrar();
+  });
+  document.addEventListener('focusin', e => {
+    const term = e.target.closest?.('.code-tooltip-term');
+    if (term) abrir(term);
+  });
+  document.addEventListener('focusout', e => {
+    if (activo && (e.target === activo || activo.contains(e.target))) cerrar();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') cerrar();
+  });
+  window.addEventListener('scroll', ubicar, {passive:true,capture:true});
+  window.addEventListener('resize', ubicar);
+}
+function iniciar() { decorate(); instalarTooltips(); }
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar,{once:true});else iniciar();
 })();
