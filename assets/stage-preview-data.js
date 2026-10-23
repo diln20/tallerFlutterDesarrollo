@@ -355,20 +355,22 @@
       name:'BLoC explicado sobre la Tienda',
       kind:'conceptual',
       steps:[
-        S('Comparar responsabilidades','La versión anterior almacena y filtra datos en el State. Separar lógica con BLoC no obliga a cambiar la apariencia.',
+        S('Comparar responsabilidades','La versión anterior calcula el filtro en State. En BLoC el filtro vive en una clase separada; la pantalla se mantiene familiar.',
           "Interfaz → Evento → BLoC → Estado → Interfaz",
           {stage:9},{stage:9,blocFlow:true},'body',
-          {visual:false,note:'Flujo conceptual: aún no hemos implementado BLoC en actividad2a.'}),
-        S('Enviar evento BuscarVehiculos','Al escribir «Renault», la pantalla comunica una intención de búsqueda. La lógica devolvería la lista filtrada.',
-          "BuscarVehiculos('Renault')\n  → BLoC\n  → VehiculosEncontrados([...])",
-          {stage:9,query:''},{stage:9,query:'Renault',blocFlow:true},'results',{interactive:true}),
-        S('Representar un estado de carga','Si la búsqueda dependiera de una API, el estado de carga podría mostrar un indicador temporal.',
-          "BuscandoVehiculos()  // Estado conceptual",
-          {stage:9,query:'Renault',blocFlow:true},{stage:9,query:'Renault',blocFlow:true,loading:true},'results',
-          {note:'Esta es una posibilidad futura, no parte del main.dart actual.'}),
-        S('Representar cero resultados','Cuando la lógica no encuentra coincidencias, el estado permitiría mostrar un mensaje comprensible.',
-          "VehiculosEncontrados([])\n  → Text('No se encontraron vehículos')",
-          {stage:9,query:'Renault',blocFlow:true},{stage:9,query:'xyz',blocFlow:true},'results',{interactive:true})
+          {visual:false,note:'Mapa didáctico: los archivos de código reales se construyen después, en la práctica de diez pasos.'}),
+        S('Enviar BusquedaTextoCambiado','Al escribir Renault, el TextField envía un evento. BusquedaBloc lo procesa y produce un estado con Renault 9 y Renault 21.',
+          "BusquedaTextoCambiado('Renault')\n  → BusquedaBloc\n  → BusquedaEstado(texto: 'Renault', resultados: [...])",
+          {stage:9,query:''},{stage:9,query:'Renault',blocFlow:true},'results',
+          {interactive:true,note:'La flecha y el esquema son una ilustración, no Dart para copiar.'}),
+        S('Mostrar cero coincidencias','Al escribir xyz no hay vehículos que coincidan; BlocBuilder puede mostrar un mensaje sencillo.',
+          "BusquedaEstado(texto: 'xyz', resultados: [])",
+          {stage:9,query:'Renault',blocFlow:true},{stage:9,query:'xyz',blocFlow:true},'results',
+          {interactive:true,note:'Aquí no implementamos una llamada a API ni estados de carga.'}),
+        S('Borrar la búsqueda','Cuando el texto vuelve a estar vacío, el evento provoca un estado con los cuatro vehículos originales.',
+          "BusquedaTextoCambiado('')\n  → estado con 4 vehículos",
+          {stage:9,query:'xyz',blocFlow:true},{stage:9,query:'',blocFlow:true},'results',
+          {interactive:true,note:'El código real para estos cambios está en lib/bloc/busqueda_bloc.dart, explicado más abajo.'})
       ]
     }
   };
