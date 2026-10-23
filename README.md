@@ -1,13 +1,29 @@
-# Taller Flutter — Guía detallada basada en actividad2a
+# Taller Flutter — Crear actividad2 desde cero
 
-**Guía web didáctica para construir la aplicación «Tienda» paso a paso, basada en el código real que se utiliza en clase.** No cambia de proyecto ni incluye el cajero electrónico de otros talleres.
+**Guía web didáctica para crear el proyecto nuevo `actividad2` y construir la Tienda paso a paso.** Usa el antiguo `actividad2a` únicamente como referencia de clase.
 
 **Página publicada:** https://diln20.github.io/tallerFlutterDesarrollo/  
 **Repositorio:** https://github.com/diln20/tallerFlutterDesarrollo
 
+## Inicio de la ruta didáctica: `actividad2`
+
+El estudiante crea un proyecto **nuevo** desde la carpeta padre:
+
+```powershell
+flutter create --empty actividad2
+cd actividad2
+flutter run
+```
+
+**`--empty` no crea `main.dart` vacío**: genera un programa mínimo con `import`, `main()`, `MainApp`, `build()` y `Text('Hello World!')`. En el módulo 02 esos elementos se **reconocen sin copiar de nuevo**, y la primera modificación es cambiar `Hello World!` por `Primer widget`. La [plantilla mínima](etapas/paso_01_plantilla.dart) permite comparar el punto de partida.
+
+Se mantiene una única separación clara: `actividad2` es el trabajo del estudiante y `actividad2a` la referencia del docente, respaldada en [codigo-base/main.dart](codigo-base/main.dart). Las ampliaciones opcionales 06–08 parten de la Tienda del módulo 05; no se mezclan automáticamente con el resultado de P7.
+
+La interfaz de inicio utiliza un comando principal destacado, secuencia visual, estados de copia y nombres de archivos consistentes. Se han aplicado principios de [interface-design](https://github.com/Dammyjay93/interface-design/blob/main/.claude/skills/interface-design/SKILL.md) a la tipografía, proporciones, espaciado y accesibilidad, respetando el diseño preexistente.
+
 ## Vistas progresivas de la aplicación «Tienda»
 
-El taller contiene ahora **16 módulos**, con **90 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
+El taller contiene ahora **16 módulos**, con **91 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
 
 - Pantallas **Antes / Después** para comparar los efectos de un cambio.
 - Contorno amarillo alrededor del widget que aparece o cuya presentación se modifica.
@@ -25,8 +41,8 @@ La sección **«Así va cambiando tu aplicación»** aparece **ampliada por defe
 
 La comparación ya no repite el mismo código o la misma imagen cuando el paso ocurre en el editor o en la terminal:
 
-- **Preparación:** primero VS Code sin carpeta; después el Explorador con `actividad2a → lib → main.dart` seleccionado. En el siguiente paso, el comando `flutter pub get` pasa de pendiente a una **salida ilustrativa** (la página no ejecuta órdenes); `flutter run` lleva a la representación de la Tienda.
-- **Primer Dart:** las instrucciones `import`, `main()`, `runApp` y `MainApp` aparecen progresivamente. Nunca se muestra un archivo completo antes de que el estudiante haya añadido sus partes.
+- **Preparación:** se simula `flutter create --empty actividad2`, se abre el Explorador en `actividad2 → lib → main.dart`, se comprueban dependencias opcionalmente y `flutter run` enseña «Hello World!». La página no ejecuta órdenes.
+- **Primer Dart:** se muestra siempre el archivo mínimo que Flutter ya genera, resaltando por turnos las líneas que se deben reconocer. No se duplican `import`, `main()`, `runApp` ni `MainApp`.
 - **Cambios internos sin efecto visual:** cuando solo cambia una variable, un controlador, `StatefulWidget` o un método, se presenta un **mapa Antes → Después del código**, indicando claramente que la pantalla de Flutter continúa igual. Los pasos de lectura se identifican como tales, sin inventar nuevas modificaciones.
 - **Cambios de interfaz:** la comparación enseña visualmente el widget añadido o modificado. Todas las salidas del editor, terminal y móvil son simulaciones didácticas, no capturas ni ejecuciones del equipo real.
 
@@ -129,8 +145,8 @@ El **catálogo de widgets** muestra una indicación contextual distinta: `AppBar
 ## Proyecto real de referencia
 
 Equipo: `WIN-C2ANEVBHN6Q`  
-Docente y estudiantes: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`  
-Copia para preparar ejemplos: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a-guia`
+Proyecto de referencia: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a`  
+Copia para preparar ejemplos: `C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2`
 
 Se revisó la instantánea versionada de [`codigo-base/main.dart`](codigo-base/main.dart) y [`codigo-base/pubspec.yaml`](codigo-base/pubspec.yaml). **El `main.dart` de referencia tiene 42 líneas.** La página explica una por una, incluidas llaves, comas, paréntesis y listas de widgets.
 
@@ -218,7 +234,7 @@ El sitio utiliza `index.html`, `assets/styles.css` y `assets/app.js`. Está publ
 
 ## Criterio de actualización
 
-El proyecto **`actividad2a` del docente se conserva intacto**. La copia `actividad2a-guia` sirve para construir y verificar propuestas antes de incorporarlas a clase. Las explicaciones siempre deben respetar el orden didáctico, los conceptos ya vistos y el código auténtico. Las capturas deben proceder de pruebas reales y distinguirse de las ilustraciones.
+El proyecto **`actividad2a` del docente se conserva intacto**. La copia `actividad2` sirve para construir y verificar propuestas antes de incorporarlas a clase. Las explicaciones siempre deben respetar el orden didáctico, los conceptos ya vistos y el código auténtico. Las capturas deben proceder de pruebas reales y distinguirse de las ilustraciones.
 
 ## Comparaciones legibles a pantalla completa (octubre de 2026)
 

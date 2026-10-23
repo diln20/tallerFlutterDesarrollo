@@ -54,7 +54,7 @@
           "child: Text('Primer widget'),",
           {stage:2,bodyText:'Hello World!'},
           {stage:2,bodyText:'Primer widget'},'firstText',
-          {note:'En actividad2/lib/main.dart busca Text(\\'Hello World!\\') y reemplaza únicamente la cadena. El resto del archivo queda igual.'}),
+          {note:"En actividad2/lib/main.dart busca Text('Hello World!') y reemplaza únicamente esa cadena. El resto del archivo no cambia."}),
         S('Comprender const y super.key','El constructor usa super.key y runApp crea una instancia constante; esta observación no modifica la interfaz.',
           "const MainApp({super.key});\nrunApp(const MainApp());",
           {stage:2,bodyText:'Primer widget'},
