@@ -1,0 +1,145 @@
+/* SVG locales y alineación del explorador VS Code simulado. */
+.pv-shell .pv-vscode-entry {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:32px;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  padding:6px 8px;
+  font-size:11px;
+  line-height:1.4;
+  border-radius:3px;
+  white-space:normal;
+  overflow:hidden;
+  cursor:default;
+}
+.pv-shell .pv-tree-item.pv-vscode-entry {padding-left:12px;}
+.pv-shell .pv-tree-root.pv-vscode-entry {padding-left:6px;}
+.pv-shell .pv-vscode-entry:hover {background:#233c5e;}
+.pv-shell .pv-vscode-entry.pv-ide-selected {
+  background:#2d568a;
+  border-left:3px solid #95ceff;
+  padding-left:9px;
+  border-radius:0;
+  color:#fff;
+}
+.pv-shell .pv-vscode-entry.pv-ide-selected:hover {background:#365e93;}
+.pv-shell .pv-vscode-entry.pv-vscode-pending {opacity:.58;}
+.pv-vscode-arrow {
+  flex:0 0 11px;
+  width:11px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#9cb8d7;
+  font:800 16px/1 sans-serif;
+}
+.pv-vscode-glyph {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 19px;
+  width:19px;
+  height:19px;
+  overflow:visible;
+}
+.pv-vscode-glyph svg {display:block;width:100%;height:100%;flex:none;}
+.pv-vscode-label-box {
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  min-width:0;
+  max-width:100%;
+  flex:1;
+  overflow:hidden;
+}
+.pv-vscode-label {
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#DBE8FA;
+  font-family:ui-monospace,Consolas,monospace;
+  font-size:inherit;
+  font-weight:600;
+}
+.pv-vscode-subtext {
+  display:block;
+  color:#c2d6f0;
+  font:700 9px/1.15 "DM Sans",system-ui,sans-serif;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.pv-shell .pv-tree-root.pv-vscode-entry .pv-vscode-label {color:#fff;font-weight:800;}
+.pv-shell .pv-ide-selected.pv-vscode-entry .pv-vscode-label {color:#fff;font-weight:850;}
+.pv-editor-tab>span.pv-vscode-tab {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  max-width:48%;
+  font-weight:750;
+}
+.pv-vscode-tab .pv-vscode-glyph {width:16px;height:16px;flex-basis:16px;}
+.pv-vscode-tab-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pv-ide-welcome-icon:has(.pv-vscode-glyph) {
+  background:#223b54;
+  border-color:#59718b;
+  display:grid;
+  place-items:center;
+}
+.pv-ide-welcome-icon .pv-vscode-glyph {width:22px;height:22px;}
+.pv-large-view .pv-tree-item.pv-vscode-entry,
+.pv-large-view .pv-tree-root.pv-vscode-entry {
+  min-height:40px;
+  gap:8px;
+  font-size:13px;
+  padding-top:9px;
+  padding-bottom:9px;
+}
+.pv-large-view .pv-tree-item.pv-vscode-entry {padding-left:17px;}
+.pv-large-view .pv-tree-root.pv-vscode-entry {padding-left:10px;}
+.pv-large-view .pv-tree-item.pv-ide-selected.pv-vscode-entry {padding-left:14px;}
+.pv-large-view .pv-vscode-glyph {width:21px;height:21px;flex-basis:21px;}
+.pv-large-view .pv-editor-tab .pv-vscode-glyph {width:20px;height:20px;flex-basis:20px;}
+.pv-large-view .pv-vscode-subtext {font-size:10px;}
+/* El visor ampliado es una copia sin interacción y usa exactamente los mismos iconos. */
+.pv-focus-dialog .pv-tree-root.pv-vscode-entry,
+.pv-focus-dialog .pv-tree-item.pv-vscode-entry {
+  display:flex;
+  font-size:14px;
+  min-height:45px;
+  line-height:1.4;
+  gap:10px;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+.pv-focus-dialog .pv-tree-root.pv-vscode-entry {padding-left:12px;}
+.pv-focus-dialog .pv-tree-item.pv-vscode-entry {padding-left:21px;}
+.pv-focus-dialog .pv-tree-item.pv-ide-selected.pv-vscode-entry {padding-left:18px;}
+.pv-focus-dialog .pv-vscode-glyph {width:23px;height:23px;flex-basis:23px;}
+.pv-focus-dialog .pv-editor-tab .pv-vscode-glyph {width:20px;height:20px;flex-basis:20px;}
+.pv-focus-dialog .pv-vscode-subtext {font-size:11px;}
+@media(max-width:760px){
+  .pv-large-view .pv-tree-root.pv-vscode-entry,
+  .pv-large-view .pv-tree-item.pv-vscode-entry {font-size:11px;gap:5px;min-height:35px;}
+  .pv-large-view .pv-tree-item.pv-vscode-entry {padding-left:8px;}
+  .pv-large-view .pv-tree-root.pv-vscode-entry {padding-left:5px;}
+  .pv-large-view .pv-tree-item.pv-ide-selected.pv-vscode-entry {padding-left:5px;}
+  .pv-large-view .pv-vscode-glyph {width:16px;height:16px;flex-basis:16px;}
+  .pv-large-view .pv-vscode-arrow {width:9px;flex-basis:9px;font-size:12px;}
+  .pv-focus-dialog .pv-tree-item.pv-vscode-entry,
+  .pv-focus-dialog .pv-tree-root.pv-vscode-entry {font-size:12px;gap:5px;}
+}
+@media(max-width:620px){
+  .pv-shell .pv-tree-item.pv-vscode-entry,
+  .pv-shell .pv-tree-root.pv-vscode-entry {font-size:10px;gap:4px;}
+  .pv-large-view .pv-vscode-subtext {font-size:8px;}
+  .pv-shell .pv-vscode-glyph {width:15px;height:15px;flex-basis:15px;}
+  .pv-editor-tab>span.pv-vscode-tab {gap:4px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .pv-vscode-glyph,.pv-vscode-entry {transition:none!important;}
+}

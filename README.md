@@ -225,3 +225,7 @@ El proyecto **`actividad2a` del docente se conserva intacto**. La copia `activid
 En todos los pasos «Así va cambiando tu aplicación», **Antes** y **Después** se muestran por separado, a todo el ancho, con texto más grande y mejor espacio para visualizar el explorador y los fragmentos Dart. Cada panel ahora incluye **Ver en pantalla completa**, que abre un visor de lectura; puede cerrarse con **Cerrar** o **Esc**. El botón **Vista compacta** conserva la comparación de dos columnas para quien la prefiera.
 
 Los editores y teléfonos de estas comparaciones son ilustraciones HTML; el modo ampliado **no los convierte en capturas reales de Flutter ni ejecuta Dart**. Los formularios simulados conservan su interacción en la vista normal, no en el visor de lectura. La revisión visual se hace con Mi Terminal Commander.
+
+## Explorador de archivos estilo VS Code
+
+Las vistas didácticas «Antes/Después» del taller incorporan iconos SVG vectoriales creados en el proyecto, con colores distintos para Dart, YAML, carpetas, plataformas Android/iOS/Web/Windows/Linux/macOS, páginas, widgets, modelos, servicios, repositorios y BLoC. Se aplican en el editor original, las prácticas de creación de carpetas y archivos, y el visor ampliado. No necesitan conectarse a redes ni cargar bibliotecas externas. Son simulaciones visuales de VS Code, no capturas reales.
