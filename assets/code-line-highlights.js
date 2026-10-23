@@ -9,7 +9,7 @@
   // Selectores concretos por paso: evita colorear por igual cada linea del ejemplo.
   const focus={
     preparacion:[
-      ['main.dart'],['flutter pub get'],['flutter run']
+      ['DesarrolloMovilFlutter'],['Archivo'],['Get-Location'],['flutter create --empty actividad2'],['main.dart'],['flutter run']
     ],
     'punto-entrada':[
       ["import 'package:flutter"],['void main()', 'runApp('],
