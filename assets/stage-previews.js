@@ -20,6 +20,49 @@
     11:{appbar:true,bodyText:'Hello dsfdsWorld',topIcon:true,firstGap:20,row:true,rowGap:8,search:true,searchInline:true,hintText:true,form:true,formTitle:true,formField:true,addButton:true,formReady:true,simpleForm:true}
   };
   const state=desc=>({...S[desc.stage],...desc});
+  const prepDemo=function prepDemo(v){
+  const mode=v.editorMode;
+  if(mode==="pre-folder"){
+    const created=Boolean(v.folderCreated);
+    return {
+      content:`<div class="pv-prep-windows">
+        <div class="pv-prep-path">EXPLORADOR DE WINDOWS <span>Documentos</span></div>
+        <div class="pv-prep-files"><div class="pv-prep-folder-row"><span aria-hidden="true">📂</span><strong>Documentos</strong></div>
+        ${created?'<div class="pv-prep-folder-row pv-prep-new"><span aria-hidden="true">📁</span><strong>DesarrolloMovilFlutter</strong><small>Carpeta creada</small></div>':
+          '<div class="pv-prep-empty">Todavía no existe la carpeta del curso.<strong>Clic derecho → Nuevo → Carpeta</strong></div>'}
+        </div><p>Esta representación solo explica cómo hacerlo en Windows.</p></div>`,
+      footer:created?"LISTO · Carpeta DesarrolloMovilFlutter creada":"PENDIENTE · Crear carpeta en Documentos"
+    };
+  }
+  if(mode==="pre-vscode"){
+    const content=v.parentOpened?
+      `<div class="pv-ide-grid">
+        <aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR</div>
+          <div class="pv-tree-root">▾ DesarrolloMovilFlutter</div>
+          <div class="pv-ide-file-found">✓ Carpeta del curso abierta</div>
+        </aside>
+        <div class="pv-ide-welcome"><strong>VS Code está listo</strong>
+          <p>El Explorador muestra <b>DesarrolloMovilFlutter</b>; todavía no existe actividad2.</p>
+          <div class="pv-ide-welcome-hint">Siguiente: Terminal → Nuevo terminal</div></div></div>`:
+      `<div class="pv-ide-welcome"><strong>VS Code abierto, pero sin carpeta</strong>
+        <p>Selecciona <b>Archivo → Abrir carpeta…</b> en el menú superior.</p>
+        <div class="pv-ide-welcome-hint">Elige DesarrolloMovilFlutter</div></div>`;
+    return {content,footer:v.parentOpened?"LISTO · DesarrolloMovilFlutter abierto en VS Code":"PENDIENTE · Archivo → Abrir carpeta"};
+  }
+  if(mode==="pre-terminal"){
+    const content=`<div class="pv-ide-term"><strong class="pv-ide-term-title">VS CODE · DESARROLLOMOVILFLUTTER</strong>
+      ${v.terminalOpen?`<div class="pv-ide-term-line">Terminal → Nuevo terminal</div>
+         <div class="pv-ide-term-line pv-ide-success">✓ Terminal PowerShell integrada abierta</div>
+         <div class="pv-ide-term-line">PS ...\\DesarrolloMovilFlutter&gt; <strong>Get-Location</strong></div>
+         <div class="pv-ide-term-line">Path ...\\DesarrolloMovilFlutter</div>
+         <p class="pv-ide-term-tip">Aquí, no dentro de main.dart, escribirás flutter create --empty actividad2.</p>`:
+        `<div class="pv-ide-term-suggest">Terminal integrada cerrada.</div>
+         <p class="pv-ide-term-tip">En VS Code busca <b>Terminal → Nuevo terminal</b>.</p>`}
+      <div class="pv-ide-demo-note">Terminal ilustrada: no ejecuta PowerShell.</div></div>`;
+    return {content,footer:v.terminalOpen?"LISTO · Terminal integrada en DesarrolloMovilFlutter":"PENDIENTE · Terminal → Nuevo terminal"};
+  }
+  return {content:"",footer:""};
+};
     function editorUI(v,which,highlight){
   const mode=v.editorMode||'workspace';
   const opened=Boolean(v.opened)||mode==='dart'||(mode==='newfile'&&Boolean(v.filePresent));
@@ -47,8 +90,9 @@
     {text:"}",tier:4}
   ];
   const line=(text,n,isNew,isReading=false)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}${isReading?' pv-ide-reading':''}"><em>${String(n).padStart(2,'0')}</em><code>${window.FlutterLabDartSyntax?window.FlutterLabDartSyntax(text):esc(text)||' '}</code></div>`;
-  const folder=`<aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR</div>
-      <div class="pv-tree-root">▾ actividad2</div>
+  const folder=`<aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR · DESARROLLOMOVILFLUTTER</div>
+      <div class="pv-tree-root">▾ DesarrolloMovilFlutter</div>
+      <div class="pv-tree-item">▾ actividad2</div>
       <div class="pv-tree-item">▸ android</div>
       <div class="pv-tree-item">▾ lib</div>
       <div class="pv-tree-item pv-ide-selected">▤ main.dart <span>ABIERTO</span></div>
@@ -58,12 +102,14 @@
   const tabs=opened?`<div class="pv-editor-tab"><span>▤ main.dart</span><span>▣ pubspec.yaml</span></div>`:
     `<div class="pv-editor-tab"><span>Inicio de VS Code</span><span>Sin archivos abiertos</span></div>`;
   let content='',footer='';
-  if(mode==='workspace'&&!opened){
+  if(['pre-folder','pre-vscode','pre-terminal'].includes(mode)){
+    const demo=prepDemo(v);content=demo.content;footer=demo.footer;
+  } else if(mode==='workspace'&&!opened){
     content=`<div class="pv-ide-welcome"><div class="pv-ide-welcome-icon">◇</div>
-      <strong>Sin carpeta de proyecto abierta</strong>
-      <p>En el Explorador todavía no aparece <b>actividad2</b> ni puedes seleccionar <b>lib/main.dart</b>.</p>
-      <div class="pv-ide-welcome-hint">Archivo → Abrir carpeta…</div></div>`;
-    footer='PENDIENTE · Abrir actividad2';
+      <strong>DesarrolloMovilFlutter ya está abierta</strong>
+      <p>Flutter ya creó <b>actividad2</b>. Expande esa carpeta y localiza su archivo <b>lib/main.dart</b>.</p>
+      <div class="pv-ide-welcome-hint">Explorador → actividad2 → lib → main.dart</div></div>`;
+    footer='PENDIENTE · Abrir actividad2/lib/main.dart';
   } else if(mode==='workspace'){
     content=`<div class="pv-ide-grid">${folder}
       <div class="pv-ide-code-pane"><div class="pv-ide-code-caption">lib/main.dart · plantilla mínima generada</div>
@@ -80,7 +126,7 @@
   } else if(mode==='create'){
     const finished=Boolean(v.created);
     content=`<div class="pv-ide-term">
-      <strong class="pv-ide-term-title">POWERSHELL · CARPETA PADRE DE TUS PROYECTOS</strong>
+      <strong class="pv-ide-term-title">VS CODE · TERMINAL INTEGRADA · DesarrolloMovilFlutter</strong>
       <div class="pv-ide-term-line">PS DesarrolloMovilFlutter&gt; <strong>flutter create --empty actividad2</strong></div>
       ${finished?'<div class="pv-ide-term-line pv-ide-success">✓ Proyecto actividad2 creado (simulación)</div><div class="pv-ide-term-line">  actividad2/lib/main.dart</div><div class="pv-ide-term-line">  actividad2/pubspec.yaml</div><div class="pv-ide-term-line">  actividad2/android/ y web/</div><p class="pv-ide-term-tip">main.dart incluye Hello World!: no quedó vacío.</p>':'<div class="pv-ide-term-suggest">Pendiente: ejecutar el comando UNA vez desde la carpeta padre.</div><p class="pv-ide-term-tip">Aún no se ha creado actividad2 en esta representación.</p>'}
       <div class="pv-ide-demo-note">Vista de ejemplo: la página no ejecuta Flutter en tu equipo.</div>
@@ -154,12 +200,12 @@
       'PENDIENTE · Crear '+file;
   } else if(mode==='dart'){
     // El archivo --empty ya contiene todo: resaltamos una parte SIN inventar líneas nuevas.
-    const code=stageCode.map((row,i)=>line(row.text,i+1,false,codeStage>0&&row.tier===codeStage&&which==='after')).join('');
+    const code=stageCode.map((row,i)=>line(row.text,i+1,false,which==='after'&&(codeStage===5?(i===3||i===7):(codeStage>0&&row.tier===codeStage)))).join('');
     content=`<div class="pv-ide-grid">${folder}<div class="pv-ide-code-pane">
       <div class="pv-ide-code-caption">actividad2/lib/main.dart · plantilla completa que ya existe</div>
       <div class="pv-ide-code-scroll">${code}</div></div></div>`;
     footer=codeStage===0?'LECTURA · Archivo mínimo generado por Flutter':
-      `LECTURA GUIADA · ${codeStage===1?'Importación':codeStage===2?'Función main() y runApp':codeStage===3?'MainApp y método build':'Estructura inicial de la pantalla'}`;
+      `LECTURA GUIADA · ${codeStage===1?'Importación':codeStage===2?'Función main() y runApp':codeStage===3?'MainApp y método build':codeStage===5?'const y super.key existentes':'Estructura inicial de la pantalla'}`;
   }
   return `<div class="pv-editor pv-editor-${mode}" data-pv-editor-mode="${mode}" data-pv-editor-stage="${codeStage}">
     ${title}${tabs}<div class="pv-ide-viewport">${content}</div>
