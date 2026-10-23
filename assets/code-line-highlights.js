@@ -126,9 +126,8 @@
   const statics={
     preparacion:[
       ['flutter doctor','flutter devices'],
-      ['cd ','flutter pub get','flutter run'],
-      ['Get-Location','Get-ChildItem','Test-Path'],
-      ['flutter doctor','flutter devices','flutter pub get','flutter run']
+      ['cd actividad2','flutter run'],
+      ['Get-Location','Get-ChildItem','Test-Path']
     ],
     'punto-entrada':[
       ["import 'package", 'void main()', 'runApp(', 'class MainApp', 'Widget build'],
