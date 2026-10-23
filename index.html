@@ -3339,6 +3339,529 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
     if (texto.isEmpty) return &#39;Escribe un correo de contacto&#39;;
     if (texto.length &gt; 120) return &#39;Máximo 120 caracteres&#39;;
     if (!RegExp(r&#39;^[^\s@]+@[^\s@]+\.[^\s@]+
+$&#39;).hasMatch(texto)) {
+      return &#39;Escribe un correo válido: ejemplo@correo.com&#39;;
+    }
+    return null;
+  }
+}</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>trim()</code> quita espacios alrededor. <code>int.tryParse()</code> intenta convertir texto a entero; si no puede, devuelve <code>null</code>. <code>double.tryParse()</code> convierte decimales y evita que se caiga la app si alguien escribe letras. <code>RegExp(...).hasMatch()</code> verifica un formato básico de correo, no garantiza que la cuenta exista.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Sabes qué devuelve cada función para entradas como nombre vacío, año abc, precio cero o correo sin @.</p></div></article>
+<article class="next-step" id="al-paso-10-4">
+<div class="next-step-top"><span class="next-step-number">10-4</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR WIDGET REUTILIZABLE</span><h3>Aplicar la nueva validación al campo de nombre</h3></div></div><p>Tu widget reutilizable ya existía desde P6. Cambiar su regla aquí afectará cada pantalla donde se utilice.</p>
+<div class="next-where"><div class="next-where-action">MODIFICAR WIDGET REUTILIZABLE</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>validator: (valor) {</code></div></div></div>
+<div class="code-label">REEMPLAZA el archivo por esta versión que llama a Validadores.nombre</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../validators/validadores.dart&#39;;
+
+class CampoNombreVehiculo extends StatelessWidget {
+  const CampoNombreVehiculo({super.key, required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      textCapitalization: TextCapitalization.words,
+      decoration: const InputDecoration(
+        labelText: &#39;Nombre del vehículo&#39;,
+        hintText: &#39;Renault 9&#39;,
+        border: OutlineInputBorder(),
+      ),
+      validator: Validadores.nombre,
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>import '../validators/validadores.dart'</code> permite usar la clase del paso 3. <code>validator: Validadores.nombre</code> entrega la función, sin paréntesis, para que Flutter la llame al validar. Los campos nuevos usarán el mismo patrón.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>El campo Nombre muestra errores si está vacío, tiene menos de tres caracteres o supera 60.</p></div></article>
+<article class="next-step" id="al-paso-10-5">
+<div class="next-step-top"><span class="next-step-number">10-5</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR EVENTO Y MANEJADOR</span><h3>Actualizar el evento y la lógica del BLoC</h3></div></div><p>El encargado solo puede almacenar los datos que recibió. Ahora el evento debe transportar el año, precio y correo además del nombre.</p>
+<div class="next-where"><div class="next-where-action">MODIFICAR EVENTO Y MANEJADOR</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/bloc/vehiculos_evento.dart</code> y <code>lib/bloc/vehiculos_bloc.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>class VehiculoGuardado</code> y <code>on&lt;VehiculoGuardado&gt;</code></div></div></div>
+<div class="al-substep"><strong>A · Reemplaza solamente la clase VehiculoGuardado en eventos</strong><div class="code-label">Reemplaza desde class VehiculoGuardado hasta su llave final</div><pre class="code-block" data-code-mode="dart"><code>class VehiculoGuardado extends VehiculosEvento {
+  VehiculoGuardado({
+    required this.nombre,
+    required this.anio,
+    required this.precio,
+    required this.correo,
+  });
+
+  final String nombre;
+  final int anio;
+  final double precio;
+  final String correo;
+}</code></pre></div>
+<div class="al-substep"><strong>B · Reemplaza el manejador on&lt;VehiculoGuardado&gt; completo</strong><div class="code-label">Dentro del constructor VehiculosBloc(), antes de on<EdicionIniciada></div><pre class="code-block" data-code-mode="dart"><code>on&lt;VehiculoGuardado&gt;((evento, emit) {
+      final nombre = evento.nombre.trim();
+      if (nombre.length &lt; 3) {
+        return;
+      }
+      final copia = List&lt;Vehiculo&gt;.from(state.vehiculos);
+      final indice = state.indiceEnEdicion;
+      if (indice == null) {
+        copia.add(Vehiculo(
+          nombre: nombre,
+          anio: evento.anio,
+          precio: evento.precio,
+          correo: evento.correo.trim(),
+        ));
+      } else if (indice &gt;= 0 &amp;&amp; indice &lt; copia.length) {
+        final anterior = copia[indice];
+        copia[indice] = Vehiculo(
+          nombre: nombre,
+          anio: evento.anio,
+          precio: evento.precio,
+          correo: evento.correo.trim(),
+          disponible: anterior.disponible,
+        );
+      } else {
+        return;
+      }
+      _publicar(emit, copia, state.busqueda, null);
+    });</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>evento.anio</code>, <code>evento.precio</code> y <code>evento.correo</code> llevan los campos al objeto <code>Vehiculo</code>. El BLoC conserva el mismo comportamiento de agregar o editar. No copies los otros cuatro manejadores dos veces.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Una vez actualizado el evento y el manejador, vuelven a coincidir los argumentos obligatorios del modelo.</p></div></article>
+<article class="next-step" id="al-paso-10-6">
+<div class="next-step-top"><span class="next-step-number">10-6</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</span><h3>Agregar los controles nuevos al formulario</h3></div></div><p>Los nuevos campos se colocan debajo de Nombre en la Tienda que ya existe. No crees otra pantalla con un formulario completo.</p>
+<div class="next-where"><div class="next-where-action">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → <code>_TiendaPageState</code> y <code>Column.children</code></div><div><strong>Busca con Ctrl + F:</strong> <code>final TextEditingController vehiculoController</code> y <code>Form(key:</code></div></div></div>
+<div class="al-substep"><strong>A · Agrega controladores debajo de vehiculoController</strong><div class="code-label">Cuatro controladores (el primero ya existe)</div><pre class="code-block" data-code-mode="dart"><code>final TextEditingController vehiculoController = TextEditingController();
+  final TextEditingController anioController = TextEditingController();
+  final TextEditingController precioController = TextEditingController();
+  final TextEditingController correoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre></div>
+<div class="al-substep"><strong>B · Sustituye solo Form(...) dentro de Column.children</strong><div class="code-label">Formulario con nombre, año, precio y correo</div><pre class="code-block" data-code-mode="dart"><code>Form(
+                key: formularioKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    CampoNombreVehiculo(controller: vehiculoController),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: anioController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Año del vehículo&#39;,
+                        hintText: &#39;2020&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.anio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: precioController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: &#39;Precio&#39;,
+                        hintText: &#39;25000000.50&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.precio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: correoController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Correo de contacto&#39;,
+                        hintText: &#39;cliente@ejemplo.com&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.correo,
+                    ),
+                  ],
+                ),
+              ),</code></pre></div>
+<div class="al-substep"><strong>C · Actualiza dispose() para liberar los cuatro controladores</strong><div class="code-label">El método dispose() completo</div><pre class="code-block" data-code-mode="dart"><code>@override
+  void dispose() {
+    vehiculoController.dispose();
+    anioController.dispose();
+    precioController.dispose();
+    correoController.dispose();
+    super.dispose();
+  }</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>keyboardType</code> pide un teclado apropiado; no valida por sí solo. <code>autovalidateMode: AutovalidateMode.onUserInteraction</code> muestra errores tras interactuar. <code>controller</code> conserva el valor escrito y <code>dispose()</code> libera cada controlador. La validación sigue trabajando con el mismo <code>formularioKey</code>.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Tu pantalla muestra cuatro campos y no pierde el Drawer ni los botones de CRUD.</p></div></article>
+<article class="next-step" id="al-paso-10-7">
+<div class="next-step-top"><span class="next-step-number">10-7</span><div class="al-step-info"><span class="al-step-kicker">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</span><h3>Enviar datos válidos al BLoC y rellenar al editar</h3></div></div><p>El usuario no debería perder los datos que editó. Se lee cada campo, se transforma el texto numérico y se envía un evento con los cuatro valores.</p>
+<div class="next-where"><div class="next-where-action">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → métodos de <code>_TiendaPageState</code></div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion</code> y <code>void cancelarEdicion</code></div></div></div>
+<div class="al-substep"><strong>A · Reemplaza guardarVehiculo()</strong><div class="code-label">Validar, convertir y enviar el evento</div><pre class="code-block" data-code-mode="dart"><code>void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    final anio = int.tryParse(anioController.text.trim());
+    final precio = double.tryParse(precioController.text.trim());
+    if (anio == null || precio == null) return;
+
+    context.read&lt;VehiculosBloc&gt;().add(
+      VehiculoGuardado(
+        nombre: vehiculoController.text.trim(),
+        anio: anio,
+        precio: precio,
+        correo: correoController.text.trim(),
+      ),
+    );
+    limpiarCampos();
+  }</code></pre></div>
+<div class="al-substep"><strong>B · Agrega limpiarCampos() y actualiza editar/eliminar/cancelar</strong><div class="code-label">Métodos que reutilizan el formulario</div><pre class="code-block" data-code-mode="dart"><code>void comenzarEdicion(int indice) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final vehiculo = bloc.state.vehiculos[indice];
+    vehiculoController.text = vehiculo.nombre;
+    anioController.text = vehiculo.anio.toString();
+    precioController.text = vehiculo.precio.toString();
+    correoController.text = vehiculo.correo;
+    bloc.add(EdicionIniciada(indice));
+  }
+
+  void borrarVehiculo(int indice) {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
+  }
+
+  void cancelarEdicion() {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
+  }</code></pre></div>
+<div class="al-substep"><strong>C · Amplía el detalle visible de cada carro</strong><div class="code-label">Sustituye el antiguo subtitle: Text(...)</div><pre class="code-block" data-code-mode="dart"><code>isThreeLine: true,
+                            subtitle: Text(
+                              &#39;Año: &#39; + vehiculo.anio.toString() +
+                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
+                              &#39;\nCorreo: &#39; + vehiculo.correo,
+                            ),</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>int.tryParse</code> y <code>double.tryParse</code> evitan excepciones inesperadas; aunque <code>validate()</code> ya verificó, repetimos la conversión de manera segura antes de enviar el evento. Al editar se rellenan los controladores con los valores del vehículo existente.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Agrega dos carros con año, precio y correo; pulsa Editar, cambia uno y comprueba que se actualiza sin duplicarse.</p></div></article>
+<article class="next-step" id="al-paso-10-8">
+<div class="next-step-top"><span class="next-step-number">10-8</span><div class="al-step-info"><span class="al-step-kicker">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</span><h3>Probar casos inválidos y válidos</h3></div></div><p>Un formulario se aprende probando tanto lo que debe aceptar como lo que debe rechazar.</p>
+<div class="next-where"><div class="next-where-action">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> Terminal VS Code en <code>actividad2</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en la carpeta del proyecto</div></div></div>
+<div class="code-label">Comandos de verificación</div><pre class="code-block" data-code-mode="shell"><code>flutter analyze
+flutter run</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p>Prueba nombre vacío y corto, año con letras o fuera del rango, precio cero o letras y correo mal formado. Después escribe datos válidos, guarda, edita y elimina. Al pasar a P11, FastAPI volverá a validar por seguridad: <strong>el navegador o el móvil no son fuentes confiables</strong>.</p></div>
+<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Todas las reglas funcionan desde la misma pantalla y el BLoC aún utiliza una lista temporal.</p></div></article>
+<div class="al-tip"><strong>Validaciones fundamentales adicionales:</strong> confirmación de contraseñas, números de teléfono, fechas y selección obligatoria funcionan con el mismo patrón <code>TextFormField → validator → mensaje o null</code>. No añadimos esos campos a la Tienda porque no pertenecen a un vehículo. El correo de contacto incluido es un ejemplo del formato más frecuente.</div>
+<div class="al-filelinks"><a href="./etapas/paso_17_modelo_validado.dart" target="_blank" rel="noopener noreferrer">Modelo final ↗</a><a href="./etapas/paso_17_validadores.dart" target="_blank" rel="noopener noreferrer">Validadores ↗</a><a href="./etapas/paso_17_eventos.dart" target="_blank" rel="noopener noreferrer">Evento BLoC ↗</a><a href="./etapas/paso_17_bloc.dart" target="_blank" rel="noopener noreferrer">BLoC completo ↗</a><a href="./etapas/paso_17_formulario_validado.dart" target="_blank" rel="noopener noreferrer">main.dart P10 ↗</a></div>
+<details class="al-full-reference"><summary>Comprobar archivo completo: main.dart después de agregar validaciones P10</summary><p>Abre el ejemplo completo para comparar tu resultado <strong>después</strong> de realizar los pasos. No pegues código de etapas anteriores otra vez.</p><div class="code-label">main.dart después de agregar validaciones P10</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;bloc/vehiculos_bloc.dart&#39;;
+import &#39;bloc/vehiculos_evento.dart&#39;;
+import &#39;bloc/vehiculos_estado.dart&#39;;
+import &#39;pages/acerca_page.dart&#39;;
+import &#39;pages/ayuda_page.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;validators/validadores.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider&lt;VehiculosBloc&gt;(
+      create: (context) =&gt; VehiculosBloc(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: TiendaPage(),
+      ),
+    );
+  }
+}
+
+class TiendaPage extends StatefulWidget {
+  const TiendaPage({super.key});
+
+  @override
+  State&lt;TiendaPage&gt; createState() =&gt; _TiendaPageState();
+}
+
+class _TiendaPageState extends State&lt;TiendaPage&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final TextEditingController anioController = TextEditingController();
+  final TextEditingController precioController = TextEditingController();
+  final TextEditingController correoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    final anio = int.tryParse(anioController.text.trim());
+    final precio = double.tryParse(precioController.text.trim());
+    if (anio == null || precio == null) return;
+
+    context.read&lt;VehiculosBloc&gt;().add(
+      VehiculoGuardado(
+        nombre: vehiculoController.text.trim(),
+        anio: anio,
+        precio: precio,
+        correo: correoController.text.trim(),
+      ),
+    );
+    limpiarCampos();
+  }
+
+  void limpiarCampos() {
+    vehiculoController.clear();
+    anioController.clear();
+    precioController.clear();
+    correoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final vehiculo = bloc.state.vehiculos[indice];
+    vehiculoController.text = vehiculo.nombre;
+    anioController.text = vehiculo.anio.toString();
+    precioController.text = vehiculo.precio.toString();
+    correoController.text = vehiculo.correo;
+    bloc.add(EdicionIniciada(indice));
+  }
+
+  void borrarVehiculo(int indice) {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
+  }
+
+  void cancelarEdicion() {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    anioController.dispose();
+    precioController.dispose();
+    correoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Color(0xFF183B61)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.directions_car, color: Colors.white, size: 42),
+                    SizedBox(height: 12),
+                    Text(&#39;Tienda de vehículos&#39;,
+                        style: TextStyle(color: Colors.white, fontSize: 19)),
+                    Text(&#39;Menú de navegación&#39;,
+                        style: TextStyle(color: Colors.white70)),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.storefront),
+                title: const Text(&#39;Tienda&#39;),
+                onTap: () =&gt; Navigator.pop(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text(&#39;Acerca de&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AcercaPage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: const Text(&#39;Ayuda&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AyudaPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+              const SizedBox(height: 12),
+              const Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      &#39;Ingenieria de Sistemas&#39;,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: &#39;Buscar marca o modelo&#39;,
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (texto) {
+                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                },
+              ),
+              const SizedBox(height: 16),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    CampoNombreVehiculo(controller: vehiculoController),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: anioController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Año del vehículo&#39;,
+                        hintText: &#39;2020&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.anio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: precioController,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: &#39;Precio&#39;,
+                        hintText: &#39;25000000.50&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.precio,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: correoController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: &#39;Correo de contacto&#39;,
+                        hintText: &#39;cliente@ejemplo.com&#39;,
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: Validadores.correo,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: BotonTienda(
+                          texto: estado.indiceEnEdicion == null
+                              ? &#39;Agregar vehículo&#39;
+                              : &#39;Guardar cambios&#39;,
+                          alPresionar: guardarVehiculo,
+                        ),
+                      ),
+                      if (estado.indiceEnEdicion != null) ...[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          onPressed: cancelarEdicion,
+                          child: const Text(&#39;Cancelar&#39;),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 14),
+              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  return Text(
+                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                    &#39;Visibles: ${estado.visibles.length}&#39;,
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                  builder: (context, estado) {
+                    if (estado.visibles.isEmpty) {
+                      return Center(
+                        child: Text(
+                          estado.vehiculos.isEmpty
+                              ? &#39;Todavía no hay vehículos registrados.&#39;
+                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: estado.visibles.length,
+                      itemBuilder: (context, indiceVisible) {
+                        final vehiculo = estado.visibles[indiceVisible];
+                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                        return Card(
+                          child: ListTile(
+                            title: Text(vehiculo.nombre),
+                            isThreeLine: true,
+                            subtitle: Text(
+                              &#39;Año: &#39; + vehiculo.anio.toString() +
+                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
+                              &#39;\nCorreo: &#39; + vehiculo.correo,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  tooltip: &#39;Editar vehículo&#39;,
+                                  onPressed: () =&gt; comenzarEdicion(indiceReal),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  tooltip: &#39;Eliminar vehículo&#39;,
+                                  onPressed: () =&gt; borrarVehiculo(indiceReal),
+                                  icon: const Icon(Icons.delete_outline),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre></details>
+<div class="checklist" data-checklist="validaciones-esenciales"><label><input type="checkbox"> Amplié el modelo Vehiculo con año, precio y correo.</label><label><input type="checkbox"> Creé validadores reutilizables.</label><label><input type="checkbox"> Los cuatro campos muestran errores claros.</label><label><input type="checkbox"> BLoC recibe todos los valores sin errores.</label><label><input type="checkbox"> El menú hamburguesa y el CRUD siguen funcionando.</label></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="validaciones-esenciales">Marcar módulo como completado</button><a class="next-link" href="#api-postgres">Siguiente: crear FastAPI + PostgreSQL →</a></div></section>
 <section class="page lesson next-module advanced-module" id="api-postgres" aria-labelledby="api-postgres-title">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P11</span><span class="status-pill planned">Flutter + FastAPI + PostgreSQL</span></div>
 <h1 id="api-postgres-title">Guardar los vehículos con una API FastAPI y PostgreSQL</h1>
@@ -4536,529 +5059,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <div class="checklist" data-checklist="api-postgres"><label><input type="checkbox"> Creé tienda_api fuera de actividad2.</label><label><input type="checkbox"> Levanté PostgreSQL con Docker Compose.</label><label><input type="checkbox"> FastAPI responde en /docs y /vehiculos.</label><label><input type="checkbox"> Agregué http y VehiculosApi al mismo proyecto Flutter.</label><label><input type="checkbox"> BLoC muestra estados de carga y error.</label><label><input type="checkbox"> Los registros persisten al cerrar y abrir Flutter.</label><label><input type="checkbox"> Puedo explicar por qué Flutter no se conecta directamente a PostgreSQL.</label></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="api-postgres">Marcar módulo como completado</button><a class="next-link" href="#inicio">Volver al inicio del taller →</a></div>
 </section>
-<section class="page lesson" id="responsive"#39;).hasMatch(texto)) {
-      return &#39;Escribe un correo válido: ejemplo@correo.com&#39;;
-    }
-    return null;
-  }
-}</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>trim()</code> quita espacios alrededor. <code>int.tryParse()</code> intenta convertir texto a entero; si no puede, devuelve <code>null</code>. <code>double.tryParse()</code> convierte decimales y evita que se caiga la app si alguien escribe letras. <code>RegExp(...).hasMatch()</code> verifica un formato básico de correo, no garantiza que la cuenta exista.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Sabes qué devuelve cada función para entradas como nombre vacío, año abc, precio cero o correo sin @.</p></div></article>
-<article class="next-step" id="al-paso-10-4">
-<div class="next-step-top"><span class="next-step-number">10-4</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR WIDGET REUTILIZABLE</span><h3>Aplicar la nueva validación al campo de nombre</h3></div></div><p>Tu widget reutilizable ya existía desde P6. Cambiar su regla aquí afectará cada pantalla donde se utilice.</p>
-<div class="next-where"><div class="next-where-action">MODIFICAR WIDGET REUTILIZABLE</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>validator: (valor) {</code></div></div></div>
-<div class="code-label">REEMPLAZA el archivo por esta versión que llama a Validadores.nombre</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;../validators/validadores.dart&#39;;
 
-class CampoNombreVehiculo extends StatelessWidget {
-  const CampoNombreVehiculo({super.key, required this.controller});
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      textCapitalization: TextCapitalization.words,
-      decoration: const InputDecoration(
-        labelText: &#39;Nombre del vehículo&#39;,
-        hintText: &#39;Renault 9&#39;,
-        border: OutlineInputBorder(),
-      ),
-      validator: Validadores.nombre,
-    );
-  }
-}</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>import '../validators/validadores.dart'</code> permite usar la clase del paso 3. <code>validator: Validadores.nombre</code> entrega la función, sin paréntesis, para que Flutter la llame al validar. Los campos nuevos usarán el mismo patrón.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>El campo Nombre muestra errores si está vacío, tiene menos de tres caracteres o supera 60.</p></div></article>
-<article class="next-step" id="al-paso-10-5">
-<div class="next-step-top"><span class="next-step-number">10-5</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR EVENTO Y MANEJADOR</span><h3>Actualizar el evento y la lógica del BLoC</h3></div></div><p>El encargado solo puede almacenar los datos que recibió. Ahora el evento debe transportar el año, precio y correo además del nombre.</p>
-<div class="next-where"><div class="next-where-action">MODIFICAR EVENTO Y MANEJADOR</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/bloc/vehiculos_evento.dart</code> y <code>lib/bloc/vehiculos_bloc.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>class VehiculoGuardado</code> y <code>on&lt;VehiculoGuardado&gt;</code></div></div></div>
-<div class="al-substep"><strong>A · Reemplaza solamente la clase VehiculoGuardado en eventos</strong><div class="code-label">Reemplaza desde class VehiculoGuardado hasta su llave final</div><pre class="code-block" data-code-mode="dart"><code>class VehiculoGuardado extends VehiculosEvento {
-  VehiculoGuardado({
-    required this.nombre,
-    required this.anio,
-    required this.precio,
-    required this.correo,
-  });
-
-  final String nombre;
-  final int anio;
-  final double precio;
-  final String correo;
-}</code></pre></div>
-<div class="al-substep"><strong>B · Reemplaza el manejador on&lt;VehiculoGuardado&gt; completo</strong><div class="code-label">Dentro del constructor VehiculosBloc(), antes de on<EdicionIniciada></div><pre class="code-block" data-code-mode="dart"><code>on&lt;VehiculoGuardado&gt;((evento, emit) {
-      final nombre = evento.nombre.trim();
-      if (nombre.length &lt; 3) {
-        return;
-      }
-      final copia = List&lt;Vehiculo&gt;.from(state.vehiculos);
-      final indice = state.indiceEnEdicion;
-      if (indice == null) {
-        copia.add(Vehiculo(
-          nombre: nombre,
-          anio: evento.anio,
-          precio: evento.precio,
-          correo: evento.correo.trim(),
-        ));
-      } else if (indice &gt;= 0 &amp;&amp; indice &lt; copia.length) {
-        final anterior = copia[indice];
-        copia[indice] = Vehiculo(
-          nombre: nombre,
-          anio: evento.anio,
-          precio: evento.precio,
-          correo: evento.correo.trim(),
-          disponible: anterior.disponible,
-        );
-      } else {
-        return;
-      }
-      _publicar(emit, copia, state.busqueda, null);
-    });</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>evento.anio</code>, <code>evento.precio</code> y <code>evento.correo</code> llevan los campos al objeto <code>Vehiculo</code>. El BLoC conserva el mismo comportamiento de agregar o editar. No copies los otros cuatro manejadores dos veces.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Una vez actualizado el evento y el manejador, vuelven a coincidir los argumentos obligatorios del modelo.</p></div></article>
-<article class="next-step" id="al-paso-10-6">
-<div class="next-step-top"><span class="next-step-number">10-6</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</span><h3>Agregar los controles nuevos al formulario</h3></div></div><p>Los nuevos campos se colocan debajo de Nombre en la Tienda que ya existe. No crees otra pantalla con un formulario completo.</p>
-<div class="next-where"><div class="next-where-action">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → <code>_TiendaPageState</code> y <code>Column.children</code></div><div><strong>Busca con Ctrl + F:</strong> <code>final TextEditingController vehiculoController</code> y <code>Form(key:</code></div></div></div>
-<div class="al-substep"><strong>A · Agrega controladores debajo de vehiculoController</strong><div class="code-label">Cuatro controladores (el primero ya existe)</div><pre class="code-block" data-code-mode="dart"><code>final TextEditingController vehiculoController = TextEditingController();
-  final TextEditingController anioController = TextEditingController();
-  final TextEditingController precioController = TextEditingController();
-  final TextEditingController correoController = TextEditingController();
-  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre></div>
-<div class="al-substep"><strong>B · Sustituye solo Form(...) dentro de Column.children</strong><div class="code-label">Formulario con nombre, año, precio y correo</div><pre class="code-block" data-code-mode="dart"><code>Form(
-                key: formularioKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: [
-                    CampoNombreVehiculo(controller: vehiculoController),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: anioController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Año del vehículo&#39;,
-                        hintText: &#39;2020&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.anio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: precioController,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: &#39;Precio&#39;,
-                        hintText: &#39;25000000.50&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.precio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: correoController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Correo de contacto&#39;,
-                        hintText: &#39;cliente@ejemplo.com&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.correo,
-                    ),
-                  ],
-                ),
-              ),</code></pre></div>
-<div class="al-substep"><strong>C · Actualiza dispose() para liberar los cuatro controladores</strong><div class="code-label">El método dispose() completo</div><pre class="code-block" data-code-mode="dart"><code>@override
-  void dispose() {
-    vehiculoController.dispose();
-    anioController.dispose();
-    precioController.dispose();
-    correoController.dispose();
-    super.dispose();
-  }</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>keyboardType</code> pide un teclado apropiado; no valida por sí solo. <code>autovalidateMode: AutovalidateMode.onUserInteraction</code> muestra errores tras interactuar. <code>controller</code> conserva el valor escrito y <code>dispose()</code> libera cada controlador. La validación sigue trabajando con el mismo <code>formularioKey</code>.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Tu pantalla muestra cuatro campos y no pierde el Drawer ni los botones de CRUD.</p></div></article>
-<article class="next-step" id="al-paso-10-7">
-<div class="next-step-top"><span class="next-step-number">10-7</span><div class="al-step-info"><span class="al-step-kicker">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</span><h3>Enviar datos válidos al BLoC y rellenar al editar</h3></div></div><p>El usuario no debería perder los datos que editó. Se lee cada campo, se transforma el texto numérico y se envía un evento con los cuatro valores.</p>
-<div class="next-where"><div class="next-where-action">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → métodos de <code>_TiendaPageState</code></div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion</code> y <code>void cancelarEdicion</code></div></div></div>
-<div class="al-substep"><strong>A · Reemplaza guardarVehiculo()</strong><div class="code-label">Validar, convertir y enviar el evento</div><pre class="code-block" data-code-mode="dart"><code>void guardarVehiculo() {
-    if (formularioKey.currentState?.validate() != true) {
-      return;
-    }
-    final anio = int.tryParse(anioController.text.trim());
-    final precio = double.tryParse(precioController.text.trim());
-    if (anio == null || precio == null) return;
-
-    context.read&lt;VehiculosBloc&gt;().add(
-      VehiculoGuardado(
-        nombre: vehiculoController.text.trim(),
-        anio: anio,
-        precio: precio,
-        correo: correoController.text.trim(),
-      ),
-    );
-    limpiarCampos();
-  }</code></pre></div>
-<div class="al-substep"><strong>B · Agrega limpiarCampos() y actualiza editar/eliminar/cancelar</strong><div class="code-label">Métodos que reutilizan el formulario</div><pre class="code-block" data-code-mode="dart"><code>void comenzarEdicion(int indice) {
-    final bloc = context.read&lt;VehiculosBloc&gt;();
-    final vehiculo = bloc.state.vehiculos[indice];
-    vehiculoController.text = vehiculo.nombre;
-    anioController.text = vehiculo.anio.toString();
-    precioController.text = vehiculo.precio.toString();
-    correoController.text = vehiculo.correo;
-    bloc.add(EdicionIniciada(indice));
-  }
-
-  void borrarVehiculo(int indice) {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
-  }
-
-  void cancelarEdicion() {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
-  }</code></pre></div>
-<div class="al-substep"><strong>C · Amplía el detalle visible de cada carro</strong><div class="code-label">Sustituye el antiguo subtitle: Text(...)</div><pre class="code-block" data-code-mode="dart"><code>isThreeLine: true,
-                            subtitle: Text(
-                              &#39;Año: &#39; + vehiculo.anio.toString() +
-                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
-                              &#39;\nCorreo: &#39; + vehiculo.correo,
-                            ),</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>int.tryParse</code> y <code>double.tryParse</code> evitan excepciones inesperadas; aunque <code>validate()</code> ya verificó, repetimos la conversión de manera segura antes de enviar el evento. Al editar se rellenan los controladores con los valores del vehículo existente.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Agrega dos carros con año, precio y correo; pulsa Editar, cambia uno y comprueba que se actualiza sin duplicarse.</p></div></article>
-<article class="next-step" id="al-paso-10-8">
-<div class="next-step-top"><span class="next-step-number">10-8</span><div class="al-step-info"><span class="al-step-kicker">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</span><h3>Probar casos inválidos y válidos</h3></div></div><p>Un formulario se aprende probando tanto lo que debe aceptar como lo que debe rechazar.</p>
-<div class="next-where"><div class="next-where-action">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> Terminal VS Code en <code>actividad2</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en la carpeta del proyecto</div></div></div>
-<div class="code-label">Comandos de verificación</div><pre class="code-block" data-code-mode="shell"><code>flutter analyze
-flutter run</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p>Prueba nombre vacío y corto, año con letras o fuera del rango, precio cero o letras y correo mal formado. Después escribe datos válidos, guarda, edita y elimina. Al pasar a P11, FastAPI volverá a validar por seguridad: <strong>el navegador o el móvil no son fuentes confiables</strong>.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Todas las reglas funcionan desde la misma pantalla y el BLoC aún utiliza una lista temporal.</p></div></article>
-<div class="al-tip"><strong>Validaciones fundamentales adicionales:</strong> confirmación de contraseñas, números de teléfono, fechas y selección obligatoria funcionan con el mismo patrón <code>TextFormField → validator → mensaje o null</code>. No añadimos esos campos a la Tienda porque no pertenecen a un vehículo. El correo de contacto incluido es un ejemplo del formato más frecuente.</div>
-<div class="al-filelinks"><a href="./etapas/paso_17_modelo_validado.dart" target="_blank" rel="noopener noreferrer">Modelo final ↗</a><a href="./etapas/paso_17_validadores.dart" target="_blank" rel="noopener noreferrer">Validadores ↗</a><a href="./etapas/paso_17_eventos.dart" target="_blank" rel="noopener noreferrer">Evento BLoC ↗</a><a href="./etapas/paso_17_bloc.dart" target="_blank" rel="noopener noreferrer">BLoC completo ↗</a><a href="./etapas/paso_17_formulario_validado.dart" target="_blank" rel="noopener noreferrer">main.dart P10 ↗</a></div>
-<details class="al-full-reference"><summary>Comprobar archivo completo: main.dart después de agregar validaciones P10</summary><p>Abre el ejemplo completo para comparar tu resultado <strong>después</strong> de realizar los pasos. No pegues código de etapas anteriores otra vez.</p><div class="code-label">main.dart después de agregar validaciones P10</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
-import &#39;bloc/vehiculos_bloc.dart&#39;;
-import &#39;bloc/vehiculos_evento.dart&#39;;
-import &#39;bloc/vehiculos_estado.dart&#39;;
-import &#39;pages/acerca_page.dart&#39;;
-import &#39;pages/ayuda_page.dart&#39;;
-import &#39;widgets/boton_tienda.dart&#39;;
-import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
-import &#39;widgets/titulo_seccion.dart&#39;;
-import &#39;validators/validadores.dart&#39;;
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider&lt;VehiculosBloc&gt;(
-      create: (context) =&gt; VehiculosBloc(),
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: TiendaPage(),
-      ),
-    );
-  }
-}
-
-class TiendaPage extends StatefulWidget {
-  const TiendaPage({super.key});
-
-  @override
-  State&lt;TiendaPage&gt; createState() =&gt; _TiendaPageState();
-}
-
-class _TiendaPageState extends State&lt;TiendaPage&gt; {
-  final TextEditingController vehiculoController = TextEditingController();
-  final TextEditingController anioController = TextEditingController();
-  final TextEditingController precioController = TextEditingController();
-  final TextEditingController correoController = TextEditingController();
-  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
-
-  void guardarVehiculo() {
-    if (formularioKey.currentState?.validate() != true) {
-      return;
-    }
-    final anio = int.tryParse(anioController.text.trim());
-    final precio = double.tryParse(precioController.text.trim());
-    if (anio == null || precio == null) return;
-
-    context.read&lt;VehiculosBloc&gt;().add(
-      VehiculoGuardado(
-        nombre: vehiculoController.text.trim(),
-        anio: anio,
-        precio: precio,
-        correo: correoController.text.trim(),
-      ),
-    );
-    limpiarCampos();
-  }
-
-  void limpiarCampos() {
-    vehiculoController.clear();
-    anioController.clear();
-    precioController.clear();
-    correoController.clear();
-  }
-
-  void comenzarEdicion(int indice) {
-    final bloc = context.read&lt;VehiculosBloc&gt;();
-    final vehiculo = bloc.state.vehiculos[indice];
-    vehiculoController.text = vehiculo.nombre;
-    anioController.text = vehiculo.anio.toString();
-    precioController.text = vehiculo.precio.toString();
-    correoController.text = vehiculo.correo;
-    bloc.add(EdicionIniciada(indice));
-  }
-
-  void borrarVehiculo(int indice) {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
-  }
-
-  void cancelarEdicion() {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
-  }
-
-  @override
-  void dispose() {
-    vehiculoController.dispose();
-    anioController.dispose();
-    precioController.dispose();
-    correoController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
-      drawer: Drawer(
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Color(0xFF183B61)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.directions_car, color: Colors.white, size: 42),
-                    SizedBox(height: 12),
-                    Text(&#39;Tienda de vehículos&#39;,
-                        style: TextStyle(color: Colors.white, fontSize: 19)),
-                    Text(&#39;Menú de navegación&#39;,
-                        style: TextStyle(color: Colors.white70)),
-                  ],
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.storefront),
-                title: const Text(&#39;Tienda&#39;),
-                onTap: () =&gt; Navigator.pop(context),
-              ),
-              ListTile(
-                leading: const Icon(Icons.info_outline),
-                title: const Text(&#39;Acerca de&#39;),
-                onTap: () {
-                  final navegador = Navigator.of(context);
-                  navegador.pop();
-                  navegador.push(
-                    MaterialPageRoute(builder: (_) =&gt; const AcercaPage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.help_outline),
-                title: const Text(&#39;Ayuda&#39;),
-                onTap: () {
-                  final navegador = Navigator.of(context);
-                  navegador.pop();
-                  navegador.push(
-                    MaterialPageRoute(builder: (_) =&gt; const AyudaPage()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
-              const SizedBox(height: 12),
-              const Row(
-                children: [
-                  Icon(Icons.directions_car),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      &#39;Ingenieria de Sistemas&#39;,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Buscar marca o modelo&#39;,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (texto) {
-                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
-                },
-              ),
-              const SizedBox(height: 16),
-              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: [
-                    CampoNombreVehiculo(controller: vehiculoController),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: anioController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Año del vehículo&#39;,
-                        hintText: &#39;2020&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.anio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: precioController,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: &#39;Precio&#39;,
-                        hintText: &#39;25000000.50&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.precio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: correoController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Correo de contacto&#39;,
-                        hintText: &#39;cliente@ejemplo.com&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.correo,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: BotonTienda(
-                          texto: estado.indiceEnEdicion == null
-                              ? &#39;Agregar vehículo&#39;
-                              : &#39;Guardar cambios&#39;,
-                          alPresionar: guardarVehiculo,
-                        ),
-                      ),
-                      if (estado.indiceEnEdicion != null) ...[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: cancelarEdicion,
-                          child: const Text(&#39;Cancelar&#39;),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 14),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Text(
-                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
-                    &#39;Visibles: ${estado.visibles.length}&#39;,
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                  builder: (context, estado) {
-                    if (estado.visibles.isEmpty) {
-                      return Center(
-                        child: Text(
-                          estado.vehiculos.isEmpty
-                              ? &#39;Todavía no hay vehículos registrados.&#39;
-                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: estado.visibles.length,
-                      itemBuilder: (context, indiceVisible) {
-                        final vehiculo = estado.visibles[indiceVisible];
-                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
-                        return Card(
-                          child: ListTile(
-                            title: Text(vehiculo.nombre),
-                            isThreeLine: true,
-                            subtitle: Text(
-                              &#39;Año: &#39; + vehiculo.anio.toString() +
-                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
-                              &#39;\nCorreo: &#39; + vehiculo.correo,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  tooltip: &#39;Editar vehículo&#39;,
-                                  onPressed: () =&gt; comenzarEdicion(indiceReal),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  tooltip: &#39;Eliminar vehículo&#39;,
-                                  onPressed: () =&gt; borrarVehiculo(indiceReal),
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}</code></pre></details>
-<div class="checklist" data-checklist="validaciones-esenciales"><label><input type="checkbox"> Amplié el modelo Vehiculo con año, precio y correo.</label><label><input type="checkbox"> Creé validadores reutilizables.</label><label><input type="checkbox"> Los cuatro campos muestran errores claros.</label><label><input type="checkbox"> BLoC recibe todos los valores sin errores.</label><label><input type="checkbox"> El menú hamburguesa y el CRUD siguen funcionando.</label></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="validaciones-esenciales">Marcar módulo como completado</button><a class="next-link" href="#api-postgres">Siguiente: crear FastAPI + PostgreSQL →</a></div></section>
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>Esta es una práctica alternativa que parte del resultado del <strong>módulo 05</strong>. Antes de tocar <code>main.dart</code>, conserva una copia si también trabajaste el formulario de la ruta A. Primero organizaremos el espacio del buscador para celulares.</p></div>
