@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tienda_flutter_postgres
+    environment:
+      POSTGRES_DB: tienda_flutter
+      POSTGRES_USER: tienda_alumno
+      POSTGRES_PASSWORD: clave_local_123
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - datos_tienda_flutter:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tienda_alumno -d tienda_flutter"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  datos_tienda_flutter:
