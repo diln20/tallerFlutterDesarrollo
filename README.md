@@ -300,3 +300,16 @@ La ruta principal incluye una etapa nueva, [P8: aplicar BLoC al CRUD](https://di
 La anterior práctica BLoC del [módulo 10](https://diln20.github.io/tallerFlutterDesarrollo/#bloc) continúa disponible como **ruta B opcional centrada en el buscador**; no debe mezclarse con P8.
 
 > El inventario permanece en memoria: no hay base de datos, almacenamiento local ni servicios externos. No se sobrescribe el proyecto `actividad2a` del docente.
+
+## Continuación de la ruta principal después de BLoC: P9 → P10 → P11
+
+El patrón BLoC se enseña al final de los conceptos de arquitectura en **P8**.
+Después se conserva **la misma aplicación actividad2** y se añaden tres etapas de interfaz y datos:
+
+- **[P9 · Menú hamburguesa](https://diln20.github.io/tallerFlutterDesarrollo/#menu-hamburguesa):** añade `Scaffold.drawer`, `DrawerHeader` y `ListTile` al `main.dart` de P8. Reutiliza AcercaPage y AyudaPage de P7. Archivo completo: [paso_16_menu_hamburguesa.dart](etapas/paso_16_menu_hamburguesa.dart).
+- **[P10 · Validaciones fundamentales](https://diln20.github.io/tallerFlutterDesarrollo/#validaciones-esenciales):** campos reales para nombre, año, precio y correo; funciones `Validadores`, `int.tryParse`, `double.tryParse`, `RegExp` y `Form.validate()`. Actualiza `Vehiculo`, el evento `VehiculoGuardado`, el manejador del BLoC y el formulario. Consulta [los archivos de la etapa 17](etapas/paso_17_formulario_validado.dart).
+- **[P11 · FastAPI + PostgreSQL](https://diln20.github.io/tallerFlutterDesarrollo/#api-postgres):** crea el backend Python en una carpeta hermana `tienda_api`, con base PostgreSQL local de Docker Compose y endpoints GET/POST/PUT/DELETE. Flutter agrega `http`, un repositorio, JSON, ID de vehículo y eventos BLoC asincrónicos. Consulta [ejemplo_api_postgres](ejemplo_api_postgres/) y las instrucciones de [backend](ejemplo_api_postgres/backend/README.md) y [Flutter](ejemplo_api_postgres/flutter/README.md).
+
+La nueva guía enseña los archivos **paso a paso, por ubicación** y mantiene las analogías, explicaciones y bloques de referencia completos para revisión final. El sitio incluye un Drawer interactivo, un formulario de validación simulado y una demostración visual de solicitudes/respuestas HTTP; son simulaciones HTML, no conexiones reales al servidor de un estudiante.
+
+**Nota:** el ejemplo de PostgreSQL usa credenciales locales demostrativas y no tiene autenticación. No es un backend de producción. La ruta opcional B mantiene su propia práctica BLoC del buscador sin mezclarla con esta línea principal.
