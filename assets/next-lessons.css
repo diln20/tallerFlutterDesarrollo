@@ -238,3 +238,22 @@ body[data-theme="dark"] .folder-purpose .folder-icon{background:#1d473d;color:#8
   .next-learning-column,.next-nav-level{padding:13px}
 }
 @media print{.next-learning-map{break-inside:avoid}}
+
+/* Auditoría didáctica: puentes de conceptos previos y bifurcación explícita. */
+.curriculum-bridge{margin:21px 0 24px;padding:19px 21px;border:1px solid var(--border);border-left:4px solid #5498d5;border-radius:12px;background:var(--surface-soft)}
+.curriculum-bridge-label{font-size:10px;letter-spacing:.07em;font-weight:900;color:var(--blue);margin:0 0 7px}
+.curriculum-bridge h2{font-size:clamp(17px,2vw,21px);line-height:1.35;margin:4px 0 10px;color:var(--heading)}
+.curriculum-bridge p{font-size:13px;line-height:1.75;margin:9px 0;color:var(--text-soft)}
+.curriculum-bridge p strong{color:var(--heading)}
+.curriculum-bridge p.curriculum-bridge-task{border-top:1px solid var(--border);padding-top:11px;margin-top:13px}
+.learning-fork{margin:24px 0 25px;padding:22px;border:1px solid var(--border);background:var(--surface);border-radius:15px;box-shadow:var(--shadow)}
+.learning-fork h2{font-size:clamp(19px,2.3vw,24px);line-height:1.35;color:var(--heading);margin:6px 0 12px}
+.learning-fork>p{font-size:13px;line-height:1.75;color:var(--text-soft);margin:0 0 14px}
+.learning-fork-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+.learning-fork-option{display:flex;flex-direction:column;gap:9px;padding:18px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);min-width:0}
+.learning-fork-option>span{font-size:10px;font-weight:900;letter-spacing:.04em;color:var(--blue)}
+.learning-fork-option h3{font-size:16px;color:var(--heading);margin:0}
+.learning-fork-option p{font-size:12px;line-height:1.75;color:var(--text-soft);margin:0;flex:1}
+.learning-fork-option a{display:inline-flex;align-items:center;min-height:42px;margin-top:5px;font-weight:800;font-size:12px;color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.learning-fork>p.learning-fork-warning{margin:16px 0 0;padding:12px 14px;background:var(--surface-soft);border-radius:9px;border-left:3px solid #6a96c3;font-size:12px}
+@media(max-width:760px){.learning-fork-grid{grid-template-columns:minmax(0,1fr)}.curriculum-bridge{padding:15px}.learning-fork{padding:15px}}
