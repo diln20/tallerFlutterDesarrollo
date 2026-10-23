@@ -1,7 +1,7 @@
 (function flutterStagePreviews(){
   'use strict';
   const data=window.FlutterLabStageData||{};
-  const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','responsive','estado','formularios','bloc'];
+  const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','extraccion','navegacion','responsive','estado','formularios','bloc'];
   const baseCars=['Renault 9','Renault 21','Mazda 3','Chevrolet Spark'];
   const runtimeMap=new Map();
   const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -103,17 +103,18 @@
     footer='CARPETAS CREADAS · '+count+' / 6 · main.dart conservado';
   } else if(mode==='newfile'){
     const file=String(v.fileName||'archivo.dart');
-    const dir=file==='vehiculo.dart'?'models':'widgets';
+    const dir=file==='vehiculo.dart'?'models':file.endsWith('_page.dart')?'pages':'widgets';
     const exists=Boolean(v.filePresent);
     const filled=Boolean(v.fileCode);
-    const example=file==='vehiculo.dart'?
-      ['class Vehiculo {','  const Vehiculo({required this.nombre, this.disponible = true});',
-       '  final String nombre;','  final bool disponible;','}']:
-      ["import 'package:flutter/material.dart';",
-       'class TituloSeccion extends StatelessWidget {',
-       '  const TituloSeccion({super.key, required this.texto});',
-       '  final String texto;','  @override',
-       '  Widget build(BuildContext context) => Text(texto);','}'];
+    const examples={
+      'vehiculo.dart':['class Vehiculo {','  final String nombre;','  final bool disponible;','}'],
+      'titulo_seccion.dart':['class TituloSeccion extends StatelessWidget {','  final String texto;','  Widget build(BuildContext context) => Text(texto);','}'],
+      'campo_nombre_vehiculo.dart':['class CampoNombreVehiculo extends StatelessWidget {','  final TextEditingController controller;','  @override','  Widget build(BuildContext context) {','    return TextFormField(','      controller: controller,','      validator: (valor) { ... },','    );','  }','}'],
+      'boton_tienda.dart':['class BotonTienda extends StatelessWidget {','  final String texto;','  final VoidCallback alPresionar;','  Widget build(BuildContext context) {','    return ElevatedButton(onPressed: alPresionar);','  }','}'],
+      'ayuda_page.dart':['class AyudaPage extends StatelessWidget {','  Widget build(BuildContext context) {','    return Scaffold(','      appBar: AppBar(title: const Text(\'Ayuda\')),','      body: Center(child: Column(...)),','    );','  }','}'],
+      'acerca_page.dart':['class AcercaPage extends StatelessWidget {','  Widget build(BuildContext context) {','    return Scaffold(','      appBar: AppBar(title: const Text(\'Acerca de\')),','      body: Center(child: Column(...)),','    );','  }','}']
+    };
+    const example=examples[file]||['// Consulta el ejemplo completo en la lección'];
     const codes=filled?example.map((text,i)=>line(text,i+1,which==='after')).join(''):
       '<div class="pv-ide-file-empty">'+(exists?'El archivo está creado. El siguiente paso será escribir su clase.':
       'Todavía no existe este archivo en la carpeta '+esc(dir)+'.')+'</div>';
@@ -256,7 +257,7 @@
       {...oldRuntime,phase}:
       {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
         model:'',invalid:!!after.validationError,validationMessage:'Escribe un nombre',snackbar:after.snackbar||'',
-        clearAfterSave:!!after.clearAfterSave,debugMessage:''};
+        clearAfterSave:!!after.clearAfterSave,debugMessage:'',pageStack:['tienda']};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const editorTransition=internal&&before.editor&&after.editor;
@@ -291,7 +292,7 @@
         </div>
       </div>
       ${internal&&!editorTransition?nonVisualUI(id,i,item):''}
-       ${['proyecto','validacion','objeto'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
+       ${['proyecto','validacion','objeto','extraccion'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
@@ -338,6 +339,8 @@
     reutilizacion:[0,1,2,3,4,4,4],
     validacion:[0,1,2,3,4,4,4],
     objeto:[0,1,2,3,4,4,4],
+    extraccion:[0,1,2,3,4,5,6,7,8,2,6,8],
+    navegacion:[0,1,2,3,4,5,6,7,8,8,1,4,8],
     bloc:[]
   };
   function linkCodeBlocks(){
@@ -412,7 +415,7 @@
     if(submit){
       const id=submit.closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       const name=r.model.trim();
-      if(id==='validacion'||id==='objeto'){
+      if(id==='validacion'||id==='objeto'||id==='extraccion'){
         if(name.length<3){
           r.invalid=true;
           r.validationMessage=name.length?'Mínimo 3 caracteres':'Escribe un nombre';
@@ -422,12 +425,12 @@
         }
       }
       if(!name)return;
-      if(id==='objeto') r.debugMessage='Vehículo creado: '+name+' - Disponible: true';
+      if(id==='objeto'||id==='extraccion') r.debugMessage='Vehículo creado: '+name+' - Disponible: true';
       else if(['proyecto','validacion','reutilizacion'].includes(id)) r.debugMessage='Vehículo escrito: '+name;
       else r.addedCars.push(name);
       r.invalid=false;
       r.snackbar='';
-      if(r.clearAfterSave||id==='validacion'||id==='objeto') {
+      if(r.clearAfterSave||id==='validacion'||id==='objeto'||id==='extraccion') {
         r.model='';
         const field=submit.closest('[data-pv-side]')?.querySelector('[data-pv-model="after"]');
         if(field)field.value='';
