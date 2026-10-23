@@ -23,6 +23,7 @@
   <script src="./assets/bloc-practice.js?v=20261023-bloc-guia-v2" defer></script>
   <script src="./assets/stage-preview-data.js?v=bloc-practica-01" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
+  <script src="./assets/crud-lesson.js?v=20261023" defer></script>
   <script src="./assets/analogias-didacticas.js?v=20261023-analogias-v3" defer></script>
   <script src="./assets/analogias-catalogo.js?v=20261023-analogias-v2" defer></script>
   <script src="./assets/stage-previews.js?v=20261023-analogias-v3" defer></script>
@@ -47,6 +48,7 @@
   <link rel="stylesheet" href="./assets/project-start-ui.css?v=20261023-vscode-carpetas-01">
   <link rel="stylesheet" href="./assets/preview-code-focus.css?v=20261023-vscode-lectura-v9">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
+  <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -91,6 +93,7 @@
         <a class="nav-link" href="#reutilizacion" data-route="reutilizacion" data-search="reutilización widgets TituloSeccion StatelessWidget required import archivo componente reutilizable"><span class="lesson-index">P3</span><span>Reutilizar widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#validacion" data-route="validacion" data-search="validar campo Form TextFormField GlobalKey FormState validator validate formulario"><span class="lesson-index">P4</span><span>Validación del campo</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#objeto" data-route="objeto" data-search="primer objeto class Vehiculo modelo String bool final required instancia constructor"><span class="lesson-index">P5</span><span>Crear primer objeto</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#crud" data-route="crud" data-search="crear editar eliminar carro vehiculo funciones trim parse tryParse lista CRUD"><span class="lesson-index">P5.1</span><span>CRUD de vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#extraccion" data-route="extraccion" data-search="extraccion widgets reutilizables CampoNombreVehiculo BotonTienda TextFormField validator VoidCallback"><span class="lesson-index">P6</span><span>Extraer widgets del código</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#navegacion" data-route="navegacion" data-search="navegacion páginas ayuda acerca Navigator.push Navigator.pop Builder MaterialPageRoute"><span class="lesson-index">P7</span><span>Crear páginas y navegar</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">RUTA B · ALTERNATIVA DESDE EL MÓDULO 05</div>
@@ -1658,12 +1661,111 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <p><a href="./etapas/paso_12_vehiculo.dart" target="_blank" rel="noopener noreferrer">Abrir la clase Vehiculo ↗</a> · <a href="./etapas/paso_12_objeto.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a></p></div>
 <div class="checklist" data-checklist="objeto"><label><input type="checkbox"> Creé lib/models/vehiculo.dart.</label><label><input type="checkbox"> Entiendo String, bool, final, const y required del modelo.</label><label><input type="checkbox"> Importé el modelo en main.dart.</label><label><input type="checkbox"> Construí Vehiculo(nombre: nombre) solo después de validar.</label><label><input type="checkbox"> Mostré las propiedades en consola sin decir que están guardadas.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Crear dos objetos diferentes, uno después del otro</h3><p>Escribe «Renault 9» y luego «Mazda 3». Para cada ejecución, identifica qué dato recibe el constructor y por qué los objetos tienen un nombre diferente aunque utilicen la misma clase.</p></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: extraer widgets reutilizables →</a></div></section>
+<div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#crud">Siguiente: crear, editar y eliminar vehículos →</a></div></section>
 
-<section class="page lesson next-module" id="extraccion" aria-labelledby="extraccion-title" data-lesson="P6"><div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P6</span><span class="status-pill planned">Continuación guiada</span></div><h1 id="extraccion-title">Extraer widgets reutilizables del código existente</h1><p>La reutilización no consiste solo en inventar clases nuevas. Ahora vamos a <strong>sacar del propio main.dart dos widgets que ya funcionan</strong>: el campo validado y el botón de la Tienda, para que después podamos usarlos en otras páginas.</p></div><div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de esta práctica</strong><p>Conservar exactamente el comportamiento de validación y creación de Vehiculo, pero organizar la interfaz en archivos reutilizables.</p></div></div>
+<section class="page lesson next-module" id="crud" aria-labelledby="crud-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P5.1</span><span class="status-pill planned">Después de crear el objeto</span></div><h1 id="crud-title">Guardar, editar y eliminar carros</h1><p>Ya construiste un <code>Vehiculo</code>. Ahora harás una pequeña lista de vehículos. Cada paso tiene una analogía, el archivo preciso y el resultado esperado. <strong>No comenzamos desde cero:</strong> continúa con P5.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo</strong><p>Crear, mostrar, modificar y eliminar vehículos en memoria, comprender funciones, <code>trim()</code>, conversiones seguras y <code>setState()</code>. Sin base de datos y sin introducir BLoC todavía.</p></div></div>
+<div class="notice notice-info"><strong>Antes de comenzar</strong><p>Abre <code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code>. Debes haber terminado la creación del modelo en <code>lib/models/vehiculo.dart</code>. Conserva <code>Vehiculo(nombre: ..., disponible: ...)</code>; no cambies el modelo por una clase incompatible.</p></div>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">01</span><h3>Funciones: instrucciones reutilizables</h3></div><p><strong>Analogía:</strong> una función es como la receta del chef. Le das ingredientes, sigue los pasos y, cuando corresponde, devuelve el plato. Definir una receta no significa cocinarla inmediatamente.</p><div class="next-where"><div class="next-where-action">SOLO LEER Y PROBAR EN UN ARCHIVO DART APARTE</div><div class="next-where-details"><div><strong>Archivo sugerido:</strong> <code>ejemplos/funciones.dart</code>, fuera de <code>lib/</code>.</div><div><strong>Motivo:</strong> entender funciones antes de introducirlas en el formulario.</div></div></div><div class="code-label">Ejemplo independiente de funciones</div><pre class="code-block"><code>String limpiarNombre(String texto) {
+  return texto.trim();
+}
+
+void main() {
+  final nombre = limpiarNombre('  Renault 9  ');
+  print(nombre);
+}</code></pre><p><code>String</code> inicial indica qué tipo devuelve la función. <code>limpiarNombre</code> es su nombre. <code>String texto</code> es el dato recibido. <code>return</code> devuelve el resultado. <code>void main()</code> es la función que arranca la prueba y <code>print</code> escribe en consola. Pasar <code>limpiarNombre</code> sin paréntesis es referirse a la función; escribir <code>limpiarNombre(...)</code> la ejecuta.</p><div class="next-step-result"><strong>Resultado</strong><p>Aparece <code>Renault 9</code> sin espacios al inicio o al final.</p></div></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">02</span><h3>¿Qué hacen trim(), parse() y tryParse()?</h3></div><p><strong>Analogía:</strong> <code>trim()</code> limpia los bordes de una etiqueta antes de pegarla. <code>parse()</code> intenta convertir una etiqueta numérica en una cantidad, pero falla si la etiqueta no es un número. <code>tryParse()</code> comprueba primero si puede convertirla: devuelve <code>null</code> cuando no puede.</p><div class="code-label">Ejemplo de Dart: cadenas y números</div><pre class="code-block"><code>final nombre = '  Mazda 3  '.trim(); // 'Mazda 3'
+final precioTexto = '25000';
+final precio = double.tryParse(precioTexto);
+if (precio == null) {
+  print('Precio inválido');
+} else {
+  print(precio); // 25000.0
+}</code></pre><p><code>double.parse('25000')</code> también produce <code>25000.0</code>, pero <code>double.parse('abc')</code> lanza un <code>FormatException</code>. Usa <code>tryParse()</code> cuando el valor lo escribe una persona. Para convertir enteros se usan <code>int.parse()</code> o <code>int.tryParse()</code>. <strong>El modelo actual no necesita un precio:</strong> este ejemplo se estudia antes de ampliar propiedades.</p></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">03</span><h3>Guardar varios objetos en una lista</h3></div><p><strong>Analogía:</strong> crear un objeto es fabricar un carro de juguete; la lista es el estante donde guardamos varios. Aquí <code>List&lt;Vehiculo&gt;</code> es un estante que acepta solamente vehículos.</p><div class="next-where"><div class="next-where-action">AGREGAR DOS CAMPOS DENTRO DE _MainAppState</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Buscar:</strong> <code>final GlobalKey&lt;FormState&gt; formularioKey</code></div><div><strong>Colocar:</strong> justo debajo de ese campo, antes de <code>dispose()</code>.</div></div></div><div class="code-label">Añadir, sin borrar el controlador ni la llave</div><pre class="code-block"><code>final List&lt;Vehiculo&gt; vehiculos = [];
+int? indiceEnEdicion;</code></pre><p>Los corchetes <code>[]</code> crean una lista vacía. <code>int?</code> significa que puede contener un número o <code>null</code>. El índice recuerda cuál vehículo editaremos; <code>null</code> indica que estamos creando uno nuevo.</p></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">04</span><h3>Crear una función para guardar</h3></div><p><strong>Analogía:</strong> el empleado primero revisa el formulario; luego, dependiendo de si tenemos una ficha en edición, crea una ficha nueva o actualiza la existente. <code>setState()</code> avisa a Flutter que actualice la pantalla.</p><div class="next-where"><div class="next-where-action">AGREGAR MÉTODO DEBAJO DE LOS CAMPOS</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → clase <code>_MainAppState</code></div><div><strong>Ubicación:</strong> antes de <code>@override void dispose()</code>; nunca dentro de <code>build()</code>.</div></div></div><div class="code-label">Función guardarVehiculo · paso completo</div><pre class="code-block"><code>void guardarVehiculo() {
+  if (formularioKey.currentState?.validate() != true) {
+    return;
+  }
+  final nombre = vehiculoController.text.trim();
+  setState(() {
+    if (indiceEnEdicion == null) {
+      vehiculos.add(Vehiculo(nombre: nombre));
+    } else {
+      final indice = indiceEnEdicion!;
+      final anterior = vehiculos[indice];
+      vehiculos[indice] = Vehiculo(
+        nombre: nombre,
+        disponible: anterior.disponible,
+      );
+      indiceEnEdicion = null;
+    }
+  });
+  vehiculoController.clear();
+}</code></pre><p><code>if</code> toma una decisión. <code>validate()</code> comprueba el formulario. <code>?.</code> permite acceder con seguridad si el estado no existe. <code>return;</code> detiene la función cuando algo falla. <code>add()</code> añade a la lista, y <code>vehiculos[indice] = ...</code> reemplaza un elemento. El signo <code>!</code> expresa que aquí el índice ya no es nulo, después de comprobarlo.</p><div class="next-step-result"><strong>Comprueba</strong><p>La lista comienza vacía; cada formulario válido crea un objeto nuevo y limpia el campo.</p></div></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">05</span><h3>Conectar el botón existente</h3></div><p>El botón que antes imprimía un objeto ahora debe llamar a <code>guardarVehiculo</code>. No agregues un segundo botón de guardar.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO LA ACCIÓN DEL BOTÓN ORIGINAL</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Buscar:</strong> <code>ElevatedButton(</code> después del <code>Form</code>.</div><div><strong>Reemplazar:</strong> el antiguo bloque <code>onPressed: () { ... }</code> por <code>onPressed: guardarVehiculo</code>.</div></div></div><div class="code-label">Resultado del botón existente</div><pre class="code-block"><code>ElevatedButton(
+  onPressed: guardarVehiculo,
+  child: Text(
+    indiceEnEdicion == null
+      ? 'Agregar vehículo'
+      : 'Guardar cambios',
+  ),
+),</code></pre><p>Observa la diferencia: <code>guardarVehiculo</code> entrega la función como acción futura; <code>guardarVehiculo()</code> la ejecutaría inmediatamente al construir el widget.</p></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">06</span><h3>Editar y eliminar sin confundir las acciones</h3></div><p><strong>Analogía:</strong> editar es sacar una ficha del archivador, escribir el cambio y devolverla al mismo lugar. Eliminar es retirar la ficha del archivador. Ambas acciones deben refrescar lo que se ve en la pantalla.</p><div class="next-where"><div class="next-where-action">AÑADIR DOS MÉTODOS EN _MainAppState</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> después de <code>guardarVehiculo()</code> y antes de <code>dispose()</code>.</div></div></div><div class="code-label">Editar y eliminar objetos de la lista</div><pre class="code-block"><code>void comenzarEdicion(int indice) {
+  vehiculoController.text = vehiculos[indice].nombre;
+  setState(() {
+    indiceEnEdicion = indice;
+  });
+}
+
+void borrarVehiculo(int indice) {
+  setState(() {
+    vehiculos.removeAt(indice);
+    indiceEnEdicion = null;
+    vehiculoController.clear();
+  });
+}</code></pre><p><code>vehiculos[indice]</code> consulta el elemento seleccionado; <code>removeAt(indice)</code> elimina uno según su posición. Tras eliminar, se cancela cualquier edición y se limpia el formulario para no usar un índice que ya cambió.</p></article>
+<article class="next-step"><div class="next-step-top"><span class="next-step-number">07</span><h3>Mostrar los vehículos con opciones de editar y eliminar</h3></div><p><strong>Analogía:</strong> <code>ListView.builder</code> es el encargado que prepara una tarjeta por cada vehículo del estante. <code>itemCount</code> indica cuántas hay y <code>itemBuilder</code> indica cómo dibujar cada una.</p><div class="next-where"><div class="next-where-action">AÑADIR DESPUÉS DEL ElevatedButton</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> dentro de <code>Column(children: [ ... ])</code>, justo después del botón de agregar/guardar; deja la lista dentro de <code>Expanded</code>.</div></div></div><div class="code-label">Lista visible con acciones para cada vehículo</div><pre class="code-block"><code>const SizedBox(height: 12),
+Expanded(
+  child: ListView.builder(
+    itemCount: vehiculos.length,
+    itemBuilder: (context, indice) {
+      final vehiculo = vehiculos[indice];
+      return ListTile(
+        title: Text(vehiculo.nombre),
+        subtitle: Text(vehiculo.disponible
+            ? 'Disponible'
+            : 'No disponible'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              tooltip: 'Editar vehículo',
+              onPressed: () => comenzarEdicion(indice),
+              icon: const Icon(Icons.edit),
+            ),
+            IconButton(
+              tooltip: 'Eliminar vehículo',
+              onPressed: () => borrarVehiculo(indice),
+              icon: const Icon(Icons.delete),
+            ),
+          ],
+        ),
+      );
+    },
+  ),
+),</code></pre><p>Un <code>ListView</code> necesita alto limitado dentro de una <code>Column</code>; por eso lo envolvemos en <code>Expanded</code>. Los <code>IconButton</code> contienen sus propios <code>tooltip</code> accesibles.</p><div class="next-step-result"><strong>Resultado</strong><p>Agrega «Renault 9» y «Mazda 3», edita uno y elimina el otro. Queda un registro en pantalla. La información <strong>solo vive en memoria</strong>: al reiniciar se pierde.</p></div></article>
+<div class="notice notice-tip"><strong>Archivo final de comprobación</strong><p>Después de construir cada cambio abre <a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">paso_12b_crud.dart ↗</a>. Es una referencia completa, no un bloque para pegar en cualquier parte. Se debe guardar como <code>lib/main.dart</code> de tu proyecto, manteniendo el modelo y el widget <code>TituloSeccion</code> creados previamente.</p></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL</span><h3>Prueba las cuatro operaciones</h3><p>Crea dos vehículos, comprueba que ambos aparecen, edita el nombre del primero, elimina el segundo y explica qué hacen <code>add</code>, <code>setState</code>, <code>removeAt</code>, <code>trim</code> y <code>tryParse</code>. Describe también qué sucedería si reinicias la aplicación.</p></div>
+<div class="checklist" data-checklist="crud"><label><input type="checkbox"> Entiendo qué es una función y cuándo se ejecuta.</label><label><input type="checkbox"> Comprendo trim, parse y tryParse.</label><label><input type="checkbox"> Puedo crear y mostrar varios vehículos.</label><label><input type="checkbox"> Puedo editar y eliminar un vehículo.</label><label><input type="checkbox"> Puedo explicar por qué la lista se pierde al reiniciar.</label></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="crud">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: extraer widgets reutilizables →</a></div>
+</section>
+<section class="page lesson next-module" id="extraccion" aria-labelledby="extraccion-title" data-lesson="P6"><div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P6</span><span class="status-pill planned">Continuación guiada</span></div><h1 id="extraccion-title">Extraer widgets reutilizables del código existente</h1><p>La reutilización no consiste solo en inventar clases nuevas. Ahora vamos a <strong>sacar del propio main.dart dos widgets que ya funcionan</strong>: el campo validado y el botón de la Tienda, para que después podamos usarlos en otras páginas.</p></div><div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de esta práctica</strong><p>Conservar el comportamiento de validación y las operaciones CRUD de Vehiculo, pero organizar la interfaz en archivos reutilizables.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-extraccion" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: enviar funciones sin ejecutarlas inmediatamente</h2><p>En un botón reutilizable, <code>VoidCallback</code> representa una función sin argumentos ni valor de retorno. Escribir <code>onPressed: guardarVehiculo</code> <strong>entrega</strong> la función para cuando se pulse; escribir <code>guardarVehiculo()</code> la ejecutaría en ese instante.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> El controlador, la llave del formulario y la decisión de crear el vehículo <strong>permanecen en la pantalla</strong>. El widget extraído recibe los valores y la función que necesita; no debe inventar un controlador nuevo.</p></div>
-<div class="notice notice-info"><strong>Desde dónde comenzamos</strong><p>Abre tu copia del código final de <a href="./etapas/paso_12_objeto.dart" target="_blank" rel="noopener noreferrer">la práctica P5</a>. Ya deben existir <code>lib/widgets/titulo_seccion.dart</code> y <code>lib/models/vehiculo.dart</code>. No uses como punto de partida el módulo opcional de filtros.</p></div>
+<div class="notice notice-info"><strong>Desde dónde comenzamos</strong><p>Abre tu copia del código final de <a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">la práctica P5.1</a>. Ya deben existir <code>lib/widgets/titulo_seccion.dart</code> y <code>lib/models/vehiculo.dart</code>. No uses como punto de partida el módulo opcional de filtros.</p></div>
 <div class="next-compare"><div><small>ANTES · TODO EN main.dart</small><code>Form(child: TextFormField(...))</code><code>ElevatedButton(onPressed: ...)</code><p>La vista construye directamente el campo, sus reglas y la apariencia del botón.</p></div><div><small>DESPUÉS · WIDGETS EXTRAÍDOS</small><code>Form(child: CampoNombreVehiculo(...))</code><code>BotonTienda(alPresionar: ...)</code><p>Los widgets viven en archivos separados; el State conserva controller y validación del formulario.</p></div></div>
 <div class="next-learning-map" aria-label="Qué se conserva y qué se reutiliza en la Tienda">
   <div class="next-learning-map-heading"><span>DE LA PANTALLA A LOS COMPONENTES</span><h2>Sacamos el widget, no la lógica de la Tienda</h2><p>En esta práctica no creamos una segunda aplicación. Identificamos código que ya funciona, lo movemos a su archivo y lo usamos de nuevo desde <code>main.dart</code>.</p></div>
