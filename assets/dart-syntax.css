@@ -41,3 +41,19 @@
   .pv-shell .pv-ide-code-row code .pv-dart-keyword{color:#E0C9FF!important}
   .pv-shell .pv-ide-code-row code .pv-dart-comment{color:#BED4E4!important}
 }
+
+/* En el lector móvil del paso de Dart, el código es el protagonista.
+   Los ejercicios de carpetas conservan su Explorador para no perder contexto. */
+@media(max-width:620px){
+  .pv-shell .pv-editor-dart .pv-ide-grid {
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .pv-shell .pv-editor-dart .pv-ide-explorer{
+    display:none!important;
+  }
+  .pv-shell .pv-editor-dart .pv-ide-code-pane,
+  .pv-shell .pv-editor-dart .pv-ide-code-scroll{
+    min-width:0;
+    width:100%;
+  }
+}
