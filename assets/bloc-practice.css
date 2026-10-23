@@ -1,0 +1,86 @@
+/* Práctica BLoC: separación visual entre teoría, archivos y pruebas. */
+.bloc-practice{margin:36px 0 28px;min-width:0}
+.bloc-practice-heading{padding:28px 29px;border-radius:16px;background:linear-gradient(135deg,#102846,#19496a);color:#ddecfa}
+.bloc-practice-eyebrow{display:block;color:#87e8da;font-size:11px;font-weight:850;letter-spacing:.09em;margin-bottom:9px}
+.bloc-practice-heading h2{font-size:clamp(22px,2.7vw,31px);color:#fff;margin:0 0 11px;line-height:1.3}
+.bloc-practice-heading p{margin:0;color:#d7e5f5;font-size:13px;line-height:1.8;max-width:760px}
+.bloc-practice-heading code{color:#d2ddff;background:rgba(255,255,255,.09)}
+.bloc-practice-guard,.bloc-practice-preflight{border:1px solid var(--border);border-radius:12px;padding:19px 21px;background:var(--surface-soft);margin:17px 0}
+.bloc-practice-guard{border-left:4px solid #e4a959}
+.bloc-practice-guard strong,.bloc-practice-preflight strong{color:var(--heading)}
+.bloc-practice-guard p{margin:9px 0 0;font-size:12px;line-height:1.8}
+.bloc-practice-quick-model{display:flex;align-items:stretch;gap:5px;margin:23px 0 18px}
+.bloc-practice-quick-model>div{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:6px;border:1px solid var(--border);background:var(--surface-soft);border-radius:11px;padding:14px 10px}
+.bloc-practice-quick-model>div>span{color:var(--blue);font-weight:900;font-size:9px;letter-spacing:.06em}
+.bloc-practice-quick-model strong{color:var(--heading);font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+.bloc-practice-quick-model small{font-size:10px;color:var(--text-soft);line-height:1.5}
+.bloc-practice-quick-model>i{align-self:center;color:var(--blue);font-size:20px;flex:none;font-weight:900;font-style:normal}
+.bloc-practice-demo{border:1px solid var(--border);border-radius:14px;padding:18px 19px;background:var(--surface);margin:16px 0 24px}
+.bloc-practice-demo-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin:0 0 12px}
+.bloc-practice-demo-head strong{font-size:15px;color:var(--heading)}
+.bloc-practice-demo-head span{font-size:10px;color:var(--text-soft)}
+.bloc-practice-demo label{display:block;font-weight:800;color:var(--heading);font-size:11px;margin-bottom:8px}
+.bloc-practice-demo input{display:block;width:100%;min-height:44px;border:1px solid #a7b9d1;background:var(--surface);color:var(--text);border-radius:9px;padding:11px 13px;font-size:13px}
+.bloc-practice-demo input:focus{border-color:var(--blue);outline-offset:3px}
+.bloc-practice-samples{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 17px}
+.bloc-practice-samples button{font-size:11px;font-weight:800;padding:8px 11px;border:1px solid #abc5e7;border-radius:8px;background:var(--surface-soft);color:var(--heading)}
+.bloc-practice-samples button:hover{background:var(--blue-soft);border-color:var(--blue)}
+.bloc-practice-demo-data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.bloc-practice-demo-data>div{min-width:0;background:#11243d;border-radius:10px;padding:12px;color:#dbeafb}
+.bloc-practice-demo-data span{display:block;font-size:9px;color:#84d9da;font-weight:900;letter-spacing:.07em;margin-bottom:6px}
+.bloc-practice-demo-data output{display:block;font:12px/1.65 ui-monospace,Consolas,monospace;overflow-wrap:anywhere;color:#f8e4ab;white-space:normal}
+.bloc-practice-demo-list{margin-top:12px;border:1px solid var(--border);border-radius:10px;padding:13px;background:var(--surface-soft)}
+.bloc-practice-demo-list>strong{font-size:12px;color:var(--heading)}
+.bloc-practice-demo-list ul{padding:0;list-style:none;display:flex;gap:7px;flex-wrap:wrap;margin:9px 0 0}
+.bloc-practice-demo-list li{font-size:11px;color:var(--heading);background:var(--surface);border:1px solid var(--border);padding:7px 10px;border-radius:8px}
+.bloc-practice-preflight{font-size:12px;line-height:1.85;margin-bottom:20px}
+.bloc-practice-steps{display:grid;gap:19px}
+.bloc-practice-step{min-width:0;border:1px solid var(--border);border-radius:14px;padding:23px 23px 20px;background:var(--surface)}
+.bloc-practice-step-header{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bloc-practice-step-no{width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#1d416c;color:#fff;font-size:13px;font-weight:900}
+.bloc-practice-step-kicker{display:block;font-size:10px;color:var(--blue);font-weight:850;letter-spacing:.09em;margin-bottom:3px}
+.bloc-practice-step h3{font-size:17px;margin:0}
+.bloc-practice-step-lead,.bloc-practice-step>p{font-size:12px;line-height:1.8;margin:11px 0}
+.bloc-practice-location{display:grid;grid-template-columns:minmax(0,.58fr) minmax(0,1.1fr);column-gap:14px;row-gap:6px;border:1px solid #c8d9ed;border-radius:11px;background:var(--surface-soft);padding:13px 15px;margin:16px 0 10px;font-size:11px;line-height:1.65}
+.bloc-practice-location>strong{grid-row:span 2;display:flex;align-items:center;color:var(--blue);font-size:11px}
+.bloc-practice-location>span{min-width:0;color:var(--text-soft);overflow-wrap:anywhere}
+.bloc-practice-location code{overflow-wrap:anywhere}
+.bloc-practice-code{min-width:0;margin:10px 0 15px}
+.bloc-practice-code-label{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;background:#203c5e;color:#dce9f8;border-radius:10px 10px 0 0;padding:9px 13px;font-size:10px}
+.bloc-practice-code-label strong{font-size:10px;color:#ffdfac}
+.bloc-practice-code pre.code-block{border-radius:0 0 10px 10px;margin:0;max-height:560px;overflow:auto;white-space:pre;tab-size:2}
+.bloc-practice-code pre.code-block>code{display:block;white-space:pre;min-width:max-content}
+.bloc-practice-meaning{border-left:3px solid #6eacd8;background:var(--surface-soft);border-radius:0 10px 10px 0;padding:9px 14px;margin:16px 0}
+.bloc-practice-meaning p{font-size:12px;line-height:1.82;margin:6px 0;color:var(--text-soft)}
+.bloc-practice-result{margin:15px 0 0;padding:13px 15px;border:1px solid #cddedb;border-radius:10px;background:var(--surface-soft);font-size:12px;line-height:1.75;color:var(--text-soft)}
+.bloc-practice-result strong{color:var(--heading)}
+.bloc-practice-tree{padding:18px 16px;background:#12233a;border:1px solid #2a4162;border-radius:10px;color:#c4e7ff;font:11px/1.85 ui-monospace,Consolas,monospace;white-space:pre;overflow-x:auto}
+.bloc-practice-full{border:1px solid var(--border);border-radius:11px;padding:12px;margin:12px 0;background:var(--surface-soft)}
+.bloc-practice-full summary{font-size:12px;font-weight:850;color:var(--heading);cursor:pointer}
+.bloc-practice-full[open] summary{margin-bottom:13px}
+.bloc-practice-recap{margin-top:28px;padding:20px;border:1px solid var(--border);border-radius:13px;background:var(--surface)}
+.bloc-practice-recap h3{font-size:18px;margin:16px 0 12px}
+.bloc-practice-recap>p{font-size:12px;line-height:1.8}
+.bloc-practice-errors{display:grid;gap:9px;margin:13px 0 23px}
+.bloc-practice-errors details{border:1px solid var(--border);border-radius:10px;padding:11px 13px;background:var(--surface-soft)}
+.bloc-practice-errors summary{font-weight:850;color:var(--heading);font-size:12px;cursor:pointer}
+.bloc-practice-errors p{font-size:12px;line-height:1.75;margin:11px 0 1px}
+#bloc .bloc-practice .ln-breakdown,#bloc .bloc-practice .cpl-panel{margin-top:9px}
+@media(max-width:940px){.bloc-practice-quick-model{flex-wrap:wrap}.bloc-practice-quick-model>div{flex:1 1 30%;min-width:155px}.bloc-practice-quick-model>i{display:none}}
+@media(max-width:650px){
+  .bloc-practice-heading{padding:20px 16px}
+  .bloc-practice-guard,.bloc-practice-preflight{padding:14px}
+  .bloc-practice-step{padding:17px 12px}
+  .bloc-practice-step-header{gap:9px}
+  .bloc-practice-step h3{font-size:15px}
+  .bloc-practice-step-no{width:33px;height:33px}
+  .bloc-practice-quick-model>div{flex-basis:calc(50% - 5px);min-width:115px}
+  .bloc-practice-location{grid-template-columns:minmax(0,1fr);padding:11px}
+  .bloc-practice-location>strong{grid-row:auto}
+  .bloc-practice-demo-data{grid-template-columns:minmax(0,1fr)}
+  .bloc-practice-demo{padding:14px 11px}
+  .bloc-practice-recap{padding:15px 11px}
+  .bloc-practice-code-label{padding:9px;font-size:10px}
+  .bloc-practice-code pre.code-block>code{font-size:11px}
+}
+@media print{.bloc-practice-step{break-inside:avoid}.bloc-practice-demo{display:none}}
