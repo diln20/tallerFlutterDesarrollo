@@ -290,6 +290,7 @@ class _TiendaPageState extends State<TiendaPage> {
                   Navigator.pop(context);
                   limpiarFormulario();
                   buscarController.clear();
+                  _revisionVista = 0;
                   context.read<VehiculosBloc>().add(SesionCerrada());
                 },
               ),
