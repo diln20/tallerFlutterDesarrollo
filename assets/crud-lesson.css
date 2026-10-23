@@ -6,3 +6,52 @@
 .code-tooltip-term:is(:hover,:focus)::after{content:none!important;display:none!important}
 .flutter-codigo-tooltip{position:fixed;z-index:9999;max-width:min(370px,calc(100vw - 16px));width:max-content;pointer-events:none;white-space:normal;background:#102438;color:#f2f8fd;border:1px solid #5b9dba;box-shadow:0 12px 35px rgba(5,20,38,.35);border-radius:11px;padding:12px 14px;font:500 13px/1.58 system-ui,sans-serif;overflow-wrap:anywhere}
 .flutter-codigo-tooltip[hidden]{display:none}
+
+/* P5.1: secuencia directa y acumulativa sobre lib/main.dart. */
+#crud.crud-direct .lesson-heading{max-width:1020px}
+#crud.crud-direct .lesson-heading h1{max-width:1000px;font-size:clamp(28px,3vw,39px);line-height:1.2}
+#crud-title:focus{outline:2px solid #68a3d6;outline-offset:5px;border-radius:5px}
+#crud.crud-direct .lesson-heading p{font-size:clamp(14px,1.18vw,16px);line-height:1.8}
+#crud.crud-direct .next-step{padding:clamp(19px,2.4vw,27px);margin:22px 0 25px;border-left:4px solid #35a896;scroll-margin-top:92px}
+#crud.crud-direct .next-step h3{font-size:clamp(18px,1.8vw,21px);line-height:1.36}
+#crud.crud-direct .next-step > p,#crud.crud-direct .next-step-meaning p,#crud.crud-direct .next-step-result p{font-size:clamp(13px,1.12vw,15px);line-height:1.78}
+#crud.crud-direct .next-step-number{flex:0 0 42px;width:42px;height:42px;border-radius:11px;font-size:14px}
+#crud.crud-direct .next-step .code-block{font-size:clamp(12px,1.12vw,14px)!important;line-height:1.75;max-height:none!important;overflow:auto;white-space:pre;padding:19px 20px 21px}
+#crud.crud-direct .next-where{margin:15px 0 17px}
+#crud.crud-direct .next-where-details{font-size:clamp(12px,1.05vw,14px);gap:10px}
+#crud.crud-direct .next-where-action{font-size:11px}
+#crud.crud-direct .next-where-details code,#crud.crud-direct .next-step p code{font-size:.92em}
+#crud.crud-direct .next-step-meaning,#crud.crud-direct .next-step-result{padding:14px 16px}
+#crud.crud-direct .next-step-meaning strong,#crud.crud-direct .next-step-result strong{font-size:12px}
+.crud-step-kicker{display:block;font-size:11px;line-height:1.5;font-weight:850;letter-spacing:.06em;color:var(--blue);margin:0 0 5px}
+.crud-direct-step .next-step-top>div{flex:1;min-width:0}
+.crud-before-after{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:21px 0}
+.crud-before-after>div{padding:19px;border:1px solid var(--border);background:var(--surface-soft);border-radius:13px;min-width:0}
+.crud-before-after>div:last-child{border-left:3px solid #35a896}
+.crud-before-after span{display:block;color:var(--blue);letter-spacing:.04em;font-weight:850;font-size:11px;margin-bottom:8px}
+.crud-before-after strong{display:block;font-size:16px;color:var(--heading);line-height:1.4}
+.crud-before-after p{font-size:13px;line-height:1.75;color:var(--text-soft);margin:7px 0 0}
+.crud-direct-flow{margin:23px 0 25px;padding:17px 18px;border:1px solid var(--border);border-radius:13px;background:var(--surface)}
+.crud-direct-flow>strong{font-size:14px;color:var(--heading);display:block;margin:0 0 12px}
+.crud-direct-flow nav{display:flex;flex-wrap:wrap;gap:8px}
+.crud-direct-flow nav>a{color:var(--heading);border:1px solid var(--border);text-decoration:none;background:var(--surface-soft);font-weight:750;font-size:12px;padding:10px 12px;border-radius:9px;min-height:42px;display:inline-flex;align-items:center}
+.crud-direct-flow nav>a:is(:hover,:focus-visible){border-color:#5299ad;box-shadow:0 0 0 2px rgba(54,154,178,.12)}
+.crud-substep{margin:17px 0 21px;padding:15px 17px;border:1px solid var(--border);border-radius:11px;background:var(--surface-soft)}
+.crud-substep>strong{color:var(--heading);display:block;font-size:13px;line-height:1.55;letter-spacing:.01em}
+#crud .crud-substep>p{font-size:13px;line-height:1.72;color:var(--text-soft);margin:8px 0 12px}
+#crud .crud-substep .code-block{margin:11px 0 6px!important}
+.crud-final-reference{margin:27px 0;padding:20px 22px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+.crud-final-reference h2{font-size:clamp(20px,2vw,25px);margin:5px 0 8px}
+.crud-final-reference p{font-size:13px;line-height:1.8;color:var(--text-soft)}
+.crud-final-reference a{display:inline-block;margin:4px 0 14px;font-size:13px;font-weight:800}
+.crud-final-mark{font-size:10px;font-weight:850;color:var(--blue);letter-spacing:.08em}
+.crud-full-details{border-top:1px solid var(--border);padding-top:16px}
+.crud-full-details summary{font-size:13px;cursor:pointer;font-weight:800;color:var(--heading);line-height:1.6}
+#crud .crud-full-details .code-block{font-size:13px!important;line-height:1.7;max-height:660px!important;overflow:auto}
+.crud-parse-note p{font-size:13px;line-height:1.85}
+@media(max-width:680px){
+ .crud-before-after{grid-template-columns:1fr}
+ .crud-direct-flow nav>a{flex:1 1 calc(50% - 8px)}
+ #crud.crud-direct .next-step{padding:16px}
+ #crud.crud-direct .next-step .code-block{font-size:12px!important;padding:15px 13px}
+}
