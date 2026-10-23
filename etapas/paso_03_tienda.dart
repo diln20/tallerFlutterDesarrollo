@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('Tienda')),
         body: const Center(
-          child: Text('Hello dsfdsWorld'),
+          child: Text('Primer widget'),
         ),
       ),
     );
