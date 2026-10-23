@@ -1,0 +1,56 @@
+/* Analogías cotidianas: comparaciones vinculadas explícitamente al código. */
+.student-analogy{
+  margin:18px 0 24px;padding:clamp(16px,2vw,23px);min-width:0;
+  border:1px solid var(--border);border-radius:15px;
+  background:var(--surface);box-shadow:0 6px 24px rgba(10,32,69,.055);
+  color:var(--text-soft);
+}
+.student-analogy-head{display:flex;align-items:flex-start;gap:12px}
+.student-analogy-index{
+  flex:0 0 36px;height:36px;display:grid;place-items:center;
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--surface-soft);color:var(--blue);font-size:22px;font-weight:750;
+}
+.student-analogy-kicker{font-size:10px;font-weight:900;letter-spacing:.075em;color:var(--blue)}
+.student-analogy h2{font-size:clamp(17px,2.1vw,21px);line-height:1.36;color:var(--heading);margin:5px 0 0}
+.student-analogy-story{font-size:13px;line-height:1.8;margin:13px 0 16px;color:var(--text-soft)}
+.student-analogy-pairs{border:1px solid var(--border);border-radius:11px;overflow:hidden;background:var(--surface-soft)}
+.student-analogy-pair-head,.analogy-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.student-analogy-pair-head{background:rgba(119,151,185,.085)}
+.student-analogy-pair-head strong{font-size:11px;color:var(--heading);padding:10px 12px}
+.analogy-pair{border-top:1px solid var(--border)}
+.analogy-pair span{min-width:0;overflow-wrap:anywhere;padding:11px 12px;font-size:12px;line-height:1.6}
+.analogy-pair span+span,.student-analogy-pair-head strong+strong{border-left:1px solid var(--border)}
+.analogy-pair span:last-child{color:var(--heading);font-weight:650}
+.student-analogy-boundary{font-size:12px;line-height:1.75;margin:13px 0 0;color:var(--text-soft)}
+.student-analogy-boundary strong{color:var(--heading)}
+.student-analogy-quiz{border-top:1px solid var(--border);margin-top:13px;padding-top:12px}
+.student-analogy-quiz summary{cursor:pointer;color:var(--blue);font-size:12px;font-weight:850;min-height:40px;display:list-item;list-style-position:inside}
+.student-analogy-quiz summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.student-analogy-quiz p{font-size:12px;line-height:1.7;margin:9px 0 5px}
+.student-analogy-quiz p strong{color:var(--heading)}
+.pv-analogy{
+  display:grid;gap:6px;padding:13px 16px;margin:11px 0 16px;
+  border:1px solid var(--border);border-radius:11px;
+  background:var(--surface-soft);min-width:0;
+}
+.pv-analogy strong:first-child{display:block;font-size:10px;letter-spacing:.055em;font-weight:900;color:var(--blue)}
+.pv-analogy p{font-size:12px;line-height:1.7;color:var(--text-soft);margin:0}
+.pv-analogy p:last-child{color:var(--heading)}
+.bloc-practice-analogy{
+  padding:12px 15px;margin:12px 0 17px;border:1px solid var(--border);
+  border-left:3px solid var(--blue);border-radius:9px;background:var(--surface-soft);
+}
+.bloc-practice-analogy>span{display:block;color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.06em}
+.bloc-practice-analogy p{margin:6px 0 0;font-size:12px;line-height:1.75;color:var(--text-soft)}
+.bloc-practice-analogy p strong{color:var(--heading)}
+@media(max-width:640px){
+  .student-analogy{margin:15px 0 21px;padding:14px}
+  .student-analogy-pair-head{display:none}
+  .analogy-pair{grid-template-columns:minmax(0,1fr)}
+  .analogy-pair span{padding:10px 12px}
+  .analogy-pair span:first-child{padding-bottom:4px;color:var(--text-soft);font-size:11px}
+  .analogy-pair span+span{padding-top:3px;border-left:none}
+  .bloc-practice-analogy{padding:11px}
+  .pv-analogy{padding:12px}
+}
