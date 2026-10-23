@@ -6,6 +6,11 @@
   const escapeHTML = (x) => String(x == null ? '' : x).replace(/[&<>"']/g, (char) => ({
     '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
   }[char]));
+  function renderDart(line) {
+    return typeof window.FlutterLabDartSyntax==='function'
+      ? window.FlutterLabDartSyntax(line)
+      : escapeHTML(line);
+  }
   function formatLines(source, from, to, focus) {
     const lines=source.split('\n');
     const out=[];
@@ -13,7 +18,7 @@
       const selected=n>=focus.start&&n<=focus.end;
       const content=lines[n-1] || ' ';
       out.push('<div class="fg-source-line'+(selected?' fg-highlight':'')+'"><span class="fg-line-num" aria-hidden="true">'+
-        String(n).padStart(3,'0')+'</span><code>'+escapeHTML(content)+'</code></div>');
+        String(n).padStart(3,'0')+'</span><code>'+renderDart(content)+'</code></div>');
     }
     return out.join('');
   }

@@ -67,3 +67,22 @@
   return segments.join("");
 };
 })();
+
+/* Los bloques estáticos comparten las mismas categorías del editor didáctico. */
+(function(){
+  'use strict';
+  function decorate(){
+    const paint=window.FlutterLabDartSyntax;
+    if(typeof paint!=='function')return;
+    document.querySelectorAll('#plantilla-actividad2 .start-template-grid pre > code').forEach((code)=>{
+      if(code.dataset.dartSyntaxReady==='yes')return;
+      const text=code.textContent;
+      code.innerHTML=paint(text);
+      if(code.textContent!==text){code.textContent=text;return;}
+      code.dataset.dartSyntaxReady='yes';
+      code.classList.add('dart-syntax-ready');
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',decorate,{once:true});
+  else decorate();
+})();

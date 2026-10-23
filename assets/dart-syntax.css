@@ -57,3 +57,72 @@
     width:100%;
   }
 }
+
+/* Una sola paleta en plantilla inicial, ubicación y explicaciones del código. */
+.start-template-grid pre > code.dart-syntax-ready,
+.fg-source-line > code,
+.cpl-context-line > code,
+.ln-explained-table tbody td:nth-child(2) > code {font-variant-ligatures:none}
+.start-template-grid pre > code .pv-dart-token,
+.fg-source-line > code .pv-dart-token,
+.cpl-context-line > code .pv-dart-token,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-token{display:inline;white-space:inherit;font:inherit;background:none!important;border:0!important;margin:0!important;padding:0!important;text-shadow:none}
+.start-template-grid pre > code .pv-dart-keyword,
+.fg-source-line > code .pv-dart-keyword,
+.cpl-context-line > code .pv-dart-keyword,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-keyword,
+pre.code-block code:not([data-language="shell"]) .syntax-keyword{color:#CAA7FF!important;font-weight:650}
+.start-template-grid pre > code .pv-dart-type,
+.fg-source-line > code .pv-dart-type,
+.cpl-context-line > code .pv-dart-type,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-type,
+pre.code-block code:not([data-language="shell"]) .syntax-type{color:#72D7F1!important;font-weight:650}
+.start-template-grid pre > code .pv-dart-function,
+.fg-source-line > code .pv-dart-function,
+.cpl-context-line > code .pv-dart-function,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-function,
+pre.code-block code:not([data-language="shell"]) .syntax-function{color:#FFDA90!important;}
+.start-template-grid pre > code .pv-dart-property,
+.fg-source-line > code .pv-dart-property,
+.cpl-context-line > code .pv-dart-property,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-property,
+pre.code-block code:not([data-language="shell"]) .syntax-property{color:#FFAF9F!important;}
+.start-template-grid pre > code .pv-dart-string,
+.fg-source-line > code .pv-dart-string,
+.cpl-context-line > code .pv-dart-string,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-string,
+pre.code-block code:not([data-language="shell"]) .syntax-string{color:#C3E983!important;}
+.start-template-grid pre > code .pv-dart-annotation,
+.fg-source-line > code .pv-dart-annotation,
+.cpl-context-line > code .pv-dart-annotation,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-annotation,
+pre.code-block code:not([data-language="shell"]) .syntax-annotation{color:#F0AFF6!important;}
+.start-template-grid pre > code .pv-dart-literal,
+.fg-source-line > code .pv-dart-literal,
+.cpl-context-line > code .pv-dart-literal,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-literal,
+pre.code-block code:not([data-language="shell"]) .syntax-literal{color:#FDBF83!important;}
+.start-template-grid pre > code .pv-dart-number,
+.fg-source-line > code .pv-dart-number,
+.cpl-context-line > code .pv-dart-number,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-number,
+pre.code-block code:not([data-language="shell"]) .syntax-number{color:#FDBF83!important;}
+.start-template-grid pre > code .pv-dart-member,
+.fg-source-line > code .pv-dart-member,
+.cpl-context-line > code .pv-dart-member,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-member{color:#B7D9FA!important;}
+.start-template-grid pre > code .pv-dart-comment,
+.fg-source-line > code .pv-dart-comment,
+.cpl-context-line > code .pv-dart-comment,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-comment,
+pre.code-block code:not([data-language="shell"]) .syntax-comment{color:#9FB9C9!important;font-style:italic}
+.start-template-grid pre > code .pv-dart-punctuation,
+.fg-source-line > code .pv-dart-punctuation,
+.cpl-context-line > code .pv-dart-punctuation,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-punctuation,
+pre.code-block code:not([data-language="shell"]) .syntax-punctuation{color:#C2D3E8!important;}
+.start-template-grid pre > code .pv-dart-operator,
+.fg-source-line > code .pv-dart-operator,
+.cpl-context-line > code .pv-dart-operator,
+.ln-explained-table tbody td:nth-child(2) > code .pv-dart-operator{color:#9DCFFB!important;}
+pre.code-block code[data-language="shell"] .syntax-function{color:#80e0f6!important}

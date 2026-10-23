@@ -245,3 +245,7 @@ Los editores y teléfonos de estas comparaciones son ilustraciones HTML; el modo
 ## Explorador de archivos estilo VS Code
 
 Las vistas didácticas «Antes/Después» del taller incorporan iconos SVG vectoriales creados en el proyecto, con colores distintos para Dart, YAML, carpetas, plataformas Android/iOS/Web/Windows/Linux/macOS, páginas, widgets, modelos, servicios, repositorios y BLoC. Se aplican en el editor original, las prácticas de creación de carpetas y archivos, y el visor ampliado. No necesitan conectarse a redes ni cargar bibliotecas externas. Son simulaciones visuales de VS Code, no capturas reales.
+
+## Colores Dart consistentes
+
+La paleta VS Code de FlutterLab ahora también se aplica a la plantilla inicial `actividad2/lib/main.dart`, las vistas con números de línea, las ventanas de ubicación y las tablas de explicación de Dart. Las instrucciones de PowerShell y los diagramas no se tratan como Dart. La sintaxis coloreada conserva el código y las líneas didácticas para copiar y estudiar.

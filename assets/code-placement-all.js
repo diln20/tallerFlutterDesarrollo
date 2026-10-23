@@ -37,6 +37,11 @@
     if(idx<0)return null;
     return {start:idx+1,end:idx+1,exact:false};
   }
+  function renderDart(line) {
+    return typeof window.FlutterLabDartSyntax==='function'
+      ? window.FlutterLabDartSyntax(line)
+      : escape(line);
+  }
   function contextText(reference,focus){
     if(!reference||!focus)return '';
     const lines=reference.text.split('\n');
@@ -46,7 +51,7 @@
       const emph=line>=focus.start&&line<=focus.end;
       items.push('<div class="cpl-context-line'+(emph?' cpl-context-highlight':'')+'">'+
         '<span class="cpl-number" aria-hidden="true">'+line+'</span>'+
-        '<code>'+escape(lines[line-1]||' ')+'</code></div>');
+        '<code>'+renderDart(lines[line-1]||' ')+'</code></div>');
     }
     return items.join('');
   }

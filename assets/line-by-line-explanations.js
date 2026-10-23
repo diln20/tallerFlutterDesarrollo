@@ -269,13 +269,18 @@
     pre.dataset.lineGuide='yes';
     const isShell=pre.dataset.codeMode==='terminal'||/^\s*(flutter\s|cd\s|Get-Location|Get-ChildItem|Test-Path)/m.test(content);
     const diagram=pre.dataset.codeMode==='esquema';
+    const displayInstruction=(text)=>{
+      return !isShell&&!diagram&&typeof window.FlutterLabDartSyntax==='function'
+        ? window.FlutterLabDartSyntax(text)
+        : esc(text);
+    };
     const details=document.createElement('details');
     details.className='ln-breakdown';
     const label=diagram?'Leer los elementos de este esquema':isShell?'Explicación de los comandos, línea por línea':'Explicación del código, línea por línea';
     details.innerHTML='<summary><span class="ln-summary-icon">?</span><span>'+label+'</span><small>'+rows.length+' '+(rows.length===1?'línea':'líneas')+' explicadas</small></summary>'+
      '<p class="ln-guide-note">Aquí se explica cada instrucción del fragmento. Este apartado <strong>es para estudiar</strong>; utiliza el botón del recuadro de código original para copiar sin modificar el contenido.</p>'+
      '<div class="ln-table-scroll"><table class="ln-explained-table"><thead><tr><th>Línea</th><th>Instrucción</th><th>Qué significa y por qué se usa</th></tr></thead><tbody>'+
-     rows.map(r=>'<tr'+(r.closing?' class="ln-closing"':'')+'><td class="ln-line-number">'+r.num+'</td><td><code>'+esc(r.code.trim())+'</code></td><td>'+esc(r.explanation)+'</td></tr>').join('')+
+     rows.map(r=>'<tr'+(r.closing?' class="ln-closing"':'')+'><td class="ln-line-number">'+r.num+'</td><td><code>'+displayInstruction(r.code.trim())+'</code></td><td>'+esc(r.explanation)+'</td></tr>').join('')+
      '</tbody></table></div>';
     let position=pre;
     while(position.nextElementSibling&&position.nextElementSibling.matches('.cpl-panel, .fg-location-panel, .pv-code-link, .ch-code-legend')){
