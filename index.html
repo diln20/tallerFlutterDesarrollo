@@ -3423,11 +3423,9 @@ class CampoNombreVehiculo extends StatelessWidget {
 <div class="next-step-top"><span class="next-step-number">10-6</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</span><h3>Agregar los controles nuevos al formulario</h3></div></div><p>Los nuevos campos se colocan debajo de Nombre en la Tienda que ya existe. No crees otra pantalla con un formulario completo.</p>
 <div class="next-where"><div class="next-where-action">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → <code>_TiendaPageState</code> y <code>Column.children</code></div><div><strong>Busca con Ctrl + F:</strong> <code>final TextEditingController vehiculoController</code> y <code>Form(key:</code></div></div></div>
-<div class="al-substep"><strong>A · Agrega controladores debajo de vehiculoController</strong><div class="code-label">Cuatro controladores (el primero ya existe)</div><pre class="code-block" data-code-mode="dart"><code>final TextEditingController vehiculoController = TextEditingController();
-  final TextEditingController anioController = TextEditingController();
-  final TextEditingController precioController = TextEditingController();
-  final TextEditingController correoController = TextEditingController();
-  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre></div>
+<div class="al-substep"><strong>A · Agrega controladores debajo de vehiculoController</strong><div class="code-label">AGREGA únicamente estas tres declaraciones, debajo de vehiculoController</div><pre class="code-block" data-code-mode="dart"><code>final TextEditingController anioController = TextEditingController();
+final TextEditingController precioController = TextEditingController();
+final TextEditingController correoController = TextEditingController();</code></pre></div>
 <div class="al-substep"><strong>B · Sustituye solo Form(...) dentro de Column.children</strong><div class="code-label">Formulario con nombre, año, precio y correo</div><pre class="code-block" data-code-mode="dart"><code>Form(
                 key: formularioKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -4193,7 +4191,8 @@ class VehiculosApi {
     }
   }
 
-  void cerrar() =&gt; _cliente.close();</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>Future</code> es un resultado que llegará después; <code>async</code> y <code>await</code> esperan la red sin bloquear toda la interfaz. <code>jsonEncode</code> convierte un objeto Dart a JSON para enviarlo; <code>jsonDecode</code> lee el JSON recibido. <code>Uri.parse</code> construye la dirección. Si el estado HTTP no es el esperado, se lanza una excepción para que BLoC muestre un error.</p></div>
+  void cerrar() =&gt; _cliente.close();
+}</code></pre></div><div class="next-step-meaning"><strong>Explicación sencilla</strong><p><code>Future</code> es un resultado que llegará después; <code>async</code> y <code>await</code> esperan la red sin bloquear toda la interfaz. <code>jsonEncode</code> convierte un objeto Dart a JSON para enviarlo; <code>jsonDecode</code> lee el JSON recibido. <code>Uri.parse</code> construye la dirección. Si el estado HTTP no es el esperado, se lanza una excepción para que BLoC muestre un error.</p></div>
 <div class="next-step-result"><strong>Cómo verificar este paso</strong><p>El archivo contiene las cuatro operaciones GET/POST/PUT/DELETE y un <code>cerrar()</code> que libera el cliente de red.</p></div></article>
 <article class="next-step" id="al-paso-11-11">
 <div class="next-step-top"><span class="next-step-number">11</span><div class="al-step-info"><span class="al-step-kicker">ACTUALIZAR EVENTOS, ESTADO Y BLoC</span><h3>Permitir que BLoC espere la API y muestre errores</h3></div></div>
@@ -4270,13 +4269,8 @@ class VehiculosEstado {
 <div class="next-step-top"><span class="next-step-number">12</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR SOLO main.dart, CONSERVANDO P9 Y P10</span><h3>Conectar la pantalla, el Drawer y el formulario al BLoC remoto</h3></div></div>
 <p>Tu interfaz sigue siendo la misma Tienda con cuatro campos y menú. La diferencia es que el BlocProvider ahora recibe un repositorio y los botones usan los IDs que FastAPI entregó.</p><div class="next-where"><div class="next-where-action">MODIFICAR SOLO main.dart, CONSERVANDO P9 Y P10</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Busca / ubica:</strong> <code>BlocProvider</code>, <code>comenzarEdicion</code>, <code>BlocBuilder</code> y <code>ListView.builder</code></div></div></div>
 <div class="al-substep"><strong>A · Importa el repositorio en main.dart</strong><div class="code-label">En la zona de imports</div><pre class="code-block" data-code-mode="dart"><code>import &#39;repositories/vehiculos_api.dart&#39;;</code></pre></div>
-<div class="al-substep"><strong>B · Cambia la creación de BlocProvider para cargar datos al inicio</strong><div class="code-label">Dentro de MainApp.build, reemplaza el antiguo create:</div><pre class="code-block" data-code-mode="dart"><code>BlocProvider&lt;VehiculosBloc&gt;(
-  create: (context) =&gt; VehiculosBloc(VehiculosApi())
-    ..add(VehiculosCargados()),
-  child: const MaterialApp(
-    home: TiendaPage(),
-  ),
-)</code></pre></div>
+<div class="al-substep"><strong>B · Cambia la creación de BlocProvider para cargar datos al inicio</strong><div class="code-label">REEMPLAZA solamente la propiedad create: del BlocProvider existente</div><pre class="code-block" data-code-mode="dart"><code>create: (context) =&gt; VehiculosBloc(VehiculosApi())
+  ..add(VehiculosCargados()),</code></pre></div>
 <div class="al-substep"><strong>C · Identifica y conserva el flujo nuevo de edición por ID</strong><div class="code-label">Localizar vehículo por su ID, no por posición</div><pre class="code-block" data-code-mode="dart"><code>void comenzarEdicion(int id) {
     final bloc = context.read&lt;VehiculosBloc&gt;();
     final vehiculo = bloc.state.vehiculos.firstWhere((v) =&gt; v.id == id);
