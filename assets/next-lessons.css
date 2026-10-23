@@ -110,3 +110,57 @@ body[data-theme="dark"] .folder-purpose .folder-icon{background:#1d473d;color:#8
 .pv-form input[aria-invalid="true"]{border-color:#e65c7d}
 .pv-debug-console:not([hidden]){margin-top:13px}
 @media(max-width:650px){.pv-ide-folder-tree{padding:8px}.pv-ide-folder-tree .pv-tree-item{font-size:9px}}
+
+
+/* P6/P7: cambio de archivo y pila sencilla de navegacion en las vistas Antes/Despues. */
+.pv-nav-from-home{
+  margin:14px auto 3px!important;
+  width:auto;max-width:100%;
+  padding:10px 13px!important;
+}
+.pv-nav-button{
+  display:block;
+  box-sizing:border-box;
+  border:1px solid #256ba7;
+  background:#247cb9;
+  color:white;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.4;
+  border-radius:7px;
+  padding:10px 14px;
+  text-align:center;
+  cursor:pointer;
+  margin:10px auto 0;
+  max-width:100%;
+  transition:background .15s ease;
+}
+.pv-nav-button:hover{background:#165a93}
+.pv-nav-button:focus-visible,.pv-nav-back:focus-visible{
+  outline:3px solid #f7ba48;
+  outline-offset:3px;
+}
+.pv-nav-button.pv-nav-secondary{background:#eaf3ff;border-color:#b2cde7;color:#24567b}
+.pv-nav-button.pv-nav-secondary:hover{background:#d8e8fb}
+.pv-nav-button[disabled]{opacity:.48;cursor:not-allowed}
+.pv-appbar .pv-nav-back{
+  border:0;background:transparent;color:inherit;
+  font-size:19px;cursor:pointer;padding:5px 7px;margin-right:9px;
+  font-weight:850;
+}
+.pv-nav-page-content{
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:stretch;min-height:240px;
+  padding:20px 17px!important;
+  gap:6px;
+  text-align:center
+}
+.pv-nav-page-content>strong{font-size:14px;font-weight:900;color:#1c3859;line-height:1.4}
+.pv-nav-page-content>p{font-size:10px;line-height:1.75;margin:7px 0 12px;color:#46607f}
+.pv-page-demo .pv-app-screen{overflow:auto}
+.pv-page-demo .pv-nav-button{width:min(210px,100%)}
+.pv-page-demo .pv-appbar{display:flex;align-items:center}
+@media(max-width:510px){
+  .pv-nav-page-content{padding:12px!important;min-height:200px}
+  .pv-nav-button{font-size:9px;padding:8px 10px}
+}
