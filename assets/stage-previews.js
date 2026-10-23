@@ -211,8 +211,30 @@
         ${which==='before'?'disabled':''}>Agregar vehículo</button>`:''}
     </section>`;
   }
+  function pageUI(page,which){
+ const help=page==='ayuda';
+ const top=help?'Ayuda':'Acerca de';
+ const heading=help?'Ayuda de la Tienda':'Nuestra Tienda';
+ const message=help?'Escribe al menos tres caracteres para crear un vehículo.':'Un ejercicio para aprender Flutter.';
+ const buttons=help?
+   '<button type="button" class="pv-nav-button" data-pv-nav="back">Volver</button>':
+   '<button type="button" class="pv-nav-button" data-pv-nav="ayuda">Ver ayuda</button><button type="button" class="pv-nav-button pv-nav-secondary" data-pv-nav="back">Volver a la Tienda</button>';
+ return `<div class="pv-device pv-page-demo">
+   <div class="pv-status">9:41 <span>◉ ▰</span></div>
+   <div class="pv-app-screen">
+     <div class="pv-appbar"><button type="button" class="pv-nav-back" data-pv-nav="back" aria-label="Regresar">←</button><strong>${esc(top)}</strong></div>
+     <div class="pv-content pv-nav-page-content">
+       <strong>${esc(heading)}</strong>
+       <p>${esc(message)}</p>
+       ${buttons}
+     </div>
+   </div>
+   <div class="pv-home-indicator"><span></span></div>
+ </div>`;
+}
   function screenUI(v,which,highlight,r){
     if(v.editor)return editorUI(v,which,highlight);
+    if(v.navigationEnabled&&which==='after'&&r.pageStack?.length>1)return pageUI(r.pageStack.at(-1),which);
     const centered=v.centered?' pv-centered':'';
     const bodyHL=highlight==='body'&&which==='after'?' pv-body-glow':'';
     const noteHL=(kind)=>highlight===kind&&which==='after'?' pv-glow':'';
@@ -237,6 +259,7 @@
           ${v.reactive?`<p class="pv-search-label${noteHL('searchLabel')}" data-pv-label>Estás buscando: ${esc(which==='after'?r.query:(v.query||''))}</p>`:''}
           ${v.results?carsUI(v,which,highlight,r):''}
           ${v.form?formUI(v,which,highlight,r):''}
+          ${v.navigationEnabled?`<button type="button" class="pv-nav-button pv-nav-from-home${which==='after'?' pv-glow':''}" ${which==='after'?'data-pv-nav="acerca"':'disabled'}>Acerca de y ayuda</button>`:''}
         </div>
         ${''}
         ${v.loading?'<div class="pv-loading"><span class="pv-spinner"></span> Buscando vehículos...</div>':''}
@@ -410,6 +433,24 @@
       const id=jump.dataset.pvJump;
       render(id,Number(jump.dataset.pvIndex));
       document.getElementById('pv-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+    const navAction=target.closest('[data-pv-nav]');
+    if(navAction){
+      const id=navAction.closest('[data-pv-module]')?.dataset.pvModule;
+      if(id!=='navegacion')return;
+      const r=runtimeMap.get(id);if(!r)return;
+      const action=navAction.dataset.pvNav;
+      if(action==='back'){
+        if(r.pageStack.length>1)r.pageStack.pop();
+      }else if((action==='acerca'&&r.pageStack.at(-1)==='tienda')||
+               (action==='ayuda'&&r.pageStack.at(-1)==='acerca')){
+        r.pageStack.push(action);
+      }
+      const slot=document.getElementById('pv-'+id);
+      const area=slot?.querySelector('.pv-after .pv-preview-area');
+      const current=data[id]?.steps[r.step];
+      if(area&&current)area.innerHTML=screenUI(state(current.after),'after',current.highlight,r);
       return;
     }
     if(submit){
