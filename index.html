@@ -26,6 +26,7 @@
   <script src="./assets/crud-lesson.js?v=20261023-P11-glosario" defer></script>
   <script src="./assets/bloc-crud.js?v=20261023-P8" defer></script>
   <script src="./assets/advanced-lessons.js?v=P9-P11-20261023-v2" defer></script>
+  <script src="./assets/roles-pagination-ux.js?v=P12-P14-v1" defer></script>
   <script src="./assets/analogias-didacticas.js?v=20261023-analogias-v3" defer></script>
   <script src="./assets/analogias-catalogo.js?v=20261023-analogias-v2" defer></script>
   <script src="./assets/stage-previews.js?v=20261023-analogias-v3" defer></script>
@@ -53,6 +54,7 @@
   <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023-DirectCRUD-v1">
   <link rel="stylesheet" href="./assets/bloc-crud.css?v=20261023-P8">
   <link rel="stylesheet" href="./assets/advanced-lessons.css?v=P9-P11-20261023-v2">
+  <link rel="stylesheet" href="./assets/roles-pagination-ux.css?v=P12-P14-v1">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -105,6 +107,10 @@
 <a class="nav-link" href="#menu-hamburguesa" data-route="menu-hamburguesa" data-search="P9 Drawer AppBar menú hamburguesa navegación flutter"><span class="lesson-index">P9</span><span>Menú hamburguesa</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#validaciones-esenciales" data-route="validaciones-esenciales" data-search="P10 validadores formulario correo precio año regex tryParse email TextFormField"><span class="lesson-index">P10</span><span>Validaciones de campos</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#api-postgres" data-route="api-postgres" data-search="P11 FastAPI Python PostgreSQL Docker SQLModel API REST HTTP JSON BLoC Flutter"><span class="lesson-index">P11</span><span>API con FastAPI y PostgreSQL</span><span class="nav-check" aria-hidden="true">✓</span></a>
+<div class="nav-group-label">CONTINUACIÓN · DATOS, PERMISOS Y USABILIDAD</div>
+<a class="nav-link" href="#roles-usuarios" data-route="roles-usuarios" data-search="P12 roles prioridad administrador lector autenticacion autorizacion seguridad RBAC 401 403"><span class="lesson-index">P12</span><span>Roles y permisos</span><span class="nav-check" aria-hidden="true">✓</span></a>
+<a class="nav-link" href="#paginacion-widget" data-route="paginacion-widget" data-search="P13 paginacion de datos widgets PaginatedDataTable DataTableSource API json fromJson ListView DataTable"><span class="lesson-index">P13</span><span>Objetos API y paginación</span><span class="nav-check" aria-hidden="true">✓</span></a>
+<a class="nav-link" href="#heuristicas-ux" data-route="heuristicas-ux" data-search="P14 usabilidad UX UI Nielsen 10 heuristicas diseno accesibilidad evaluacion"><span class="lesson-index">P14</span><span>Heurísticas y usabilidad</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <div class="nav-group-label">RUTA B · ALTERNATIVA DESDE EL MÓDULO 05</div>
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -5051,9 +5057,863 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 </tbody></table></div>
 <div class="exercise"><span class="exercise-label">RETO TRANSVERSAL · TIENDA COMPLETA</span><h3>Demuestra el flujo de punta a punta</h3><p>Desde Flutter crea un carro con nombre, año, precio y correo. Verifica desde <code>/docs</code> que quedó en la base; búscalo en la app, edítalo, ciérrala por completo y vuelve a abrirla. Comprueba que sigue actualizado, elimínalo y consulta que ya no aparece. Dibuja el recorrido <strong>Flutter → evento BLoC → repositorio HTTP → FastAPI → PostgreSQL → respuesta JSON → pantalla</strong>.</p></div>
 <div class="checklist" data-checklist="api-postgres"><label><input type="checkbox"> Creé tienda_api fuera de actividad2.</label><label><input type="checkbox"> Levanté PostgreSQL con Docker Compose.</label><label><input type="checkbox"> FastAPI responde en /docs y /vehiculos.</label><label><input type="checkbox"> Agregué http y VehiculosApi al mismo proyecto Flutter.</label><label><input type="checkbox"> BLoC muestra estados de carga y error.</label><label><input type="checkbox"> Los registros persisten al cerrar y abrir Flutter.</label><label><input type="checkbox"> Puedo explicar por qué Flutter no se conecta directamente a PostgreSQL.</label></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="api-postgres">Marcar módulo como completado</button><a class="next-link" href="#inicio">Volver al inicio del taller →</a></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="api-postgres">Marcar módulo como completado</button><a class="next-link" href="#roles-usuarios">Siguiente: roles y permisos →</a></div>
 </section>
 
+<section class="page lesson next-module post-api-lesson" id="roles-usuarios" aria-labelledby="roles-usuarios-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P12</span><span class="status-pill planned">Autenticación y autorización con dos perfiles</span></div>
+<h1 id="roles-usuarios-title">Roles y permisos: primero la seguridad</h1><p>Antes de mejorar la lista, da prioridad a decidir quién puede consultarla y quién puede modificarla. Usaremos roles reales en el servidor para continuar con la misma Tienda.</p></div><div class="notice notice-info"><strong>Punto de partida:</strong> conserva <code>actividad2</code> y <code>tienda_api</code> del P11. Esta etapa enseña <strong>autenticación</strong> (comprobar identidad) antes de <strong>autorización</strong> (comprobar permisos). Las contraseñas son de práctica local; no son un sistema de identidad apto para producción.</div>
+<div class="pu-bridge"><div><span>1 · IDENTIDAD</span><strong>¿Quién entra?</strong><p>HTTP Basic presenta usuario y contraseña a FastAPI.</p></div><div><span>2 · ROL</span><strong>¿Qué puede hacer?</strong><p>El servidor asigna Lector o Administrador después de autenticar.</p></div><div><span>3 · PERMISO</span><strong>¿Se permite la acción?</strong><p>El backend rechaza escrituras para Lector, aunque modifique la interfaz.</p></div></div>
+<div class="pu-demo" id="pu-roles-demo"><h3>Prueba qué puede hacer cada rol</h3><p>Simulación HTML didáctica. Los roles reales se verifican al iniciar sesión en FastAPI; cambiar este selector no otorga permisos reales.</p><div class="pu-row" role="group" aria-label="Seleccionar rol de ejemplo"><button type="button" data-pu-rol-elegir="lector" aria-pressed="true">Lector</button><button type="button" data-pu-rol-elegir="administrador" aria-pressed="false">Administrador</button></div>
+<p>Rol simulado: <strong data-pu-rol>Lector</strong>. Controles que normalmente ve este usuario:</p><div class="pu-visible-actions" data-pu-permisos></div>
+<p class="pu-review">Intenta también una solicitud HTTP, incluso si el botón estaría oculto:</p><div class="pu-row"><button type="button" data-pu-operacion="GET">GET · Consultar</button><button type="button" data-pu-operacion="POST">POST · Crear</button><button type="button" data-pu-operacion="PUT">PUT · Editar</button><button type="button" data-pu-operacion="DELETE">DELETE · Eliminar</button></div>
+<div class="pu-status" role="status" aria-live="polite"><strong>Respuesta simulada:</strong> <span data-pu-accion></span></div></div><div class="pu-table-scroll"><table class="pu-table"><thead><tr><th>Operación</th><th>Lector</th><th>Administrador</th><th>Dónde se protege</th></tr></thead><tbody>
+<tr><td>GET /sesion</td><td>Permitido</td><td>Permitido</td><td>Usuario verificado</td></tr>
+<tr><td>GET /vehiculos</td><td>Permitido</td><td>Permitido</td><td>FastAPI exige sesión</td></tr>
+<tr><td>POST /vehiculos</td><td>Prohibido (403)</td><td>Permitido</td><td>FastAPI exige administrador</td></tr>
+<tr><td>PUT /vehiculos/id</td><td>Prohibido (403)</td><td>Permitido</td><td>FastAPI exige administrador</td></tr>
+<tr><td>DELETE /vehiculos/id</td><td>Prohibido (403)</td><td>Permitido</td><td>FastAPI exige administrador</td></tr></tbody></table></div>
+<div class="next-section-heading"><span>APLICACIÓN DIRECTA SOBRE LA TIENDA</span><h2>Protege primero la API y luego adapta los widgets</h2></div>
+<article class="next-step" id="pu-step-12-1"><div class="next-step-top"><span class="next-step-number">12-1</span><div><span class="pu-badge">ENTENDER ANTES DE COPIAR</span><h3>Diferenciar autenticación, rol y autorización</h3></div></div><p>Analogía: un empleado muestra su carné para entrar al concesionario; después, sus funciones determinan qué puede hacer en el inventario.</p><div class="next-where"><div class="next-where-action">ENTENDER ANTES DE COPIAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code> y <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>GET /vehiculos</code>, <code>POST /vehiculos</code></div></div></div><div class="pu-concept"><div><strong>Autenticación · 401</strong><p>El sistema todavía no sabe quién eres o la contraseña es incorrecta.</p></div><div><strong>Autorización · 403</strong><p>El sistema sabe quién eres, pero tu puesto de trabajo no permite esa operación.</p></div></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>RBAC</code> significa control de acceso basado en roles. No se debe tomar una cadena <code>rol=administrador</code> enviada por el teléfono como prueba de autorización.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Explica por qué ocultar «Eliminar» ayuda a la interfaz, pero no sustituye comprobar el permiso en el backend.</p></div></article>
+<article class="next-step" id="pu-step-12-2"><div class="next-step-top"><span class="next-step-number">12-2</span><div><span class="pu-badge">MODIFICAR EL BACKEND</span><h3>Agregar autenticación con HTTP Basic y funciones de roles</h3></div></div><p>La clase requiere un inicio de sesión sencillo. En este laboratorio los usuarios de prueba se definen en el servidor y se verifican allí.</p><div class="next-where"><div class="next-where-action">MODIFICAR EL BACKEND</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>HTTPBasic</code> y <code>def obtener_usuario</code></div></div></div><div class="code-label">Agregar imports de seguridad y funciones (compara ubicación en main.py)</div><pre class="code-block" data-code-mode="python"><code>ADMIN_PASSWORD = os.environ.get(&quot;DEMO_ADMIN_PASSWORD&quot;, &quot;admin123&quot;)
+LECTOR_PASSWORD = os.environ.get(&quot;DEMO_LECTOR_PASSWORD&quot;, &quot;lector123&quot;)
+DATABASE_URL = os.environ.get(
+    &quot;DATABASE_URL&quot;,
+    &quot;postgresql+psycopg://tienda_alumno:clave_local_123@127.0.0.1:5434/tienda_flutter&quot;,
+)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+seguridad = HTTPBasic(auto_error=False)
+
+
+class VehiculoDatos(SQLModel):
+    nombre: str = Field(min_length=3, max_length=60)
+    anio: int = Field(ge=1900, le=2100)
+    precio: float = Field(gt=0, le=999999999999)
+    correo: str = Field(min_length=5, max_length=120)
+    disponible: bool = True
+
+    @field_validator(&quot;nombre&quot;, &quot;correo&quot;, mode=&quot;before&quot;)
+    @classmethod
+    def limpiar(cls, valor):
+        return valor.strip() if isinstance(valor, str) else valor
+
+    @field_validator(&quot;anio&quot;)
+    @classmethod
+    def comprobar_anio(cls, numero):
+        if numero &gt; date.today().year + 1:
+            raise ValueError(&quot;El año no puede superar el próximo año&quot;)
+        return numero
+
+    @field_validator(&quot;correo&quot;)
+    @classmethod
+    def comprobar_correo(cls, correo):
+        if not re.fullmatch(r&quot;[^\s@]+@[^\s@]+\.[^\s@]+&quot;, correo):
+            raise ValueError(&quot;Escribe un correo válido&quot;)
+        return correo
+
+
+class VehiculoTabla(VehiculoDatos, table=True):
+    __tablename__ = &quot;vehiculos&quot;
+    id: int | None = Field(default=None, primary_key=True)
+
+
+class VehiculoEntrada(VehiculoDatos):
+    pass
+
+
+class VehiculoSalida(VehiculoDatos):
+    id: int
+
+
+class PaginaVehiculos(SQLModel):
+    datos: list[VehiculoSalida]
+    pagina: int
+    tamano: int
+    total: int
+    total_paginas: int
+
+
+class UsuarioActual(SQLModel):
+    nombre: str
+    rol: Literal[&quot;administrador&quot;, &quot;lector&quot;]
+
+
+def no_autorizado():
+    return HTTPException(
+        status_code=401,
+        detail=&quot;Credenciales incorrectas o ausentes&quot;,
+        headers={&quot;WWW-Authenticate&quot;: &quot;Basic&quot;},
+    )
+
+
+def obtener_usuario(
+    credenciales: Annotated[HTTPBasicCredentials | None, Depends(seguridad)],
+) -&gt; UsuarioActual:
+    if credenciales is None:
+        raise no_autorizado()
+    nombre = credenciales.username
+    contrasena = credenciales.password
+    es_admin = secrets.compare_digest(nombre, &quot;admin&quot;) and secrets.compare_digest(
+        contrasena, ADMIN_PASSWORD
+    )
+    es_lector = secrets.compare_digest(nombre, &quot;lector&quot;) and secrets.compare_digest(
+        contrasena, LECTOR_PASSWORD
+    )
+    if es_admin:
+        return UsuarioActual(nombre=&quot;admin&quot;, rol=&quot;administrador&quot;)
+    if es_lector:
+        return UsuarioActual(nombre=&quot;lector&quot;, rol=&quot;lector&quot;)
+    raise no_autorizado()
+
+
+def exigir_administrador(
+    usuario: Annotated[UsuarioActual, Depends(obtener_usuario)],
+) -&gt; UsuarioActual:
+    if usuario.rol != &quot;administrador&quot;:
+        raise HTTPException(status_code=403, detail=&quot;Solo el administrador puede modificar&quot;)
+    return usuario</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>La función <code>obtener_usuario()</code> comprueba las credenciales. <code>exigir_administrador()</code> llama primero a esa función y después comprueba el rol. <code>secrets.compare_digest</code> reduce ciertas diferencias de tiempo al comparar claves. En esta demostración la configuración contiene cuentas ficticias.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Lector puede iniciar sesión pero no puede escribir; administrador sí. Usa contraseñas distintas solo para pruebas y nunca las subas reales al repositorio.</p></div></article>
+<article class="next-step" id="pu-step-12-3"><div class="next-step-top"><span class="next-step-number">12-3</span><div><span class="pu-badge">REVISAR DEPENDENCIAS DE FASTAPI</span><h3>Proteger las rutas de crear, editar y eliminar</h3></div></div><p>Ahora cada operación debe depender de una cuenta validada. Esta es la barrera real, porque el cliente Flutter puede modificarse.</p><div class="next-where"><div class="next-where-action">REVISAR DEPENDENCIAS DE FASTAPI</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code> al final</div><div><strong>Buscar con Ctrl+F:</strong> <code>Usuario = Annotated</code>, <code>Administrador = Annotated</code>, <code>@app.post</code></div></div></div><div class="code-label">Observar dependencias para GET y operaciones protegidas</div><pre class="code-block" data-code-mode="python"><code>Sesion = Annotated[Session, Depends(obtener_sesion)]
+Usuario = Annotated[UsuarioActual, Depends(obtener_usuario)]
+Administrador = Annotated[UsuarioActual, Depends(exigir_administrador)]</code></pre><div class="code-label">Ejemplo de POST que exige Administrador</div><pre class="code-block" data-code-mode="python"><code>@app.post(&quot;/vehiculos&quot;, response_model=VehiculoSalida, status_code=201)
+def crear_vehiculo(datos: VehiculoEntrada, sesion: Sesion, admin: Administrador):
+    nuevo = VehiculoTabla.model_validate(datos)
+    sesion.add(nuevo)
+    sesion.commit()
+    sesion.refresh(nuevo)
+    return nuevo</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>Depends(obtener_usuario)</code> valida una identidad. <code>Depends(exigir_administrador)</code> rechaza POST/PUT/DELETE de lector con 403. La validación se ejecuta en FastAPI incluso si alguien utiliza Postman o modifica el código del cliente.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Prueba POST con Lector en Swagger: debe devolver 403. Con credenciales incorrectas, el servidor devuelve 401.</p></div></article>
+<article class="next-step" id="pu-step-12-4"><div class="next-step-top"><span class="next-step-number">12-4</span><div><span class="pu-badge">AGREGAR MODELO SESIONUSUARIO</span><h3>Crear el objeto Dart que representa una sesión</h3></div></div><p>La respuesta <code>GET /sesion</code> llega como JSON y la convertimos en un objeto Dart, igual que hiciste con <code>Vehiculo</code>.</p><div class="next-where"><div class="next-where-action">AGREGAR MODELO SESIONUSUARIO</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/models/sesion_usuario.dart</code> (nuevo)</div><div><strong>Buscar con Ctrl+F:</strong> <code>class SesionUsuario</code></div></div></div><div class="code-label">Crea este archivo completo</div><pre class="code-block" data-code-mode="dart"><code>class SesionUsuario {
+  const SesionUsuario({required this.nombre, required this.rol});
+
+  final String nombre;
+  final String rol;
+  bool get puedeModificar =&gt; rol == &#39;administrador&#39;;
+
+  factory SesionUsuario.fromJson(Map&lt;String, dynamic&gt; json) =&gt; SesionUsuario(
+        nombre: json[&#39;nombre&#39;] as String,
+        rol: json[&#39;rol&#39;] as String,
+      );
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>fromJson</code> transforma <code>{nombre, rol}</code> en propiedades accesibles. <code>puedeModificar</code> es una propiedad calculada, no otra tabla o segundo usuario. <strong>El backend es la autoridad</strong>; Dart solo interpreta la información recibida.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>El objeto de Lector devuelve <code>puedeModificar=false</code>; el Administrador devuelve <code>true</code>.</p></div></article>
+<article class="next-step" id="pu-step-12-5"><div class="next-step-top"><span class="next-step-number">12-5</span><div><span class="pu-badge">MODIFICAR EL CLIENTE HTTP</span><h3>Mandar credenciales al servidor mediante el repositorio</h3></div></div><p>En vez de inventar el rol en Flutter, enviamos usuario y clave a <code>/sesion</code>. Solo si el servidor responde bien conservamos la sesión durante el laboratorio.</p><div class="next-where"><div class="next-where-action">MODIFICAR EL CLIENTE HTTP</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/repositories/vehiculos_api.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>iniciarSesion</code> y <code>_headers</code></div></div></div><div class="code-label">Inicio de la clase VehiculosApi y autenticación</div><pre class="code-block" data-code-mode="dart"><code>class VehiculosApi {
+  VehiculosApi({http.Client? cliente, String? urlBase})
+      : _cliente = cliente ?? http.Client(),
+        urlBase = urlBase ??
+            const String.fromEnvironment(
+              &#39;API_URL&#39;,
+              defaultValue: &#39;http://10.0.2.2:8000&#39;,
+            );
+
+  final http.Client _cliente;
+  final String urlBase;
+  String? _usuario;
+  String? _contrasena;
+
+  Map&lt;String, String&gt; get _headers {
+    if (_usuario == null || _contrasena == null) {
+      throw const ErrorApi(&#39;Primero debes iniciar sesión&#39;);
+    }
+    final token = base64Encode(utf8.encode(_usuario! + &#39;:&#39; + _contrasena!));
+    return {
+      &#39;Authorization&#39;: &#39;Basic &#39; + token,
+      &#39;Content-Type&#39;: &#39;application/json&#39;,
+    };
+  }
+
+  Future&lt;SesionUsuario&gt; iniciarSesion(String nombre, String clave) async {
+    final token = base64Encode(utf8.encode(nombre + &#39;:&#39; + clave));
+    final respuesta = await _cliente.get(
+      Uri.parse(urlBase + &#39;/sesion&#39;),
+      headers: {&#39;Authorization&#39;: &#39;Basic &#39; + token},
+    );
+    _verificar(respuesta, 200);
+    _usuario = nombre;
+    _contrasena = clave;
+    return SesionUsuario.fromJson(
+      jsonDecode(respuesta.body) as Map&lt;String, dynamic&gt;,
+    );
+  }
+
+  void cerrarSesion() {
+    _usuario = null;
+    _contrasena = null;
+  }</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>base64Encode</code> crea la cabecera HTTP Basic. Base64 <strong>no cifra</strong> la contraseña; en una app real necesitas HTTPS y un proveedor de identidad con sesiones más seguras. Al cerrar sesión se limpian las credenciales guardadas en memoria.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>En el ejemplo, <code>iniciarSesion</code> devuelve un <code>SesionUsuario</code> construido desde el JSON auténtico del servidor.</p></div></article>
+<article class="next-step" id="pu-step-12-6"><div class="next-step-top"><span class="next-step-number">12-6</span><div><span class="pu-badge">MODIFICAR WIDGETS DE FLUTTER</span><h3>Presentar el login y mostrar acciones según el rol</h3></div></div><p>Prioriza que la persona sepa qué puede hacer. La Tienda muestra el rol y reserva el formulario CRUD para quien tenga permiso.</p><div class="next-where"><div class="next-where-action">MODIFICAR WIDGETS DE FLUTTER</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>Widget _pantallaLogin</code> y <code>Widget _pantallaTienda</code></div></div></div><div class="code-label">Widget de acceso (extracto completo)</div><pre class="code-block" data-code-mode="dart"><code>Widget _pantallaLogin(VehiculosEstado estado) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Acceso a la Tienda&#39;)),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(22),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 430),
+            child: Form(
+              key: loginKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Icon(Icons.directions_car, size: 56),
+                  const SizedBox(height: 12),
+                  const Text(
+                    &#39;Iniciar sesión&#39;,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    &#39;El rol se consulta a FastAPI. No se elige con un botón.&#39;,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: usuarioController,
+                    decoration: const InputDecoration(
+                      labelText: &#39;Usuario&#39;,
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (texto) =&gt; (texto ?? &#39;&#39;).trim().isEmpty
+                        ? &#39;Escribe un usuario&#39;
+                        : null,
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: claveController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: &#39;Contraseña&#39;,
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (texto) =&gt; (texto ?? &#39;&#39;).isEmpty
+                        ? &#39;Escribe la contraseña&#39;
+                        : null,
+                  ),
+                  const SizedBox(height: 12),
+                  if (estado.error != null)
+                    Text(
+                      estado.error!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  FilledButton.icon(
+                    onPressed: estado.cargando ? null : iniciarSesion,
+                    icon: const Icon(Icons.login),
+                    label: Text(estado.cargando ? &#39;Verificando...&#39; : &#39;Entrar&#39;),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    &#39;Solo laboratorio local: admin/admin123 o lector/lector123. &#39;
+                    &#39;Nunca uses estas contraseñas en una aplicación pública.&#39;,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }</code></pre><div class="code-label">Regla que muestra el formulario solo al administrador</div><pre class="code-block" data-code-mode="dart"><code>if (estado.puedeEditar) ...[
+              const SizedBox(height: 16),
+              _formularioVehiculo(estado),
+            ],</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>BlocConsumer</code> recibe cambios de la sesión y reconstruye la pantalla. <code>if (estado.puedeEditar)</code> decide si se dibuja el formulario. Los botones de edición en <code>VistaVehiculos</code> siguen la misma regla. La API continúa protegiendo independientemente.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Entra como lector: no aparece «Agregar» ni los botones «Editar/Eliminar». Como admin deben aparecer.</p></div></article>
+<article class="next-step" id="pu-step-12-7"><div class="next-step-top"><span class="next-step-number">12-7</span><div><span class="pu-badge">COMPROBAR ROLES REALES</span><h3>Hacer pruebas de permisos y conservar la navegación</h3></div></div><p>Con la API disponible, repite operaciones válidas e inválidas y comprueba que un lector no pueda modificar registros aunque intente llamar al endpoint.</p><div class="next-where"><div class="next-where-action">COMPROBAR ROLES REALES</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> Terminal <code>tienda_api</code> y <code>actividad2</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>GET /sesion</code> y <code>POST /vehiculos</code> en Swagger</div></div></div><div class="code-label">Desde la carpeta backend de referencia: pruebas HTTP</div><pre class="code-block" data-code-mode="shell"><code>python -m pytest -q tests</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>Los tests incluyen 401, 403, GET de lector, POST de admin y validación del servidor. Para producción no debes usar claves de ejemplo ni HTTP Basic en una red pública.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Debes poder explicar por qué el botón oculto es una medida de usabilidad, mientras <code>Depends(exigir_administrador)</code> constituye la autorización.</p></div></article>
+<div class="notice notice-warning"><strong>Advertencia de seguridad:</strong> HTTP Basic es apropiado aquí únicamente como demostración en una máquina o red local controlada. No envíes cuentas reales por HTTP ni utilices las claves del ejemplo en producción. Para proyectos publicados utiliza HTTPS, autenticación administrada y sesiones seguras.</div>
+<div class="pu-files"><a href="./ejemplo_roles_paginacion/backend/main.py" target="_blank" rel="noopener noreferrer">FastAPI con permisos ↗</a><a href="./ejemplo_roles_paginacion/backend/tests/test_roles_paginas.py" target="_blank" rel="noopener noreferrer">Pruebas 401/403 ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/models/sesion_usuario.dart" target="_blank" rel="noopener noreferrer">Modelo de sesión ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">Pantalla completa ↗</a></div>
+<div class="checklist" data-checklist="roles-usuarios"><label><input type="checkbox"> Comprendo la diferencia entre 401 y 403.</label><label><input type="checkbox"> El servidor valida Admin y Lector.</label><label><input type="checkbox"> El botón oculto no es la única protección.</label><label><input type="checkbox"> Puedo consultar la sesión como objeto Dart.</label><label><input type="checkbox"> El menú hamburguesa muestra el rol actual.</label></div>
+<div class="exercise"><span class="exercise-label">PRÁCTICA INDIVIDUAL</span><h3>Demuestra el rol lector y el rol administrador</h3><p>Inicia sesión con Lector y consulta cinco vehículos. Intenta POST desde Swagger con ese usuario y anota el código de respuesta. Después cambia a Administrador, crea un vehículo y describe qué comprobó FastAPI.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="roles-usuarios">Marcar módulo como completado</button><a class="next-link" href="#paginacion-widget">Siguiente etapa →</a></div></section>
+<section class="page lesson next-module post-api-lesson" id="paginacion-widget" aria-labelledby="paginacion-widget-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P13</span><span class="status-pill planned">JSON · BLoC · ListView · DataTable</span></div>
+<h1 id="paginacion-widget-title">Consumir objetos de la API y paginar datos en los widgets</h1><p>La misma Tienda ya tiene roles. Ahora haremos que una respuesta JSON real se convierta en objetos Dart y se muestre de manera eficiente con controles de páginas, búsqueda y adaptación a pantallas móviles.</p></div><div class="notice notice-info"><strong>Punto de partida:</strong> ya está activa la autorización de P12. Ahora consumirás respuestas paginadas de FastAPI y las transformarás en <code>List&lt;Vehiculo&gt;</code> para dibujarlas. <strong>No cambies el modelo por mapas JSON sueltos en la interfaz.</strong></div>
+<div class="pu-bridge"><div><span>1 · RESPUESTA HTTP</span><strong>JSON estructurado</strong><p>FastAPI responde con datos y metadatos de paginación.</p></div><div><span>2 · OBJETOS DART</span><strong>fromJson()</strong><p>Vehiculo y PaginaVehiculos interpretan cada campo.</p></div><div><span>3 · WIDGETS</span><strong>ListView y DataTable</strong><p>La interfaz dibuja solo los vehículos de esa página.</p></div></div>
+<div class="pu-demo" id="pu-paginas-demo"><h3>Prueba una página antes de escribir el widget</h3><p>Simulación con 13 vehículos; cambia el tamaño o busca un nombre. Observa cómo el JSON contiene solo la página visible y cómo cada fila corresponde a un objeto <code>Vehiculo</code>.</p>
+<div class="pu-row"><label for="pu-buscar">Buscar vehículo</label><input id="pu-buscar" data-pu-buscar placeholder="Renault, Mazda..." type="search"><label for="pu-tamano">Registros por página</label><select id="pu-tamano" data-pu-tamano><option value="5">5</option><option value="10">10</option><option value="20">20</option></select></div>
+<div class="pu-table-scroll"><table class="pu-table"><thead><tr><th>ID</th><th>Nombre</th><th>Año</th></tr></thead><tbody data-pu-datos></tbody></table></div>
+<div class="pu-page-buttons"><button type="button" data-pu-anterior>← Anterior</button><output data-pu-info aria-live="polite">Página 1</output><button type="button" data-pu-siguiente>Siguiente →</button></div>
+<div class="pu-json"><div><strong>Respuesta JSON de GET /vehiculos (simulada)</strong><pre data-pu-json></pre></div><div><strong>Objeto Dart interpretado (simulado)</strong><pre data-pu-objeto></pre></div></div></div><div class="pu-concept"><div><strong>Paginar en el servidor</strong><p>Flutter pide una página de cinco registros; FastAPI consulta solo esos cinco y devuelve <code>total</code> para mostrar el número de páginas. Es el método usado en el CRUD.</p></div><div><strong>Paginar en el widget</strong><p><code>PaginatedDataTable</code> y <code>DataTableSource</code> son apropiados si ya tienes un conjunto completo en memoria; no hacen consultas remotas automáticamente.</p></div></div>
+<div class="next-section-heading"><span>CONTINUACIÓN DEL CRUD</span><h2>Mostrar objetos consumidos de la API con paginación</h2></div>
+<article class="next-step" id="pu-step-13-1"><div class="next-step-top"><span class="next-step-number">13-1</span><div><span class="pu-badge">IDENTIFICAR RESPUESTA REAL</span><h3>Reconocer el cuerpo JSON recibido de FastAPI</h3></div></div><p>Pide página 1, tamaño 5. FastAPI devuelve un objeto JSON que contiene los cinco registros y un resumen del total de coincidencias.</p><div class="next-where"><div class="next-where-action">IDENTIFICAR RESPUESTA REAL</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>http://127.0.0.1:8000/docs</code> → <code>GET /vehiculos</code></div><div><strong>Buscar con Ctrl+F:</strong> Parámetros <code>pagina</code>, <code>tamano</code>, <code>buscar</code></div></div></div><div class="code-label">Ejemplo de respuesta con dos registros</div><pre class="code-block" data-code-mode="json"><code>{
+  &quot;datos&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;nombre&quot;: &quot;Renault 9&quot;,
+      &quot;anio&quot;: 1994,
+      &quot;precio&quot;: 12000000.5,
+      &quot;correo&quot;: &quot;cliente@ejemplo.com&quot;,
+      &quot;disponible&quot;: true
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;nombre&quot;: &quot;Mazda 3&quot;,
+      &quot;anio&quot;: 2020,
+      &quot;precio&quot;: 32000000,
+      &quot;correo&quot;: &quot;cliente@ejemplo.com&quot;,
+      &quot;disponible&quot;: true
+    }
+  ],
+  &quot;pagina&quot;: 1,
+  &quot;tamano&quot;: 5,
+  &quot;total&quot;: 13,
+  &quot;total_paginas&quot;: 3
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>El campo <code>datos</code> es una lista. <code>pagina</code> comienza en 1, <code>tamano</code> es el límite solicitado, <code>total</code> cuenta todos los resultados y <code>total_paginas</code> indica cuántas páginas existen. Los registros no se muestran como texto JSON al usuario.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Puedes identificar cuál parte del JSON corresponde a cada vehículo y qué información pertenece al paginador.</p></div></article>
+<article class="next-step" id="pu-step-13-2"><div class="next-step-top"><span class="next-step-number">13-2</span><div><span class="pu-badge">ACTUALIZAR MODELO EXISTENTE</span><h3>Convertir una respuesta JSON en objetos Vehiculo</h3></div></div><p>El mismo objeto que creaste en P5 continúa usándose. Ahora tiene un <code>id</code> proporcionado por PostgreSQL y sabe convertirse desde un mapa JSON.</p><div class="next-where"><div class="next-where-action">ACTUALIZAR MODELO EXISTENTE</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/models/vehiculo.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>factory Vehiculo.fromJson</code> y <code>toJson</code></div></div></div><div class="code-label">Modelo completo con factory fromJson() y toJson()</div><pre class="code-block" data-code-mode="dart"><code>class Vehiculo {
+  const Vehiculo({
+    required this.id,
+    required this.nombre,
+    required this.anio,
+    required this.precio,
+    required this.correo,
+    required this.disponible,
+  });
+  final int id;
+  final String nombre;
+  final int anio;
+  final double precio;
+  final String correo;
+  final bool disponible;
+
+  factory Vehiculo.fromJson(Map&lt;String, dynamic&gt; json) =&gt; Vehiculo(
+        id: json[&#39;id&#39;] as int,
+        nombre: json[&#39;nombre&#39;] as String,
+        anio: json[&#39;anio&#39;] as int,
+        precio: (json[&#39;precio&#39;] as num).toDouble(),
+        correo: json[&#39;correo&#39;] as String,
+        disponible: json[&#39;disponible&#39;] as bool,
+      );
+
+  Map&lt;String, dynamic&gt; toJson() =&gt; {
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: disponible,
+      };
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>jsonDecode</code> transforma el texto JSON en estructuras Dart. <code>Vehiculo.fromJson</code> toma cada campo, usa <code>as String</code> para texto y <code>(... as num).toDouble()</code> para decimales. <code>toJson()</code> devuelve los campos necesarios para enviar cambios por HTTP.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Muestra <code>Vehiculo(nombre: Renault 9)</code> mediante propiedades de un objeto, no leyendo manualmente <code>mapa['nombre']</code> desde cada widget.</p></div></article>
+<article class="next-step" id="pu-step-13-3"><div class="next-step-top"><span class="next-step-number">13-3</span><div><span class="pu-badge">CREAR MODELO DE PAGINACIÓN</span><h3>Crear un objeto para la página de resultados</h3></div></div><p>Una lista de vehículos no explica por sí sola cuántas páginas existen. El modelo de página encapsula los datos y el resumen que necesita la interfaz.</p><div class="next-where"><div class="next-where-action">CREAR MODELO DE PAGINACIÓN</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/models/pagina_vehiculos.dart</code> (nuevo)</div><div><strong>Buscar con Ctrl+F:</strong> <code>class PaginaVehiculos</code></div></div></div><div class="code-label">Archivo completo pagina_vehiculos.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#39;vehiculo.dart&#39;;
+
+class PaginaVehiculos {
+  const PaginaVehiculos({
+    required this.datos,
+    required this.pagina,
+    required this.tamano,
+    required this.total,
+    required this.totalPaginas,
+  });
+  final List&lt;Vehiculo&gt; datos;
+  final int pagina;
+  final int tamano;
+  final int total;
+  final int totalPaginas;
+
+  factory PaginaVehiculos.fromJson(Map&lt;String, dynamic&gt; json) =&gt; PaginaVehiculos(
+        datos: (json[&#39;datos&#39;] as List&lt;dynamic&gt;)
+            .map((item) =&gt; Vehiculo.fromJson(item as Map&lt;String, dynamic&gt;))
+            .toList(growable: false),
+        pagina: json[&#39;pagina&#39;] as int,
+        tamano: json[&#39;tamano&#39;] as int,
+        total: json[&#39;total&#39;] as int,
+        totalPaginas: json[&#39;total_paginas&#39;] as int,
+      );
+
+  factory PaginaVehiculos.vacia({int pagina = 1, int tamano = 5}) =&gt;
+      PaginaVehiculos(
+        datos: const [],
+        pagina: pagina,
+        tamano: tamano,
+        total: 0,
+        totalPaginas: 0,
+      );
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>(json['datos'] as List)</code> recorre el arreglo y <code>.map(...Vehiculo.fromJson)</code> convierte cada elemento. <code>datos</code> queda como <code>List&lt;Vehiculo&gt;</code>. <code>PaginaVehiculos.vacia</code> representa el caso sin resultados.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Puedes explicar por qué <code>pagina.datos</code> contiene vehículos y <code>pagina.totalPaginas</code> es un número.</p></div></article>
+<article class="next-step" id="pu-step-13-4"><div class="next-step-top"><span class="next-step-number">13-4</span><div><span class="pu-badge">MODIFICAR REPOSITORIO</span><h3>Pedir páginas por HTTP desde VehiculosApi</h3></div></div><p>El repositorio transforma el número de página y el tamaño en una URL. Flutter no necesita SQL, solo enviar GET al servidor.</p><div class="next-where"><div class="next-where-action">MODIFICAR REPOSITORIO</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/repositories/vehiculos_api.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>Future&lt;PaginaVehiculos&gt; listarPagina</code></div></div></div><div class="code-label">Método listarPagina(): GET más JSON</div><pre class="code-block" data-code-mode="dart"><code>Future&lt;PaginaVehiculos&gt; listarPagina({
+    required int pagina,
+    required int tamano,
+    String buscar = &#39;&#39;,
+  }) async {
+    final uri = Uri.parse(urlBase + &#39;/vehiculos&#39;).replace(
+      queryParameters: {
+        &#39;pagina&#39;: pagina.toString(),
+        &#39;tamano&#39;: tamano.toString(),
+        &#39;buscar&#39;: buscar,
+      },
+    );
+    final respuesta = await _cliente.get(uri, headers: _headers);
+    _verificar(respuesta, 200);
+    return PaginaVehiculos.fromJson(
+      jsonDecode(respuesta.body) as Map&lt;String, dynamic&gt;,
+    );
+  }</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>Uri.replace(queryParameters: ...)</code> construye la dirección sin concatenar manualmente parámetros especiales. <code>await</code> espera la respuesta, <code>jsonDecode</code> interpreta JSON y <code>PaginaVehiculos.fromJson</code> produce el objeto. Ejemplo: <code>GET /vehiculos?pagina=2&amp;tamano=5&amp;buscar=renault</code>.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Al buscar Renault, la API responde únicamente con las coincidencias y sus metadatos de página.</p></div></article>
+<article class="next-step" id="pu-step-13-5"><div class="next-step-top"><span class="next-step-number">13-5</span><div><span class="pu-badge">AMPLIAR EVENTOS BLoC</span><h3>Crear eventos de cambiar página y buscar</h3></div></div><p>Con BLoC el widget no hace HTTP directamente. Envía una orden, BLoC llama al repositorio y después publica los resultados.</p><div class="next-where"><div class="next-where-action">AMPLIAR EVENTOS BLoC</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/bloc/vehiculos_evento.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>class PaginaSolicitada</code>, <code>TamanoPaginaCambiado</code></div></div></div><div class="code-label">Eventos reales usados para paginar y buscar</div><pre class="code-block" data-code-mode="dart"><code>class PaginaSolicitada extends VehiculosEvento {
+  PaginaSolicitada(this.pagina);
+  final int pagina;
+}
+
+class TamanoPaginaCambiado extends VehiculosEvento {
+  TamanoPaginaCambiado(this.tamano);
+  final int tamano;
+}
+
+class BusquedaSolicitada extends VehiculosEvento {
+  BusquedaSolicitada(this.texto);
+  final String texto;
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>PaginaSolicitada(2)</code> significa que el estudiante quiere ver la segunda página; <code>TamanoPaginaCambiado(10)</code> solicita diez registros; <code>BusquedaSolicitada('Mazda')</code> pide filtrar. Cambiar tamaño o búsqueda reinicia a página 1.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Puedes reconocer la diferencia entre un evento del usuario y el estado resultante de la consulta.</p></div></article>
+<article class="next-step" id="pu-step-13-6"><div class="next-step-top"><span class="next-step-number">13-6</span><div><span class="pu-badge">ACTUALIZAR ESTADO Y BLoC</span><h3>Administrar la página en el estado y manejar fallos</h3></div></div><p>Un servidor puede tardar o no estar disponible. BLoC debe indicar que está cargando, guardar la página recibida y mostrar errores recuperables.</p><div class="next-where"><div class="next-where-action">ACTUALIZAR ESTADO Y BLoC</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>lib/bloc/vehiculos_estado.dart</code> y <code>vehiculos_bloc.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>final PaginaVehiculos pagina</code>, <code>_cargar</code></div></div></div><div class="code-label">Estructura principal del estado con sesión, página y carga</div><pre class="code-block" data-code-mode="dart"><code>import &#39;../models/pagina_vehiculos.dart&#39;;
+import &#39;../models/sesion_usuario.dart&#39;;
+
+class VehiculosEstado {
+  const VehiculosEstado({
+    required this.pagina,
+    this.sesion,
+    this.busqueda = &#39;&#39;,
+    this.cargando = false,
+    this.enviando = false,
+    this.error,
+    this.idEnEdicion,
+    this.revisionGuardado = 0,
+  });
+
+  final SesionUsuario? sesion;
+  final PaginaVehiculos pagina;
+  final String busqueda;
+  final bool cargando;
+  final bool enviando;
+  final String? error;
+  final int? idEnEdicion;
+  final int revisionGuardado;
+
+  bool get autenticado =&gt; sesion != null;
+  bool get puedeEditar =&gt; sesion?.puedeModificar ?? false;
+
+  factory VehiculosEstado.inicial() =&gt;
+      VehiculosEstado(pagina: PaginaVehiculos.vacia());
+
+  VehiculosEstado copyWith({
+    SesionUsuario? sesion,
+    PaginaVehiculos? pagina,
+    String? busqueda,
+    bool? cargando,
+    bool? enviando,
+    String? error,
+    bool borrarError = false,
+    int? idEnEdicion,
+    bool limpiarEdicion = false,
+    int? revisionGuardado,
+  }) =&gt;
+      VehiculosEstado(
+        sesion: sesion ?? this.sesion,
+        pagina: pagina ?? this.pagina,
+        busqueda: busqueda ?? this.busqueda,
+        cargando: cargando ?? this.cargando,
+        enviando: enviando ?? this.enviando,
+        error: borrarError ? null : (error ?? this.error),
+        idEnEdicion:
+            limpiarEdicion ? null : (idEnEdicion ?? this.idEnEdicion),
+        revisionGuardado: revisionGuardado ?? this.revisionGuardado,
+      );
+}</code></pre><div class="code-label">Función real que obtiene una página y controla errores</div><pre class="code-block" data-code-mode="dart"><code>Future&lt;bool&gt; _cargar(
+    Emitter&lt;VehiculosEstado&gt; emit, {
+    required int numero,
+    int? tamano,
+    String? buscar,
+  }) async {
+    if (!state.autenticado) return false;
+    final tamanoSolicitado = tamano ?? state.pagina.tamano;
+    final filtro = buscar ?? state.busqueda;
+    emit(state.copyWith(cargando: true, borrarError: true));
+    try {
+      var resultado = await api.listarPagina(
+        pagina: numero,
+        tamano: tamanoSolicitado,
+        buscar: filtro,
+      );
+      if (numero &gt; 1 &amp;&amp; numero &gt; resultado.totalPaginas) {
+        final ultima = resultado.totalPaginas &lt; 1 ? 1 : resultado.totalPaginas;
+        resultado = await api.listarPagina(
+          pagina: ultima,
+          tamano: tamanoSolicitado,
+          buscar: filtro,
+        );
+      }
+      emit(state.copyWith(
+        pagina: resultado,
+        busqueda: filtro,
+        cargando: false,
+        limpiarEdicion: true,
+      ));
+      return true;
+    } catch (error) {
+      emit(state.copyWith(
+        pagina: PaginaVehiculos.vacia(
+          pagina: numero,
+          tamano: tamanoSolicitado,
+        ),
+        busqueda: filtro,
+        cargando: false,
+        error: _mensaje(error),
+      ));
+      return false;
+    }
+  }</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>cargando</code> evita que se soliciten páginas mientras llega una respuesta. <code>error</code> comunica qué falló y <code>_cargar</code> conserva <code>buscar</code> y el tamaño actual. Si eliminas el último carro de una página, consulta la última página que todavía exista.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Al cambiar páginas aparece un indicador de carga; si FastAPI está apagado se muestra un mensaje y es posible reintentar.</p></div></article>
+<article class="next-step" id="pu-step-13-7"><div class="next-step-top"><span class="next-step-number">13-7</span><div><span class="pu-badge">CREAR WIDGET NUEVO</span><h3>Crear controles reutilizables de paginación</h3></div></div><p>En lugar de repetir botones en cada pantalla, crea un widget que reciba los datos de la página y funciones para pedir otra.</p><div class="next-where"><div class="next-where-action">CREAR WIDGET NUEVO</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/widgets/controles_paginacion.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>class ControlesPaginacion</code></div></div></div><div class="code-label">Widget completo ControlesPaginacion</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../models/pagina_vehiculos.dart&#39;;
+
+class ControlesPaginacion extends StatelessWidget {
+  const ControlesPaginacion({
+    super.key,
+    required this.pagina,
+    required this.cargando,
+    required this.alCambiarPagina,
+    required this.alCambiarTamano,
+  });
+
+  final PaginaVehiculos pagina;
+  final bool cargando;
+  final ValueChanged&lt;int&gt; alCambiarPagina;
+  final ValueChanged&lt;int&gt; alCambiarTamano;
+
+  @override
+  Widget build(BuildContext context) {
+    final paginas = pagina.totalPaginas;
+    final puedeRetroceder = !cargando &amp;&amp; pagina.pagina &gt; 1;
+    final puedeAvanzar = !cargando &amp;&amp; pagina.pagina &lt; paginas;
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 12,
+      runSpacing: 8,
+      children: [
+        Text(&#39;Total: &#39; + pagina.total.toString() + &#39; vehículos&#39;),
+        DropdownButton&lt;int&gt;(
+          value: pagina.tamano,
+          tooltip: &#39;Registros por página&#39;,
+          items: const [5, 10, 20]
+              .map((numero) =&gt; DropdownMenuItem&lt;int&gt;(
+                    value: numero,
+                    child: Text(numero.toString() + &#39; por página&#39;),
+                  ))
+              .toList(),
+          onChanged: cargando
+              ? null
+              : (numero) {
+                  if (numero != null) alCambiarTamano(numero);
+                },
+        ),
+        IconButton(
+          tooltip: &#39;Página anterior&#39;,
+          onPressed: puedeRetroceder
+              ? () =&gt; alCambiarPagina(pagina.pagina - 1)
+              : null,
+          icon: const Icon(Icons.chevron_left),
+        ),
+        Text(
+          &#39;Página &#39; + pagina.pagina.toString() + &#39; de &#39; +
+              (paginas == 0 ? &#39;0&#39; : paginas.toString()),
+          semanticsLabel: &#39;Página &#39; + pagina.pagina.toString() +
+              &#39; de &#39; + paginas.toString(),
+        ),
+        IconButton(
+          tooltip: &#39;Página siguiente&#39;,
+          onPressed: puedeAvanzar
+              ? () =&gt; alCambiarPagina(pagina.pagina + 1)
+              : null,
+          icon: const Icon(Icons.chevron_right),
+        ),
+      ],
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>ValueChanged&lt;int&gt;</code> es una función que recibe un número y devuelve <code>void</code>. Los botones «Anterior» y «Siguiente» se deshabilitan cuando están fuera de rango, y <code>DropdownButton</code> selecciona 5, 10 o 20. <code>Wrap</code> permite reorganizar los controles en móvil.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Al mostrar página 1 de 3, «Anterior» está deshabilitado y «Siguiente» permite avanzar.</p></div></article>
+<article class="next-step" id="pu-step-13-8"><div class="next-step-top"><span class="next-step-number">13-8</span><div><span class="pu-badge">CREAR WIDGET DE PRESENTACIÓN</span><h3>Mostrar la misma List<Vehiculo> en dos widgets</h3></div></div><p>La API ya entregó objetos. Ahora eliges el widget según el ancho: tarjetas en celular, tabla en escritorio. No escribas otra consulta HTTP dentro del widget.</p><div class="next-where"><div class="next-where-action">CREAR WIDGET DE PRESENTACIÓN</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/widgets/vista_vehiculos.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>class VistaVehiculos</code></div></div></div><div class="code-label">Widget completo: ListView.builder y DataTable</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../models/vehiculo.dart&#39;;
+
+class VistaVehiculos extends StatelessWidget {
+  const VistaVehiculos({
+    super.key,
+    required this.vehiculos,
+    required this.puedeEditar,
+    required this.alEditar,
+    required this.alEliminar,
+  });
+
+  final List&lt;Vehiculo&gt; vehiculos;
+  final bool puedeEditar;
+  final ValueChanged&lt;Vehiculo&gt; alEditar;
+  final ValueChanged&lt;Vehiculo&gt; alEliminar;
+
+  @override
+  Widget build(BuildContext context) {
+    if (vehiculos.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(22),
+          child: Text(&#39;No hay vehículos en esta búsqueda.&#39;),
+        ),
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, restricciones) {
+        if (restricciones.maxWidth &lt; 720) {
+          return ListView.builder(
+            itemCount: vehiculos.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, indice) {
+              final auto = vehiculos[indice];
+              return Card(
+                key: ValueKey(auto.id),
+                child: ListTile(
+                  title: Text(auto.nombre),
+                  subtitle: Text(
+                    &#39;Año &#39; + auto.anio.toString() +
+                    &#39; · Precio &#39; + auto.precio.toStringAsFixed(2) +
+                    &#39;\n&#39; + auto.correo,
+                  ),
+                  isThreeLine: true,
+                  trailing: puedeEditar
+                      ? PopupMenuButton&lt;String&gt;(
+                          tooltip: &#39;Acciones para &#39; + auto.nombre,
+                          onSelected: (opcion) {
+                            if (opcion == &#39;editar&#39;) alEditar(auto);
+                            if (opcion == &#39;eliminar&#39;) alEliminar(auto);
+                          },
+                          itemBuilder: (_) =&gt; const [
+                            PopupMenuItem(
+                              value: &#39;editar&#39;,
+                              child: Text(&#39;Editar&#39;),
+                            ),
+                            PopupMenuItem(
+                              value: &#39;eliminar&#39;,
+                              child: Text(&#39;Eliminar&#39;),
+                            ),
+                          ],
+                        )
+                      : null,
+                ),
+              );
+            },
+          );
+        }
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: [
+              const DataColumn(label: Text(&#39;ID&#39;)),
+              const DataColumn(label: Text(&#39;Vehículo&#39;)),
+              const DataColumn(label: Text(&#39;Año&#39;)),
+              const DataColumn(label: Text(&#39;Precio&#39;)),
+              const DataColumn(label: Text(&#39;Correo&#39;)),
+              if (puedeEditar)
+                const DataColumn(label: Text(&#39;Acciones&#39;)),
+            ],
+            rows: vehiculos.map((auto) =&gt; DataRow(
+              cells: [
+                DataCell(Text(auto.id.toString())),
+                DataCell(Text(auto.nombre)),
+                DataCell(Text(auto.anio.toString())),
+                DataCell(Text(auto.precio.toStringAsFixed(2))),
+                DataCell(Text(auto.correo)),
+                if (puedeEditar)
+                  DataCell(Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        tooltip: &#39;Editar &#39; + auto.nombre,
+                        onPressed: () =&gt; alEditar(auto),
+                        icon: const Icon(Icons.edit_outlined),
+                      ),
+                      IconButton(
+                        tooltip: &#39;Eliminar &#39; + auto.nombre,
+                        onPressed: () =&gt; alEliminar(auto),
+                        icon: const Icon(Icons.delete_outline),
+                      ),
+                    ],
+                  )),
+              ],
+            )).toList(),
+          ),
+        );
+      },
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>LayoutBuilder</code> lee el ancho disponible. Si es menor a 720, <code>ListView.builder</code> crea tarjetas. En pantallas amplias, <code>DataTable</code> construye filas desde la <strong>misma lista tipada</strong>. El ID real acompaña a cada objeto y evita confusiones al filtrar.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Los campos nombre, año, precio y correo aparecen en ambas presentaciones. Para Lector no se dibujan acciones de editar o eliminar.</p></div></article>
+<article class="next-step" id="pu-step-13-9"><div class="next-step-top"><span class="next-step-number">13-9</span><div><span class="pu-badge">COMPARAR DOS ENFOQUES</span><h3>Distinguir PaginatedDataTable de la paginación API</h3></div></div><p>Flutter incluye una tabla paginada que funciona con un <code>DataTableSource</code> de larga duración. Es distinta de pedir páginas al servidor: el widget no descarga registros por sí solo.</p><div class="next-where"><div class="next-where-action">COMPARAR DOS ENFOQUES</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>lib/widgets/tabla_paginada_local.dart</code> (práctica opcional)</div><div><strong>Buscar con Ctrl+F:</strong> <code>DataTableSource</code> y <code>PaginatedDataTable</code></div></div></div><div class="code-label">Referencia opcional: PaginatedDataTable solo con lista completa</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../models/vehiculo.dart&#39;;
+
+// EJEMPLO OPCIONAL: solo si ya tienes TODOS los registros en memoria.
+// NO lo combines con GET /vehiculos paginado por el servidor.
+class FuenteVehiculosLocal extends DataTableSource {
+  FuenteVehiculosLocal(this._datos);
+  List&lt;Vehiculo&gt; _datos;
+
+  void reemplazar(List&lt;Vehiculo&gt; nuevos) {
+    _datos = nuevos;
+    notifyListeners();
+  }
+
+  @override
+  DataRow? getRow(int indice) {
+    if (indice &gt;= _datos.length) return null;
+    final v = _datos[indice];
+    return DataRow.byIndex(
+      index: indice,
+      cells: [
+        DataCell(Text(v.nombre)),
+        DataCell(Text(v.anio.toString())),
+        DataCell(Text(v.precio.toStringAsFixed(2))),
+      ],
+    );
+  }
+
+  @override
+  int get rowCount =&gt; _datos.length;
+
+  @override
+  bool get isRowCountApproximate =&gt; false;
+
+  @override
+  int get selectedRowCount =&gt; 0;
+}
+
+class TablaPaginadaLocal extends StatefulWidget {
+  const TablaPaginadaLocal({super.key, required this.todos});
+  final List&lt;Vehiculo&gt; todos;
+
+  @override
+  State&lt;TablaPaginadaLocal&gt; createState() =&gt; _TablaPaginadaLocalState();
+}
+
+class _TablaPaginadaLocalState extends State&lt;TablaPaginadaLocal&gt; {
+  late FuenteVehiculosLocal fuente;
+
+  @override
+  void initState() {
+    super.initState();
+    fuente = FuenteVehiculosLocal(widget.todos);
+  }
+
+  @override
+  void didUpdateWidget(covariant TablaPaginadaLocal anterior) {
+    super.didUpdateWidget(anterior);
+    fuente.reemplazar(widget.todos);
+  }
+
+  @override
+  void dispose() {
+    fuente.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PaginatedDataTable(
+      header: const Text(&#39;Vehículos en memoria&#39;),
+      columns: const [
+        DataColumn(label: Text(&#39;Nombre&#39;)),
+        DataColumn(label: Text(&#39;Año&#39;)),
+        DataColumn(label: Text(&#39;Precio&#39;)),
+      ],
+      source: fuente,
+      rowsPerPage: 5,
+      availableRowsPerPage: const [5, 10, 20],
+      showFirstLastButtons: true,
+      showCheckboxColumn: false,
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>getRow(indice)</code> dibuja una fila local y <code>rowCount</code> es el total de objetos que ya tienes. <code>notifyListeners()</code> comunica cambios en esa fuente. <strong>No combines este ejemplo con el paginado remoto P13:</strong> de lo contrario puedes contar como total solo los cinco objetos recibidos del servidor.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Sabes cuándo utilizar DataTable, PaginatedDataTable y ListView; distingues datos de la página de un conjunto completo en memoria.</p></div></article>
+<article class="next-step" id="pu-step-13-10"><div class="next-step-top"><span class="next-step-number">13-10</span><div><span class="pu-badge">EDITAR MAIN.DART Y VALIDAR</span><h3>Conectar el paginador al BLoC y probar 13 vehículos</h3></div></div><p>El formulario, menú y roles que construiste siguen disponibles. La vista de resultados recibe <code>estado.pagina.datos</code>, no todo el JSON como texto.</p><div class="next-where"><div class="next-where-action">EDITAR MAIN.DART Y VALIDAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>VistaVehiculos</code>, <code>ControlesPaginacion</code>, <code>BlocConsumer</code></div></div></div><div class="code-label">Fragmento: mostrar widgets paginados</div><pre class="code-block" data-code-mode="dart"><code>VistaVehiculos(
+              vehiculos: estado.pagina.datos,
+              puedeEditar: estado.puedeEditar &amp;&amp; !estado.enviando,
+              alEditar: editarVehiculo,
+              alEliminar: confirmarEliminar,
+            ),
+            const SizedBox(height: 14),
+            ControlesPaginacion(
+              pagina: estado.pagina,
+              cargando: estado.cargando || estado.enviando,
+              alCambiarPagina: (numero) =&gt;
+                  context.read&lt;VehiculosBloc&gt;().add(PaginaSolicitada(numero)),
+              alCambiarTamano: (tamano) =&gt; context
+                  .read&lt;VehiculosBloc&gt;()
+                  .add(TamanoPaginaCambiado(tamano)),
+            ),</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>BlocConsumer</code> escucha los estados de BLoC, el paginador envía nuevos eventos, y <code>VistaVehiculos</code> únicamente dibuja objetos. Prueba 13 registros con tamaño 5: esperas páginas de 5, 5 y 3. Cambiar a 10 debe dejar solo dos páginas.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>La UI muestra «Mostrando 1–5 de 13», y el lector no recibe controles de escritura. Reinicia Flutter y confirma que PostgreSQL conserva todos los vehículos.</p></div></article>
+<div class="pu-files"><a href="./ejemplo_roles_paginacion/flutter/lib/models/vehiculo.dart" target="_blank" rel="noopener noreferrer">Modelo Vehiculo ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/models/pagina_vehiculos.dart" target="_blank" rel="noopener noreferrer">PaginaVehiculos ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/widgets/vista_vehiculos.dart" target="_blank" rel="noopener noreferrer">ListView y DataTable ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/widgets/controles_paginacion.dart" target="_blank" rel="noopener noreferrer">Controles de página ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/widgets/tabla_paginada_local.dart" target="_blank" rel="noopener noreferrer">PaginatedDataTable opcional ↗</a><a href="./ejemplo_roles_paginacion/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart final ↗</a></div>
+<div class="pu-status"><strong>Importante:</strong> para comprobar 13 vehículos, créalos desde el formulario de Administrador o Swagger. El backend usa <code>ORDER BY id</code> y <code>LIMIT/OFFSET</code>. Para cursos con muchas filas o datos cambiantes, también se puede enseñar más adelante paginación por cursor.</div>
+<div class="checklist" data-checklist="paginacion-widget"><label><input type="checkbox"> Convierto JSON en objetos Vehiculo.</label><label><input type="checkbox"> Comprendo los campos datos, total, pagina y total_paginas.</label><label><input type="checkbox"> Puedo cambiar 5, 10 y 20 registros por página.</label><label><input type="checkbox"> Distingo ListView, DataTable y PaginatedDataTable.</label><label><input type="checkbox"> La búsqueda reinicia a página 1.</label><label><input type="checkbox"> El paginador permite volver a consultar después de un error.</label></div>
+<div class="exercise"><span class="exercise-label">PRÁCTICA TRANSVERSAL</span><h3>Representa 13 vehículos con un único modelo Dart</h3><p>Agrega 13 objetos a PostgreSQL, cambia entre páginas en un emulador y en Chrome, filtra «Renault» y explica el recorrido completo GET → PaginaVehiculos.fromJson → BlocBuilder → VistaVehiculos → ControlesPaginacion. Muestra qué pasa si falla la red.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="paginacion-widget">Marcar módulo como completado</button><a class="next-link" href="#heuristicas-ux">Siguiente etapa →</a></div></section>
+<section class="page lesson next-module post-api-lesson" id="heuristicas-ux" aria-labelledby="heuristicas-ux-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P14</span><span class="status-pill planned">UI · UX · pruebas con usuarios</span></div>
+<h1 id="heuristicas-ux-title">Heurísticas de diseño, usabilidad y accesibilidad</h1><p>Cerramos el proyecto revisando la calidad de la experiencia. Aplicaremos las diez heurísticas de Nielsen a los widgets, el menú, los formularios, la paginación y los roles, con una lista interactiva de evaluación.</p></div><div class="notice notice-info"><strong>Conceptos clave:</strong> <strong>UI</strong> describe los elementos visibles; <strong>UX</strong> estudia la experiencia completa; <strong>usabilidad</strong> evalúa qué tan fácil es lograr una tarea; y <strong>accesibilidad</strong> procura que personas con distintas capacidades puedan usarla. Las heurísticas son orientaciones para revisar una interfaz, no reglas automáticas que garanticen calidad.</div>
+<div class="pu-bridge"><div><span>APRENDIBLE</span><strong>Se entiende sin memorizar</strong><p>Etiquetas claras, estados visibles y ayuda contextual.</p></div><div><span>EFICIENTE</span><strong>Se completa una tarea sin rodeos</strong><p>Buscar vehículos, cambiar página y ver permisos.</p></div><div><span>SEGURA</span><strong>Evita errores costosos</strong><p>Validaciones, confirmación al borrar y permisos en el backend.</p></div></div>
+<div class="pu-demo" id="pu-heuristicas-demo"><h3>Evalúa la Tienda con las 10 heurísticas de Nielsen</h3><p>Marca una regla solo cuando puedas demostrarla en tu aplicación. Esta lista es una evaluación guiada, no una calificación automática ni sustituye observar estudiantes reales usando la interfaz.</p>
+<div class="pu-heuristics"><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Visibilidad del estado del sistema"><span><strong>1. Visibilidad del estado del sistema</strong><p>Al entrar o cambiar página hay indicador de carga y mensaje de resultado</p><small>Ejemplo en la Tienda: Mostrar «Consultando...» y evitar acciones duplicadas.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Correspondencia con el mundo real"><span><strong>2. Correspondencia con el mundo real</strong><p>La Tienda utiliza palabras como vehículos, precio y eliminar, no nombres de clases</p><small>Ejemplo en la Tienda: No mostrar mensajes técnicos como SocketException al usuario.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Control y libertad del usuario"><span><strong>3. Control y libertad del usuario</strong><p>El usuario puede cancelar edición, volver del menú y descartar eliminación</p><small>Ejemplo en la Tienda: Preguntar antes de borrar y ofrecer Cancelar.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Consistencia y estándares"><span><strong>4. Consistencia y estándares</strong><p>Botones e iconos mantienen ubicación, textos y colores coherentes</p><small>Ejemplo en la Tienda: El icono papelera siempre significa eliminar.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Prevención de errores"><span><strong>5. Prevención de errores</strong><p>Los campos se validan y el lector no ve acciones que no puede hacer</p><small>Ejemplo en la Tienda: Deshabilitar anterior en página 1 y pedir confirmación de borrado.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Reconocimiento antes que recuerdo"><span><strong>6. Reconocimiento antes que recuerdo</strong><p>La interfaz muestra rol, nombre de campo y número de página</p><small>Ejemplo en la Tienda: No pedir al usuario recordar qué página había abierto.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Flexibilidad y eficiencia"><span><strong>7. Flexibilidad y eficiencia</strong><p>Buscar, elegir tamaño de página y usar tabla o tarjetas según pantalla</p><small>Ejemplo en la Tienda: Ofrecer 5/10/20 registros y navegación accesible.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Estética y diseño minimalista"><span><strong>8. Estética y diseño minimalista</strong><p>El inventario muestra solo los datos útiles y acciones pertinentes al rol</p><small>Ejemplo en la Tienda: No colocar seis botones repetidos en cada tarjeta móvil.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Reconocer, diagnosticar y solucionar errores"><span><strong>9. Reconocer, diagnosticar y solucionar errores</strong><p>Ante fallo de API se explica el problema y existe Reintentar</p><small>Ejemplo en la Tienda: Distinguir 401, 403 y conexión caída con mensajes comprensibles.</small></span></label><label class="pu-heuristic"><input type="checkbox" data-pu-heuristica="Ayuda y documentación"><span><strong>10. Ayuda y documentación</strong><p>Existe una página Ayuda y mensajes cerca del campo que falló</p><small>Ejemplo en la Tienda: Enlazar instrucciones sobre conexión y roles desde Ayuda.</small></span></label></div>
+<div class="pu-status" role="status" aria-live="polite"><strong data-pu-puntaje>0 / 10 comprobaciones</strong><p data-pu-pendientes class="pu-review"></p></div></div>
+<div class="next-section-heading"><span>DISEÑO Y CALIDAD APLICADOS AL PROYECTO</span><h2>Convertir las heurísticas en cambios y pruebas observables</h2></div>
+<article class="next-step" id="pu-step-14-1"><div class="next-step-top"><span class="next-step-number">14-1</span><div><span class="pu-badge">RECONOCER CONCEPTOS</span><h3>Comprender UX, UI, usabilidad y accesibilidad</h3></div></div><p>Una interfaz puede verse bonita y aun así ser difícil de usar. Evalúa si un estudiante puede iniciar sesión, buscar un carro, editarlo y salir sin perderse.</p><div class="next-where"><div class="next-where-action">RECONOCER CONCEPTOS</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code> y toda la Tienda</div><div><strong>Buscar con Ctrl+F:</strong> <code>Scaffold</code>, <code>Form</code>, <code>ListView</code></div></div></div><div class="pu-concept"><div><strong>Diseño visual · UI</strong><p>Color, espaciado, tamaños, contraste, jerarquía y apariencia de controles.</p></div><div><strong>Experiencia y usabilidad · UX</strong><p>Comprender qué hacer, cuánto tarda, cuántos errores ocurren y cuánta confianza transmite.</p></div><div><strong>Accesibilidad</strong><p>Etiquetas, lector de pantalla, teclado, foco, contraste y objetivos táctiles.</p></div><div><strong>Evaluación heurística</strong><p>Revisión experta con reglas observables que detecta problemas antes de una prueba con usuarios.</p></div></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>Define una tarea verificable para cada concepto: buscar un carro, cambiar su precio, consultar como lector y recuperar un error de red.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Puedes explicar por qué mejorar los colores no sustituye comprobar que el botón «Eliminar» funciona y que el texto puede leerse.</p></div></article>
+<article class="next-step" id="pu-step-14-2"><div class="next-step-top"><span class="next-step-number">14-2</span><div><span class="pu-badge">MEJORAR RETROALIMENTACIÓN</span><h3>Mostrar el estado y comunicar resultados</h3></div></div><p>La persona debe saber qué está ocurriendo cuando busca una página o presiona «Guardar». Si no ve nada, probablemente pulsará varias veces.</p><div class="next-where"><div class="next-where-action">MEJORAR RETROALIMENTACIÓN</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code> y <code>lib/bloc/vehiculos_estado.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>LinearProgressIndicator</code>, <code>SnackBar</code>, <code>estado.error</code></div></div></div><div class="code-label">Fragmento de interfaz que muestra carga y error</div><pre class="code-block" data-code-mode="dart"><code>if (estado.cargando) ...[
+              const LinearProgressIndicator(),
+              const SizedBox(height: 8),
+              const Text(&#39;Consultando vehículos...&#39;),
+            ],
+            if (estado.error != null) ...[
+              Card(
+                color: Theme.of(context).colorScheme.errorContainer,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Text(estado.error!),
+                      TextButton.icon(
+                        onPressed: () =&gt; context.read&lt;VehiculosBloc&gt;().add(
+                              BusquedaSolicitada(buscarController.text),
+                            ),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text(&#39;Reintentar&#39;),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>Usa un indicador mientras llega la respuesta y un mensaje junto al inventario cuando falla. El botón Guardar deshabilitado mientras <code>enviando</code> impide solicitudes duplicadas. <code>SnackBar</code> confirma guardados completos, no solicitudes iniciadas.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Apaga FastAPI, consulta la lista y verifica que aparece Reintentar sin perder el texto del buscador.</p></div></article>
+<article class="next-step" id="pu-step-14-3"><div class="next-step-top"><span class="next-step-number">14-3</span><div><span class="pu-badge">VALIDAR Y CONFIRMAR</span><h3>Prevenir errores antes de ejecutar acciones irreversibles</h3></div></div><p>Borrar es una acción que puede tener consecuencias. Una pregunta clara y un botón Cancelar son preferibles a un borrado inmediato.</p><div class="next-where"><div class="next-where-action">VALIDAR Y CONFIRMAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code> → funciones de eliminación</div><div><strong>Buscar con Ctrl+F:</strong> <code>Future&lt;void&gt; confirmarEliminar</code></div></div></div><div class="code-label">Diálogo de confirmación antes de emitir VehiculoEliminado</div><pre class="code-block" data-code-mode="dart"><code>Future&lt;void&gt; confirmarEliminar(Vehiculo vehiculo) async {
+    final confirmado = await showDialog&lt;bool&gt;(
+      context: context,
+      builder: (dialogContext) =&gt; AlertDialog(
+        title: const Text(&#39;¿Eliminar vehículo?&#39;),
+        content: Text(&#39;Se eliminará &#39; + vehiculo.nombre + &#39;. Esta acción no se puede deshacer.&#39;),
+        actions: [
+          TextButton(
+            onPressed: () =&gt; Navigator.pop(dialogContext, false),
+            child: const Text(&#39;Cancelar&#39;),
+          ),
+          FilledButton(
+            onPressed: () =&gt; Navigator.pop(dialogContext, true),
+            child: const Text(&#39;Eliminar&#39;),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || confirmado != true) return;
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(vehiculo.id));
+  }</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>showDialog&lt;bool&gt;</code> abre la pregunta, <code>Navigator.pop(..., false)</code> cancela y <code>true</code> confirma. Solo después se envía el evento. <code>mounted</code> evita utilizar el contexto si la pantalla ya se cerró.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Pulsa Eliminar y luego Cancelar: el vehículo debe mantenerse sin consultar otra página.</p></div></article>
+<article class="next-step" id="pu-step-14-4"><div class="next-step-top"><span class="next-step-number">14-4</span><div><span class="pu-badge">COMPROBAR EN MÓVIL Y ESCRITORIO</span><h3>Revisar accesibilidad, tamaño y jerarquía</h3></div></div><p>No todos los estudiantes navegan con mouse. Debes revisar lectura de pantalla, foco de teclado, zoom, contraste y botones táctiles.</p><div class="next-where"><div class="next-where-action">COMPROBAR EN MÓVIL Y ESCRITORIO</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>lib/widgets/vista_vehiculos.dart</code> y <code>controles_paginacion.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>tooltip</code>, <code>LayoutBuilder</code>, <code>Wrap</code></div></div></div><div class="code-label">Ejemplo de botón comprensible y accesible</div><pre class="code-block" data-code-mode="dart"><code>IconButton(
+  tooltip: &#39;Página siguiente&#39;,
+  onPressed: puedeAvanzar
+      ? () =&gt; alCambiarPagina(pagina.pagina + 1)
+      : null,
+  icon: const Icon(Icons.chevron_right),
+),</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>tooltip</code> explica el icono; las etiquetas de campos y el texto del rol permiten reconocer acciones sin depender solo del color. Revisa objetivos táctiles de al menos 48×48 dp y contraste suficiente, así como escalado de fuentes y navegación con TalkBack/VoiceOver.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>En pantalla estrecha la tabla cambia a tarjetas. Los controles se pueden tocar sin errores y se entiende qué hace cada icono.</p></div></article>
+<article class="next-step" id="pu-step-14-5"><div class="next-step-top"><span class="next-step-number">14-5</span><div><span class="pu-badge">REVISAR LA TIENDA COMO USUARIO</span><h3>Comprobar consistencia, eficiencia y diseño mínimo</h3></div></div><p>El rol Lector debería poder consultar sin distraerse con botones que no sirven; el Administrador encuentra las acciones donde las necesita.</p><div class="next-where"><div class="next-where-action">REVISAR LA TIENDA COMO USUARIO</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code> y navegación por Drawer</div><div><strong>Buscar con Ctrl+F:</strong> <code>Drawer</code>, <code>ControlesPaginacion</code>, <code>VistaVehiculos</code></div></div></div><div class="pu-concept"><div><strong>Antes: interfaz difícil</strong><p>Una sola lista de 100 registros, botones pequeños, mensajes técnicos y acciones no permitidas para Lector.</p></div><div><strong>Después: interfaz útil</strong><p>Buscar + páginas + 5/10/20 filas, errores recuperables, roles visibles y acciones explícitas.</p></div></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>Analiza número de pasos para ver un vehículo, tiempo de respuesta, legibilidad y uniformidad de los controles. El cambio de tarjetas/tabla es una respuesta al ancho y no una nueva fuente de datos.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Un estudiante puede completar tres tareas seguidas sin que el docente tenga que señalar dónde está cada botón.</p></div></article>
+<article class="next-step" id="pu-step-14-6"><div class="next-step-top"><span class="next-step-number">14-6</span><div><span class="pu-badge">HACER UNA PRUEBA CON OTRA PERSONA</span><h3>Realizar una prueba de usabilidad verificable</h3></div></div><p>No basta con marcar las heurísticas sin observar a alguien utilizar la Tienda. Propón una prueba corta con un compañero sin explicarle dónde están los botones.</p><div class="next-where"><div class="next-where-action">HACER UNA PRUEBA CON OTRA PERSONA</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> La app funcionando en móvil y Chrome</div><div><strong>Buscar con Ctrl+F:</strong> Lista de tareas y hoja de observaciones</div></div></div><div class="pu-table-scroll"><table class="pu-table"><thead><tr><th>Tarea observable</th><th>Éxito</th><th>Qué registrar</th></tr></thead><tbody>
+<tr><td>Entrar como Lector y buscar Mazda</td><td>Encuentra el registro</td><td>Tiempo, pasos y dudas</td></tr>
+<tr><td>Cambiar a 10 registros por página</td><td>Se actualiza el total visible</td><td>Comprensión de los controles</td></tr>
+<tr><td>Entrar como Admin y editar un precio</td><td>Guarda el cambio sin duplicar</td><td>Errores del formulario</td></tr>
+<tr><td>Cancelar una eliminación</td><td>El vehículo sigue registrado</td><td>Claridad de la confirmación</td></tr>
+<tr><td>Desconectar la API y volver a intentar</td><td>Se recupera tras restaurarla</td><td>Utilidad del mensaje y del botón</td></tr></tbody></table></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p>Registra observaciones y mejoras concretas. Una tasa de éxito alta es distinta de la satisfacción del usuario; pregunta también si entendió la experiencia. En diseño real se revisa con varias personas.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Presenta una tabla con cinco tareas, resultado, error encontrado, severidad de 0 a 4 y una corrección propuesta.</p></div></article>
+<div class="notice notice-tip"><strong>Referencias del método:</strong> <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener noreferrer">Diez heurísticas de Nielsen (Nielsen Norman Group)</a> · <a href="https://docs.flutter.dev/ui/accessibility" target="_blank" rel="noopener noreferrer">Accesibilidad oficial de Flutter</a> · <a href="https://docs.flutter.dev/ui/accessibility/ui-design-and-styling" target="_blank" rel="noopener noreferrer">Contraste y objetivos táctiles</a>.</div>
+<div class="checklist" data-checklist="heuristicas-ux"><label><input type="checkbox"> Realicé la evaluación de las diez heurísticas.</label><label><input type="checkbox"> La Tienda muestra carga, errores y confirmaciones.</label><label><input type="checkbox"> Lector y Administrador tienen acciones coherentes.</label><label><input type="checkbox"> Probé la app con teclado o lector de pantalla.</label><label><input type="checkbox"> Verifiqué controles táctiles y contraste.</label><label><input type="checkbox"> Registré problemas reales y propuestas de mejora.</label></div>
+<div class="exercise"><span class="exercise-label">EVALUACIÓN INDIVIDUAL</span><h3>Audita la usabilidad de la Tienda y propone tres mejoras</h3><p>Usa la lista de diez heurísticas, captura un problema de la Tienda, indica cuál heurística incumple, su severidad (0–4) y una corrección concreta. Repite para tres problemas distintos y realiza las tareas con un compañero.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="heuristicas-ux">Marcar módulo como completado</button><a class="next-link" href="#inicio">Siguiente etapa →</a></div></section>
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>Esta es una práctica alternativa que parte del resultado del <strong>módulo 05</strong>. Antes de tocar <code>main.dart</code>, conserva una copia si también trabajaste el formulario de la ruta A. Primero organizaremos el espacio del buscador para celulares.</p></div>
