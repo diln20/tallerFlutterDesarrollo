@@ -17,7 +17,7 @@
     estructura:[
       ['Scaffold(', 'body: Center('],
       ['appBar: AppBar(', "title: const Text('Tienda')"],
-      ['body: const Center(', "child: Text('Hello dsfdsWorld')"],
+      ['body: const Center(', "child: Text('Primer widget')"],
       ['centerTitle: true'],
       ['actions: [','IconButton(','onPressed:','icon:']
     ],
@@ -73,7 +73,7 @@
       ['lib/widgets/titulo_seccion.dart'],
       ['class TituloSeccion', 'required this.texto', 'final String texto', 'Text(texto)'],
       ["import 'widgets/titulo_seccion.dart'"],
-      ["TituloSeccion(texto: 'Hello dsfdsWorld')"],
+      ["TituloSeccion(texto: 'Primer widget')"],
       ["TituloSeccion(texto: 'Agregar un vehículo')"]
     ],
     validacion:[
@@ -176,7 +176,7 @@
       ['lib/widgets/titulo_seccion.dart'],
       ['class TituloSeccion', 'required this.texto', 'final String texto'],
       ["import 'widgets/titulo_seccion.dart'"],
-      ["TituloSeccion(texto: 'Hello dsfdsWorld')"],
+      ["TituloSeccion(texto: 'Primer widget')"],
       ["TituloSeccion(texto: 'Agregar un vehículo')"],
       ['class TituloSeccion', 'return Text(texto)'],
       null
