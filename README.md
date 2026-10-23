@@ -7,7 +7,7 @@
 
 ## Vistas progresivas de la aplicación «Tienda»
 
-El taller contiene ahora **14 módulos**, con **72 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
+El taller contiene ahora **16 módulos**, con **90 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
 
 - Pantallas **Antes / Después** para comparar los efectos de un cambio.
 - Contorno amarillo alrededor del widget que aparece o cuya presentación se modifica.
@@ -32,12 +32,18 @@ La comparación ya no repite el mismo código o la misma imagen cuando el paso o
 
 La nueva ruta de clases sigue el orden establecido, sin mezclar aún la rama opcional de filtros:
 
-**01–05 → Primer formulario (P1) → Crear carpetas (P2) → Reutilizar widgets (P3) → Validar el campo (P4) → Crear el primer objeto (P5).**
+**01–05 → Primer formulario (P1) → Carpetas (P2) → Primer widget reutilizable (P3) → Validación (P4) → Primer objeto (P5) → Extraer widgets existentes (P6) → Páginas y navegación (P7).**
 
 - **P2 — Crear carpetas:** crear únicamente `lib/pages/`, `lib/widgets/`, `lib/models/`, `lib/services/`, `lib/repositories/` y `lib/bloc/`. Explicar la finalidad futura de cada carpeta. **No crear clases, mover main.dart ni agregar lógica en esta etapa.** En Git las carpetas vacías no suelen aparecer hasta que contienen un archivo.
 - **P3 — Reutilización:** ahora sí utilizar `lib/widgets/` con el archivo `titulo_seccion.dart`, que contiene un `StatelessWidget` con el parámetro `required this.texto`. En `main.dart` se importa y se usa **dos veces**, sin cambiar el aspecto ni el funcionamiento del formulario.
 - **P4 — Validación:** transformar únicamente el segundo campo en `TextFormField`, declarar `GlobalKey<FormState>`, colocarlo dentro de `Form`, agregar `validator` y llamar `validate()` desde `onPressed`. Se prueban entradas vacías, de menos de tres caracteres y válidas.
 - **P5 — Primer objeto:** crear `lib/models/vehiculo.dart`, definir la clase `Vehiculo` con `String nombre` y `bool disponible`, importarla y construir `final vehiculo = Vehiculo(nombre: nombre)` después de validar. `debugPrint` enseña las propiedades del objeto. **Todavía no se guarda en una lista ni en una base de datos.**
+
+
+- **P6 — Extraer widgets reales:** de la Tienda que ya funciona se saca el <code>TextFormField</code> con su <code>validator</code> a <code>lib/widgets/campo_nombre_vehiculo.dart</code>, y la apariencia de <code>ElevatedButton</code> a <code>lib/widgets/boton_tienda.dart</code>. <code>main.dart</code> conserva <code>vehiculoController</code>, <code>formularioKey</code>, la creación de <code>Vehiculo</code> y <code>dispose()</code>. BotonTienda recibe un <code>VoidCallback</code> para que las pantallas elijan qué acción ejecutar.
+- **P7 — Crear dos páginas y navegar:** en <code>lib/pages/</code> se crean <code>acerca_page.dart</code> y <code>ayuda_page.dart</code>. Las páginas son <code>StatelessWidget</code> con <code>Scaffold</code>, título y botones. La navegación utiliza <code>Navigator.push</code> para avanzar y <code>Navigator.pop</code> para regresar. Como el <code>build</code> de <code>MainApp</code> crea <code>MaterialApp</code>, su botón de navegación se rodea con <code>Builder</code> para obtener un <code>context</code> válido dentro de MaterialApp.
+
+**Importante para enseñar:** P3 reutiliza un título de texto; P6 demuestra la extracción de widgets que ya existen y tienen comportamiento. P7 no obliga a mover la Tienda a otra página ni añade rutas con nombres o BLoC. Las simulaciones del sitio muestran el proceso, pero no ejecutan Flutter por sí solas.
 
 Cada bloque incluye archivo, ubicación exacta, qué buscar con Ctrl + F, acción (crear, añadir o reemplazar), explicación del contenido y comparación final. Los archivos Dart de `etapas/` son **copias de referencia**, no una segunda carpeta `lib` que haya que mezclar con el proyecto de los estudiantes.
 
@@ -97,7 +103,7 @@ Ahora **todos los bloques de código del curso** tienen una ficha de ubicación,
 
 El **catálogo de widgets** muestra una indicación contextual distinta: `AppBar` en `Scaffold.appBar`, `Drawer` en `Scaffold.drawer`, `Expanded` dentro de `Row` o `Column`, `SnackBar` mediante `ScaffoldMessenger`, diálogos mediante `showDialog`, etc. Son ejemplos de consulta, no instrucciones de pegarlos todos en la Tienda.
 
-**Ruta didáctica principal:** módulos 01–05 (código original) → formulario básico P1 → carpetas vacías P2 → reutilización P3 → validación P4 → primer objeto P5. Se conserva el nombre del archivo `paso_09_formulario.dart` para no romper enlaces de referencias previas. Las ampliaciones 06–08 (diseño, búsqueda interactiva y filtros) son una **ruta opcional independiente**, y BLoC continúa siendo conceptual. La práctica P1 no requiere `for`, `where` ni `List<String>`.
+**Ruta didáctica principal:** módulos 01–05 (código original) → formulario básico P1 → carpetas vacías P2 → reutilización P3 → validación P4 → primer objeto P5 → extracción de widgets P6 → páginas sencillas y navegación P7. Se conserva el nombre del archivo `paso_09_formulario.dart` para no romper enlaces de referencias previas. Las ampliaciones 06–08 (diseño, búsqueda interactiva y filtros) son una **ruta opcional independiente**, y BLoC continúa siendo conceptual. La práctica P1 no requiere `for`, `where` ni `List<String>`.
 
 **Limitación de verificación:** los ejemplos y ubicaciones se contrastaron contra los archivos versionados del repositorio, incluida la instantánea `codigo-base/main.dart`. Esto no equivale a comprobar el proyecto local de los estudiantes en este momento ni a ejecutar Flutter en su equipo.
 
@@ -139,6 +145,8 @@ La aplicación de clase contiene `MainApp extends StatelessWidget`, `MaterialApp
 | P3 | Reutilizar un widget de texto creado en `lib/widgets/titulo_seccion.dart` y utilizado dos veces. | Guía y código final |
 | P4 | Validar el campo con `Form`, `TextFormField`, `GlobalKey<FormState>` y `validator`. | Guía y código final |
 | P5 | Definir el modelo `Vehiculo`, instanciarlo con el nombre validado y leer sus propiedades. | Guía y código final |
+| P6 | Extraer el TextFormField y el ElevatedButton del main.dart como CampoNombreVehiculo y BotonTienda. | Guía y código final |
+| P7 | Crear AcercaPage y AyudaPage; navegar con Navigator.push y Navigator.pop. | Guía y código final |
 | 10 | Comprender eventos, estados y responsabilidad de cada parte de la Tienda con BLoC (sin adelantar código). | Propuesta conceptual |
 
 **En particular, el módulo 09** incluye los fragmentos completos, botones «Copiar código», explicación de parámetros y signos de Dart, instrucciones de reemplazo (para no duplicar widgets), simulaciones antes/después y un `main.dart` final de comparación. También aclara que `...` en explicaciones puede representar contenido omitido y **no debe pegarse como un marcador de código**; los ejemplos para copiar no contienen código sustituido por puntos suspensivos.
@@ -162,8 +170,14 @@ Los módulos 02–08 son reconstrucciones y ampliaciones opcionales de la misma 
 | P4 · Tienda | [`paso_11_validacion.dart`](etapas/paso_11_validacion.dart) | `Form` con reglas de nombre obligatorio y longitud mínima de tres caracteres |
 | P5 · modelo | [`paso_12_vehiculo.dart`](etapas/paso_12_vehiculo.dart) | Clase de datos `Vehiculo` destinada a `lib/models/` |
 | P5 · Tienda | [`paso_12_objeto.dart`](etapas/paso_12_objeto.dart) | Botón validado que crea el objeto y muestra sus propiedades |
+| P6 · campo | [`paso_13_campo_nombre_vehiculo.dart`](etapas/paso_13_campo_nombre_vehiculo.dart) | Widget de entrada validable y reutilizable |
+| P6 · botón | [`paso_13_boton_tienda.dart`](etapas/paso_13_boton_tienda.dart) | BotonTienda con argumento texto y VoidCallback |
+| P6 · Tienda | [`paso_13_extraccion.dart`](etapas/paso_13_extraccion.dart) | main.dart tras extraer campo y botón |
+| P7 · Ayuda | [`paso_14_ayuda_page.dart`](etapas/paso_14_ayuda_page.dart) | AyudaPage con Navigator.pop para regresar |
+| P7 · Acerca | [`paso_14_acerca_page.dart`](etapas/paso_14_acerca_page.dart) | AcercaPage que abre AyudaPage con Navigator.push |
+| P7 · Tienda | [`paso_14_navegacion.dart`](etapas/paso_14_navegacion.dart) | main.dart final con Builder y botón de navegación |
 
-Los archivos de las etapas 06 a 12 describen **prácticas de enseñanza propuestas** y referencias verificables en GitHub; no implican que ya estén implementadas en el computador de los estudiantes. Las carpetas P2 se crean durante la clase y no contienen archivos hasta las siguientes etapas.
+Los archivos de las etapas 06 a 14 describen **prácticas de enseñanza propuestas** y referencias verificables en GitHub; no implican que ya estén implementadas en el computador de los estudiantes. Las carpetas P2 se crean durante la clase y no contienen archivos hasta las siguientes etapas.
 
 ## Catálogo visual de widgets Flutter
 
