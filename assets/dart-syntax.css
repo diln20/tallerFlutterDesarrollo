@@ -1,0 +1,43 @@
+/* Paleta Dart inspirada en VS Code Dark+: contraste sobre #0f1d32.
+   No modifica el texto, los ejemplos ni los colores de "línea nueva" o "lectura". */
+.pv-shell .pv-ide-code-row code .pv-dart-token,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-token{
+  display:inline;
+  font:inherit;
+  background:none!important;
+  border:0!important;
+  padding:0!important;
+  white-space:inherit;
+  text-shadow:none;
+}
+.pv-shell .pv-ide-code-row code .pv-dart-keyword,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-keyword{color:#CAA7FF!important;font-weight:650}
+.pv-shell .pv-ide-code-row code .pv-dart-type,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-type{color:#72D7F1!important;font-weight:650}
+.pv-shell .pv-ide-code-row code .pv-dart-function,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-function{color:#FFDA90!important}
+.pv-shell .pv-ide-code-row code .pv-dart-property,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-property{color:#FFAF9F!important}
+.pv-shell .pv-ide-code-row code .pv-dart-string,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-string{color:#C3E983!important}
+.pv-shell .pv-ide-code-row code .pv-dart-annotation,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-annotation{color:#F0AFF6!important}
+.pv-shell .pv-ide-code-row code .pv-dart-literal,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-literal{color:#FDBF83!important}
+.pv-shell .pv-ide-code-row code .pv-dart-number,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-number{color:#FDBF83!important}
+.pv-shell .pv-ide-code-row code .pv-dart-member,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-member{color:#B7D9FA!important}
+.pv-shell .pv-ide-code-row code .pv-dart-comment,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-comment{color:#9FB9C9!important;font-style:italic}
+.pv-shell .pv-ide-code-row code .pv-dart-punctuation,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-punctuation{color:#C2D3E8!important}
+.pv-shell .pv-ide-code-row code .pv-dart-operator,
+.pv-focus-dialog .pv-ide-code-row code .pv-dart-operator{color:#9DCFFB!important}
+/* Indentación y numeración visibles en pantalla grande sin competir con el código. */
+.pv-shell .pv-ide-code-row em{color:#91ABC9}
+.pv-large-view .pv-ide-code-row code{font-variant-ligatures:none}
+@media (prefers-contrast:more){
+  .pv-shell .pv-ide-code-row code .pv-dart-keyword{color:#E0C9FF!important}
+  .pv-shell .pv-ide-code-row code .pv-dart-comment{color:#BED4E4!important}
+}

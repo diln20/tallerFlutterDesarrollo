@@ -46,7 +46,7 @@
     {text:"  }",tier:4},
     {text:"}",tier:4}
   ];
-  const line=(text,n,isNew,isReading=false)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}${isReading?' pv-ide-reading':''}"><em>${String(n).padStart(2,'0')}</em><code>${esc(text)||' '}</code></div>`;
+  const line=(text,n,isNew,isReading=false)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}${isReading?' pv-ide-reading':''}"><em>${String(n).padStart(2,'0')}</em><code>${window.FlutterLabDartSyntax?window.FlutterLabDartSyntax(text):esc(text)||' '}</code></div>`;
   const folder=`<aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR</div>
       <div class="pv-tree-root">▾ actividad2</div>
       <div class="pv-tree-item">▸ android</div>
