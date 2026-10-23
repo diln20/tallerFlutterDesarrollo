@@ -8,9 +8,6 @@
 
   // Selectores concretos por paso: evita colorear por igual cada linea del ejemplo.
   const focus={
-    preparacion:[
-      ['DesarrolloMovilFlutter'],['Archivo'],['Get-Location'],['flutter create --empty actividad2'],['main.dart'],['flutter run']
-    ],
     'punto-entrada':[
       ["import 'package:flutter"],['void main()', 'runApp('],
       ['class MainApp extends StatelessWidget','const MainApp('],
@@ -124,11 +121,6 @@
     ]
   };
   const statics={
-    preparacion:[
-      ['flutter doctor','flutter devices'],
-      ['cd actividad2','flutter run'],
-      ['Get-Location','Get-ChildItem','Test-Path']
-    ],
     'punto-entrada':[
       ["import 'package", 'void main()', 'runApp(', 'class MainApp', 'Widget build'],
       ["import 'package","void main()", "runApp(", "class MainApp", "Widget build(", "return const MaterialApp(", "body: Center(", "child: Text("],

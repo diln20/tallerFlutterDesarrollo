@@ -1,7 +1,7 @@
 (function flutterStagePreviews(){
   'use strict';
   const data=window.FlutterLabStageData||{};
-  const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','extraccion','navegacion','responsive','estado','formularios','bloc'];
+  const modules=['punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','extraccion','navegacion','responsive','estado','formularios','bloc'];
   const baseCars=['Renault 9','Renault 21','Mazda 3','Chevrolet Spark'];
   const runtimeMap=new Map();
   // Ampliacion visible por defecto; el usuario puede alternar por modulo.
@@ -501,7 +501,7 @@
     for(const id of modules){
       const lesson=document.getElementById(id),cfg=data[id];
       if(!lesson||!cfg)continue;
-      const anchor=(id==='preparacion'?lesson.querySelector('.start-flow'):id==='punto-entrada'?lesson.querySelector('#plantilla-actividad2'):null)||lesson.querySelector('.goal-box')||lesson.querySelector('.lesson-heading');
+      const anchor=(id==='punto-entrada'?lesson.querySelector('#plantilla-actividad2'):null)||lesson.querySelector('.goal-box')||lesson.querySelector('.lesson-heading');
       if(!anchor)continue;
       const slot=document.createElement('div');
       slot.className='pv-mount';slot.id='pv-'+id;

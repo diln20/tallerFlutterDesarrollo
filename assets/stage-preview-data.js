@@ -5,42 +5,6 @@
   const S = (name, effect, code, before, after, highlight, more={}) =>
     ({name,effect,code,before,after,highlight,...more});
   const data = {
-    preparacion: {
-      name:'Crear la carpeta, abrir VS Code y generar actividad2',
-      kind:'reconstruct',
-      steps:[
-        S('Crear DesarrolloMovilFlutter','En el Explorador de Windows crea la carpeta DesarrolloMovilFlutter, por ejemplo dentro de Documentos. Todavía no contiene un proyecto Flutter.',
-          'Explorador de archivos → Documentos → Nuevo → Carpeta → DesarrolloMovilFlutter',
-          {stage:0,editorMode:'pre-folder',folderCreated:false},
-          {stage:0,editorMode:'pre-folder',folderCreated:true},'editor',
-          {visual:false,note:'Esta carpeta se crea manualmente desde Windows. No escribas este texto en main.dart ni ejecutes flutter create todavía.'}),
-        S('Abrir la carpeta en VS Code','En Visual Studio Code utiliza Archivo → Abrir carpeta y selecciona DesarrolloMovilFlutter, la carpeta principal del curso.',
-          'VS Code → Archivo → Abrir carpeta → DesarrolloMovilFlutter',
-          {stage:0,editorMode:'pre-vscode',parentOpened:false},
-          {stage:0,editorMode:'pre-vscode',parentOpened:true},'editor',
-          {visual:false,note:'El Explorador de VS Code debe mostrar DESARROLLOMOVILFLUTTER. Todavía NO aparece actividad2 porque falta crearla.'}),
-        S('Abrir la terminal integrada','Dentro de VS Code selecciona Terminal → Nuevo terminal. Comprueba con Get-Location que estás en DesarrolloMovilFlutter.',
-          'Terminal → Nuevo terminal\nGet-Location',
-          {stage:0,editorMode:'pre-terminal',terminalOpen:false},
-          {stage:0,editorMode:'pre-terminal',terminalOpen:true},'editor',
-          {visual:false,note:'La terminal debe abrirse en DesarrolloMovilFlutter. Puedes ejecutar flutter doctor antes de crear el proyecto.'}),
-        S('Ejecutar flutter create --empty actividad2','En la terminal de VS Code, dentro de DesarrolloMovilFlutter, Flutter crea la subcarpeta actividad2 y sus archivos mínimos.',
-          'flutter create --empty actividad2',
-          {stage:0,editorMode:'create',created:false},
-          {stage:0,editorMode:'create',created:true},'editor',
-          {visual:false,note:'Ejecuta el comando una sola vez en la terminal integrada de VS Code. La página solo muestra una simulación de su resultado.'}),
-        S('Explorar actividad2/lib/main.dart','La nueva carpeta actividad2 se ve dentro de DesarrolloMovilFlutter. Expándela y abre lib/main.dart; ya contiene Hello World!.',
-          'DesarrolloMovilFlutter/\n  actividad2/\n    lib/\n      main.dart\n    pubspec.yaml',
-          {stage:0,editorMode:'workspace',opened:false},
-          {stage:0,editorMode:'workspace',opened:true},'editor',
-          {visual:false,note:'Busca main.dart bajo DesarrolloMovilFlutter → actividad2 → lib. No debes crear ese archivo otra vez.'}),
-        S('Entrar a actividad2 y ejecutar Flutter','En la misma terminal de VS Code entra a actividad2 y usa flutter run. La primera pantalla será Hello World!, no Tienda.',
-          'cd actividad2\nflutter run',
-          {stage:0,editorMode:'run',opened:true,ready:true},
-          {stage:2,bodyText:'Hello World!'},'firstText',
-          {note:'La ilustración muestra el resultado inicial. En tu computador selecciona el dispositivo cuando Flutter lo solicite.'})
-      ]
-    },
     'punto-entrada': {
       name:'Leer el main.dart generado por Flutter',
       kind:'reconstruct',

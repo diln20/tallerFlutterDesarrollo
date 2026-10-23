@@ -23,7 +23,7 @@ La interfaz de inicio utiliza un comando principal destacado, secuencia visual, 
 
 ## Vistas progresivas de la aplicación «Tienda»
 
-El taller contiene ahora **16 módulos**, con **93 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
+El taller contiene ahora **15 módulos con comparaciones**, con **87 pasos** en las secciones «Así va cambiando tu aplicación», incluidas cuatro etapas nuevas después del primer formulario:
 
 - Pantallas **Antes / Después** para comparar los efectos de un cambio.
 - Contorno amarillo alrededor del widget que aparece o cuya presentación se modifica.
@@ -41,7 +41,7 @@ La sección **«Así va cambiando tu aplicación»** aparece **ampliada por defe
 
 La comparación ya no repite el mismo código o la misma imagen cuando el paso ocurre en el editor o en la terminal:
 
-- **Preparación (6 pasos):** crear manualmente `DesarrolloMovilFlutter` desde Windows, abrir esa carpeta en Visual Studio Code, abrir Terminal → Nuevo terminal, ejecutar `flutter create --empty actividad2`, localizar `actividad2/lib/main.dart`, y ejecutar `cd actividad2` seguido de `flutter run`. Todo ocurre en el mismo proyecto del estudiante; el simulador no ejecuta órdenes.
+- **Preparación (módulo 01):** se conserva una sola guía visual para crear `DesarrolloMovilFlutter`, abrirla en VS Code, usar Terminal → Nuevo terminal, ejecutar `flutter create --empty actividad2` y ejecutar Flutter. Se quitó la secuencia Antes/Después duplicada de preparación; las comparaciones quedan en los otros 15 módulos.
 - **Primer Dart:** se muestra siempre el archivo mínimo que Flutter ya genera, resaltando por turnos las líneas que se deben reconocer. No se duplican `import`, `main()`, `runApp` ni `MainApp`.
 - **Cambios internos sin efecto visual:** cuando solo cambia una variable, un controlador, `StatefulWidget` o un método, se presenta un **mapa Antes → Después del código**, indicando claramente que la pantalla de Flutter continúa igual. Los pasos de lectura se identifican como tales, sin inventar nuevas modificaciones.
 - **Cambios de interfaz:** la comparación enseña visualmente el widget añadido o modificado. Todas las salidas del editor, terminal y móvil son simulaciones didácticas, no capturas ni ejecuciones del equipo real.

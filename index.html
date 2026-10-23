@@ -18,16 +18,16 @@
   <link rel="stylesheet" href="./assets/code-line-highlights.css?v=20261022-P6-P7-final">
   <link rel="stylesheet" href="./assets/line-by-line-explanations.css?v=20261022-P6-P7-final">
   <script src="./assets/app.js?v=20261022-P6-P7-final" defer></script>
-  <script src="./assets/stage-preview-data.js?v=20261023-vscode-ruta-v7" defer></script>
+  <script src="./assets/stage-preview-data.js?v=20261023-inicio-sin-duplicados" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
-  <script src="./assets/stage-previews.js?v=20261023-vscode-lectura-v9" defer></script>
+  <script src="./assets/stage-previews.js?v=20261023-inicio-sin-duplicados" defer></script>
   <script src="./assets/preview-vscode-icons.js?v=20261023-v1" defer></script>
   <script src="./assets/project-start-ui.js?v=20261023-actividad2" defer></script>
   <script src="./assets/preview-focus.js?v=20261023-lectura-grande" defer></script>
   <script src="./assets/form-placement-guide.js?v=20261023-unificado-v4" defer></script>
-  <script src="./assets/code-placement-data.js?v=20261023-vscode-ruta-v10" defer></script>
+  <script src="./assets/code-placement-data.js?v=20261023-inicio-sin-duplicados" defer></script>
   <script src="./assets/code-placement-all.js?v=20261023-unificado-v4" defer></script>
-  <script src="./assets/code-line-highlights.js?v=20261023-vscode-ruta-v10" defer></script>
+  <script src="./assets/code-line-highlights.js?v=20261023-inicio-sin-duplicados" defer></script>
   <script src="./assets/line-by-line-explanations.js?v=20261023-unificado-v4" defer></script>
   <script src="./assets/widgets-core.js" defer></script>
   <script src="./assets/widgets-controls.js" defer></script>
@@ -256,16 +256,9 @@ Get-ChildItem
 Test-Path .\pubspec.yaml</code></pre>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Instrucción</th><th scope="col">Qué hace</th><th scope="col">Resultado que debes interpretar</th></tr></thead><tbody><tr><td><code>Get-Location</code></td><td>Muestra la carpeta actual de PowerShell.</td><td>La ruta debería terminar en la carpeta del proyecto Flutter que abriste.</td></tr><tr><td><code>Get-ChildItem</code></td><td>Muestra los archivos y subcarpetas de ese lugar.</td><td>Debes encontrar <code>lib</code>, <code>android</code>, <code>web</code> y <code>pubspec.yaml</code>.</td></tr><tr><td><code>Test-Path .\pubspec.yaml</code></td><td>Comprueba si existe <code>pubspec.yaml</code> en la carpeta actual.</td><td><code>True</code> indica que existe; <code>False</code> exige revisar la ruta.</td></tr></tbody></table></div>
   <p>El prefijo <code>.\</code> significa «a partir de esta carpeta» en PowerShell. El comando <code>cd</code> cambia de directorio; no crea ni modifica archivos.</p>
-  <h3>4. Interpretar el orden real de trabajo</h3>
-<p>En este esquema los primeros dos pasos se realizan con los menús de Windows y VS Code; los comandos van <strong>dentro de la terminal integrada</strong>, no en <code>main.dart</code>.</p>
-<div class="start-learning-route">
-  <div><strong>Explorador de Windows</strong><span>Crear <code>DesarrolloMovilFlutter</code></span></div>
-  <div><strong>Visual Studio Code</strong><span>Archivo → Abrir carpeta → <code>DesarrolloMovilFlutter</code></span></div>
-  <div><strong>Terminal integrada</strong><span>Terminal → Nuevo terminal; verificar <code>Get-Location</code></span></div>
-  <div><strong>Crear proyecto</strong><span><code>flutter create --empty actividad2</code></span></div>
-  <div><strong>Ejecutar</strong><span><code>cd actividad2</code> y luego <code>flutter run</code></span></div>
-</div>
-<p>Si tienes dudas con Flutter, usa <code>flutter doctor</code> y <code>flutter devices</code> en la terminal. No ejecutes <code>flutter create</code> sobre el proyecto donde ya escribiste código.</p>
+  <h3>4. ¿Por qué hay dos carpetas?</h3>
+<p><code>DesarrolloMovilFlutter</code> es tu carpeta principal: allí puedes guardar los proyectos de diferentes clases. <code>actividad2</code> es el proyecto creado por Flutter dentro de ella. Contiene <code>pubspec.yaml</code>, <code>lib/main.dart</code> y los archivos de soporte.</p>
+<p><strong>Para recordar:</strong> Flutter crea <code>actividad2</code> desde <code>DesarrolloMovilFlutter</code>, pero ejecuta <code>flutter run</code> dentro de <code>actividad2</code>. El procedimiento completo está explicado una sola vez, en la guía de inicio.</p>
 <details class="deep-details"><summary>¿Qué diferencia hay entre Hot Reload, Hot Restart y volver a ejecutar?</summary><div class="deep-details-body"><p><strong>Hot Reload:</strong> intenta actualizar el código visual conservando el estado del programa. Es útil al modificar un texto o una propiedad de interfaz.</p><p><strong>Hot Restart:</strong> vuelve a iniciar el código Dart de la aplicación y reinicia el estado de la app; suele servir cuando el cambio no quedó reflejado con Hot Reload.</p><p><strong>Volver a ejecutar:</strong> cierra el proceso y realiza una nueva ejecución. Algunos cambios de configuración nativa o dependencias requieren un reinicio o una compilación nueva.</p><p>En la terminal de <code>flutter run</code>, <kbd>r</kbd> suele activar Hot Reload, <kbd>R</kbd> Hot Restart y <kbd>q</kbd> termina la ejecución. Estos atajos se usan en esa terminal, no dentro de la pantalla del teléfono.</p></div></details>
   <h3>5. Qué contiene la carpeta del proyecto</h3>
   <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Elemento</th><th scope="col">Función</th><th scope="col">¿Debemos editarlo ahora?</th></tr></thead><tbody><tr><td><code>lib/main.dart</code></td><td>Punto de entrada Dart; al principio contiene la pantalla mínima «Hello World!».</td><td>Sí, en la copia de práctica y por etapas.</td></tr><tr><td><code>pubspec.yaml</code></td><td>Describe el proyecto, su SDK y los paquetes necesarios.</td><td>Leerlo primero; solo editarlo cuando aprendamos a agregar dependencias o recursos.</td></tr><tr><td><code>pubspec.lock</code></td><td>Registra las versiones concretas de los paquetes resueltos.</td><td>No hace falta editarlo manualmente.</td></tr><tr><td><code>android/</code>, <code>ios/</code>, <code>web/</code></td><td>Contienen archivos de soporte específicos de cada plataforma.</td><td>No es necesario cambiarlos para estos primeros widgets.</td></tr><tr><td><code>build/</code></td><td>Almacena archivos generados durante la compilación.</td><td>No escribir ahí el código Dart.</td></tr><tr><td><code>.dart_tool/</code></td><td>Guarda datos de trabajo del SDK y de las herramientas.</td><td>No lo uses para guardar ejercicios.</td></tr></tbody></table></div>
