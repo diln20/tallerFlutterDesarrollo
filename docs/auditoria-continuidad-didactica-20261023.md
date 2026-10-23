@@ -27,13 +27,14 @@ Comprobar que los estudiantes puedan construir la aplicación Tienda **desde cer
 | Ruta B · 06 | **Volver al código del módulo 05** | `Padding`, `EdgeInsets`, scroll | Ajusta el espacio sin mezclar el formulario P1 |
 | Ruta B · 07 | Diseño del módulo 06 | `StatefulWidget`, `onChanged`, `setState` | Distingue actualizar la pantalla de leer controller al pulsar |
 | Ruta B · 08 | Estado del módulo 07 | `List<String>`, `where`, función anónima, `contains`, `toList`, `if`, `for` | Construye y prueba un filtro gradualmente |
-| BLoC conceptual | Haber finalizado ruta A o B | Evento, lógica y estado | Explica el flujo sin instalar paquetes ni cambiar `main.dart` |
+| BLoC (conceptual) | Haber finalizado ruta A o B | Evento, lógica y estado | Explica el flujo sin programar todavía |
+| BLoC (práctica opcional) | Ruta B: finalizar módulo 08 y respaldar `main.dart` | `flutter_bloc`, `Bloc<Evento, Estado>`, `on<T>`, `emit`, `BlocProvider`, `BlocBuilder` | Buscar Renault, Mazda o xyz sin `setState`; no mezclar con P1–P7 |
 
 **Secuencia común:** 01 → 02 → 03 → 04 → 05.
 
 **Ruta A recomendada:** 05 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → BLoC conceptual.
 
-**Ruta B alternativa:** 05 → 06 → 07 → 08 → BLoC conceptual.
+**Ruta B alternativa:** 05 → 06 → 07 → 08 → BLoC conceptual → práctica BLoC de diez pasos.
 
 ## Hallazgos corregidos
 
@@ -61,3 +62,7 @@ Se analizaron títulos, secuencia de navegación, dependencias entre módulos, i
 ## Guía de mantenimiento
 
 Cuando se agregue una lección, documentar **prerrequisitos → nuevo concepto → modificación única → resultado → prueba**. Si la lección parte de una versión anterior del proyecto, marcarla como **ruta alternativa**, indicando cómo respaldar el trabajo y evitando un enlace «Siguiente» que sugiera continuación directa.
+
+## Práctica de aplicación BLoC añadida
+
+El módulo 10 ahora comienza con la explicación de eventos, BLoC y estado, y continúa con una implementación opcional para quienes terminaron la **ruta B, módulo 08**. Se construyen tres archivos separados en `lib/bloc` y se actualiza `lib/main.dart`. La guía incluye ubicación precisa de fragmentos, copiado de código, referencia completa, simulación HTML de los eventos y una matriz de pruebas. No se introducen `Cubit`, `Equatable`, APIs ni repositorios en la primera implementación; la ruta A conserva el formulario y la navegación sin cambios.

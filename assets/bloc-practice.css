@@ -84,3 +84,10 @@
   .bloc-practice-code pre.code-block>code{font-size:11px}
 }
 @media print{.bloc-practice-step{break-inside:avoid}.bloc-practice-demo{display:none}}
+
+.bloc-practice{scroll-margin-top:95px}
+.bloc-practice-skip{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:14px}
+.bloc-practice-jump{padding:10px 14px;font-size:12px;border:1px solid #8fb4db;border-radius:8px;background:var(--blue-soft);font-weight:850;color:#173e72}
+.bloc-practice-jump:hover{border-color:var(--blue);background:var(--surface-soft)}
+.bloc-practice-skip>span{font-size:11px;color:var(--text-soft);line-height:1.5}
+@media(max-width:650px){.bloc-practice-skip{align-items:flex-start;flex-direction:column}.bloc-practice-jump{width:100%;min-height:44px}}

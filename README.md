@@ -265,3 +265,16 @@ El mapa completo de prerrequisitos, rutas, hallazgos y criterios de comprobació
 **Ruta común:** 01–05 (proyecto, archivo main, jerarquía de Flutter, Row/Column y TextField). En el módulo 05 existe una bifurcación explícita. **Ruta A (recomendada):** P1–P7, desde formulario básico y controlador hasta carpetas, reutilización, validación, modelo de datos, extracción y navegación. **Ruta B (alternativa):** 06–08, desde la versión final del módulo 05 hacia espaciado, StatefulWidget con setState y listas/filtrado. Las rutas son ejercicios independientes; no se debe sobreescribir sin respaldo un main.dart avanzado con un ejemplo que vuelve al módulo 05. BLoC permanece conceptual y puede estudiarse después de cualquiera de las dos rutas.
 
 Cada concepto nuevo se presenta con un bloque de prerrequisitos ANTES del fragmento que lo necesita: lista children, TextField/Expanded, variables/eventos/controller, argumentos required, if/null/validator, clase/objeto, VoidCallback, BuildContext/Navigator, espaciado, setState, List/where y evento/estado de BLoC. Se corrigieron enlaces de salida que enviaban de forma circular entre las rutas. Los archivos de referencia de la ruta A y de la ruta B siguen siendo independientes.
+
+## Aplicación real de BLoC: ruta B después del módulo 08
+
+El módulo BLoC incluye ahora **dos etapas diferenciadas**: primero el flujo conceptual `TextField → Evento → Bloc → Estado → BlocBuilder`, después una **práctica de 10 pasos** que construye un buscador real usando el paquete `flutter_bloc`. El punto de partida es [paso_08_filtro.dart](etapas/paso_08_filtro.dart), sin sobrescribir el formulario P1–P7 de la ruta A.
+
+Archivos nuevos para estudiar o comparar (en el proyecto del estudiante se guardan en `lib/`):
+
+- [busqueda_evento.dart](etapas/paso_15_bloc_evento.dart) → `lib/bloc/busqueda_evento.dart`
+- [busqueda_estado.dart](etapas/paso_15_bloc_estado.dart) → `lib/bloc/busqueda_estado.dart`
+- [busqueda_bloc.dart](etapas/paso_15_bloc.dart) → `lib/bloc/busqueda_bloc.dart`
+- [main.dart con BlocProvider y BlocBuilder](etapas/paso_15_bloc_main.dart) → `lib/main.dart`
+
+Primero se instala el paquete ejecutando `flutter pub add flutter_bloc` desde la terminal de VS Code ubicada en `DesarrolloMovilFlutter/actividad2`. Después se crean los archivos de evento, estado y BLoC, se conecta `BlocProvider`, se quita el filtrado antiguo de `build`, se emite el evento desde `onChanged` y se muestran los resultados en `BlocBuilder`. El ejercicio se prueba con búsquedas vacías, `Renault`, `MAZDA` y `xyz`. La simulación web solo ilustra el flujo y **no ejecuta Flutter**. El paquete utiliza la API con `on<Evento>` y `emit`; no se requieren Equatable, repositorios, llamadas a APIs ni estados de carga para este ejercicio.

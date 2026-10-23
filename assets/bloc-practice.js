@@ -46,6 +46,11 @@
       });
     });
     render();
+    document.querySelectorAll('[data-bloc-scroll="bloc-practica"]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        document.getElementById('bloc-practica')?.scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, {once: true});
