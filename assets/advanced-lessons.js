@@ -79,7 +79,7 @@
 
   function colorizarEjemplos() {
     const classes = new Set(['python', 'yaml', 'json', 'xml']);
-    document.querySelectorAll('.advanced-module pre.code-block[data-code-mode] > code').forEach(code => {
+    document.querySelectorAll('.advanced-module pre.code-block[data-code-mode] > code, .post-api-lesson pre.code-block[data-code-mode] > code').forEach(code => {
       const mode = code.parentElement.dataset.codeMode;
       if (!classes.has(mode) || code.dataset.alSyntax === 'yes') return;
       const source = code.textContent;
