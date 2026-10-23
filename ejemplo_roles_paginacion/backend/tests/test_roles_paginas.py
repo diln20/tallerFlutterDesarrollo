@@ -73,3 +73,27 @@ def test_crud_con_roles_y_paginas():
     assert cliente.get("/vehiculos?pagina=0", auth=lector).status_code == 422
     assert cliente.get("/vehiculos?tamano=51", auth=lector).status_code == 422
     assert cliente.post("/vehiculos", auth=admin, json=datos("X")).status_code == 422
+
+
+def test_trece_registros_y_busqueda_con_paginacion():
+    for numero in range(1, 14):
+        respuesta = cliente.post(
+            "/vehiculos",
+            auth=admin,
+            json=datos(f"PracticaP13 Auto {numero:02d}"),
+        )
+        assert respuesta.status_code == 201
+
+    base = "/vehiculos?tamano=5&buscar=PracticaP13"
+    pagina1 = cliente.get(base + "&pagina=1", auth=lector).json()
+    pagina2 = cliente.get(base + "&pagina=2", auth=lector).json()
+    pagina3 = cliente.get(base + "&pagina=3", auth=lector).json()
+    assert [len(p["datos"]) for p in (pagina1, pagina2, pagina3)] == [5, 5, 3]
+    assert all(p["total"] == 13 and p["total_paginas"] == 3 for p in
+               (pagina1, pagina2, pagina3))
+    assert len(cliente.get(base + "&pagina=4", auth=lector).json()["datos"]) == 0
+
+    vacia = cliente.get("/vehiculos?buscar=SinCoincidenciaXYZ", auth=lector).json()
+    assert vacia["total"] == 0
+    assert vacia["total_paginas"] == 0
+    assert vacia["datos"] == []
