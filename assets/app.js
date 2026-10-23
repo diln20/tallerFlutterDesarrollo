@@ -53,6 +53,7 @@
   function currentHashRoute() {
     let id = window.location.hash.replace(/^#/, '');
     try { id = decodeURIComponent(id); } catch (_) { id = ''; }
+    if (/^crud-paso-[1-7]$/.test(id)) return 'crud';
     return ROUTES.includes(id) ? id : 'inicio';
   }
 
@@ -110,10 +111,17 @@
       if (crumb) crumb.textContent = route === 'inicio' ? 'Inicio' : title;
       document.title = (route === 'inicio' ? 'Flutter en práctica' : title) + ' — Taller de Desarrollo Móvil';
       if (wasChanged) {
-        window.scrollTo(0, 0);
-        if (withFocus && heading) {
-          heading.setAttribute('tabindex', '-1');
-          heading.focus({preventScroll:true});
+        const subpaso = window.location.hash.slice(1).match(/^crud-paso-[1-7]$/);
+        if (subpaso) {
+          window.requestAnimationFrame(() => {
+            document.getElementById(subpaso[0])?.scrollIntoView({block:'start'});
+          });
+        } else {
+          window.scrollTo(0, 0);
+          if (withFocus && heading) {
+            heading.setAttribute('tabindex', '-1');
+            heading.focus({preventScroll:true});
+          }
         }
       }
     }
