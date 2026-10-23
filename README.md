@@ -45,6 +45,10 @@ La nueva ruta de clases sigue el orden establecido, sin mezclar aún la rama opc
 
 **Importante para enseñar:** P3 reutiliza un título de texto; P6 demuestra la extracción de widgets que ya existen y tienen comportamiento. P7 no obliga a mover la Tienda a otra página ni añade rutas con nombres o BLoC. Las simulaciones del sitio muestran el proceso, pero no ejecutan Flutter por sí solas.
 
+**Inicio de clase más visual:** P6 incorpora un mapa de responsabilidades para identificar qué debe permanecer en `_MainAppState` y qué se extrae a `lib/widgets/`. P7 presenta la navegación en dos objetivos sencillos: **Tienda → Acerca de** y luego **Acerca de → Ayuda**, antes de mostrar el código. El mismo `BotonTienda` se reutiliza en las tres pantallas con distintas acciones.
+
+**Enlaces directos:** [Extraer widgets reutilizables](https://diln20.github.io/tallerFlutterDesarrollo/#extraccion) · [Crear páginas y navegar](https://diln20.github.io/tallerFlutterDesarrollo/#navegacion).
+
 Cada bloque incluye archivo, ubicación exacta, qué buscar con Ctrl + F, acción (crear, añadir o reemplazar), explicación del contenido y comparación final. Los archivos Dart de `etapas/` son **copias de referencia**, no una segunda carpeta `lib` que haya que mezclar con el proyecto de los estudiantes.
 
 ## Dónde va cada fragmento del primer formulario
