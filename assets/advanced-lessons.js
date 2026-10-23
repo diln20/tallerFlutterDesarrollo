@@ -76,6 +76,44 @@
     }));
     root.querySelector('[data-al-method="get"]')?.click();
   }
-  function init() {initMenu();initForm();initHttp();}
+
+  function colorizarEjemplos() {
+    const classes = new Set(['python', 'yaml', 'json', 'xml']);
+    document.querySelectorAll('.advanced-module pre.code-block[data-code-mode] > code').forEach(code => {
+      const mode = code.parentElement.dataset.codeMode;
+      if (!classes.has(mode) || code.dataset.alSyntax === 'yes') return;
+      const source = code.textContent;
+      const rx = mode === 'python'
+        ? /#[^\r\n]*|r?'(?:\\.|[^'\\])*'|r?"(?:\\.|[^"\\])*"|@[A-Za-z_]\w*|\b(?:class|def|from|import|return|raise|with|as|if|else|for|in|try|except|finally|async|await|yield|pass|None|True|False|not|and|or|is)\b|\b\d+(?:\.\d+)?\b/g
+        : mode === 'yaml'
+          ? /#[^\r\n]*|"[^"]*"|'[^']*'|\b(?:true|false|null)\b|\b\d+\b|[A-Za-z_][\w-]*(?=\s*:)/g
+          : mode === 'json'
+            ? /"(?:\\.|[^"\\])*"|\b(?:true|false|null)\b|\b\d+(?:\.\d+)?\b/g
+            : /<[^>]+>|"[^"]*"|'[^']*'/g;
+      let pos=0, match;
+      const fragment=document.createDocumentFragment();
+      while ((match=rx.exec(source))!==null) {
+        if (match.index>pos) fragment.append(document.createTextNode(source.slice(pos,match.index)));
+        const word=match[0];
+        const node=document.createElement('span');
+        let kind='al-syntax-name';
+        if (word.startsWith('#')) kind='al-syntax-comment';
+        else if (/^['"]/.test(word) || /^r['"]/.test(word)) kind='al-syntax-string';
+        else if (/^\d/.test(word)) kind='al-syntax-number';
+        else if (word==='true'||word==='false'||word==='True'||word==='False'||word==='null'||word==='None') kind='al-syntax-number';
+        else if (mode==='xml' || word.startsWith('@')) kind='al-syntax-tag';
+        else if (mode==='python' && /^(class|def|from|import|return|raise|with|as|if|else|for|in|try|except|finally|async|await|yield|pass|not|and|or|is)$/.test(word)) kind='al-syntax-keyword';
+        node.className=kind;
+        node.textContent=word;
+        fragment.append(node);
+        pos=rx.lastIndex;
+      }
+      if (pos<source.length) fragment.append(document.createTextNode(source.slice(pos)));
+      code.replaceChildren(fragment);
+      code.dataset.alSyntax='yes';
+    });
+  }
+
+  function init() {initMenu();initForm();initHttp();colorizarEjemplos();}
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});else init();
 })();
