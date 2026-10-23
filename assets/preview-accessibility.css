@@ -1,0 +1,221 @@
+/* FlutterLab - vista grande y legible para todos los ejemplos Antes/Despues.
+   La vista ampliada se activa por defecto y se puede desactivar con el boton. */
+.pv-view-controls{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  gap:12px;padding:12px 15px;margin:0 0 14px;
+  background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;
+}
+.pv-view-controls>div{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.pv-view-controls strong{font-size:12px;line-height:1.5;color:var(--heading)}
+.pv-view-controls span{font-size:11px;line-height:1.5;color:var(--text-soft)}
+.pv-view-controls button{
+  min-height:44px;padding:9px 16px;border:1px solid #6f9bce;
+  border-radius:9px;background:var(--surface);color:var(--blue);
+  cursor:pointer;font-size:12px;line-height:1.45;font-weight:850;
+}
+.pv-view-controls button:hover,.pv-view-controls button:focus-visible{
+  border-color:#286abc;outline:2px solid #90b8e8;outline-offset:2px
+}
+.pv-large-view .pv-compare{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:19px;
+}
+.pv-large-view .pv-side{width:100%;min-width:0}
+.pv-large-view .pv-side-heading{padding:13px 18px;gap:9px}
+.pv-large-view .pv-side-heading strong{font-size:13px;letter-spacing:.06em}
+.pv-large-view .pv-side-heading>span{font-size:12px;line-height:1.5}
+.pv-large-view .pv-preview-area{
+  display:grid;place-items:center;
+  min-height:545px;max-height:none;
+  padding:22px 18px;box-sizing:border-box;
+}
+.pv-large-view .pv-device{
+  width:min(100%,365px);height:505px;
+  border-width:7px;border-radius:28px;
+}
+.pv-large-view .pv-status{
+  height:24px;font-size:10px;
+  padding:4px 15px;
+}
+.pv-large-view .pv-status>span{font-size:10px}
+.pv-large-view .pv-appbar{min-height:58px;padding:0 17px}
+.pv-large-view .pv-appbar strong{font-size:16px}
+.pv-large-view .pv-content{min-height:280px}
+.pv-large-view .pv-body-text{font-size:14px;line-height:1.65}
+.pv-large-view .pv-big-icon{font-size:31px;width:42px}
+.pv-large-view .pv-row{font-size:12px;line-height:1.5}
+.pv-large-view .pv-row>span:first-child{font-size:19px}
+.pv-large-view .pv-row-text{font-size:11.5px}
+.pv-large-view .pv-search input{
+  font-size:12px;min-height:38px;
+}
+.pv-large-view .pv-search.pv-search-inline input{font-size:11px}
+.pv-large-view .pv-search-label{font-size:12px}
+.pv-large-view .pv-results,.pv-large-view .pv-results>strong{font-size:12px}
+.pv-large-view .pv-results>small{font-size:11px}
+.pv-large-view .pv-car-item{font-size:12px;padding:9px 4px}
+.pv-large-view .pv-no-results{font-size:12px}
+.pv-large-view .pv-form{gap:8px;padding:9px}
+.pv-large-view .pv-form>strong{font-size:13px}
+.pv-large-view .pv-form label{font-size:12px}
+.pv-large-view .pv-form input{
+  font-size:12px;padding:11px 10px;
+  min-height:40px;box-sizing:border-box;
+}
+.pv-large-view .pv-submit{
+  min-height:43px;font-size:12px;padding:11px;
+}
+.pv-large-view .pv-validation{font-size:11px}
+.pv-large-view .pv-nav-button{
+  font-size:12px;min-height:44px;padding:12px 14px;
+}
+.pv-large-view .pv-nav-page-content{min-height:330px;padding:25px 22px!important}
+.pv-large-view .pv-nav-page-content>strong{font-size:18px}
+.pv-large-view .pv-nav-page-content>p{font-size:13px;line-height:1.65}
+.pv-large-view .pv-nav-back{font-size:23px}
+
+/* VS Code / explorador / terminal: fuente de lectura real, no miniatura de 8 px. */
+.pv-large-view .pv-editor{
+  display:flex;flex-direction:column;
+  width:100%;max-width:100%;height:455px;min-height:455px;
+  border-width:3px;
+}
+.pv-large-view .pv-editor-title{
+  font-size:13px;line-height:1.5;padding:12px 17px;
+}
+.pv-large-view .pv-editor-tab{
+  padding:12px 16px;font-size:12px;gap:14px;
+}
+.pv-large-view .pv-editor-status{
+  padding:12px 16px;font-size:12px;line-height:1.5;
+}
+.pv-large-view .pv-ide-viewport{overflow:auto}
+.pv-large-view .pv-ide-grid{
+  grid-template-columns:minmax(155px,24%) minmax(0,1fr);
+  min-height:100%;
+}
+.pv-large-view .pv-ide-explorer{overflow:auto;padding:14px 0}
+.pv-large-view .pv-ide-explorer-title{
+  font-size:11px;line-height:1.5;padding:0 12px 11px;
+}
+.pv-large-view .pv-tree-root{
+  font-size:12px;line-height:1.7;padding:7px 11px;
+}
+.pv-large-view .pv-tree-item{
+  font-size:12px;line-height:1.6;padding:8px 11px 8px 22px;
+}
+.pv-large-view .pv-tree-item.pv-ide-selected{
+  padding-left:19px;
+}
+.pv-large-view .pv-tree-item.pv-ide-selected span{font-size:9px}
+.pv-large-view .pv-ide-code-caption{
+  font-size:11px;padding:11px 13px;
+}
+.pv-large-view .pv-ide-code-pane{overflow:auto}
+.pv-large-view .pv-ide-code-scroll{
+  max-height:335px;overflow:auto;
+}
+.pv-large-view .pv-ide-code-row{
+  gap:11px;line-height:27px;font-size:13px;
+}
+.pv-large-view .pv-ide-code-row em{
+  flex-basis:29px;font-size:11px;padding:0 5px;
+}
+.pv-large-view .pv-ide-code-row code{
+  font-size:13px!important;line-height:27px!important;
+}
+.pv-large-view .pv-ide-file-found{
+  font-size:12px;line-height:1.5;margin:13px;
+  padding:11px 13px;
+}
+.pv-large-view .pv-ide-file-empty{
+  font-size:13px;line-height:1.8;padding:25px 16px;
+}
+.pv-large-view .pv-ide-file-empty code{font-size:13px}
+.pv-large-view .pv-ide-welcome{padding:25px 28px;gap:13px}
+.pv-large-view .pv-ide-welcome-icon{
+  width:42px;height:42px;font-size:26px;
+}
+.pv-large-view .pv-ide-welcome strong{font-size:16px}
+.pv-large-view .pv-ide-welcome p{
+  font-size:13px;line-height:1.75;max-width:550px;
+}
+.pv-large-view .pv-ide-welcome-hint{
+  font-size:12px;padding:11px 14px;
+}
+.pv-large-view .pv-ide-folder-tree{
+  padding:18px 22px;
+}
+.pv-large-view .pv-ide-folder-tree .pv-tree-root{font-size:14px}
+.pv-large-view .pv-ide-folder-tree .pv-tree-item{
+  font-size:13px;padding:8px 15px 8px 25px;
+}
+.pv-large-view .pv-folder-footnote{
+  font-size:12px;line-height:1.7;
+  padding:11px 13px;margin-top:15px;
+}
+.pv-large-view .pv-ide-term{padding:21px 25px}
+.pv-large-view .pv-ide-term-title{
+  font-size:12px;padding-bottom:12px;margin-bottom:15px;
+}
+.pv-large-view .pv-ide-term-line{
+  font-size:13px;line-height:2;
+}
+.pv-large-view .pv-ide-term-suggest{
+  font-size:12px;line-height:1.7;padding:12px 14px;
+}
+.pv-large-view .pv-ide-term-tip{
+  font-size:12px;line-height:1.7;
+}
+.pv-large-view .pv-ide-demo-note{
+  font-size:11px;line-height:1.7;
+}
+
+/* El bloque de codigo y la comparacion textual siguen siendo accesibles. */
+.pv-large-view .pv-code-difference header strong{font-size:14px}
+.pv-large-view .pv-diff-row p{font-size:13px}
+.pv-large-view .pv-diff-detail{font-size:12px}
+.pv-large-view .pv-code-explain .code-block{
+  font-size:13px;line-height:1.85;
+}
+.pv-large-view .pv-code-explain .code-label{font-size:12px}
+.pv-large-view .pv-code-intro strong{font-size:14px}
+.pv-large-view .pv-code-intro p{font-size:12px;line-height:1.7}
+
+@media(max-width:760px){
+  .pv-large-view .pv-ide-grid{
+    grid-template-columns:minmax(130px,27%) minmax(0,1fr);
+  }
+  .pv-large-view .pv-ide-code-row code{font-size:11.5px!important}
+  .pv-large-view .pv-tree-item{font-size:11px}
+}
+@media(max-width:620px){
+  .pv-view-controls{align-items:flex-start}
+  .pv-view-controls button{width:100%}
+  .pv-large-view .pv-preview-area{padding:17px 9px;min-height:530px}
+  .pv-large-view .pv-device{height:490px;width:min(100%,365px)}
+  .pv-large-view .pv-editor{height:420px;min-height:420px}
+  .pv-large-view .pv-ide-grid{grid-template-columns:125px minmax(0,1fr)}
+  .pv-large-view .pv-ide-code-row code{
+    font-size:11px!important;line-height:25px!important;
+  }
+  .pv-large-view .pv-ide-code-row{line-height:25px}
+  .pv-large-view .pv-tree-item{font-size:10px;padding-left:12px}
+  .pv-large-view .pv-ide-explorer-title{font-size:10px;padding-left:7px}
+  .pv-large-view .pv-editor-tab{font-size:11px}
+  .pv-large-view .pv-editor-title{font-size:12px}
+  .pv-large-view .pv-ide-term-line{font-size:12px}
+}
+@media(max-width:395px){
+  .pv-large-view .pv-ide-grid{grid-template-columns:104px minmax(0,1fr)}
+  .pv-large-view .pv-preview-area{min-height:515px;padding:14px 6px}
+  .pv-large-view .pv-device{height:478px}
+  .pv-large-view .pv-tree-item{font-size:9px;line-height:1.45}
+  .pv-large-view .pv-ide-code-row code{font-size:10.5px!important}
+}
+@media print{
+  .pv-view-controls{display:none}
+  .pv-large-view .pv-compare{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pv-large-view .pv-device{height:310px;width:min(100%,245px)}
+  .pv-large-view .pv-editor{height:300px;min-height:300px}
+  .pv-large-view .pv-preview-area{min-height:340px}
+}
