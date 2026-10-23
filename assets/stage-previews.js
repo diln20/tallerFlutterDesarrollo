@@ -22,7 +22,7 @@
   const state=desc=>({...S[desc.stage],...desc});
     function editorUI(v,which,highlight){
   const mode=v.editorMode||'workspace';
-  const opened=Boolean(v.opened);
+  const opened=Boolean(v.opened)||mode==='dart'||(mode==='newfile'&&Boolean(v.filePresent));
   const codeStage=Number.isInteger(v.codeStage)?v.codeStage:0;
   const stageCode=[
     {text:"import 'package:flutter/material.dart';",tier:1},
@@ -429,7 +429,7 @@
     for(const id of modules){
       const lesson=document.getElementById(id),cfg=data[id];
       if(!lesson||!cfg)continue;
-      const anchor=lesson.querySelector('.goal-box')||lesson.querySelector('.lesson-heading');
+      const anchor=(id==='preparacion'?lesson.querySelector('.start-flow'):id==='punto-entrada'?lesson.querySelector('#plantilla-actividad2'):null)||lesson.querySelector('.goal-box')||lesson.querySelector('.lesson-heading');
       if(!anchor)continue;
       const slot=document.createElement('div');
       slot.className='pv-mount';slot.id='pv-'+id;

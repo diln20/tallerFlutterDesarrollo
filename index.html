@@ -2123,8 +2123,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="checklist" data-checklist="navegacion"><label><input type="checkbox"> Creé dos archivos dentro de lib/pages.</label><label><input type="checkbox"> Ambas páginas tienen Scaffold y AppBar.</label><label><input type="checkbox"> Reutilicé TituloSeccion y BotonTienda dentro de las páginas.</label><label><input type="checkbox"> Entiendo por qué push avanza y pop regresa.</label><label><input type="checkbox"> La navegación funciona sin dañar el formulario.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#responsive">Ampliación opcional: diseño adaptable →</a></div></section>
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
-<h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>En actividad2a tenemos una fila con un icono, un texto y el campo de búsqueda. Vamos a mejorar su presentación para celulares, sin empezar otra aplicación.</p></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
+<h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>En actividad2 ya reconstruimos una fila con icono, texto y buscador, siguiendo la referencia actividad2a. Vamos a mejorar su presentación para celulares, sin empezar otra aplicación.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
 
 <h2>1. Observa la fila que existe hoy</h2><p>Este fragmento se encuentra actualmente en <code>lib/main.dart</code>. Un <code>TextField</code> comparte una <code>Row</code> con un texto largo y un icono: el ancho puede ser insuficiente en móviles pequeños.</p>
@@ -2267,7 +2267,7 @@ class MainApp extends StatelessWidget {
 
         
 <section class="page lesson" id="estado" aria-labelledby="estado-title" data-lesson="7">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 07</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">35–45 min</span></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 07</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">35–45 min</span></div>
 <h1 id="estado-title">Hacer interactivo el buscador existente</h1><p>El TextField de actividad2a deja escribir, pero todavía no reacciona. Ahora guardaremos el texto de búsqueda dentro del mismo MainApp.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
 
@@ -2396,7 +2396,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 
         
 <section class="page lesson" id="formularios" aria-labelledby="formularios-title" data-lesson="8">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 08</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">35–45 min</span></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 08</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">35–45 min</span></div>
 <h1 id="formularios-title">Filtrar marcas y modelos en la Tienda</h1><p>Usaremos el mismo buscador de actividad2a, ahora con estado, para filtrar una pequeña lista de vehículos de ejemplo.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Esta ampliación <strong>requiere</strong> haber construido antes las propuestas de los módulos 06 y 07: diseño con espacio y buscador con estado. No la pegues directamente sobre el código original de clase. El módulo 09 es otra ruta desde el <code>main.dart</code> original y no necesita este filtro.</p></div></div>
 
@@ -2538,7 +2538,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 
         
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="bloc-title">Organizar la Tienda con el patrón BLoC</h1><p>Cuando hayamos comprendido las dos prácticas independientes —buscar vehículos y utilizar un formulario básico— podremos imaginar cómo separar la lógica de los widgets. Este módulo es conceptual: no añadiremos BLoC todavía.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
 
@@ -2549,7 +2549,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <h2>3. Comparar las etapas</h2><div class="roadmap"><div><span class="roadmap-step">A</span><strong>Actividad2a original</strong><p><code>StatelessWidget</code>, icono y <code>TextField</code> sin lógica de búsqueda.</p></div><div><span class="roadmap-step">B</span><strong>Tienda con setState</strong><p>La pantalla guarda el texto y mantiene la lista filtrada.</p></div><div><span class="roadmap-step">C</span><strong>Tienda con BLoC</strong><p>La pantalla envía eventos y recibe estados, mientras la lógica del catálogo vive separada.</p></div></div>
 <h2>4. Palabras que debes recordar</h2>
 <div class="line-notes numbered"><div><strong>Evento</strong><p>Una solicitud del usuario, como «Buscar Renault» o «Agregar Toyota Corolla».</p></div><div><strong>Lógica del BLoC</strong><p>Procesa lo que pidió el usuario y aplica reglas.</p></div><div><strong>Estado</strong><p>La información que se mostrará, como resultados o un mensaje de error.</p></div><div><strong>Interfaz</strong><p>Presenta el estado al usuario sin hacer todos los cálculos de negocio.</p></div></div>
-<div class="notice notice-warning"><strong>Todavía no es parte de main.dart</strong><p>El proyecto actual no tiene BLoC ni dependencias adicionales. Este módulo es una introducción para una etapa posterior. Primero trabajaremos la versión con <code>setState</code> en nuestra copia de actividad2a.</p></div>
+<div class="notice notice-warning"><strong>Todavía no es parte de main.dart</strong><p>El proyecto actual no tiene BLoC ni dependencias adicionales. Este módulo es una introducción para una etapa posterior. Primero trabajaremos la versión con <code>setState</code> en actividad2.</p></div>
 <div class="checklist" data-checklist="bloc"><label><input type="checkbox"> Distingo evento, lógica y estado con el ejemplo de la Tienda.</label><label><input type="checkbox"> Comprendo por qué no introducimos BLoC en la primera clase.</label><label><input type="checkbox"> Sé que la versión BLoC será una evolución del mismo proyecto.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Esquematiza una búsqueda</h3><p>Sin escribir código, dibuja tres cajas: evento, BLoC y estado. Describe qué ocurre cuando el usuario escribe «Mazda».</p><details><summary>Ver orientación de la respuesta</summary><p>El evento comunica la búsqueda; la lógica filtra los nombres; el estado contiene «Mazda 3» y la interfaz muestra ese resultado.</p></details></div>
 <div class="deep-dive">
