@@ -1,0 +1,48 @@
+.post-api-lesson .lesson-heading h1{font-size:clamp(28px,3vw,39px);line-height:1.22;max-width:990px}
+.post-api-lesson .lesson-heading p{font-size:clamp(13px,1.2vw,16px);line-height:1.8}
+.post-api-lesson .next-step{border-left:4px solid #268aa0;padding:clamp(17px,2.5vw,25px);margin:20px 0;scroll-margin-top:80px}
+.post-api-lesson .next-step h3{font-size:clamp(18px,2vw,22px)}
+.post-api-lesson .next-step>p,.post-api-lesson .next-step-meaning p,.post-api-lesson .next-step-result p{font-size:13px;line-height:1.85}
+.post-api-lesson .next-where-details{font-size:12px;line-height:1.8}
+.post-api-lesson .code-block{max-height:600px!important;white-space:pre;overflow:auto;font-size:clamp(12px,1vw,14px)!important;line-height:1.8!important}
+.pu-badge{font-size:11px;letter-spacing:.065em;font-weight:850;color:var(--blue);display:block;margin-bottom:7px}
+.pu-bridge{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:19px 0 25px}
+.pu-bridge>div,.pu-concept>div{border:1px solid var(--border);background:var(--surface-soft);border-radius:12px;padding:16px}
+.pu-bridge strong,.pu-concept strong{display:block;font-size:14px;color:var(--heading)}
+.pu-bridge span{font-size:11px;color:var(--blue);font-weight:850}
+.pu-bridge p,.pu-concept p{font-size:12px;line-height:1.75;color:var(--text-soft);margin:8px 0 0}
+.pu-demo{padding:clamp(16px,2.4vw,24px);border:1px solid var(--border);border-radius:15px;background:var(--surface);margin:21px 0 28px}
+.pu-demo h3{font-size:18px;color:var(--heading);margin:0 0 10px}
+.pu-demo>p{font-size:12px;line-height:1.8;color:var(--text-soft);margin:0 0 15px}
+.pu-demo button{border:1px solid var(--border);border-radius:9px;background:var(--surface-soft);color:var(--heading);padding:9px 13px;font-size:13px;font-weight:750;min-height:44px;cursor:pointer}
+.pu-demo button[aria-pressed=true]{background:#135e7b;color:white}
+.pu-demo button:disabled{opacity:.5;cursor:not-allowed}
+.pu-demo input,.pu-demo select{border:1px solid #819db6;border-radius:9px;padding:11px 13px;color:var(--text);background:var(--surface);min-height:44px}
+.pu-demo :is(button,input,select):focus-visible{outline:3px solid #6bccce;outline-offset:3px}
+.pu-row,.pu-visible-actions,.pu-page-buttons{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:13px 0}
+.pu-page-buttons{justify-content:space-between}
+.pu-visible-actions span{padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface-soft)}
+.pu-status{background:var(--surface-soft);border:1px solid var(--border);border-radius:11px;padding:14px;line-height:1.8;font-size:13px;margin:12px 0}
+.pu-status strong{color:var(--heading)}
+.pu-table-scroll{width:100%;overflow-x:auto;margin:16px 0}
+.pu-table{width:100%;min-width:550px;border-collapse:collapse}
+.pu-table th,.pu-table td{text-align:left;font-size:12px;padding:10px 13px;border-bottom:1px solid var(--border)}
+.pu-table th{background:var(--surface-soft);color:var(--heading)}
+.pu-table td{color:var(--text-soft)}
+.pu-json{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:19px 0}
+.pu-json>div{min-width:0;background:#0d2740;color:#e2f1ff;padding:16px;border-radius:11px}
+.pu-json strong{display:block;color:#91e3d5;font-size:12px;margin-bottom:10px}
+.pu-json pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 ui-monospace,Consolas,monospace;margin:0}
+.pu-concept{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0}
+.pu-heuristics{display:grid;gap:12px;margin:18px 0}
+.pu-heuristic{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:15px}
+.pu-heuristic input{width:18px;height:18px;accent-color:#177994;flex:0 0 18px;margin-top:4px}
+.pu-heuristic strong{font-size:14px;color:var(--heading);display:block}
+.pu-heuristic p{font-size:12px;line-height:1.75;margin:6px 0;color:var(--text-soft)}
+.pu-heuristic small{font-size:11px;color:var(--blue);line-height:1.6;display:block}
+.pu-files{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.pu-files a{font-size:12px;font-weight:750;border-radius:9px;padding:9px 12px;background:var(--surface-soft);color:var(--heading);text-decoration:none;border:1px solid var(--border)}
+.pu-files a:hover{border-color:#50a3b0}
+.pu-review{font-size:13px;line-height:1.9;color:var(--text-soft)}
+@media(max-width:800px){.pu-bridge{grid-template-columns:1fr}.pu-json,.pu-concept{grid-template-columns:1fr}}
+@media(max-width:540px){.post-api-lesson .next-step{padding:15px}.pu-demo{padding:15px}.pu-page-buttons{justify-content:center}}
