@@ -78,3 +78,11 @@
 body[data-theme=dark] .al-drawer-frame{background:#243b58;color:#e9f2ff}
 @media(max-width:850px){.al-bridge{grid-template-columns:1fr}.al-flow{flex-wrap:wrap}.al-flow>div{flex:1 1 170px}.al-json-panels{grid-template-columns:1fr}}
 @media(max-width:560px){.al-validation{grid-template-columns:1fr}.al-validation .al-validation-actions{grid-column:1}.al-flow>b{display:none}.advanced-module .next-step{padding:15px}.advanced-module pre.code-block{font-size:12px!important}.al-table{min-width:550px}}
+
+/* Colores por lenguaje; conservan el texto original para el botón Copiar. */
+.advanced-module pre.code-block code .al-syntax-keyword{color:#c7a2fb;font-weight:650}
+.advanced-module pre.code-block code .al-syntax-string{color:#c0e891}
+.advanced-module pre.code-block code .al-syntax-number{color:#eeb17c}
+.advanced-module pre.code-block code .al-syntax-comment{color:#90aabc;font-style:italic}
+.advanced-module pre.code-block code .al-syntax-name{color:#78d9ed}
+.advanced-module pre.code-block code .al-syntax-tag{color:#88bff2}
