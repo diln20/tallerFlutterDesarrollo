@@ -52,7 +52,7 @@ La comparación ya no repite el mismo código o la misma imagen cuando el paso o
 
 La nueva ruta de clases sigue el orden establecido, sin mezclar aún la rama opcional de filtros:
 
-**01–05 → Primer formulario (P1) → Carpetas (P2) → Primer widget reutilizable (P3) → Validación (P4) → Primer objeto (P5) → Extraer widgets existentes (P6) → Páginas y navegación (P7).**
+**01–05 → Primer formulario (P1) → Carpetas (P2) → Primer widget reutilizable (P3) → Validación (P4) → Primer objeto (P5) → CRUD con setState (P5.1) → Extraer widgets existentes (P6) → Páginas y navegación (P7) → Aplicar BLoC al CRUD (P8).**
 
 - **P2 — Crear carpetas:** crear únicamente `lib/pages/`, `lib/widgets/`, `lib/models/`, `lib/services/`, `lib/repositories/` y `lib/bloc/`. Explicar la finalidad futura de cada carpeta. **No crear clases, mover main.dart ni agregar lógica en esta etapa.** En Git las carpetas vacías no suelen aparecer hasta que contienen un archivo.
 - **P3 — Reutilización:** ahora sí utilizar `lib/widgets/` con el archivo `titulo_seccion.dart`, que contiene un `StatelessWidget` con el parámetro `required this.texto`. En `main.dart` se importa y se usa **dos veces**, sin cambiar el aspecto ni el funcionamiento del formulario.
@@ -284,3 +284,19 @@ Primero se instala el paquete ejecutando `flutter pub add flutter_bloc` desde la
 El curso utiliza analogías cotidianas y correspondencias técnicas en 18 secciones, en los 87 pasos interactivos, en los 10 pasos de BLoC y en las fichas de los 128 widgets (77 específicas y 51 por familia). Cada módulo incluye también el límite de la comparación y una pregunta de comprobación.
 
 Guía para el docente: [Analogías para enseñar Flutter](docs/guia-de-analogias-para-docentes.md). Validación sin dependencias: `node tests/verificar-analogias.mjs`.
+
+## P8 — BLoC aplicado al CRUD de la Tienda
+
+La ruta principal incluye una etapa nueva, [P8: aplicar BLoC al CRUD](https://diln20.github.io/tallerFlutterDesarrollo/#bloc-crud), situada **después de P7**.
+
+- **La misma aplicación:** mantiene el modelo `Vehiculo`, `CampoNombreVehiculo`, `BotonTienda`, `TituloSeccion` y las páginas `AcercaPage` / `AyudaPage`.
+- **Antes:** P5.1 usa `setState` para crear, editar y eliminar; P7 incorpora la navegación.
+- **Después:** P8 instala `flutter_bloc` y mueve el inventario a `VehiculosBloc`. La pantalla envía eventos y reconstruye las partes afectadas con `BlocBuilder`.
+- **Archivos nuevos:** `lib/bloc/vehiculos_evento.dart`, `lib/bloc/vehiculos_estado.dart` y `lib/bloc/vehiculos_bloc.dart`.
+- **Operaciones:** crear, editar, cancelar edición, eliminar y buscar. Al filtrar, se usa el índice real del inventario para evitar editar o eliminar otro carro.
+- **Práctica:** 12 pasos de construcción, con ubicación exacta, código de ejemplo, explicación de instrucciones y una simulación HTML de evento → estado. Esta simulación no ejecuta Flutter.
+- **Ejemplo completo y pruebas:** [ejemplo_bloc_crud/](ejemplo_bloc_crud/) incluye el árbol `lib/`, `pubspec.yaml` y una prueba de las operaciones CRUD.
+
+La anterior práctica BLoC del [módulo 10](https://diln20.github.io/tallerFlutterDesarrollo/#bloc) continúa disponible como **ruta B opcional centrada en el buscador**; no debe mezclarse con P8.
+
+> El inventario permanece en memoria: no hay base de datos, almacenamiento local ni servicios externos. No se sobrescribe el proyecto `actividad2a` del docente.
