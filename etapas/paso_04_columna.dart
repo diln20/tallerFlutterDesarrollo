@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              Text('Hello dsfdsWorld'),
+              Text('Primer widget'),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
