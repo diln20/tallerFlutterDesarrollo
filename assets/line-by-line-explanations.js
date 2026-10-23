@@ -247,6 +247,7 @@
   root.explain=buildRows;
   function mount(pre){
     if(!pre||pre.dataset.lineGuide==='yes'||pre.closest('.ln-breakdown'))return;
+    if (['python','yaml','json','xml','plain'].includes(pre.dataset.codeMode)) return;
     const code=pre.querySelector(':scope > code');
     if(!code)return;
     const content=code.textContent;
