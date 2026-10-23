@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text('Primer widget'),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
