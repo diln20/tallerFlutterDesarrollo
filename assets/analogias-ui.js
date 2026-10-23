@@ -46,7 +46,36 @@
       lead.insertAdjacentHTML('afterend',html);
     });
   }
-  function init(){addModuleCards();addBlocAnalogies();}
+  /* La ficha del catálogo cambia al elegir otro widget, por eso se observa
+     únicamente la sustitución de sus hijos directos. */
+  function attachCatalogAnalogy(dialog){
+    const title=dialog.querySelector('#wc-detail-title');
+    if(!title || dialog.querySelector('.wc-widget-analogy'))return;
+    const widgetName=title.textContent.trim();
+    const item=(window.FlutterLabWidgetData||[]).find(w=>w.name===widgetName);
+    const cfg=data.catalogo;
+    if(!item || !cfg)return;
+    const exact=cfg.exactas[widgetName];
+    const sample=exact||cfg.familias[item.group];
+    if(!sample)return;
+    const target=dialog.querySelector('.wc-detail-grid');
+    if(!target)return;
+    const html='<aside class="wc-widget-analogy" aria-label="Analogía para comprender el widget">'+
+      '<span>'+(exact?'ANALOGÍA DE ESTE WIDGET':'ANALOGÍA DE ESTA FAMILIA')+'</span>'+
+      '<p><strong>Imagínalo así:</strong> '+mark(sample[0])+'</p>'+
+      '<p><strong>En Flutter:</strong> '+mark(sample[1])+'</p>'+
+      (!exact?'<p class="wc-widget-analogy-note">Este es un ejemplo de su familia. El widget <code>'+esc(widgetName)+'</code> cumple la función específica descrita arriba.</p>':'')+
+    '</aside>';
+    target.insertAdjacentHTML('beforebegin',html);
+  }
+  function addCatalogAnalogies(){
+    const dialog=document.getElementById('widget-detail');
+    if(!dialog)return;
+    const observer=new MutationObserver(()=>attachCatalogAnalogy(dialog));
+    observer.observe(dialog,{childList:true,subtree:false});
+    attachCatalogAnalogy(dialog);
+  }
+  function init(){addModuleCards();addBlocAnalogies();addCatalogAnalogies();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();

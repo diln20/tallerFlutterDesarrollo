@@ -54,3 +54,29 @@
   .bloc-practice-analogy{padding:11px}
   .pv-analogy{padding:12px}
 }
+
+/* Analogías dentro de la ficha individual del catálogo de 128 widgets. */
+.wc-widget-analogy{
+  padding:14px 17px;
+  margin:0 0 17px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--surface-soft);
+}
+.wc-widget-analogy>span{
+  display:block;
+  color:var(--blue);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.07em;
+  margin-bottom:7px;
+}
+.wc-widget-analogy p{
+  color:var(--text-soft);
+  font-size:12px;
+  line-height:1.75;
+  margin:7px 0 0;
+}
+.wc-widget-analogy p strong{color:var(--heading)}
+.wc-widget-analogy p.wc-widget-analogy-note{font-size:11px}
+@media(max-width:640px){.wc-widget-analogy{padding:12px}}
