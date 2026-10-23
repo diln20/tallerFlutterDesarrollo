@@ -23,7 +23,7 @@
   <script src="./assets/bloc-practice.js?v=20261023-bloc-guia-v2" defer></script>
   <script src="./assets/stage-preview-data.js?v=bloc-practica-01" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
-  <script src="./assets/crud-lesson.js?v=20261023" defer></script>
+  <script src="./assets/crud-lesson.js?v=20261023-BLOC-P8" defer></script>
   <script src="./assets/bloc-crud.js?v=20261023-P8" defer></script>
   <script src="./assets/analogias-didacticas.js?v=20261023-analogias-v3" defer></script>
   <script src="./assets/analogias-catalogo.js?v=20261023-analogias-v2" defer></script>
@@ -49,7 +49,7 @@
   <link rel="stylesheet" href="./assets/project-start-ui.css?v=20261023-vscode-carpetas-01">
   <link rel="stylesheet" href="./assets/preview-code-focus.css?v=20261023-vscode-lectura-v9">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
-  <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023">
+  <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023-BLOC-P8">
   <link rel="stylesheet" href="./assets/bloc-crud.css?v=20261023-P8">
 </head>
 <body>
@@ -2323,7 +2323,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="bc-flow"><div><span>1 · EL CLIENTE</span><strong>Interfaz Flutter</strong><p>El botón detecta «Guardar Renault 9».</p></div><div><span>2 · LA ORDEN</span><strong>VehiculoGuardado</strong><p>Un evento comunica la intención.</p></div><div><span>3 · EL ENCARGADO</span><strong>VehiculosBloc</strong><p>Decide si debe crear o editar y actualiza la lista.</p></div><div><span>4 · EL INVENTARIO</span><strong>VehiculosEstado</strong><p>BlocBuilder recibe el estado y actualiza la vitrina.</p></div></div>
 <div class="bc-pair"><div><span>ANTES · CRUD CON SETSTATE</span><p><code>_MainAppState</code> guarda directamente la lista <code>vehiculos</code>. Los métodos del formulario llaman a <code>setState()</code> para cambiarla.</p></div><div><span>DESPUÉS · EL MISMO CRUD CON BLOC</span><p><code>VehiculosBloc</code> conserva la lista y procesa los eventos. La pantalla sigue teniendo un controlador de texto y un formulario, pero deja de ser la encargada de administrar el inventario.</p></div></div>
 <div class="bc-demo" id="bc-demo" aria-label="Simulación didáctica del CRUD con BLoC"><div class="bc-demo-header"><strong>Prueba antes de programar: evento → BLoC → estado → interfaz</strong><span>Simulación HTML · no ejecuta Flutter</span></div>
-<div class="bc-demo-layout"><div><form id="bc-demo-form"><div class="bc-form-field"><label for="bc-demo-nombre">Nombre del vehículo</label><input id="bc-demo-nombre" type="text" autocomplete="off" placeholder="Renault 9" minlength="3" required></div><button type="submit" id="bc-demo-guardar">Agregar vehículo</button><button class="bc-secondary" type="button" id="bc-demo-cancelar" hidden>Cancelar edición</button></form>
+<div class="bc-demo-layout"><div><form id="bc-demo-form"><div class="bc-form-field"><label for="bc-demo-nombre">Nombre del vehículo</label><input id="bc-demo-nombre" type="text" autocomplete="off" placeholder="Renault 9"></div><button type="submit" id="bc-demo-guardar">Agregar vehículo</button><button class="bc-secondary" type="button" id="bc-demo-cancelar" hidden>Cancelar edición</button></form>
 <div class="bc-demo-message" id="bc-demo-mensaje" role="status" aria-live="polite"></div>
 <label for="bc-demo-buscar">Buscar entre los vehículos registrados</label><input id="bc-demo-buscar" type="search" placeholder="Prueba con Renault, Mazda o Toyota">
 <div class="bc-demo-entries"><ul id="bc-demo-lista" aria-live="polite"></ul></div></div>
