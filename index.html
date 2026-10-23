@@ -2629,21 +2629,21 @@ class _MainAppState extends State&lt;MainApp&gt; {
 
         
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
-<h1 id="bloc-title">Organizar la Tienda con el patrón BLoC</h1><p>Puedes llegar aquí desde <strong>P7 (ruta A)</strong> o desde <strong>08 (ruta B)</strong>. Ya conoces alguna interacción entre el usuario y la Tienda; ahora estudiaremos cómo separar eventos, lógica y estado. Este módulo es conceptual: no instalaremos ni programaremos BLoC.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Seguimos construyendo la misma Tienda</strong><p>Partimos del <code>main.dart</code> real. Esta sección es una mejora propuesta para nuestra copia, todavía no está implementada en el proyecto que usas con los estudiantes.</p></div></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10 · BLoC</span><span class="status-pill planned">Teoría y práctica opcional</span><span class="lesson-time">Concepto + 10 pasos</span></div>
+<h1 id="bloc-title">Comprender y aplicar BLoC en la Tienda</h1><p>Primero aprenderás con palabras qué son eventos, lógica y estados. Después, si has terminado <strong>la ruta B, módulo 08</strong>, podrás implementar un buscador real con <code>flutter_bloc</code> en diez pasos. Si vienes de P7 (ruta A), estudia la teoría, pero <strong>no sustituyas tu formulario</strong> por esta práctica.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Dos momentos distintos</strong><p>Primero, una explicación sin pegar código. Después, la práctica opcional sobre <code>etapas/paso_08_filtro.dart</code> para convertir el buscador que utiliza <code>setState</code> en una versión con eventos y estados de BLoC.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-bloc" aria-label="Conocimientos necesarios para esta lección">
-  <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Concepto posterior: no sustituimos el código sin comprender el estado</h2><p>Esta sección es <strong>solo conceptual</strong>. Si seguiste la ruta A conoces el controlador del formulario y <code>onPressed</code>; si seguiste la ruta B también viste <code>setState</code>. BLoC propone separar <strong>qué ocurrió (evento)</strong>, <strong>qué se calcula (lógica)</strong> y <strong>qué se muestra (estado)</strong>.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Primero explica ese recorrido con palabras y un dibujo. Aquí <strong>no instalamos paquetes, no creamos archivos BLoC ni reemplazamos el proyecto</strong>.</p></div>
+  <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Concepto posterior: no sustituimos el código sin comprender el estado</h2><p>Esta <strong>primera parte</strong> es conceptual. Si seguiste la ruta A conoces el controlador del formulario y <code>onPressed</code>; si seguiste la ruta B también viste <code>setState</code>. BLoC propone separar <strong>qué ocurrió (evento)</strong>, <strong>qué se calcula (lógica)</strong> y <strong>qué se muestra (estado)</strong>.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Primero explica ese recorrido con palabras y un dibujo. En la primera parte <strong>no instalamos paquetes</strong>. En la práctica posterior crearemos archivos BLoC, uno por uno y solamente sobre la ruta B.</p></div>
 
 
-<div class="notice notice-info"><strong>¿Qué significa BLoC?</strong><p><strong>BLoC</strong> viene del inglés <em>Business Logic Component</em>, que podemos entender como «componente que organiza la lógica de la aplicación». Su función no es dibujar botones: recibe <strong>eventos</strong> (lo que el usuario solicita), procesa esos eventos y emite <strong>estados</strong> (la información que debe mostrar la interfaz). La pantalla sigue utilizando widgets como <code>Text</code> y <code>TextField</code>. En este taller es un <strong>modelo conceptual</strong>, no una función que ya exista en el código Dart de la clase.</p><p><strong>No confundas State con BLoC:</strong> el objeto <code>State</code> de un <code>StatefulWidget</code> puede guardar valores de una pantalla; un BLoC es una pieza de lógica separada, que podemos utilizar cuando la aplicación necesite coordinar más operaciones. Ninguno obliga a borrar el campo de búsqueda actual.</p></div>
+<div class="notice notice-info"><strong>¿Qué significa BLoC?</strong><p><strong>BLoC</strong> viene del inglés <em>Business Logic Component</em>, que podemos entender como «componente que organiza la lógica de la aplicación». Su función no es dibujar botones: recibe <strong>eventos</strong> (lo que el usuario solicita), procesa esos eventos y emite <strong>estados</strong> (la información que debe mostrar la interfaz). La pantalla sigue utilizando widgets como <code>Text</code> y <code>TextField</code>. En la primera parte es un <strong>modelo conceptual</strong>; en la segunda parte aprenderemos a escribirlo como código real del proyecto <code>actividad2</code>.</p><p><strong>No confundas State con BLoC:</strong> el objeto <code>State</code> de un <code>StatefulWidget</code> puede guardar valores de una pantalla; un BLoC es una pieza de lógica separada, que podemos utilizar cuando la aplicación necesite coordinar más operaciones. Ninguno obliga a borrar el campo de búsqueda actual.</p></div>
 <h2>1. Lo que tendremos al llegar a este punto</h2><p>El <code>MainApp</code> original es sencillo: muestra una barra «Tienda» y un campo de texto. En los módulos futuros propusimos añadir estado, un catálogo de prueba y un formulario. Si esas funciones crecen, la interfaz terminará concentrando muchas responsabilidades.</p>
 <h2>2. El ejemplo sigue siendo buscar un vehículo</h2>
 <div class="bloc-flow"><div><span class="flow-kicker">01 · EVENTO</span><strong>Buscar vehículos</strong><p>El usuario escribe «Renault» en el mismo campo de actividad2a.</p></div><div class="flow-arrow" aria-hidden="true">→</div><div><span class="flow-kicker">02 · BLOC</span><strong>Filtrar los nombres</strong><p>La lógica comprueba qué vehículos contienen ese texto.</p></div><div class="flow-arrow" aria-hidden="true">→</div><div><span class="flow-kicker">03 · ESTADO</span><strong>Lista de resultados</strong><p>La pantalla muestra Renault 9 y Renault 21.</p></div></div>
 <h2>3. Comparar las etapas</h2><div class="roadmap"><div><span class="roadmap-step">A</span><strong>Actividad2a original</strong><p><code>StatelessWidget</code>, icono y <code>TextField</code> sin lógica de búsqueda.</p></div><div><span class="roadmap-step">B</span><strong>Tienda con setState</strong><p>La pantalla guarda el texto y mantiene la lista filtrada.</p></div><div><span class="roadmap-step">C</span><strong>Tienda con BLoC</strong><p>La pantalla envía eventos y recibe estados, mientras la lógica del catálogo vive separada.</p></div></div>
 <h2>4. Palabras que debes recordar</h2>
 <div class="line-notes numbered"><div><strong>Evento</strong><p>Una solicitud del usuario, como «Buscar Renault» o «Agregar Toyota Corolla».</p></div><div><strong>Lógica del BLoC</strong><p>Procesa lo que pidió el usuario y aplica reglas.</p></div><div><strong>Estado</strong><p>La información que se mostrará, como resultados o un mensaje de error.</p></div><div><strong>Interfaz</strong><p>Presenta el estado al usuario sin hacer todos los cálculos de negocio.</p></div></div>
-<div class="notice notice-warning"><strong>Todavía no es parte de main.dart</strong><p>El proyecto actual no tiene BLoC ni dependencias adicionales. Este módulo es una introducción para una etapa posterior. Primero trabajaremos la versión con <code>setState</code> en actividad2.</p></div>
+<div class="notice notice-warning"><strong>Hasta aquí solo observamos</strong><p>Los cuatro pasos visuales anteriores son conceptuales: no modifican archivos. En la sección práctica posterior comenzaremos desde el buscador del módulo 08 que ya utiliza <code>setState</code> y construiremos BLoC de forma progresiva.</p></div>
 <div class="checklist" data-checklist="bloc"><label><input type="checkbox"> Distingo evento, lógica y estado con el ejemplo de la Tienda.</label><label><input type="checkbox"> Comprendo por qué no introducimos BLoC en la primera clase.</label><label><input type="checkbox"> Sé que la versión BLoC será una evolución del mismo proyecto.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Esquematiza una búsqueda</h3><p>Sin escribir código, dibuja tres cajas: evento, BLoC y estado. Describe qué ocurre cuando el usuario escribe «Mazda».</p><details><summary>Ver orientación de la respuesta</summary><p>El evento comunica la búsqueda; la lógica filtra los nombres; el estado contiene «Mazda 3» y la interfaz muestra ese resultado.</p></details></div>
 <div class="deep-dive">
@@ -2664,8 +2664,342 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <h3>5. Errores de comprensión comunes</h3>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Idea incorrecta</th><th>Aclaración</th></tr></thead><tbody><tr><td>BLoC es un widget como Text.</td><td>No. Es un patrón para organizar la gestión de eventos y estados; la interfaz sigue construyéndose con widgets.</td></tr><tr><td>Un estado es cualquier variable.</td><td>En una arquitectura BLoC, el estado suele representar la situación completa que la interfaz necesita mostrar.</td></tr><tr><td>Puedo borrar el TextField original.</td><td>No. El usuario sigue escribiendo en el mismo campo; cambia cómo la lógica procesa ese texto.</td></tr><tr><td>Se debe agregar un paquete aunque aún no aprendimos las bases.</td><td>No. Primero se comprende el flujo conceptual, después se implementa paso a paso y se eligen las dependencias necesarias.</td></tr><tr><td>La versión anterior con setState estaba mal.</td><td>No. Es una etapa pedagógica válida, útil para aplicaciones pequeñas y para aprender el funcionamiento de Flutter.</td></tr></tbody></table></div>
 <div class="guided-check"><strong>Reto: explicar BLoC sin escribir código</strong><p>El estudiante introduce «Mazda». Describe los pasos desde que se escribe hasta que aparece «Mazda 3» en pantalla. Luego explica qué ocurriría al escribir «ModeloInexistente».</p><details><summary>Ver orientación</summary><p>La interfaz emite la búsqueda, la lógica encuentra las coincidencias y produce un estado que contiene Mazda 3. Para «ModeloInexistente», la lógica devuelve una lista vacía o un estado sin resultados y la pantalla muestra el mensaje correspondiente.</p></details></div>
-<div class="notice notice-info"><strong>Estado del repositorio</strong><p>El código base de actividad2a no tiene BLoC ni dependencias adicionales. Aquí se explica el concepto; la implementación podrá añadirse a la copia de la guía una vez que las versiones anteriores estén dominadas.</p></div>
-</div><div class="lesson-end"><button class="button button-complete" data-complete="bloc">Marcar módulo como completado</button><a class="next-link" href="#inicio">Siguiente: Volver al inicio →</a></div></section>
+<div class="notice notice-info"><strong>Referencia original protegida</strong><p><code>actividad2a</code> no contiene BLoC y seguirá intacta. Los archivos de ejemplo de la sección siguiente se agregan únicamente a tu proyecto nuevo <code>actividad2</code>, y parten de la ruta B.</p></div>
+</div><section class="bloc-practice" id="bloc-practica" aria-labelledby="bloc-practica-title">
+  <div class="bloc-practice-heading">
+    <span class="bloc-practice-eyebrow">CONTINUACIÓN PRÁCTICA · DESPUÉS DE LA TEORÍA</span>
+    <h2 id="bloc-practica-title">Aplicar BLoC en la Tienda, desde cero y sin saltos</h2>
+    <p>Esta segunda parte <strong>sí contiene código Dart ejecutable</strong>. Aprenderás a separar el evento, el estado y la lógica del buscador en tres archivos, y después a conectarlos con el mismo <code>main.dart</code> que ya conoces.</p>
+  </div>
+  <div class="bloc-practice-guard">
+    <strong>Punto de partida obligatorio: ruta B, módulo 08.</strong>
+    <p>Abre <code>DesarrolloMovilFlutter/actividad2</code> con el buscador que ya filtra mediante <code>setState</code>. Si completaste P1–P7, <strong>no pegues esta práctica encima del formulario y la navegación</strong>. Conserva esa versión y realiza BLoC sobre una copia del resultado del módulo 08. Puedes consultar <a href="./etapas/paso_08_filtro.dart" target="_blank" rel="noopener noreferrer">el código completo del paso 08 ↗</a>.</p>
+    <p>Antes de editar guarda una copia de <code>actividad2/lib/main.dart</code> como <code>paso08_respaldo.dart</code> <strong>fuera de <code>lib/</code></strong> (por ejemplo, en <code>DesarrolloMovilFlutter/</code>). No crearemos otro proyecto ni cambiaremos el código del docente.</p>
+  </div>
+  <div class="bloc-practice-quick-model">
+    <div><span>1. INTERFAZ</span><strong>TextField</strong><small>La persona escribe «Renault»</small></div><i aria-hidden="true">→</i>
+    <div><span>2. EVENTO</span><strong>BusquedaTextoCambiado</strong><small>Comunica qué se escribió</small></div><i aria-hidden="true">→</i>
+    <div><span>3. BLOC</span><strong>BusquedaBloc</strong><small>Busca coincidencias</small></div><i aria-hidden="true">→</i>
+    <div><span>4. ESTADO</span><strong>BusquedaEstado</strong><small>Entrega texto y resultados</small></div><i aria-hidden="true">→</i>
+    <div><span>5. PANTALLA</span><strong>BlocBuilder</strong><small>Muestra los vehículos</small></div>
+  </div>
+  <div class="bloc-practice-demo" id="bloc-demo">
+    <div class="bloc-practice-demo-head"><strong>Prueba el recorrido antes de programarlo</strong><span>Simulación HTML · no ejecuta Flutter</span></div>
+    <label for="bloc-demo-query">¿Qué vehículo quieres buscar?</label>
+    <input id="bloc-demo-query" type="search" placeholder="Escribe Renault, Mazda o xyz" autocomplete="off">
+    <div class="bloc-practice-samples"><button type="button" data-bloc-try="Renault">Renault</button><button type="button" data-bloc-try="MAZDA">MAZDA</button><button type="button" data-bloc-try="xyz">Sin coincidencias</button><button type="button" data-bloc-try="">Mostrar todos</button></div>
+    <div class="bloc-practice-demo-data"><div><span>EVENTO</span><output id="bloc-demo-event">Ninguno · estado inicial</output></div><div><span>ESTADO EMITIDO</span><output id="bloc-demo-state">BusquedaEstado: 4 resultados</output></div></div>
+    <div class="bloc-practice-demo-list" aria-live="polite"><strong>La interfaz muestra:</strong><ul id="bloc-demo-results"><li>Renault 9</li><li>Renault 21</li><li>Mazda 3</li><li>Chevrolet Spark</li></ul></div>
+  </div>
+  <div class="bloc-practice-preflight"><strong>Antes de modificar archivos, confirma que sabes:</strong> qué hace <code>TextField.onChanged</code> (módulo 07), qué es una <code>List&lt;String&gt;</code> y cómo funcionan <code>where</code> y <code>contains</code> (módulo 08). <strong>No hace falta conocer APIs, repositorios, Equatable ni BlocListener</strong> para esta primera práctica.</div>
+  <div class="bloc-practice-steps"><article class="bloc-practice-step" id="bloc-paso-1">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">01</span><div><span class="bloc-practice-step-kicker">PASO 01 DE 10</span><h3>Instalar la única dependencia nueva</h3></div></div>
+<p class="bloc-practice-step-lead">Abre <strong>Terminal → Nuevo terminal</strong> en Visual Studio Code. La terminal debe estar dentro de <code>DesarrolloMovilFlutter/actividad2</code>, donde está <code>pubspec.yaml</code>.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>Terminal integrada de VS Code</code> · carpeta actividad2</span><span>Ejecuta el comando una sola vez; Flutter actualizará pubspec.yaml automáticamente.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>Terminal · actividad2</span><strong>EJECUTAR</strong></div>
+<pre class="code-block" data-code-mode="terminal"><code>flutter pub add flutter_bloc</code></pre></div>
+<p><strong>Qué significa:</strong> <code>flutter pub</code> administra paquetes; <code>add</code> agrega una dependencia y <code>flutter_bloc</code> proporciona <code>BlocProvider</code>, <code>BlocBuilder</code> y la clase <code>Bloc</code>.</p>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> abre <code>pubspec.yaml</code> y encuentra <code>flutter_bloc:</code> dentro de <code>dependencies:</code>. <strong>No agregues <code>equatable</code>, APIs ni paquetes adicionales</strong> para este ejemplo.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-2">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">02</span><div><span class="bloc-practice-step-kicker">PASO 02 DE 10</span><h3>Crear la carpeta bloc y sus tres archivos</h3></div></div>
+<p class="bloc-practice-step-lead">En el Explorador de VS Code expande <code>actividad2 → lib</code>. Haz clic derecho sobre <code>lib</code>, selecciona <strong>Nueva carpeta</strong> y escribe <code>bloc</code>. Después haz clic derecho sobre ella y crea estos tres archivos.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/bloc</code> · Explorador de VS Code → actividad2 → lib</span><span>Crea primero la carpeta y luego tres archivos Dart vacíos. No cambies todavía main.dart.</span></div>
+<div class="bloc-practice-tree" aria-label="Árbol de carpetas para la práctica BLoC"><div>DesarrolloMovilFlutter/</div><div>└── actividad2/</div><div>    ├── lib/</div><div>    │   ├── main.dart</div><div>    │   └── bloc/</div><div>    │       ├── busqueda_evento.dart</div><div>    │       ├── busqueda_estado.dart</div><div>    │       └── busqueda_bloc.dart</div><div>    └── pubspec.yaml</div></div>
+<p><strong>Para qué sirve cada archivo:</strong> <code>busqueda_evento.dart</code> describe qué pasó, <code>busqueda_estado.dart</code> describe qué mostrar y <code>busqueda_bloc.dart</code> contiene la lógica que transforma eventos en estados.</p>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> en VS Code ves los tres archivos dentro de <code>lib/bloc</code>; por ahora pueden estar vacíos.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-3">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">03</span><div><span class="bloc-practice-step-kicker">PASO 03 DE 10</span><h3>Crear el evento: «el texto del buscador cambió»</h3></div></div>
+<p class="bloc-practice-step-lead">Empieza por la pregunta más simple: <strong>¿qué hizo la persona?</strong> Escribió o borró letras en el buscador. Eso es el evento <code>BusquedaTextoCambiado</code>.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/bloc/busqueda_evento.dart</code> · archivo nuevo, desde la primera línea</span><span>Copia el bloque completo. No va dentro de main.dart.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/bloc/busqueda_evento.dart</span><strong>ARCHIVO COMPLETO</strong></div>
+<pre class="code-block"><code>abstract class BusquedaEvento {
+  const BusquedaEvento();
+}
+
+class BusquedaTextoCambiado extends BusquedaEvento {
+  final String texto;
+
+  const BusquedaTextoCambiado(this.texto);
+}</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>abstract class BusquedaEvento</code> define una familia de eventos. <code>extends BusquedaEvento</code> indica que el cambio de texto es uno de esos eventos.</p><p><code>final String texto</code> guarda el dato recibido. En <code>BusquedaTextoCambiado(this.texto)</code>, <code>this.texto</code> pone el argumento recibido en esa propiedad. <code>const</code> permite construir el evento como objeto inmutable cuando se usan valores constantes.</p></div>
+<div class="bloc-practice-result"><strong>Ejemplo mental:</strong> al escribir «Renault», la pantalla podrá crear <code>BusquedaTextoCambiado('Renault')</code>. El evento <strong>todavía no filtra</strong> nada.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-4">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">04</span><div><span class="bloc-practice-step-kicker">PASO 04 DE 10</span><h3>Crear el estado: «esto es lo que debe mostrar la pantalla»</h3></div></div>
+<p class="bloc-practice-step-lead">Ahora responde una pregunta diferente: <strong>¿qué información necesita el usuario después de buscar?</strong> El texto que escribió y la lista de coincidencias.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/bloc/busqueda_estado.dart</code> · archivo nuevo, desde la primera línea</span><span>Copia la clase completa sin agregarla dentro de otro widget.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/bloc/busqueda_estado.dart</span><strong>ARCHIVO COMPLETO</strong></div>
+<pre class="code-block"><code>class BusquedaEstado {
+  final String texto;
+  final List&lt;String&gt; resultados;
+
+  const BusquedaEstado({
+    required this.texto,
+    required this.resultados,
+  });
+}</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>final String texto</code> conserva el texto para mostrar «Estás buscando…». <code>final List&lt;String&gt; resultados</code> almacena los nombres que encontró el BLoC. <code>required</code> obliga a proporcionar ambos argumentos al crear el estado.</p><p>El <strong>evento</strong> es una petición; el <strong>estado</strong> es la respuesta. En esta primera versión usamos <strong>una sola clase de estado</strong> en vez de introducir muchos tipos a la vez.</p></div>
+<div class="bloc-practice-result"><strong>Ejemplo mental:</strong> <code>BusquedaEstado(texto: 'Renault', resultados: ['Renault 9', 'Renault 21'])</code> describe la información que verá el usuario.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-5">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">05</span><div><span class="bloc-practice-step-kicker">PASO 05 DE 10</span><h3>Crear el BLoC que recibe el evento y filtra</h3></div></div>
+<p class="bloc-practice-step-lead">Ya tenemos el evento y el estado. Ahora sí escribiremos el componente que conoce los cuatro vehículos y decide qué resultados corresponden a cada búsqueda.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/bloc/busqueda_bloc.dart</code> · archivo nuevo, desde la primera línea</span><span>Copia el archivo completo, que importa evento y estado desde la misma carpeta.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/bloc/busqueda_bloc.dart</span><strong>ARCHIVO COMPLETO</strong></div>
+<pre class="code-block"><code>import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;busqueda_evento.dart&#39;;
+import &#39;busqueda_estado.dart&#39;;
+
+class BusquedaBloc extends Bloc&lt;BusquedaEvento, BusquedaEstado&gt; {
+  static const List&lt;String&gt; vehiculos = [
+    &#39;Renault 9&#39;,
+    &#39;Renault 21&#39;,
+    &#39;Mazda 3&#39;,
+    &#39;Chevrolet Spark&#39;,
+  ];
+
+  BusquedaBloc()
+      : super(
+          const BusquedaEstado(
+            texto: &#39;&#39;,
+            resultados: vehiculos,
+          ),
+        ) {
+    on&lt;BusquedaTextoCambiado&gt;((evento, emit) {
+      final textoNormalizado = evento.texto.trim().toLowerCase();
+
+      final coincidencias = vehiculos.where((vehiculo) {
+        return vehiculo.toLowerCase().contains(textoNormalizado);
+      }).toList();
+
+      emit(
+        BusquedaEstado(
+          texto: evento.texto,
+          resultados: coincidencias,
+        ),
+      );
+    });
+  }
+}</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>extends Bloc&lt;BusquedaEvento, BusquedaEstado&gt;</code> significa que el BLoC recibe eventos de búsqueda y produce estados de búsqueda. <code>super(...)</code> define el <strong>estado inicial</strong>: texto vacío y todos los vehículos visibles.</p><p><code>on&lt;BusquedaTextoCambiado&gt;((evento, emit) {...})</code> registra qué hacer cuando llega ese evento. <code>trim()</code> elimina espacios de los extremos; <code>toLowerCase()</code> permite ignorar mayúsculas; <code>where</code> y <code>contains</code> filtran los vehículos; <code>toList()</code> reúne las coincidencias. Finalmente <code>emit(BusquedaEstado(...))</code> entrega el nuevo estado.</p><p><strong>Fíjate:</strong> aquí <strong>no usamos</strong> <code>setState</code>, <code>TextField</code> ni <code>BuildContext</code>. Esta clase no dibuja la pantalla.</p></div>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> los tres archivos en <code>lib/bloc</code> se importan entre sí correctamente. Es normal que todavía falte conectarlos a <code>main.dart</code>.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-6">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">06</span><div><span class="bloc-practice-step-kicker">PASO 06 DE 10</span><h3>Conectar el BLoC al inicio de la aplicación</h3></div></div>
+<p class="bloc-practice-step-lead">Abre el <code>lib/main.dart</code> que ya construiste en el módulo 08. <strong>No crees un segundo main.dart.</strong> Primero añade las importaciones y después cambia solamente el contenido de la función <code>main()</code>.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · arriba de todo, junto al import de material.dart</span><span>Reemplaza la cabecera de imports por esta cabecera. No dupliques material.dart.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · primeras líneas</span><strong>REEMPLAZAR IMPORTS</strong></div>
+<pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;bloc/busqueda_bloc.dart&#39;;
+import &#39;bloc/busqueda_evento.dart&#39;;
+import &#39;bloc/busqueda_estado.dart&#39;;</code></pre></div>
+<div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · función main() que aparece antes de class MainApp</span><span>Reemplaza runApp(const MainApp()) por la función completa mostrada aquí.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · función main()</span><strong>REEMPLAZAR main()</strong></div>
+<pre class="code-block"><code>void main() {
+  runApp(
+    BlocProvider(
+      create: (_) =&gt; BusquedaBloc(),
+      child: const MainApp(),
+    ),
+  );
+}</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>BlocProvider</code> hace accesible <code>BusquedaBloc</code> a la aplicación. <code>create: (_) =&gt; BusquedaBloc()</code> crea una instancia de la lógica. El símbolo <code>=&gt;</code> es una forma corta de devolver un valor y <code>_</code> nombra un parámetro que no necesitamos usar.</p><p><code>child: const MainApp()</code> mantiene tu pantalla actual como hija del proveedor. <strong>No se crean dos MaterialApp</strong>. Cuando este proveedor deja de existir, cierra automáticamente el BLoC que creó.</p></div>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> hay una sola función <code>main()</code>, una sola clase <code>MainApp</code> y un solo <code>MaterialApp</code> en tu archivo.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-7">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">07</span><div><span class="bloc-practice-step-kicker">PASO 07 DE 10</span><h3>Quitar el estado y el filtro antiguos de la pantalla</h3></div></div>
+<p class="bloc-practice-step-lead">En la ruta B, el buscador funcionaba gracias a <code>setState</code> y a una lista declarada dentro de <code>_MainAppState</code>. Esos datos ahora pertenecen al BLoC, así que debemos <strong>eliminar las versiones antiguas</strong> para no tener dos fuentes de información.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · dentro de class _MainAppState, antes del método build</span><span>Elimina exclusivamente estas declaraciones. El catálogo ya existe en BusquedaBloc.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · _MainAppState</span><strong>ELIMINAR · NO COPIAR</strong></div>
+<pre class="code-block" data-code-readonly="true"><code>String busqueda = &#39;&#39;;
+  final List&lt;String&gt; vehiculos = [
+    &#39;Renault 9&#39;,
+    &#39;Renault 21&#39;,
+    &#39;Mazda 3&#39;,
+    &#39;Chevrolet Spark&#39;,
+  ];</code></pre></div>
+<div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · dentro de Widget build, antes de return MaterialApp</span><span>Elimina el cálculo local de resultados. En adelante estará dentro de busqueda_bloc.dart.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · build()</span><strong>ELIMINAR · NO COPIAR</strong></div>
+<pre class="code-block" data-code-readonly="true"><code>final resultados = vehiculos.where((vehiculo) {
+      return vehiculo.toLowerCase().contains(
+        busqueda.trim().toLowerCase(),
+      );
+    }).toList();</code></pre></div>
+<p>Conserva las clases <code>MainApp</code> y <code>_MainAppState</code>, además de <code>Scaffold</code>, <code>Row</code>, los iconos y el resto de la Tienda. <strong>Un StatefulWidget puede contener BlocBuilder</strong>; no es necesario aprender otra refactorización hoy.</p>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> después del cambio no existe <code>String busqueda</code> ni <code>final resultados</code> en el archivo principal. Todavía falta cambiar el campo y la lista visible en los dos pasos siguientes.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-8">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">08</span><div><span class="bloc-practice-step-kicker">PASO 08 DE 10</span><h3>Hacer que el TextField envíe un evento</h3></div></div>
+<p class="bloc-practice-step-lead">La pantalla no debe filtrar por sí misma. Su única tarea al escribir será avisar al BLoC con el texto nuevo.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · build → Column.children → TextField del buscador</span><span>Sustituye el TextField actual por este bloque. No agregues un segundo campo.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · TextField</span><strong>REEMPLAZAR CAMPO</strong></div>
+<pre class="code-block"><code>TextField(
+                  onChanged: (valor) {
+                    context.read&lt;BusquedaBloc&gt;().add(
+                      BusquedaTextoCambiado(valor),
+                    );
+                  },
+                  decoration: const InputDecoration(
+                    hintText: &#39;Buscar marca o modelo&#39;,
+                    border: OutlineInputBorder(),
+                  ),
+                ),</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>onChanged</code> recibe el texto cada vez que cambia. <code>context.read&lt;BusquedaBloc&gt;()</code> busca la instancia que creó <code>BlocProvider</code>. <code>.add(BusquedaTextoCambiado(valor))</code> envía el evento. <strong>Esta línea no filtra</strong>: el trabajo de filtrar ocurre en <code>busqueda_bloc.dart</code>.</p><p>El <code>context</code> utilizado está dentro de <code>MainApp</code>, que es hija del proveedor creado en <code>main()</code>. Por eso puede encontrar el BLoC.</p></div>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> ya no queda ningún <code>setState</code> dentro de este <code>TextField</code>. El siguiente paso conectará los resultados.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-9">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">09</span><div><span class="bloc-practice-step-kicker">PASO 09 DE 10</span><h3>Mostrar el estado con BlocBuilder</h3></div></div>
+<p class="bloc-practice-step-lead">Busca debajo del buscador los antiguos widgets <code>Text('Estás buscando…')</code>, el título de resultados, el <code>if</code> y el <code>for</code>. Ahora esos widgets estarán dentro de un <code>BlocBuilder</code>.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · build → Column.children, debajo del SizedBox posterior al TextField</span><span>Reemplaza solamente el bloque que muestra texto y resultados por este BlocBuilder.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · Column.children</span><strong>REEMPLAZAR RESULTADOS</strong></div>
+<pre class="code-block"><code>BlocBuilder&lt;BusquedaBloc, BusquedaEstado&gt;(
+                  builder: (context, estado) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(&#39;Estás buscando: ${estado.texto}&#39;),
+                        const SizedBox(height: 16),
+                        const Text(&#39;Vehículos encontrados:&#39;),
+                        if (estado.resultados.isEmpty)
+                          const Text(&#39;No se encontraron vehículos.&#39;),
+                        for (final vehiculo in estado.resultados)
+                          ListTile(
+                            leading: const Icon(Icons.directions_car),
+                            title: Text(vehiculo),
+                          ),
+                      ],
+                    );
+                  },
+                ),</code></pre></div>
+<div class="bloc-practice-meaning"><p><code>BlocBuilder&lt;BusquedaBloc, BusquedaEstado&gt;</code> escucha nuevos estados. <code>builder: (context, estado)</code> recibe el estado actual y devuelve los widgets que deben dibujarse.</p><p><code>estado.texto</code> reemplaza a la variable antigua <code>busqueda</code>; <code>estado.resultados</code> reemplaza a la lista calculada dentro de <code>build</code>. Se conserva <code>if</code> para el mensaje sin coincidencias y <code>for</code> para mostrar un <code>ListTile</code> por vehículo.</p></div>
+<div class="bloc-practice-result"><strong>Comprueba:</strong> la pantalla sigue teniendo el mismo buscador, la misma barra «Tienda» y los mismos vehículos. La diferencia es <strong>dónde se calcula el filtro</strong>.</div></article>
+<article class="bloc-practice-step" id="bloc-paso-10">
+<div class="bloc-practice-step-header"><span class="bloc-practice-step-no">10</span><div><span class="bloc-practice-step-kicker">PASO 10 DE 10</span><h3>Ejecutar, probar y comparar el resultado</h3></div></div>
+<p class="bloc-practice-step-lead">Si seguiste todos los pasos, compara tu <code>lib/main.dart</code> con este archivo completo. <strong>Este es un respaldo de referencia</strong>: primero intenta reconocer tus propias modificaciones antes de reemplazar todo.</p><div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>lib/main.dart</code> · archivo completo final de la ruta B con BLoC</span><span>Ábrelo solo para comparar. Si tu código está muy desordenado, puedes sustituir el contenido completo después de guardar una copia.</span></div><details class="bloc-practice-full"><summary>Ver el main.dart final completo (para comparar o recuperar)</summary><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>lib/main.dart · ejemplo final</span><strong>ARCHIVO COMPLETO</strong></div>
+<pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;bloc/busqueda_bloc.dart&#39;;
+import &#39;bloc/busqueda_evento.dart&#39;;
+import &#39;bloc/busqueda_estado.dart&#39;;
+
+void main() {
+  runApp(
+    BlocProvider(
+      create: (_) =&gt; BusquedaBloc(),
+      child: const MainApp(),
+    ),
+  );
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(&#39;Primer widget&#39;),
+                const SizedBox(height: 20),
+                const Icon(Icons.directions_car),
+                const SizedBox(height: 8),
+                const Row(
+                  children: [
+                    Icon(Icons.directions_car),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        &#39;Ingenieria de Sistemas&#39;,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  onChanged: (valor) {
+                    context.read&lt;BusquedaBloc&gt;().add(
+                      BusquedaTextoCambiado(valor),
+                    );
+                  },
+                  decoration: const InputDecoration(
+                    hintText: &#39;Buscar marca o modelo&#39;,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                BlocBuilder&lt;BusquedaBloc, BusquedaEstado&gt;(
+                  builder: (context, estado) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(&#39;Estás buscando: ${estado.texto}&#39;),
+                        const SizedBox(height: 16),
+                        const Text(&#39;Vehículos encontrados:&#39;),
+                        if (estado.resultados.isEmpty)
+                          const Text(&#39;No se encontraron vehículos.&#39;),
+                        for (final vehiculo in estado.resultados)
+                          ListTile(
+                            leading: const Icon(Icons.directions_car),
+                            title: Text(vehiculo),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre></div></details>
+<div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>Terminal integrada de VS Code</code> · dentro de actividad2, después de guardar los 4 archivos</span><span>Ejecuta la aplicación desde el proyecto, no desde la carpeta lib.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-code-label"><span>Terminal · actividad2</span><strong>EJECUTAR</strong></div>
+<pre class="code-block" data-code-mode="terminal"><code>flutter run</code></pre></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Prueba</th><th>Qué debe aparecer</th><th>Por qué sucede</th></tr></thead><tbody>
+<tr><td>Campo vacío</td><td>Renault 9, Renault 21, Mazda 3, Chevrolet Spark</td><td>El estado inicial contiene los cuatro vehículos</td></tr>
+<tr><td>Escribir <code>Renault</code></td><td>Renault 9 y Renault 21</td><td>El BLoC filtra coincidencias</td></tr>
+<tr><td>Escribir <code>MAZDA</code></td><td>Mazda 3</td><td>La comparación ignora mayúsculas</td></tr>
+<tr><td>Escribir <code>xyz</code></td><td>No se encontraron vehículos</td><td>El estado tiene una lista vacía</td></tr>
+<tr><td>Borrar el texto</td><td>Regresan los cuatro</td><td>Una búsqueda vacía coincide con todos</td></tr>
+</tbody></table></div>
+<div class="bloc-practice-result"><strong>Resultado:</strong> ahora la pantalla envía eventos, el BLoC filtra y <code>BlocBuilder</code> actualiza lo visible. Puedes explicar el cambio sin decir simplemente «instalamos una librería».</div></article></div>
+  <div class="bloc-practice-recap">
+    <h3>Compara la ruta B antes y después de aplicar BLoC</h3>
+    <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Con setState (módulo 08)</th><th>Con BLoC (esta práctica)</th></tr></thead><tbody>
+    <tr><td>El TextField llama <code>setState</code></td><td>El TextField envía <code>BusquedaTextoCambiado</code></td></tr>
+    <tr><td><code>build()</code> filtra con <code>where</code></td><td><code>BusquedaBloc</code> filtra con <code>where</code></td></tr>
+    <tr><td><code>_MainAppState</code> guarda la lista y la búsqueda</td><td><code>BusquedaEstado</code> lleva los resultados y el texto</td></tr>
+    <tr><td>Los widgets se reconstruyen por <code>setState</code></td><td><code>BlocBuilder</code> actualiza los widgets cuando cambia el estado</td></tr>
+    </tbody></table></div>
+    <p><strong>Nota:</strong> <code>MainApp</code> sigue declarado como <code>StatefulWidget</code> únicamente para conservar la estructura conocida del paso 08 y reducir cambios simultáneos. Ya no utiliza <code>setState</code>; más adelante podrías simplificarlo a <code>StatelessWidget</code>, pero no lo haremos en esta primera implementación.</p>
+    <h3>Si aparece un error, comprueba esto</h3>
+    <div class="bloc-practice-errors">
+      <details><summary><code>Target of URI doesn't exist: package:flutter_bloc...</code></summary><p>Ejecuta <code>flutter pub add flutter_bloc</code> dentro de <code>actividad2</code>, verifica <code>pubspec.yaml</code> y, si VS Code todavía muestra el error, ejecuta <code>flutter pub get</code> desde la misma carpeta.</p></details>
+      <details><summary><code>ProviderNotFoundException</code></summary><p>Comprueba que <code>runApp</code> envuelve <code>MainApp</code> dentro de <code>BlocProvider</code>. El <code>context.read&lt;BusquedaBloc&gt;()</code> debe ejecutarse en un widget descendiente del proveedor, como ocurre en esta práctica. No uses <code>read</code> desde un contexto situado encima de él.</p></details>
+      <details><summary><code>BusquedaTextoCambiado</code> o <code>BusquedaEstado</code> no existen</summary><p>Revisa nombres exactos e importaciones. Los tres archivos deben estar en <code>lib/bloc</code> y los imports relativos del bloc apuntan a <code>busqueda_evento.dart</code> y <code>busqueda_estado.dart</code>.</p></details>
+      <details><summary>Se ve el buscador pero no cambia ningún resultado</summary><p>Comprueba las tres conexiones: <code>onChanged</code> envía <code>.add(...)</code>, el BLoC registra <code>on&lt;BusquedaTextoCambiado&gt;</code> y llama <code>emit</code>, y los resultados están dentro de <code>BlocBuilder</code>. Después de cambiar dependencias o clases principales, prueba un <strong>Hot Restart</strong>.</p></details>
+      <details><summary>Me desapareció el formulario de P7</summary><p>La práctica BLoC parte del módulo 08 de la ruta B, no del formulario P7. Recupera la copia de P7 y realiza este ejercicio sobre la versión filtrada del paso 08, conservando ambos trabajos separados.</p></details>
+    </div>
+    <div class="notice notice-tip"><strong>Archivos completos del ejemplo:</strong>
+      <p><a href="./etapas/paso_15_bloc_evento.dart" target="_blank" rel="noopener noreferrer">evento ↗</a> ·
+      <a href="./etapas/paso_15_bloc_estado.dart" target="_blank" rel="noopener noreferrer">estado ↗</a> ·
+      <a href="./etapas/paso_15_bloc.dart" target="_blank" rel="noopener noreferrer">lógica BLoC ↗</a> ·
+      <a href="./etapas/paso_15_bloc_main.dart" target="_blank" rel="noopener noreferrer">main.dart completo ↗</a>.
+      Se pueden consultar en cualquier momento; no debes copiarlos dentro del proyecto del docente.</p>
+    </div>
+    <div class="notice notice-info"><strong>Referencias oficiales:</strong><p><a href="https://pub.dev/packages/flutter_bloc" target="_blank" rel="noopener noreferrer">flutter_bloc en pub.dev ↗</a> y <a href="https://bloclibrary.dev/flutter-bloc-concepts/" target="_blank" rel="noopener noreferrer">BlocProvider, BlocBuilder y eventos en la documentación oficial ↗</a>.</p></div>
+    <div class="checklist" data-checklist="bloc-practica">
+      <label><input type="checkbox"> Instalé flutter_bloc dentro de actividad2 y creé los tres archivos de la carpeta bloc.</label>
+      <label><input type="checkbox"> Puedo explicar qué es BusquedaTextoCambiado y en qué se diferencia de BusquedaEstado.</label>
+      <label><input type="checkbox"> El BLoC filtra y emite estados sin usar setState en main.dart.</label>
+      <label><input type="checkbox"> Probé Renault, MAZDA, xyz y una búsqueda vacía.</label>
+      <label><input type="checkbox"> Conservé la versión anterior del módulo 08 para poder comparar.</label>
+    </div>
+    <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Explica el recorrido en cinco frases</h3><p>En una hoja escribe qué sucede desde que la persona teclea <code>Renault</code> hasta que aparecen dos vehículos. Menciona <code>onChanged</code>, evento, BLoC, estado y <code>BlocBuilder</code>. Cambia después «Renault» por «MAZDA» y predice el resultado <strong>antes</strong> de ejecutar la app.</p><details><summary>Ver respuesta esperada</summary><p><code>onChanged</code> recibe «Renault» y envía <code>BusquedaTextoCambiado('Renault')</code>. <code>BusquedaBloc</code> recibe el evento, compara los vehículos y emite un <code>BusquedaEstado</code> con Renault 9 y Renault 21. <code>BlocBuilder</code> observa ese nuevo estado y dibuja ambos resultados. Para «MAZDA» habrá una coincidencia: Mazda 3.</p></details></div>
+  </div>
+</section><div class="lesson-end"><button class="button button-complete" data-complete="bloc">Marcar módulo como completado</button><a class="next-link" href="#inicio">Siguiente: Volver al inicio →</a></div></section>
 <section class="page catalog-page" id="catalogo-widgets" aria-labelledby="catalogo-title">
           <div class="wc-page-hero">
             <div class="wc-hero-intro">
