@@ -195,7 +195,7 @@
       kind:'proposed',
       steps:[
         S("Identificar qué extraer","El State, el controlador y Form quedan en main.dart; extraemos el campo con su validator y la apariencia del botón.",
-          "main.dart: Form + CampoNombreVehiculo + BotonTienda\nwidgets/: campo_nombre_vehiculo.dart y boton_tienda.dart",
+          "main.dart (_MainAppState)\n├── formularioKey y vehiculoController    ← permanecen aquí\n├── Form(key: formularioKey)\n│   └── CampoNombreVehiculo(...)           ← archivo nuevo\n└── BotonTienda(alPresionar: ...)          ← archivo nuevo\n\nwidgets/\n├── titulo_seccion.dart                    ← ya existía\n├── campo_nombre_vehiculo.dart             ← vamos a crearlo\n└── boton_tienda.dart                       ← vamos a crearlo",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"TextFormField con validator y ElevatedButton dentro de main.dart","afterCode":"CampoNombreVehiculo y BotonTienda en widgets; lógica del formulario en _MainAppState"}),
         S("Crear campo_nombre_vehiculo.dart","Se crea el archivo vacío dentro de widgets; la pantalla original permanece intacta.",
           "lib/widgets/campo_nombre_vehiculo.dart",
@@ -204,13 +204,13 @@
           "import 'package:flutter/material.dart';\n\nclass CampoNombreVehiculo extends StatelessWidget {\n  const CampoNombreVehiculo({\n    super.key,\n    required this.controller,\n  });\n\n  final TextEditingController controller;\n\n  @override\n  Widget build(BuildContext context) {\n    return TextFormField(\n      controller: controller,\n      decoration: const InputDecoration(\n        hintText: 'Nombre del vehículo',\n        border: OutlineInputBorder(),\n      ),\n    );\n  }\n}",
           {"stage":0,"opened":true,"editorMode":"newfile","fileName":"campo_nombre_vehiculo.dart","filePresent":true,"fileCode":false},{"stage":0,"opened":true,"editorMode":"newfile","fileName":"campo_nombre_vehiculo.dart","filePresent":true,"fileCode":true},"editor",{"visual":false,"note":"Esta es la primera versión completa del campo. En el siguiente paso agregamos el validator."}),
         S("Conservar el validator","La regla de nombre obligatorio y mínimo tres caracteres se traslada al widget extraído.",
-          "validator: (valor) {\n  if (valor == null || valor.trim().isEmpty) return 'Escribe un nombre';\n  if (valor.trim().length < 3) return 'Mínimo 3 caracteres';\n  return null;\n},",
+          "validator: (valor) {\n  if (valor == null || valor.trim().isEmpty) {\n    return 'Escribe un nombre';\n  }\n  if (valor.trim().length < 3) {\n    return 'Mínimo 3 caracteres';\n  }\n  return null;\n},",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"CampoNombreVehiculo con TextFormField sin validator","afterCode":"CampoNombreVehiculo ahora tiene validator; main.dart todavía conserva el formulario original"}),
         S("Importar CampoNombreVehiculo","Añadimos el import relativo sin borrar otros imports.",
           "import 'widgets/campo_nombre_vehiculo.dart';",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"main.dart no conoce CampoNombreVehiculo","afterCode":"main.dart importa widgets/campo_nombre_vehiculo.dart"}),
         S("Usar CampoNombreVehiculo en Form","Form conserva su key; solo se reemplaza el TextFormField por el widget propio.",
-          "child: CampoNombreVehiculo(controller: vehiculoController),",
+          "child: CampoNombreVehiculo(\n  controller: vehiculoController,\n),",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"Form(child: TextFormField(...))","afterCode":"Form(child: CampoNombreVehiculo(controller: vehiculoController))"}),
         S("Crear BotonTienda","Se crea un StatelessWidget que recibe texto y VoidCallback para pintar el botón sin conocer la lógica del formulario.",
           "import 'package:flutter/material.dart';\n\nclass BotonTienda extends StatelessWidget {\n  const BotonTienda({\n    super.key,\n    required this.texto,\n    required this.alPresionar,\n  });\n\n  final String texto;\n  final VoidCallback alPresionar;\n\n  @override\n  Widget build(BuildContext context) {\n    return ElevatedButton(\n      onPressed: alPresionar,\n      child: Text(texto),\n    );\n  }\n}\n",
@@ -219,8 +219,8 @@
           "import 'widgets/boton_tienda.dart';",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"main.dart utiliza ElevatedButton directamente","afterCode":"main.dart importa widgets/boton_tienda.dart"}),
         S("Reemplazar el botón sin perder la lógica","BotonTienda recibe la acción; el Estado sigue validando y creando Vehiculo.",
-          "BotonTienda(\n  texto: 'Agregar vehículo',\n  alPresionar: () {\n    if (formularioKey.currentState?.validate() != true) return;\n    final nombre = vehiculoController.text.trim();\n    final vehiculo = Vehiculo(nombre: nombre);\n    debugPrint(vehiculo.nombre);\n    vehiculoController.clear();\n  },\n),",
-          {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"button",{"visual":false,"beforeCode":"ElevatedButton(onPressed: () { validar; crear Vehiculo; debugPrint; clear(); })","afterCode":"BotonTienda(alPresionar: () { validar; crear Vehiculo; debugPrint; clear(); })","interactive":true,"note":"La Tienda mantiene su apariencia y su comportamiento. El ejemplo abreviado de simulación no reemplaza al bloque completo."})
+          "BotonTienda(\n  texto: 'Agregar vehículo',\n  alPresionar: () {\n    if (formularioKey.currentState?.validate() != true) {\n      return;\n    }\n    final nombre = vehiculoController.text.trim();\n    final vehiculo = Vehiculo(nombre: nombre);\n    debugPrint(\n      'Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}',\n    );\n    vehiculoController.clear();\n  },\n),",
+          {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"button",{"visual":false,"beforeCode":"ElevatedButton(onPressed: () { validar; crear Vehiculo; debugPrint; clear(); })","afterCode":"BotonTienda(alPresionar: () { validar; crear Vehiculo; debugPrint; clear(); })","interactive":true,"note":"La Tienda mantiene su apariencia y su comportamiento. La simulación y el paso escrito muestran el mismo código completo."})
       ]
     },
     navegacion: {
@@ -237,7 +237,7 @@
           "import '../widgets/boton_tienda.dart';",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"AyudaPage tiene título y texto, todavía no usa BotonTienda","afterCode":"AyudaPage podrá utilizar BotonTienda; aún no muestra un botón"}),
         S("Añadir un botón Volver","Navigator.pop(context) regresa desde la página Ayuda a la anterior.",
-          "BotonTienda(\n  texto: 'Volver',\n  alPresionar: () { Navigator.pop(context); },\n),",
+          "const SizedBox(height: 12),\nBotonTienda(\n  texto: 'Volver',\n  alPresionar: () {\n    Navigator.pop(context);\n  },\n),",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"AyudaPage no tiene un botón de regreso explícito","afterCode":"AyudaPage incluye BotonTienda con Navigator.pop(context)"}),
         S("Crear AcercaPage","Se crea la segunda página con un título y un botón para volver a la Tienda.",
           "import 'package:flutter/material.dart';\nimport '../widgets/titulo_seccion.dart';\nimport '../widgets/boton_tienda.dart';\n\nclass AcercaPage extends StatelessWidget {\n  const AcercaPage({super.key});\n\n  @override\n  Widget build(BuildContext context) {\n    return Scaffold(\n      appBar: AppBar(title: const Text('Acerca de')),\n      body: Center(\n        child: Column(\n          mainAxisAlignment: MainAxisAlignment.center,\n          children: [\n            const TituloSeccion(texto: 'Nuestra Tienda'),\n            const SizedBox(height: 12),\n            const Text('Un ejercicio para aprender Flutter.'),\n            const SizedBox(height: 8),\n            BotonTienda(\n              texto: 'Volver a la Tienda',\n              alPresionar: () {\n                Navigator.pop(context);\n              },\n            ),\n          ],\n        ),\n      ),\n    );\n  }\n}",
@@ -246,13 +246,13 @@
           "import 'ayuda_page.dart';",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"AcercaPage no conoce la clase AyudaPage","afterCode":"AcercaPage importa ayuda_page.dart"}),
         S("Agregar botón Ver ayuda","Navigator.push abre AyudaPage encima de AcercaPage.",
-          "BotonTienda(\n  texto: 'Ver ayuda',\n  alPresionar: () {\n    Navigator.push(context, MaterialPageRoute(builder: (context) => const AyudaPage()));\n  },\n),",
+          "const SizedBox(height: 16),\nBotonTienda(\n  texto: 'Ver ayuda',\n  alPresionar: () {\n    Navigator.push(\n      context,\n      MaterialPageRoute(builder: (context) => const AyudaPage()),\n    );\n  },\n),",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"AcercaPage tiene solo el botón «Volver a la Tienda»","afterCode":"AcercaPage tiene «Ver ayuda» (push) y «Volver a la Tienda» (pop)"}),
         S("Importar AcercaPage en main.dart","Se declara el import relativo de AcercaPage.",
           "import 'pages/acerca_page.dart';",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true},"form-field",{"visual":false,"beforeCode":"La Tienda todavía no conoce la clase AcercaPage","afterCode":"main.dart importa pages/acerca_page.dart"}),
         S("Abrir AcercaPage desde la Tienda","El nuevo botón usa Builder para obtener un contexto interior y Navigator.push para abrir AcercaPage.",
-          "Builder(\n  builder: (context) => BotonTienda(\n    texto: 'Acerca de y ayuda',\n    alPresionar: () {\n      Navigator.push(context, MaterialPageRoute(builder: (context) => const AcercaPage()));\n    },\n  ),\n),",
+          "const SizedBox(height: 16),\nBuilder(\n  builder: (context) => BotonTienda(\n    texto: 'Acerca de y ayuda',\n    alPresionar: () {\n      Navigator.push(\n        context,\n        MaterialPageRoute(builder: (context) => const AcercaPage()),\n      );\n    },\n  ),\n),",
           {"stage":11,"formReady":true,"validationEnabled":true},{"stage":11,"formReady":true,"validationEnabled":true,"navigationEnabled":true},"button",{"interactive":true,"note":"Prueba el botón «Acerca de y ayuda» en la vista Después y navega a «Ver ayuda», «Volver» y «Volver a la Tienda»."})
       ]
     },
