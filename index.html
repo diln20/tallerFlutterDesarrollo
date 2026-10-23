@@ -1684,7 +1684,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>final GlobalKey&lt;FormState&gt; formularioKey</code></div>
 <div><strong>Ubicación exacta:</strong> Dentro de <code>class _MainAppState</code>, justo debajo de <code>formularioKey</code> y antes de <code>dispose()</code>.</div></div></div>
-<div class="code-label">Copia esta línea NUEVA justo debajo de formularioKey</div><pre class="code-block"><code>final List&lt;Vehiculo&gt; vehiculos = [];</code></pre><div class="code-label">Ubicación final de las tres declaraciones</div><pre class="code-block"><code>final TextEditingController vehiculoController = TextEditingController();
+<div class="code-label">Deja las declaraciones así · la tercera línea es la NUEVA</div><pre class="code-block"><code>final TextEditingController vehiculoController = TextEditingController();
 final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
 final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
 <div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>List&lt;Vehiculo&gt;</code> significa una lista que guarda objetos de tipo <code>Vehiculo</code>. Los corchetes <code>[]</code> la crean vacía. <code>final</code> evita asignar otra lista a esa variable, pero permite agregar o quitar elementos de la lista existente.</p></div>
@@ -1718,20 +1718,7 @@ final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>ElevatedButton(</code> justo después de <code>Form(...)</code></div>
 <div><strong>Ubicación exacta:</strong> En <code>_MainAppState.build()</code> → <code>Column(children: [...])</code>. Reemplaza el botón anterior completo, incluyendo su antiguo <code>onPressed: () { ... }</code>. Conserva el formulario que está encima.</div></div></div>
-<div class="code-label">ANTES · era el botón de P5 que imprimía un objeto</div><pre class="code-block"><code>              ElevatedButton(
-                onPressed: () {
-                  if (formularioKey.currentState?.validate() != true) {
-                    return;
-                  }
-                  final nombre = vehiculoController.text.trim();
-                  final vehiculo = Vehiculo(nombre: nombre);
-                  debugPrint(
-                    'Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}',
-                  );
-                  vehiculoController.clear();
-                },
-                child: const Text('Agregar vehículo'),
-              ),</code></pre><div class="code-label">DESPUÉS · reemplázalo completo por este</div><pre class="code-block"><code>ElevatedButton(
+<div class="code-label">DESPUÉS · reemplázalo completo por este</div><pre class="code-block"><code>ElevatedButton(
   onPressed: guardarVehiculo,
   child: const Text('Agregar vehículo'),
 ),</code></pre>
@@ -1843,8 +1830,7 @@ Expanded(
                             icon: const Icon(Icons.delete),
                           ),
                         ],
-                      ),
-                    );</code></pre>
+                      ),</code></pre>
 <div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>removeAt(indice)</code> elimina el elemento de esa posición. <code>setState()</code> actualiza la lista visible. El <code>Row</code> contiene dos <code>IconButton</code>: uno llama a <code>comenzarEdicion(indice)</code> y otro a <code>borrarVehiculo(indice)</code>. <code>tooltip</code> describe la acción al pasar el mouse y facilita su uso accesible.</p></div>
 <div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Agrega dos carros, edita el primero y elimina el segundo. La pantalla solo debe mostrar el que no eliminaste.</p></div>
 </article>
