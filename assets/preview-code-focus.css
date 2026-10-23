@@ -52,3 +52,19 @@
   .pv-prep-windows{padding:12px}
   .pv-prep-new{margin-left:0;flex-wrap:wrap}
 }
+
+/* Lectura de código: ocultar navegación lateral innecesaria y evitar dos scrolls. */
+.pv-code-focus .pv-ide-grid{grid-template-columns:minmax(0,1fr)!important}
+.pv-code-focus .pv-ide-explorer{display:none!important}
+.pv-code-focus .pv-editor-tab>span:last-child{display:none}
+.pv-code-focus .pv-ide-code-caption{white-space:normal;line-height:1.5;overflow:visible;font-size:11px}
+.pv-code-focus .pv-ide-viewport{overflow:auto}
+.pv-code-focus .pv-ide-code-pane{overflow:visible}
+.pv-code-focus .pv-ide-code-scroll{max-height:none!important;overflow:visible}
+.pv-code-focus .pv-editor-status{position:relative;z-index:1}
+.pv-code-focus .pv-ide-code-row em{flex-basis:30px;font-size:11px}
+.pv-code-focus .pv-code-difference header span{color:#22578f}
+@media(max-width:620px){
+ .pv-code-focus .pv-ide-code-row,.pv-code-focus .pv-ide-code-row code{font-size:11.5px!important;line-height:25px!important}
+ .pv-code-focus .pv-ide-code-caption{font-size:10px}
+}

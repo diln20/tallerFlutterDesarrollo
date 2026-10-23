@@ -98,8 +98,8 @@
       <div class="pv-tree-item pv-ide-selected">▤ main.dart <span>ABIERTO</span></div>
       <div class="pv-tree-item">▸ web</div>
       <div class="pv-tree-item">◇ pubspec.yaml</div></aside>`;
-  const title=`<div class="pv-editor-title"><span aria-hidden="true">● ● ●</span> VS Code · ilustración didáctica</div>`;
-  const tabs=opened?`<div class="pv-editor-tab"><span>▤ main.dart</span><span>▣ pubspec.yaml</span></div>`:
+  const title=`<div class="pv-editor-title"><span aria-hidden="true">● ● ●</span> ${mode==='pre-folder'?'Explorador de archivos · Windows':'VS Code · ilustración didáctica'}</div>`;
+  const tabs=mode==='pre-folder'?`<div class="pv-editor-tab"><span>Documentos</span><span>Carpetas</span></div>`:opened?`<div class="pv-editor-tab"><span>▤ main.dart</span><span>▣ pubspec.yaml</span></div>`:
     `<div class="pv-editor-tab"><span>Inicio de VS Code</span><span>Sin archivos abiertos</span></div>`;
   let content='',footer='';
   if(['pre-folder','pre-vscode','pre-terminal'].includes(mode)){
@@ -200,7 +200,7 @@
       'PENDIENTE · Crear '+file;
   } else if(mode==='dart'){
     // El archivo --empty ya contiene todo: resaltamos una parte SIN inventar líneas nuevas.
-    const code=stageCode.map((row,i)=>line(row.text,i+1,false,which==='after'&&(codeStage===5?(i===3||i===7):(codeStage>0&&row.tier===codeStage)))).join('');
+    const code=stageCode.map((row,i)=>line(codeStage===5&&i===14?"          child: Text('Primer widget'),":row.text,i+1,false,which==='after'&&(codeStage===5?(i===3||i===7):(codeStage>0&&row.tier===codeStage)))).join('');
     content=`<div class="pv-ide-grid">${folder}<div class="pv-ide-code-pane">
       <div class="pv-ide-code-caption">actividad2/lib/main.dart · plantilla completa que ya existe</div>
       <div class="pv-ide-code-scroll">${code}</div></div></div>`;
@@ -233,12 +233,12 @@
  const d=matrix[id]?.[index] || (item?.beforeCode&&item?.afterCode?[item.name,item.beforeCode,item.afterCode,item.effect]:null);if(!d)return '';
  const [name,before,after,detail]=d;
  return `<section class="pv-code-difference" aria-label="Diferencia real de este paso">
-    <header><span>DIFERENCIA REAL DEL PASO</span><strong>${esc(name)}</strong></header>
+    <header><span>${item.readOnly?'CÓDIGO EXISTENTE Y SU SIGNIFICADO':'DIFERENCIA REAL DEL PASO'}</span><strong>${esc(name)}</strong></header>
     <div class="pv-diff-row"><div class="pv-diff-old"><small>${item.readOnly?'YA EXISTÍA EN MAIN.DART':'ANTES'}</small><p>${esc(before)}</p></div>
       <span class="pv-diff-arrow" aria-hidden="true">→</span>
       <div class="pv-diff-new"><small>${item.readOnly?'AHORA PUEDES EXPLICAR':'DESPUÉS'}</small><p>${esc(after)}</p></div></div>
     <p class="pv-diff-detail">${esc(detail)} <strong>El fragmento exacto y su ubicación se explican debajo.</strong></p>
-    <small class="pv-diff-warning">Mapa conceptual para comparar; no es código para copiar.</small>
+    <small class="pv-diff-warning">${item.readOnly?'Lectura guiada de código ya existente; no lo pegues de nuevo.':'Mapa conceptual para comparar; no es código para copiar.'}</small>
   </section>`;
 }
   function searchUI(v,which,highlight,r){
@@ -375,7 +375,7 @@
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const editorTransition=internal&&before.editor&&after.editor;
-    const effectType=item.readOnly?'Lectura del archivo que Flutter ya generó':editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
+    const effectType=id==='preparacion'?['Carpeta creada en Windows','Abrir carpeta en VS Code','Terminal integrada de VS Code','Proyecto Flutter generado','Archivo main.dart localizado','Primera ejecución de Flutter'][i]:item.readOnly?'Lectura del archivo que Flutter ya generó':editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
     const isExpanded=expandedViews.get(id)!==false;
     slot.innerHTML=`<section class="pv-shell${isExpanded?' pv-large-view':''}" data-pv-module="${id}">
@@ -418,7 +418,7 @@
       </div>
       <div class="pv-code-explain">
         <div class="pv-code-intro"><div><strong>${id==='preparacion'?'¿Qué archivo localizar o comando ejecutar?':id==='bloc'?'¿Qué idea representa el paso?':'¿Qué código corresponde a este paso?'}</strong><p>La vista o el mapa muestran el cambio real. Las líneas coloreadas y la guía inferior indican qué añadir, reemplazar u observar.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
-        <div class="code-label">${id==='preparacion'?(i===1?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':id==='carpetas'?'PowerShell · carpetas':id==='reutilizacion'&&i===0||id==='objeto'&&i===0?'Ruta de archivo':'Dart'} · ${esc(item.name)}</div>
+        <div class="code-label">${id==='preparacion'?(['Esquema · Explorador de Windows','VS Code · menú Archivo','Terminal · VS Code','Terminal · VS Code','Esquema de archivos','Terminal · VS Code'][i]):id==='bloc'?'Concepto BLoC (pseudocódigo)':id==='carpetas'?'PowerShell · carpetas':id==='reutilizacion'&&i===0||id==='objeto'&&i===0?'Ruta de archivo':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
       <div class="pv-nav-bottom">
