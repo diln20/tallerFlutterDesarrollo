@@ -86,3 +86,11 @@ body[data-theme=dark] .al-drawer-frame{background:#243b58;color:#e9f2ff}
 .advanced-module pre.code-block code .al-syntax-comment{color:#90aabc;font-style:italic}
 .advanced-module pre.code-block code .al-syntax-name{color:#78d9ed}
 .advanced-module pre.code-block code .al-syntax-tag{color:#88bff2}
+
+/* Reutilizar colores de Python, JSON y YAML tambien en las etapas nuevas. */
+.post-api-lesson pre.code-block code .al-syntax-keyword{color:#c7a2fb;font-weight:650}
+.post-api-lesson pre.code-block code .al-syntax-string{color:#c0e891}
+.post-api-lesson pre.code-block code .al-syntax-number{color:#eeb17c}
+.post-api-lesson pre.code-block code .al-syntax-comment{color:#90aabc;font-style:italic}
+.post-api-lesson pre.code-block code .al-syntax-name{color:#78d9ed}
+.post-api-lesson pre.code-block code .al-syntax-tag{color:#88bff2}
