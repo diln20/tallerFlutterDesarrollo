@@ -131,7 +131,7 @@
                 <div class="phone-screen">
                   <div class="phone-appbar">Tienda <span>⋮</span></div>
                   <div class="phone-body">
-                    <span class="phone-small-text">Hello dsfdsWorld</span>
+                    <span class="phone-small-text">Primer widget</span>
                     <div class="car-icon" aria-hidden="true">🚘</div>
                     <div class="phone-row"><span>🚘</span><span class="phone-name">Ingenieria de Sistemas</span></div>
                     <div class="phone-input">Buscar marca o modelo</div>
@@ -382,7 +382,7 @@ const SizedBox(height: 20),</code></pre>
 
         <section class="page lesson" id="estructura" aria-labelledby="estructura-title" data-lesson="3">
           <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 03</span><span class="status-pill seen">Ruta guiada</span><span class="lesson-time">20–25 min</span></div><h1 id="estructura-title">La estructura de nuestra pantalla</h1><p>Antes de colocar textos, iconos o botones, necesitamos una estructura que los contenga.</p></div>
-          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Diferenciar el papel de <code>MaterialApp</code>, <code>Scaffold</code>, <code>AppBar</code>, <code>body</code> y <code>Text</code>.</p></div></div>
+          <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Al terminar podrás</strong><p>Diferenciar el papel de <code>MaterialApp</code>, <code>Scaffold</code>, <code>AppBar</code>, <code>body</code> y <code>Text</code>.</p></div></div><div class="notice notice-tip"><strong>Continuidad desde el módulo 02</strong><p>La aplicación ya mostraba <code>Primer widget</code>. Al agregar <code>AppBar</code> no tenemos que cambiar ese mensaje. En esta lección añadimos la estructura de pantalla y conservamos el texto. La referencia original del docente mantiene sus propios textos sin editar.</p></div>
           <h2>1. Observa cómo se anidan los widgets</h2>
           <div class="widget-tree" aria-label="Árbol de widgets actual"><div class="tree-item root">MainApp</div><div class="tree-branch"><div class="tree-item">MaterialApp</div><div class="tree-branch"><div class="tree-item">Scaffold</div><div class="tree-branch"><div class="tree-item accent-blue">AppBar → Text('Tienda')</div><div class="tree-item accent-purple">body → Center → Column</div></div></div></div></div>
           <p>Piensa en una construcción: <code>MaterialApp</code> prepara el entorno visual, <code>Scaffold</code> distribuye la pantalla, <code>AppBar</code> muestra la barra superior y <code>body</code> contiene el espacio principal.</p>
@@ -393,7 +393,7 @@ const SizedBox(height: 20),</code></pre>
     body: Center(
       child: Column(
         children: [
-          Text('Hello dsfdsWorld'),
+          Text('Primer widget'),
           // Aquí hay más widgets.
         ],
       ),
@@ -429,14 +429,14 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text('Tienda')),
         body: const Center(
-          child: Text('Hello dsfdsWorld'),
+          child: Text('Primer widget'),
         ),
       ),
     );
   }
 }</code></pre>
 <h3>2. Leer de afuera hacia adentro</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Código</th><th scope="col">Qué recibe</th><th scope="col">Qué veremos</th></tr></thead><tbody><tr><td><code>MaterialApp(...)</code></td><td><code>home: Scaffold(...)</code></td><td>La aplicación construye una pantalla inicial.</td></tr><tr><td><code>Scaffold(...)</code></td><td><code>appBar: ...</code> y <code>body: ...</code></td><td>Una zona superior y un área principal.</td></tr><tr><td><code>AppBar(...)</code></td><td><code>title: Text('Tienda')</code></td><td>El título aparece en la barra de arriba.</td></tr><tr><td><code>Center(...)</code></td><td><code>child: Text('Hello dsfdsWorld')</code></td><td>El texto del cuerpo queda centrado en el espacio que recibe.</td></tr><tr><td><code>Text(...)</code></td><td>Una cadena entre comillas.</td><td>Flutter dibuja los caracteres exactos de la cadena.</td></tr></tbody></table></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Código</th><th scope="col">Qué recibe</th><th scope="col">Qué veremos</th></tr></thead><tbody><tr><td><code>MaterialApp(...)</code></td><td><code>home: Scaffold(...)</code></td><td>La aplicación construye una pantalla inicial.</td></tr><tr><td><code>Scaffold(...)</code></td><td><code>appBar: ...</code> y <code>body: ...</code></td><td>Una zona superior y un área principal.</td></tr><tr><td><code>AppBar(...)</code></td><td><code>title: Text('Tienda')</code></td><td>El título aparece en la barra de arriba.</td></tr><tr><td><code>Center(...)</code></td><td><code>child: Text('Primer widget')</code></td><td>El texto del cuerpo queda centrado en el espacio que recibe.</td></tr><tr><td><code>Text(...)</code></td><td>Una cadena entre comillas.</td><td>Flutter dibuja los caracteres exactos de la cadena.</td></tr></tbody></table></div>
 <h3>3. ¿Por qué usamos palabras como home, appBar, body y title?</h3>
 <p>Son nombres de <strong>argumentos</strong> definidos por los constructores de cada widget. Flutter reconoce cada nombre y sabe dónde colocar el valor asociado. No son variables que inventemos en el momento. Si escribimos mal el nombre, Dart puede mostrar un error de argumento inexistente.</p>
 <div class="code-label">Ejemplo · dos argumentos nombrados de Scaffold</div><pre class="code-block"><code>Scaffold(
@@ -447,7 +447,7 @@ class MainApp extends StatelessWidget {
 <h3>4. Cómo seguir las aperturas y cierres</h3><p>Cada <code>Widget(</code> necesita un <code>)</code>. Como los widgets están anidados, se cierran en el <strong>orden inverso</strong> en que se abrieron. No intentes cerrar Scaffold antes de cerrar el Center que se encuentra dentro. En el módulo 05 leeremos todos los cierres del archivo original con números de línea.</p>
 <details class="deep-details"><summary>¿Por qué algunas expresiones llevan const y otras no?</summary><div class="deep-details-body"><p><code>const Text('Tienda')</code> es válido porque su constructor y valor pueden ser constantes. En el archivo actual, <code>MaterialApp</code> y <code>Scaffold</code> no aparecen precedidos de <code>const</code>, aunque otras partes de la pantalla sí.</p><p>La regla práctica es: usa <code>const</code> cuando Dart lo permita y el editor lo recomiende, pero no supongas que todos los widgets necesitan esa palabra. La constancia se comprueba para cada expresión concreta.</p></div></details>
 <h3>5. ¿Qué ocurre si cambias solo una línea?</h3>
-<div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Cambio experimental</th><th scope="col">Qué debería cambiar</th><th scope="col">Qué debería mantenerse</th></tr></thead><tbody><tr><td><code>Text('Tienda')</code> por <code>Text('Concesionario')</code></td><td>El título de la barra superior.</td><td>El cuerpo, su posición y los demás widgets.</td></tr><tr><td><code>Text('Hello dsfdsWorld')</code> por <code>Text('Bienvenidos')</code></td><td>El texto central del cuerpo.</td><td>El título «Tienda» y la estructura.</td></tr><tr><td>Quitar temporalmente <code>Center</code> y dejar el <code>Text</code> como body</td><td>El posicionamiento del texto.</td><td>La AppBar y el nombre de la pantalla.</td></tr></tbody></table></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Cambio experimental</th><th scope="col">Qué debería cambiar</th><th scope="col">Qué debería mantenerse</th></tr></thead><tbody><tr><td><code>Text('Tienda')</code> por <code>Text('Concesionario')</code></td><td>El título de la barra superior.</td><td>El cuerpo, su posición y los demás widgets.</td></tr><tr><td><code>Text('Primer widget')</code> por <code>Text('Bienvenidos')</code></td><td>El texto central del cuerpo.</td><td>El título «Tienda» y la estructura.</td></tr><tr><td>Quitar temporalmente <code>Center</code> y dejar el <code>Text</code> como body</td><td>El posicionamiento del texto.</td><td>La AppBar y el nombre de la pantalla.</td></tr></tbody></table></div>
 <p>Haz una prueba por vez en la copia de práctica. Después vuelve al texto original si quieres que tu resultado coincida con la referencia de clase.</p>
 <h3>6. Problemas que conviene reconocer</h3>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Síntoma</th><th scope="col">Causa probable</th><th scope="col">Pista de solución</th></tr></thead><tbody><tr><td>La pantalla no tiene título.</td><td>El <code>AppBar</code> está ausente o no está conectado a <code>appBar:</code>.</td><td>Comprueba la estructura exacta de <code>Scaffold</code>.</td></tr><tr><td>Aparece el título, pero no el cuerpo.</td><td>Puede faltar <code>body:</code> o estar mal cerrado su widget.</td><td>Localiza dónde abre y cierra el cuerpo.</td></tr><tr><td><code>The named parameter ... isn't defined</code>.</td><td>Se colocó un argumento en un widget que no lo acepta, o se escribió mal.</td><td>Revisa el widget propietario de ese argumento.</td></tr><tr><td>El texto dice otra cosa distinta del esperado.</td><td>Se cambió la cadena literal entre comillas.</td><td>Compara con el <code>main.dart</code> de referencia.</td></tr></tbody></table></div>
@@ -514,7 +514,7 @@ class MainApp extends StatelessWidget {
           <div class="code-label">lib/main.dart · fragmento real</div><pre class="code-block"><code>body: Center(
   child: Column(
     children: [
-      Text('Hello dsfdsWorld'),
+      Text('Primer widget'),
       const SizedBox(height: 20),
       Icon(Icons.directions_car),
       const SizedBox(height: 8),
@@ -533,7 +533,7 @@ class MainApp extends StatelessWidget {
           <div class="line-notes numbered">
             <div><strong><code>Center</code></strong><p>Centra su único hijo dentro del espacio disponible. Como ese hijo es una <code>Column</code>, importa también cómo la columna ocupa el espacio.</p></div>
             <div><strong><code>Column</code></strong><p>Organiza la lista <code>children</code> de arriba hacia abajo.</p></div>
-            <div><strong><code>Text('Hello dsfdsWorld')</code></strong><p>Muestra exactamente ese texto. Puedes cambiarlo por una frase comprensible en tu copia de práctica.</p></div>
+            <div><strong><code>Text('Primer widget')</code></strong><p>Muestra exactamente ese texto. Puedes cambiarlo por una frase comprensible en tu copia de práctica.</p></div>
             <div><strong><code>SizedBox(height: 20)</code></strong><p>Introduce 20 píxeles lógicos de separación vertical.</p></div>
             <div><strong><code>Icon(Icons.directions_car)</code></strong><p>Dibuja el símbolo de un automóvil proporcionado por Material Icons.</p></div>
             <div><strong><code>Row</code></strong><p>Distribuye sus hijos horizontalmente.</p></div>
@@ -545,7 +545,7 @@ class MainApp extends StatelessWidget {
 <div class="code-label">Esquema del código original</div><pre class="code-block"><code>Scaffold
 └── body: Center
     └── child: Column
-        ├── Text('Hello dsfdsWorld')
+        ├── Text('Primer widget')
         ├── SizedBox(height: 20)
         ├── Icon(Icons.directions_car)
         ├── SizedBox(height: 8)
@@ -571,7 +571,7 @@ class MainApp extends StatelessWidget {
 <div class="notice notice-warning"><strong>Center no es igual a mainAxisAlignment.center</strong><p>En el proyecto original, la Column intenta ocupar el tamaño máximo en su eje principal. Aunque esté dentro de Center, sus hijos no necesariamente quedan centrados verticalmente. Diferencia centrar el widget hijo y alinear sus elementos internos.</p></div>
 <h3>Reproducir la etapa 04 sin adelantar el TextField</h3><p>Para construir de manera progresiva, escribe primero el Text inicial, después el SizedBox vertical, después el Icon y finalmente la Row con icono, separación y texto. El campo de búsqueda se incorpora en el módulo 05.</p>
 <div class="code-label">Fragmento para construir dentro de Column</div><pre class="code-block"><code>children: [
-  Text('Hello dsfdsWorld'),
+  Text('Primer widget'),
   const SizedBox(height: 20),
   Icon(Icons.directions_car),
   const SizedBox(height: 8),
@@ -610,9 +610,9 @@ class MainApp extends StatelessWidget {
           <div class="line-notes numbered"><div><strong><code>Expanded</code></strong><p>Le indica al hijo de la <code>Row</code> que utilice el espacio horizontal flexible que queda disponible.</p></div><div><strong><code>child: TextField(...)</code></strong><p>El hijo de <code>Expanded</code> es un campo donde el usuario puede escribir.</p></div><div><strong><code>decoration: InputDecoration(...)</code></strong><p>Define cómo se presenta visualmente el campo: texto de ayuda, bordes, iconos y otros detalles.</p></div><div><strong><code>hintText</code></strong><p>Muestra una sugerencia mientras el campo está vacío. No es el texto que escribió el usuario.</p></div></div>
           <h2>2. Prueba un nuevo texto de ayuda</h2><p>En tu copia para ejercicios, sustituye únicamente <code>hintText</code>:</p><div class="code-label">Propuesta de práctica · un cambio pequeño</div><pre class="code-block"><code>hintText: 'Escribe el nombre del vehículo',</code></pre><p>Ejecuta Hot Reload. El texto se verá dentro del campo cuando esté vacío.</p>
           <div class="notice notice-info"><strong>¿Ya busca vehículos?</strong><p>No todavía. El código actual muestra un campo de texto, pero no contiene una función que filtre productos. Primero aprenderemos a leer el valor que el usuario escribe y después a reaccionar a él.</p></div>
-          <h2>4. Código completo REAL de actividad2a</h2>
-<p>Este es el archivo de llegada después de estudiar los módulos 01–05, copiado literalmente del proyecto docente. Conserva los textos que escribió el grupo, incluidos <code>Hello dsfdsWorld</code> y <code>Ingenieria de Sistemas</code>. Al realizar actividades nuevas, deja el original intacto.</p>
-<div class="code-label">lib/main.dart · referencia comprobada el 21 de octubre de 2026</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+          <h2>4. Código completo de nuestra práctica actividad2</h2>
+<p>Este es el resultado de nuestra práctica tras los módulos 01–05. Conservamos <code>Primer widget</code> desde el módulo 02 y la organización de widgets aprendida de la referencia. No copiamos literalmente todos los textos del docente; su archivo original permanece disponible en <code>codigo-base/main.dart</code> y no se modifica.</p>
+<div class="code-label">actividad2/lib/main.dart · resultado de los módulos 01–05</div><pre class="code-block"><code>import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MainApp());
@@ -629,7 +629,7 @@ class MainApp extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              Text('Hello dsfdsWorld'),
+              Text('Primer widget'),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -751,8 +751,8 @@ class MainApp extends StatelessWidget {
 </li>
 <li class="source-row">
  <span class="line-no">18</span>
- <code class="line-code">              Text('Hello dsfdsWorld'),</code>
- <div class="line-explanation"><p>Primer widget visible del cuerpo: texto literal «Hello dsfdsWorld», conservado del proyecto de clase.</p></div>
+ <code class="line-code">              Text('Primer widget'),</code>
+ <div class="line-explanation"><p>Primer widget visible del cuerpo: <code>Primer widget</code>, mantenido desde el módulo 02 sin introducir un cambio innecesario.</p></div>
 </li>
 <li class="source-row">
  <span class="line-no">19</span>
@@ -919,7 +919,7 @@ class MainApp extends StatelessWidget {
 <div class="guided-check"><strong>Comprobación de 5 preguntas</strong><p>¿Cuál es el primer <code>children</code>? ¿En qué línea está el segundo icono de carro? ¿Dónde se define el texto de ayuda? ¿Qué línea cierra el campo? ¿Cuál aporta espacio flexible?</p><details><summary>Ver respuestas esperadas</summary><p>Líneas 17, 24, 30, 32 y 27 respectivamente.</p></details></div>
 </div><h2>6. Comprueba lo que viste</h2><div class="checklist" data-checklist="campo-texto"><label><input type="checkbox"> El campo me permite escribir.</label><label><input type="checkbox"> Comprendo por qué el campo está dentro de <code>Expanded</code>.</label><label><input type="checkbox"> Puedo distinguir texto de ayuda y texto real.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Reconoce las diferencias</h3><p>Explica qué pasaría si la <code>Row</code> tuviera textos muy largos y el <code>TextField</code> no dispusiera de espacio flexible.</p><details><summary>Ver orientación</summary><p>La fila podría sobrepasar el ancho de la pantalla. <code>Expanded</code> permite que el campo use el espacio flexible disponible, aunque también debemos cuidar los otros elementos.</p></details></div>
-          <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_05_buscador.dart" target="_blank" rel="noopener noreferrer">Llegar al código original exacto: paso_05_buscador.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="learning-fork" id="elegir-ruta" aria-labelledby="elegir-ruta-title">
+          <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_05_buscador.dart" target="_blank" rel="noopener noreferrer">Consultar código completo de esta etapa: paso_05_buscador.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="learning-fork" id="elegir-ruta" aria-labelledby="elegir-ruta-title">
   <div class="curriculum-bridge-label">AL TERMINAR EL MÓDULO 05</div>
   <h2 id="elegir-ruta-title">Elige una ruta. No son pasos que se pegan uno encima del otro.</h2>
   <p>Las dos utilizan lo que ya aprendiste: <code>MainApp</code>, <code>Column</code>, <code>Row</code> y <code>TextField</code>. A partir de aquí realizan ejercicios distintos sobre el mismo punto de partida.</p>
@@ -1063,7 +1063,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              Text(&#39;Hello dsfdsWorld&#39;),
+              Text(&#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -1181,7 +1181,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: recibir un valor mediante un constructor</h2><p>En lugar de duplicar <code>Text('Agregar vehículo')</code>, crearemos <code>TituloSeccion(texto: 'Agregar vehículo')</code>. El parámetro <code>texto</code> recibe ese valor. <code>required</code> exige que quien construya el widget proporcione ese argumento; <code>final</code> indica que el campo del widget no se reasigna.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Solo después de entender este intercambio entre <strong>quien crea el widget</strong> y <strong>el widget que recibe el dato</strong> debes mover el código a <code>widgets/</code>.</p></div>
 
 <div class="notice notice-info"><strong>Punto de partida obligatorio</strong><p>Continúa desde <a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">el <code>main.dart</code> final del primer formulario</a>, no desde el módulo opcional de filtros. Solo utilizaremos <code>lib/widgets/</code>; las demás carpetas siguen vacías.</p></div>
-<div class="next-compare"><div><small>ANTES</small><code>Text('Hello dsfdsWorld')</code><code>Text('Agregar un vehículo')</code><p>Dos widgets escritos de manera independiente.</p></div><div><small>DESPUÉS</small><code>TituloSeccion(texto: 'Hello dsfdsWorld')</code><code>TituloSeccion(texto: 'Agregar un vehículo')</code><p>Dos usos de una misma clase, con argumentos diferentes.</p></div></div>
+<div class="next-compare"><div><small>ANTES</small><code>Text('Primer widget')</code><code>Text('Agregar un vehículo')</code><p>Dos widgets escritos de manera independiente.</p></div><div><small>DESPUÉS</small><code>TituloSeccion(texto: 'Primer widget')</code><code>TituloSeccion(texto: 'Agregar un vehículo')</code><p>Dos usos de una misma clase, con argumentos diferentes.</p></div></div>
 <div class="next-section-heading"><span>CONSTRUIR SIN SALTOS</span><h2>Del archivo vacío al primer widget reutilizable</h2></div><article class="next-step" id="reutilizacion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear el archivo del componente</h3></div>
  <p>Ahora sí utilizaremos <code>widgets/</code>, una de las carpetas creadas en la etapa anterior. Crea el archivo <code>titulo_seccion.dart</code>. El nombre va en minúsculas y con guion bajo porque es un archivo Dart; todavía no cambies <code>main.dart</code>.</p><div class="next-where"><div class="next-where-action">CREAR UN ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/titulo_seccion.dart</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → lib → widgets → Nuevo archivo</div><div><strong>Ruta del archivo nuevo:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">Archivo nuevo · ubicación</div><pre class="code-block"><code>lib/widgets/titulo_seccion.dart</code></pre>
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>El archivo no está en <code>lib/pages/</code> ni al lado de <code>pubspec.yaml</code>. Se crea dentro de <code>lib/widgets</code>.</p></div>
@@ -1210,7 +1210,7 @@ class TituloSeccion extends StatelessWidget {
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La ruta entre comillas es relativa a <code>lib/main.dart</code>. El punto y coma finaliza la instrucción. No se importa con <code>etapas/</code>, porque esa carpeta del repositorio solo contiene referencias.</p></div>
  <div class="next-step-result"><strong>Resultado de este paso</strong><p>Dart ya puede encontrar la clase <code>TituloSeccion</code>. La interfaz todavía es idéntica.</p></div></article>
 <article class="next-step" id="reutilizacion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Sustituir el primer Text</h3></div>
- <p>Busca el primer <code>Text('Hello dsfdsWorld')</code> dentro de <code>Column.children</code> y <strong>reemplázalo</strong> con el siguiente widget. No agregues un segundo título.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL TEXTO INICIAL</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> MainApp.build → Scaffold.body → Center → Column.children</div><div><strong>Busca con Ctrl + F:</strong> <code>Text(&#39;Hello dsfdsWorld&#39;)</code></div></div></div><div class="code-label">Dart · reemplazar Text existente</div><pre class="code-block"><code>const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),</code></pre>
+ <p>Busca el primer <code>Text('Primer widget')</code> dentro de <code>Column.children</code> y <strong>reemplázalo</strong> con el siguiente widget. No agregues un segundo título.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL TEXTO INICIAL</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> MainApp.build → Scaffold.body → Center → Column.children</div><div><strong>Busca con Ctrl + F:</strong> <code>Text(&#39;Primer widget&#39;)</code></div></div></div><div class="code-label">Dart · reemplazar Text existente</div><pre class="code-block"><code>const TituloSeccion(texto: &#39;Primer widget&#39;),</code></pre>
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>TituloSeccion</code> es nuestro widget. <code>texto:</code> es un argumento con nombre que recibe el valor String. La clase utiliza ese valor al ejecutar <code>Text(texto)</code>. <code>const</code> se permite porque el valor es constante.</p></div>
  <div class="next-step-result"><strong>Resultado de este paso</strong><p>El mismo título aparece en pantalla; ahora lo dibuja nuestra clase reutilizable.</p></div></article>
 <article class="next-step" id="reutilizacion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Utilizar el mismo widget otra vez</h3></div>
@@ -1265,7 +1265,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -1435,7 +1435,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -1586,7 +1586,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -1841,7 +1841,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -2139,7 +2139,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -2233,7 +2233,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
     child: Center(
       child: Column(
         children: [
-          Text('Hello dsfdsWorld'),
+          Text('Primer widget'),
           const SizedBox(height: 20),
           Icon(Icons.directions_car),
           const SizedBox(height: 8),
@@ -2315,7 +2315,7 @@ class MainApp extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text('Primer widget'),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
@@ -2440,7 +2440,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text('Primer widget'),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
@@ -2577,7 +2577,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text('Primer widget'),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
