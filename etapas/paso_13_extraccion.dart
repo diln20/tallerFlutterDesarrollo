@@ -33,7 +33,7 @@ class _MainAppState extends State<MainApp> {
         body: Center(
           child: Column(
             children: [
-              const TituloSeccion(texto: 'Hello dsfdsWorld'),
+              const TituloSeccion(texto: 'Primer widget'),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
