@@ -1666,71 +1666,86 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Crear dos objetos diferentes, uno después del otro</h3><p>Escribe «Renault 9» y luego «Mazda 3». Para cada ejecución, identifica qué dato recibe el constructor y por qué los objetos tienen un nombre diferente aunque utilicen la misma clase.</p></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#crud">Siguiente: crear, editar y eliminar vehículos →</a></div></section>
 
-<section class="page lesson next-module" id="crud" aria-labelledby="crud-title">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P5.1</span><span class="status-pill planned">Después de crear el objeto</span></div><h1 id="crud-title">Guardar, editar y eliminar carros</h1><p>Ya construiste un <code>Vehiculo</code>. Ahora harás una pequeña lista de vehículos. Cada paso tiene una analogía, el archivo preciso y el resultado esperado. <strong>No comenzamos desde cero:</strong> continúa con P5.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo</strong><p>Crear, mostrar, modificar y eliminar vehículos en memoria, comprender funciones, <code>trim()</code>, conversiones seguras y <code>setState()</code>. Sin base de datos y sin introducir BLoC todavía.</p></div></div>
-<div class="notice notice-info"><strong>Antes de comenzar</strong><p>Abre <code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code>. Debes haber terminado la creación del modelo en <code>lib/models/vehiculo.dart</code>. Conserva <code>Vehiculo(nombre: ..., disponible: ...)</code>; no cambies el modelo por una clase incompatible.</p></div>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">01</span><h3>Funciones: instrucciones reutilizables</h3></div><p><strong>Analogía:</strong> una función es como la receta del chef. Le das ingredientes, sigue los pasos y, cuando corresponde, devuelve el plato. Definir una receta no significa cocinarla inmediatamente.</p><div class="next-where"><div class="next-where-action">SOLO LEER Y PROBAR EN UN ARCHIVO DART APARTE</div><div class="next-where-details"><div><strong>Archivo sugerido:</strong> <code>ejemplos/funciones.dart</code>, fuera de <code>lib/</code>.</div><div><strong>Motivo:</strong> entender funciones antes de introducirlas en el formulario.</div></div></div><div class="code-label">Ejemplo independiente de funciones</div><pre class="code-block"><code>String limpiarNombre(String texto) {
-  return texto.trim();
-}
-
-void main() {
-  final nombre = limpiarNombre('  Renault 9  ');
-  print(nombre);
-}</code></pre><p><code>String</code> inicial indica qué tipo devuelve la función. <code>limpiarNombre</code> es su nombre. <code>String texto</code> es el dato recibido. <code>return</code> devuelve el resultado. <code>void main()</code> es la función que arranca la prueba y <code>print</code> escribe en consola. Pasar <code>limpiarNombre</code> sin paréntesis es referirse a la función; escribir <code>limpiarNombre(...)</code> la ejecuta.</p><div class="next-step-result"><strong>Resultado</strong><p>Aparece <code>Renault 9</code> sin espacios al inicio o al final.</p></div></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">02</span><h3>¿Qué hacen trim(), parse() y tryParse()?</h3></div><p><strong>Analogía:</strong> <code>trim()</code> limpia los bordes de una etiqueta antes de pegarla. <code>parse()</code> intenta convertir una etiqueta numérica en una cantidad, pero falla si la etiqueta no es un número. <code>tryParse()</code> comprueba primero si puede convertirla: devuelve <code>null</code> cuando no puede.</p><div class="code-label">Ejemplo de Dart: cadenas y números</div><pre class="code-block"><code>final nombre = '  Mazda 3  '.trim(); // 'Mazda 3'
-final precioTexto = '25000';
-final precio = double.tryParse(precioTexto);
-if (precio == null) {
-  print('Precio inválido');
-} else {
-  print(precio); // 25000.0
-}</code></pre><p><code>double.parse('25000')</code> también produce <code>25000.0</code>, pero <code>double.parse('abc')</code> lanza un <code>FormatException</code>. Usa <code>tryParse()</code> cuando el valor lo escribe una persona. Para convertir enteros se usan <code>int.parse()</code> o <code>int.tryParse()</code>. <strong>El modelo actual no necesita un precio:</strong> este ejemplo se estudia antes de ampliar propiedades.</p></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">03</span><h3>Guardar varios objetos en una lista</h3></div><p><strong>Analogía:</strong> crear un objeto es fabricar un carro de juguete; la lista es el estante donde guardamos varios. Aquí <code>List&lt;Vehiculo&gt;</code> es un estante que acepta solamente vehículos.</p><div class="next-where"><div class="next-where-action">AGREGAR DOS CAMPOS DENTRO DE _MainAppState</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Buscar:</strong> <code>final GlobalKey&lt;FormState&gt; formularioKey</code></div><div><strong>Colocar:</strong> justo debajo de ese campo, antes de <code>dispose()</code>.</div></div></div><div class="code-label">Añadir, sin borrar el controlador ni la llave</div><pre class="code-block"><code>final List&lt;Vehiculo&gt; vehiculos = [];
-int? indiceEnEdicion;</code></pre><p>Los corchetes <code>[]</code> crean una lista vacía. <code>int?</code> significa que puede contener un número o <code>null</code>. El índice recuerda cuál vehículo editaremos; <code>null</code> indica que estamos creando uno nuevo.</p></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">04</span><h3>Crear una función para guardar</h3></div><p><strong>Analogía:</strong> el empleado primero revisa el formulario; luego, dependiendo de si tenemos una ficha en edición, crea una ficha nueva o actualiza la existente. <code>setState()</code> avisa a Flutter que actualice la pantalla.</p><div class="next-where"><div class="next-where-action">AGREGAR MÉTODO DEBAJO DE LOS CAMPOS</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → clase <code>_MainAppState</code></div><div><strong>Ubicación:</strong> antes de <code>@override void dispose()</code>; nunca dentro de <code>build()</code>.</div></div></div><div class="code-label">Función guardarVehiculo · paso completo</div><pre class="code-block"><code>void guardarVehiculo() {
+<section class="page lesson next-module crud-direct" id="crud" aria-labelledby="crud-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P5.1</span><span class="status-pill planned">Aplicación directa en actividad2</span></div>
+<h1 id="crud-title">Agregar, editar y eliminar vehículos en tu proyecto Flutter</h1>
+<p>Continúa exactamente donde terminaste P5: <strong>no crees otro proyecto ni archivos de prueba aparte</strong>. Ahora vas a modificar <code>lib/main.dart</code> de tu propia Tienda, un cambio funcional a la vez, hasta que puedas guardar vehículos, verlos, editarlos y eliminarlos.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo práctico</strong><p>Convertir el formulario que ya crea un <code>Vehiculo</code> en un CRUD real en memoria. Aprenderás funciones, <code>trim()</code> y <code>setState()</code> mientras los utilizas en el código que estás escribiendo, sin ejemplos desconectados.</p></div></div>
+<div class="notice notice-info"><strong>Abre estos dos archivos de tu proyecto</strong><p><code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code> es el que vas a editar. <code>lib/models/vehiculo.dart</code> ya debe existir desde P5: conserva su modelo <code>Vehiculo</code> con las propiedades <code>nombre</code> y <code>disponible</code>. <strong>No modifiques <code>actividad2a</code></strong>, porque es la referencia del docente.</p></div>
+<div class="crud-before-after" aria-label="Continuidad entre la etapa anterior y el CRUD"><div><span>ASÍ VIENES DE P5</span><strong>El botón crea un objeto</strong><p>Se lee el nombre, se valida y se imprime con <code>debugPrint()</code>, pero aún no queda guardado.</p></div><div><span>ASÍ TERMINARÁS P5.1</span><strong>La lista contiene los carros</strong><p>El mismo botón crea o guarda cambios, y cada carro tiene opciones de editar y eliminar.</p></div></div>
+<div class="crud-direct-flow"><strong>Ruta de trabajo: solo modificaciones a tu aplicación</strong><nav aria-label="Ir a cambios de P5.1">
+<a href="#crud-paso-1">1. Crear lista</a><a href="#crud-paso-2">2. Función guardar</a><a href="#crud-paso-3">3. Conectar botón</a><a href="#crud-paso-4">4. Mostrar carros</a><a href="#crud-paso-5">5. Editar</a><a href="#crud-paso-6">6. Eliminar</a><a href="#crud-paso-7">7. Probar</a>
+</nav></div>
+<div class="next-section-heading"><span>CÓDIGO REAL · SECUENCIA ACUMULATIVA</span><h2>Añade cada cambio en el lugar indicado</h2></div>
+<article class="next-step crud-direct-step" id="crud-paso-1">
+<div class="next-step-top"><span class="next-step-number">01</span><div><span class="crud-step-kicker">CAMBIO 1 · AGREGAR 1 DECLARACIÓN</span><h3>Preparar la lista en _MainAppState</h3></div></div>
+<p>En P5 creaste un solo objeto, pero al pulsar el botón se perdía después de imprimirlo. Necesitamos un lugar donde conservar varios carros mientras la app está abierta. <strong>Analogía:</strong> la lista será el parqueadero y cada objeto será un carro.</p>
+<div class="next-where"><div class="next-where-action">AGREGAR 1 DECLARACIÓN EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>final GlobalKey&lt;FormState&gt; formularioKey</code></div>
+<div><strong>Ubicación exacta:</strong> Dentro de <code>class _MainAppState</code>, justo debajo de <code>formularioKey</code> y antes de <code>dispose()</code>.</div></div></div>
+<div class="code-label">Copia esta línea NUEVA justo debajo de formularioKey</div><pre class="code-block"><code>final List&lt;Vehiculo&gt; vehiculos = [];</code></pre><div class="code-label">Ubicación final de las tres declaraciones</div><pre class="code-block"><code>final TextEditingController vehiculoController = TextEditingController();
+final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>List&lt;Vehiculo&gt;</code> significa una lista que guarda objetos de tipo <code>Vehiculo</code>. Los corchetes <code>[]</code> la crean vacía. <code>final</code> evita asignar otra lista a esa variable, pero permite agregar o quitar elementos de la lista existente.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>El proyecto sigue mostrando el formulario de P5. No se verá una lista todavía: por ahora solo creaste el lugar donde se guardarán los carros.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-2">
+<div class="next-step-top"><span class="next-step-number">02</span><div><span class="crud-step-kicker">CAMBIO 2 · AGREGAR FUNCIÓN</span><h3>Crear tu primera función guardarVehiculo()</h3></div></div>
+<p>Antes, el botón contenía directamente todas las instrucciones para crear el objeto. Ahora esas instrucciones vivirán en una función real de tu pantalla. <strong>Analogía:</strong> defines la tarea «guardar carro» una sola vez para poder llamarla desde el botón.</p>
+<div class="next-where"><div class="next-where-action">AGREGAR FUNCIÓN EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>@override</code> que está encima de <code>void dispose()</code></div>
+<div><strong>Ubicación exacta:</strong> Pega el método dentro de <code>_MainAppState</code>, después de las tres declaraciones y antes de <code>dispose()</code>. <strong>No lo pongas dentro de <code>build()</code> ni de <code>main()</code>.</strong></div></div></div>
+<div class="code-label">Pega este método completo · primera versión de guardar</div><pre class="code-block"><code>void guardarVehiculo() {
   if (formularioKey.currentState?.validate() != true) {
     return;
   }
+
   final nombre = vehiculoController.text.trim();
   setState(() {
-    if (indiceEnEdicion == null) {
-      vehiculos.add(Vehiculo(nombre: nombre));
-    } else {
-      final indice = indiceEnEdicion!;
-      final anterior = vehiculos[indice];
-      vehiculos[indice] = Vehiculo(
-        nombre: nombre,
-        disponible: anterior.disponible,
-      );
-      indiceEnEdicion = null;
-    }
+    vehiculos.add(Vehiculo(nombre: nombre));
   });
   vehiculoController.clear();
-}</code></pre><p><code>if</code> toma una decisión. <code>validate()</code> comprueba el formulario. <code>?.</code> permite acceder con seguridad si el estado no existe. <code>return;</code> detiene la función cuando algo falla. <code>add()</code> añade a la lista, y <code>vehiculos[indice] = ...</code> reemplaza un elemento. El signo <code>!</code> expresa que aquí el índice ya no es nulo, después de comprobarlo.</p><div class="next-step-result"><strong>Comprueba</strong><p>La lista comienza vacía; cada formulario válido crea un objeto nuevo y limpia el campo.</p></div></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">05</span><h3>Conectar el botón existente</h3></div><p>El botón que antes imprimía un objeto ahora debe llamar a <code>guardarVehiculo</code>. No agregues un segundo botón de guardar.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO LA ACCIÓN DEL BOTÓN ORIGINAL</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Buscar:</strong> <code>ElevatedButton(</code> después del <code>Form</code>.</div><div><strong>Reemplazar:</strong> el antiguo bloque <code>onPressed: () { ... }</code> por <code>onPressed: guardarVehiculo</code>.</div></div></div><div class="code-label">Resultado del botón existente</div><pre class="code-block"><code>ElevatedButton(
+}</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>void</code> indica que la función no devuelve un valor. <code>validate()</code> revisa el formulario; <code>return;</code> detiene la operación si el nombre no es válido. <code>vehiculoController.text.trim()</code> obtiene el texto y quita espacios al inicio y al final. <code>setState()</code> comunica a Flutter que la lista cambió; <code>add()</code> mete el vehículo en ella; <code>clear()</code> vacía el campo.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>El método ya existe, pero todavía debes conectar el botón para que pueda ejecutarse.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-3">
+<div class="next-step-top"><span class="next-step-number">03</span><div><span class="crud-step-kicker">CAMBIO 3 · REEMPLAZAR EL BOTÓN DE P5</span><h3>Hacer que el botón llame a la función</h3></div></div>
+<p>No crees otro botón. Sustituye el <code>ElevatedButton</code> que usabas en P5 para imprimir el vehículo en consola: ahora ejecutará <code>guardarVehiculo</code>.</p>
+<div class="next-where"><div class="next-where-action">REEMPLAZAR EL BOTÓN DE P5 EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>ElevatedButton(</code> justo después de <code>Form(...)</code></div>
+<div><strong>Ubicación exacta:</strong> En <code>_MainAppState.build()</code> → <code>Column(children: [...])</code>. Reemplaza el botón anterior completo, incluyendo su antiguo <code>onPressed: () { ... }</code>. Conserva el formulario que está encima.</div></div></div>
+<div class="code-label">ANTES · era el botón de P5 que imprimía un objeto</div><pre class="code-block"><code>              ElevatedButton(
+                onPressed: () {
+                  if (formularioKey.currentState?.validate() != true) {
+                    return;
+                  }
+                  final nombre = vehiculoController.text.trim();
+                  final vehiculo = Vehiculo(nombre: nombre);
+                  debugPrint(
+                    'Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}',
+                  );
+                  vehiculoController.clear();
+                },
+                child: const Text('Agregar vehículo'),
+              ),</code></pre><div class="code-label">DESPUÉS · reemplázalo completo por este</div><pre class="code-block"><code>ElevatedButton(
   onPressed: guardarVehiculo,
-  child: Text(
-    indiceEnEdicion == null
-      ? 'Agregar vehículo'
-      : 'Guardar cambios',
-  ),
-),</code></pre><p>Observa la diferencia: <code>guardarVehiculo</code> entrega la función como acción futura; <code>guardarVehiculo()</code> la ejecutaría inmediatamente al construir el widget.</p></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">06</span><h3>Editar y eliminar sin confundir las acciones</h3></div><p><strong>Analogía:</strong> editar es sacar una ficha del archivador, escribir el cambio y devolverla al mismo lugar. Eliminar es retirar la ficha del archivador. Ambas acciones deben refrescar lo que se ve en la pantalla.</p><div class="next-where"><div class="next-where-action">AÑADIR DOS MÉTODOS EN _MainAppState</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> después de <code>guardarVehiculo()</code> y antes de <code>dispose()</code>.</div></div></div><div class="code-label">Editar y eliminar objetos de la lista</div><pre class="code-block"><code>void comenzarEdicion(int indice) {
-  vehiculoController.text = vehiculos[indice].nombre;
-  setState(() {
-    indiceEnEdicion = indice;
-  });
-}
-
-void borrarVehiculo(int indice) {
-  setState(() {
-    vehiculos.removeAt(indice);
-    indiceEnEdicion = null;
-    vehiculoController.clear();
-  });
-}</code></pre><p><code>vehiculos[indice]</code> consulta el elemento seleccionado; <code>removeAt(indice)</code> elimina uno según su posición. Tras eliminar, se cancela cualquier edición y se limpia el formulario para no usar un índice que ya cambió.</p></article>
-<article class="next-step"><div class="next-step-top"><span class="next-step-number">07</span><h3>Mostrar los vehículos con opciones de editar y eliminar</h3></div><p><strong>Analogía:</strong> <code>ListView.builder</code> es el encargado que prepara una tarjeta por cada vehículo del estante. <code>itemCount</code> indica cuántas hay y <code>itemBuilder</code> indica cómo dibujar cada una.</p><div class="next-where"><div class="next-where-action">AÑADIR DESPUÉS DEL ElevatedButton</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> dentro de <code>Column(children: [ ... ])</code>, justo después del botón de agregar/guardar; deja la lista dentro de <code>Expanded</code>.</div></div></div><div class="code-label">Lista visible con acciones para cada vehículo</div><pre class="code-block"><code>const SizedBox(height: 12),
+  child: const Text('Agregar vehículo'),
+),</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>onPressed: guardarVehiculo</code> pasa la función para que Flutter la ejecute <strong>cuando el usuario pulse</strong>. Escribir <code>guardarVehiculo()</code> en esta propiedad intentaría ejecutarla de inmediato y no entrega una función válida. No es necesario repetir la validación en el botón: ya quedó en el método.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Pulsa «Agregar vehículo» con un nombre de tres o más caracteres. El campo se limpia y el vehículo se guarda en memoria, aunque todavía falta mostrarlo.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-4">
+<div class="next-step-top"><span class="next-step-number">04</span><div><span class="crud-step-kicker">CAMBIO 4 · AGREGAR UN WIDGET DESPUÉS DEL BOTÓN</span><h3>Mostrar los vehículos debajo del botón</h3></div></div>
+<p>Ya estás guardando objetos. Ahora vas a colocar una lista visible debajo del mismo botón para comprobar cuántos carros hay. <strong>Analogía:</strong> el parqueadero ya tiene carros; necesitamos dibujar sus plazas en pantalla.</p>
+<div class="next-where"><div class="next-where-action">AGREGAR UN WIDGET DESPUÉS DEL BOTÓN EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>child: const Text('Agregar vehículo')</code></div>
+<div><strong>Ubicación exacta:</strong> En el mismo <code>Column(children: [...])</code>, después del cierre <code>),</code> del botón del paso 3 y antes de <code>],</code> que cierra la lista principal de widgets.</div></div></div>
+<div class="code-label">AÑADE este bloque después del botón existente</div><pre class="code-block"><code>const SizedBox(height: 12),
 Expanded(
   child: ListView.builder(
     itemCount: vehiculos.length,
@@ -1741,30 +1756,273 @@ Expanded(
         subtitle: Text(vehiculo.disponible
             ? 'Disponible'
             : 'No disponible'),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              tooltip: 'Editar vehículo',
-              onPressed: () => comenzarEdicion(indice),
-              icon: const Icon(Icons.edit),
-            ),
-            IconButton(
-              tooltip: 'Eliminar vehículo',
-              onPressed: () => borrarVehiculo(indice),
-              icon: const Icon(Icons.delete),
-            ),
-          ],
-        ),
       );
     },
   ),
-),</code></pre><p>Un <code>ListView</code> necesita alto limitado dentro de una <code>Column</code>; por eso lo envolvemos en <code>Expanded</code>. Los <code>IconButton</code> contienen sus propios <code>tooltip</code> accesibles.</p><div class="next-step-result"><strong>Resultado</strong><p>Agrega «Renault 9» y «Mazda 3», edita uno y elimina el otro. Queda un registro en pantalla. La información <strong>solo vive en memoria</strong>: al reiniciar se pierde.</p></div></article>
-<div class="notice notice-tip"><strong>Archivo final de comprobación</strong><p>Después de construir cada cambio abre <a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">paso_12b_crud.dart ↗</a>. Es una referencia completa, no un bloque para pegar en cualquier parte. Se debe guardar como <code>lib/main.dart</code> de tu proyecto, manteniendo el modelo y el widget <code>TituloSeccion</code> creados previamente.</p></div>
-<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL</span><h3>Prueba las cuatro operaciones</h3><p>Crea dos vehículos, comprueba que ambos aparecen, edita el nombre del primero, elimina el segundo y explica qué hacen <code>add</code>, <code>setState</code>, <code>removeAt</code>, <code>trim</code> y <code>tryParse</code>. Describe también qué sucedería si reinicias la aplicación.</p></div>
-<div class="checklist" data-checklist="crud"><label><input type="checkbox"> Entiendo qué es una función y cuándo se ejecuta.</label><label><input type="checkbox"> Comprendo trim, parse y tryParse.</label><label><input type="checkbox"> Puedo crear y mostrar varios vehículos.</label><label><input type="checkbox"> Puedo editar y eliminar un vehículo.</label><label><input type="checkbox"> Puedo explicar por qué la lista se pierde al reiniciar.</label></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="crud">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: extraer widgets reutilizables →</a></div>
+),</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>Expanded</code> permite que la lista use el espacio vertical disponible sin desbordar la <code>Column</code>. <code>itemCount</code> es el número de carros guardados; <code>itemBuilder</code> construye cada fila según su posición (<code>indice</code>); <code>ListTile</code> presenta nombre y disponibilidad.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Prueba agregar «Renault 9» y luego «Mazda 3». Deben aparecer <strong>dos filas</strong> debajo del formulario sin cambiar de página.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-5">
+<div class="next-step-top"><span class="next-step-number">05</span><div><span class="crud-step-kicker">CAMBIO 5 · REALIZAR 4 CAMBIOS CONCRETOS</span><h3>Editar el nombre de un vehículo</h3></div></div>
+<p>Ahora un botón «Editar» debe colocar el nombre elegido en el formulario; el botón principal cambiará a «Guardar cambios». No crearemos un segundo formulario. <strong>Analogía:</strong> tomas la ficha del carro que ya existe, corriges su nombre y la devuelves a la misma posición.</p>
+<div class="next-where"><div class="next-where-action">REALIZAR 4 CAMBIOS CONCRETOS EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>final List&lt;Vehiculo&gt; vehiculos = [];</code> y <code>void guardarVehiculo()</code></div>
+<div><strong>Ubicación exacta:</strong> Todo se mantiene dentro de <code>_MainAppState</code>. Haz las cuatro modificaciones siguientes en orden y sin duplicar la función anterior.</div></div></div>
+<div class="crud-substep"><strong>A · AGREGAR el índice de edición junto a la lista del paso 1</strong><p>Coloca esta línea debajo de <code>vehiculos</code>.</p><div class="code-label">Solo la nueva declaración</div><pre class="code-block"><code>int? indiceEnEdicion;</code></pre></div>
+<div class="crud-substep"><strong>B · REEMPLAZAR la función guardarVehiculo() completa</strong><p>Busca el método del paso 2 y sustitúyelo entero por esta versión que permite crear o editar.</p><div class="code-label">Guardar un carro nuevo o modificar el seleccionado</div><pre class="code-block"><code>  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }</code></pre></div>
+<div class="crud-substep"><strong>C · AGREGAR una función después de guardarVehiculo()</strong><p>Va antes de <code>dispose()</code>, al mismo nivel que guardarVehiculo().</p><div class="code-label">Nueva función comenzarEdicion()</div><pre class="code-block"><code>  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }</code></pre></div>
+<div class="crud-substep"><strong>D · REEMPLAZAR botón y fila de lista</strong><p>Primero reemplaza el <code>ElevatedButton</code> por esta versión. Después, dentro de <code>itemBuilder</code>, reemplaza únicamente el <code>return ListTile(...);</code> anterior con esta fila que incluye «Editar».</p><div class="code-label">Botón existente con texto dinámico</div><pre class="code-block"><code>              ElevatedButton(
+                onPressed: guardarVehiculo,
+                child: Text(indiceEnEdicion == null ? 'Agregar vehículo' : 'Guardar cambios'),
+              ),</code></pre>
+<div class="code-label">Reemplaza el ListTile del paso 4</div><pre class="code-block"><code>return ListTile(
+  title: Text(vehiculo.nombre),
+  subtitle: Text(vehiculo.disponible
+      ? 'Disponible'
+      : 'No disponible'),
+  trailing: IconButton(
+    tooltip: 'Editar vehículo',
+    onPressed: () =&gt; comenzarEdicion(indice),
+    icon: const Icon(Icons.edit),
+  ),
+);</code></pre></div>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>int?</code> admite un número o <code>null</code>. Si vale <code>null</code>, el usuario está creando; si tiene un índice, está editando esa posición. El operador <code>!</code> de <code>indiceEnEdicion!</code> se usa únicamente tras comprobar que no es nulo. <code>vehiculos[indice] = Vehiculo(...)</code> reemplaza el objeto existente, sin añadir un duplicado.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Pulsa «Editar» sobre Renault 9: su nombre aparece en el formulario, el botón cambia a «Guardar cambios». Cámbialo a «Renault 21»: debe continuar habiendo dos carros, no tres.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-6">
+<div class="next-step-top"><span class="next-step-number">06</span><div><span class="crud-step-kicker">CAMBIO 6 · AGREGAR FUNCIÓN Y REEMPLAZAR ICONO POR FILA DE ACCIONES</span><h3>Eliminar un vehículo de la misma lista</h3></div></div>
+<p>La opción «Eliminar» estará junto a «Editar» en cada fila. La lógica se agrega como otra función real en <code>_MainAppState</code>. <strong>Analogía:</strong> retiramos del parqueadero exactamente el carro seleccionado, no todos los carros.</p>
+<div class="next-where"><div class="next-where-action">AGREGAR FUNCIÓN Y REEMPLAZAR ICONO POR FILA DE ACCIONES EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>void comenzarEdicion(int indice)</code> y <code>tooltip: 'Editar vehículo'</code></div>
+<div><strong>Ubicación exacta:</strong> Primero inserta <code>borrarVehiculo()</code> después de <code>comenzarEdicion()</code>. Después, dentro del <code>ListTile</code> del paso 5, reemplaza únicamente el <code>trailing: IconButton(...)</code> de editar por el <code>trailing: Row(...)</code> siguiente.</div></div></div>
+<div class="code-label">A · AGREGA la función de eliminación (antes de dispose)</div><pre class="code-block"><code>  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }</code></pre><div class="code-label">B · REEMPLAZA solo trailing dentro del ListTile</div><pre class="code-block"><code>trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            tooltip: 'Editar vehículo',
+                            onPressed: () =&gt; comenzarEdicion(indice),
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            tooltip: 'Eliminar vehículo',
+                            onPressed: () =&gt; borrarVehiculo(indice),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    );</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>removeAt(indice)</code> elimina el elemento de esa posición. <code>setState()</code> actualiza la lista visible. El <code>Row</code> contiene dos <code>IconButton</code>: uno llama a <code>comenzarEdicion(indice)</code> y otro a <code>borrarVehiculo(indice)</code>. <code>tooltip</code> describe la acción al pasar el mouse y facilita su uso accesible.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Agrega dos carros, edita el primero y elimina el segundo. La pantalla solo debe mostrar el que no eliminaste.</p></div>
+</article>
+<article class="next-step crud-direct-step" id="crud-paso-7">
+<div class="next-step-top"><span class="next-step-number">07</span><div><span class="crud-step-kicker">CAMBIO 7 · COMPROBAR EN LA TERMINAL DEL MISMO PROYECTO</span><h3>Ejecutar y revisar el código final del proyecto</h3></div></div>
+<p>Ya hiciste todos los cambios sobre <code>actividad2/lib/main.dart</code>. Ahora prueba el proyecto tal como está; no pegues el archivo completo si tu código ya funciona.</p>
+<div class="next-where"><div class="next-where-action">COMPROBAR EN LA TERMINAL DEL MISMO PROYECTO EN EL PROYECTO ACTIVIDAD2</div>
+<div class="next-where-details"><div><strong>Archivo:</strong> <code>Terminal de VS Code dentro de actividad2</code></div>
+<div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en la raíz del proyecto</div>
+<div><strong>Ubicación exacta:</strong> Abre Terminal → Nuevo terminal, confirma que estás en <code>DesarrolloMovilFlutter/actividad2</code> y ejecuta los comandos de uno en uno.</div></div></div>
+<div class="code-label">Comandos que sí debes ejecutar en actividad2</div><pre class="code-block"><code>flutter analyze
+flutter run</code></pre>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p>El análisis te informa sobre errores de Dart y Flutter. <code>flutter run</code> ejecuta la Tienda en el dispositivo seleccionado. Prueba crear dos objetos, editar el primero y eliminar el segundo. Este CRUD guarda información <strong>solo en memoria</strong>, no en una base de datos.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Puedes comparar tu <code>lib/main.dart</code> con el archivo final de referencia. Si todo funciona, continúa a P6 sin reemplazarlo.</p></div>
+</article>
+<div class="crud-final-reference"><div><span class="crud-final-mark">RESULTADO COMPLETO</span><h2>Tu archivo final de P5.1</h2><p>Este archivo es una guía de verificación. Si seguiste los siete cambios, ya deberías tenerlo construido. <strong>No lo pegues encima sin revisar tu propio trabajo.</strong></p><a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final de la etapa ↗</a></div>
+<details class="crud-full-details"><summary>Comparar con el archivo completo de referencia (desplegable)</summary><div class="code-label">lib/main.dart · así debe quedar al terminar P5.1</div><pre class="code-block"><code>import 'package:flutter/material.dart';
+import 'widgets/titulo_seccion.dart';
+import 'models/vehiculo.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  final List&lt;Vehiculo&gt; vehiculos = [];
+  int? indiceEnEdicion;
+
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }
+
+  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Tienda')),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: 'Primer widget'),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text('Ingenieria de Sistemas'),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Buscar marca o modelo',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: 'Agregar un vehículo'),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: TextFormField(
+                  controller: vehiculoController,
+                  decoration: const InputDecoration(
+                    hintText: 'Nombre del vehículo',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.trim().isEmpty) {
+                      return 'Escribe un nombre';
+                    }
+                    if (valor.trim().length &lt; 3) {
+                      return 'Mínimo 3 caracteres';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: guardarVehiculo,
+                child: Text(indiceEnEdicion == null ? 'Agregar vehículo' : 'Guardar cambios'),
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: vehiculos.length,
+                  itemBuilder: (context, indice) {
+                    final vehiculo = vehiculos[indice];
+                    return ListTile(
+                      title: Text(vehiculo.nombre),
+                      subtitle: Text(vehiculo.disponible
+                          ? 'Disponible'
+                          : 'No disponible'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            tooltip: 'Editar vehículo',
+                            onPressed: () =&gt; comenzarEdicion(indice),
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            tooltip: 'Eliminar vehículo',
+                            onPressed: () =&gt; borrarVehiculo(indice),
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre></details>
+</div>
+<div class="notice notice-info crud-parse-note"><strong>¿Y <code>parse()</code> o <code>tryParse()</code>?</strong><p>En este CRUD todavía no los necesitas: <code>nombre</code> es texto (<code>String</code>) y el índice de la lista ya es un número (<code>int</code>) que entrega el botón. <code>int.parse()</code> convierte texto a entero, pero lanza un error si el texto no es numérico; <code>int.tryParse()</code> devuelve <code>null</code> cuando no puede convertirlo. Los usaremos cuando agreguemos un campo numérico real, como el año o el precio de un vehículo. Así no introduces código que <strong>no pertenece todavía</strong> a esta aplicación.</p></div>
+<div class="checklist" data-checklist="crud"><label><input type="checkbox"> Agregué la lista dentro de _MainAppState.</label><label><input type="checkbox"> El botón original llama a guardarVehiculo().</label><label><input type="checkbox"> Los carros nuevos aparecen en ListView.</label><label><input type="checkbox"> Puedo editar un vehículo sin duplicarlo.</label><label><input type="checkbox"> Eliminar retira solo el carro seleccionado.</label><label><input type="checkbox"> Entiendo trim(), setState(), add() y removeAt() dentro del proyecto.</label></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL · EN TU APP</span><h3>Completa estas cuatro comprobaciones</h3><p>Agrega «Renault 9» y «Mazda 3». Modifica Renault 9 por «Renault 21», elimina Mazda 3 y confirma que solo aparece Renault 21. Explica qué función se ejecuta con cada botón y por qué <code>setState()</code> actualiza la pantalla.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="crud">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: reutilizar los widgets que acabas de construir →</a></div>
 </section>
+
 <section class="page lesson next-module" id="extraccion" aria-labelledby="extraccion-title" data-lesson="P6"><div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P6</span><span class="status-pill planned">Continuación guiada</span></div><h1 id="extraccion-title">Extraer widgets reutilizables del código existente</h1><p>La reutilización no consiste solo en inventar clases nuevas. Ahora vamos a <strong>sacar del propio main.dart dos widgets que ya funcionan</strong>: el campo validado y el botón de la Tienda, para que después podamos usarlos en otras páginas.</p></div><div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de esta práctica</strong><p>Conservar el comportamiento de validación y las operaciones CRUD de Vehiculo, pero organizar la interfaz en archivos reutilizables.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-extraccion" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: enviar funciones sin ejecutarlas inmediatamente</h2><p>En un botón reutilizable, <code>VoidCallback</code> representa una función sin argumentos ni valor de retorno. Escribir <code>onPressed: guardarVehiculo</code> <strong>entrega</strong> la función para cuando se pulse; escribir <code>guardarVehiculo()</code> la ejecutaría en ese instante.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> El controlador, la llave del formulario y la decisión de crear el vehículo <strong>permanecen en la pantalla</strong>. El widget extraído recibe los valores y la función que necesita; no debe inventar un controlador nuevo.</p></div>
