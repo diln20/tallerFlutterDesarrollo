@@ -25,9 +25,13 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
 
     on<VehiculoGuardado>((evento, emit) async {
       if (state.enviando) return;
-      emit(_nuevoEstado(state.vehiculos, enviando: true));
+      final id = state.idEnEdicion;
+      emit(_nuevoEstado(
+        state.vehiculos,
+        idEnEdicion: id,
+        enviando: true,
+      ));
       try {
-        final id = state.idEnEdicion;
         if (id == null) {
           await api.crear(
             nombre: evento.nombre,
@@ -89,6 +93,9 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
         state.vehiculos,
         busqueda: evento.texto,
         idEnEdicion: state.idEnEdicion,
+        cargando: state.cargando,
+        enviando: state.enviando,
+        error: state.error,
       ));
     });
   }
