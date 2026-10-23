@@ -26,7 +26,7 @@ class _MainAppState extends State<MainApp> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Hello dsfdsWorld'),
+                const Text('Primer widget'),
                 const SizedBox(height: 20),
                 const Icon(Icons.directions_car),
                 const SizedBox(height: 8),
