@@ -24,6 +24,7 @@
   <script src="./assets/stage-preview-data.js?v=bloc-practica-01" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
   <script src="./assets/crud-lesson.js?v=20261023" defer></script>
+  <script src="./assets/bloc-crud.js?v=20261023-P8" defer></script>
   <script src="./assets/analogias-didacticas.js?v=20261023-analogias-v3" defer></script>
   <script src="./assets/analogias-catalogo.js?v=20261023-analogias-v2" defer></script>
   <script src="./assets/stage-previews.js?v=20261023-analogias-v3" defer></script>
@@ -49,6 +50,7 @@
   <link rel="stylesheet" href="./assets/preview-code-focus.css?v=20261023-vscode-lectura-v9">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
   <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023">
+  <link rel="stylesheet" href="./assets/bloc-crud.css?v=20261023-P8">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -97,15 +99,16 @@
         <a class="nav-link" href="#extraccion" data-route="extraccion" data-search="extraccion widgets reutilizables CampoNombreVehiculo BotonTienda TextFormField validator VoidCallback"><span class="lesson-index">P6</span><span>Extraer widgets del código</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#navegacion" data-route="navegacion" data-search="navegacion páginas ayuda acerca Navigator.push Navigator.pop Builder MaterialPageRoute"><span class="lesson-index">P7</span><span>Crear páginas y navegar</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">RUTA B · ALTERNATIVA DESDE EL MÓDULO 05</div>
+        <a class="nav-link" href="#bloc-crud" data-route="bloc-crud" data-search="bloc CRUD vehiculos eventos estados crear editar eliminar buscar aplicacion BlocProvider BlocBuilder"><span class="lesson-index">P8</span><span>BLoC aplicado al CRUD</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#responsive" data-route="responsive" data-search="actividad2a tienda padding diseño responsive fila buscador"><span class="lesson-index">06</span><span>Mejorar el diseño de Tienda</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#estado" data-route="estado" data-search="actividad2a tienda buscador StatefulWidget setState onChanged"><span class="lesson-index">07</span><span>Hacer funcionar el buscador</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#formularios" data-route="formularios" data-search="actividad2a tienda lista filtrar modelos where trim contains"><span class="lesson-index">08</span><span>Filtrar vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
 
-        <a class="nav-link" href="#bloc" data-route="bloc" data-search="actividad2 flutter_bloc bloc eventos estados provider builder buscador instalar dependencia práctica paso a paso"><span class="lesson-index">10</span><span>BLoC: concepto y práctica</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#bloc" data-route="bloc" data-search="actividad2 flutter_bloc bloc eventos estados provider builder buscador instalar dependencia práctica paso a paso"><span class="lesson-index">10</span><span>BLoC del buscador · ruta B</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <p id="no-search-results" class="no-search-results" hidden>No se encontraron módulos con ese texto.</p>
       </nav>
       <div class="sidebar-bottom">
-        <div class="progress-heading"><strong>Tu avance</strong><span id="sidebar-progress-text">0 / 16</span></div>
+        <div class="progress-heading"><strong>Tu avance</strong><span id="sidebar-progress-text">0 / 18</span></div>
         <div class="progress-track"><span id="sidebar-progress-bar"></span></div>
         <p>Se guarda solo en este navegador.</p>
         <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer" class="repo-link">Ver repositorio <span aria-hidden="true">↗</span></a>
@@ -131,7 +134,7 @@
               <h1 id="inicio-title">Aprende Flutter <span>construyendo,</span> no solo leyendo.</h1>
               <p>Crea <code>actividad2</code> desde cero y convierte su plantilla mínima en la Tienda del curso. El código anterior de <code>actividad2a</code> será solo una referencia para comparar tus avances.</p>
               <div class="hero-actions"><a class="button button-primary" href="#preparacion">Empezar el taller <span aria-hidden="true">→</span></a><a class="button button-ghost" href="#punto-entrada">Explorar el código</a></div>
-              <div class="hero-facts"><span><strong>16</strong> módulos</span><span><strong>1</strong> misma Tienda</span><span><strong>100%</strong> práctico</span></div>
+              <div class="hero-facts"><span><strong>18</strong> módulos</span><span><strong>1</strong> misma Tienda</span><span><strong>100%</strong> práctico</span></div>
             </div>
             <div class="hero-visual" aria-label="Vista ilustrativa del proyecto Flutter actual">
               <div class="float-card float-card-top"><span class="float-dot violet"></span> MainApp · StatelessWidget</div>
@@ -2311,7 +2314,335 @@ class _MainAppState extends State&lt;MainApp&gt; {
 </code></pre></div></details>
 <p><a href="./etapas/paso_14_navegacion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final ↗</a></p></div>
 <div class="checklist" data-checklist="navegacion"><label><input type="checkbox"> Creé dos archivos dentro de lib/pages.</label><label><input type="checkbox"> Ambas páginas tienen Scaffold y AppBar.</label><label><input type="checkbox"> Reutilicé TituloSeccion y BotonTienda dentro de las páginas.</label><label><input type="checkbox"> Entiendo por qué push avanza y pop regresa.</label><label><input type="checkbox"> La navegación funciona sin dañar el formulario.</label></div>
-<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: comprender BLoC sin implementarlo →</a></div></section>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#bloc-crud">Siguiente: aplicar BLoC al CRUD →</a></div></section>
+<section class="page lesson next-module" id="bloc-crud" aria-labelledby="bloc-crud-title" data-lesson="P8">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA P8</span><span class="status-pill planned">Misma Tienda después de P7</span><span class="lesson-time">BLoC aplicado a crear, buscar, editar y eliminar</span></div>
+<h1 id="bloc-crud-title">Aplicar BLoC al CRUD de vehículos</h1><p>En P5.1 construiste un CRUD usando <code>setState</code>. Ahora trasladarás la lógica a <strong>BLoC</strong>, sin cambiar el objetivo de la Tienda: crear vehículos, verlos, buscarlos, editarlos y eliminarlos. Conservamos el modelo, el formulario, los widgets reutilizables y las páginas de P7.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Lo que aprenderás</strong><p>Comprender <code>BlocProvider</code>, <code>BlocBuilder</code>, eventos, estados, <code>on&lt;Evento&gt;</code>, <code>emit()</code> y <code>context.read()</code>, con analogías y ubicación exacta de los archivos. Tendrás también un ejemplo completo, no solo fragmentos sueltos.</p></div></div>
+<div class="notice notice-info"><strong>Punto de partida: P7 terminado</strong><p>Trabaja en <code>DesarrolloMovilFlutter/actividad2</code>. Deben existir <code>lib/models/vehiculo.dart</code>, <code>lib/widgets/</code> y <code>lib/pages/</code>. Guarda una copia de <code>lib/main.dart</code> fuera de <code>lib/</code> antes de reemplazar la gestión de estado. Esta es la <strong>ruta principal</strong>: no utilices los archivos del buscador BLoC opcional de la ruta B.</p></div>
+<div class="bc-flow"><div><span>1 · EL CLIENTE</span><strong>Interfaz Flutter</strong><p>El botón detecta «Guardar Renault 9».</p></div><div><span>2 · LA ORDEN</span><strong>VehiculoGuardado</strong><p>Un evento comunica la intención.</p></div><div><span>3 · EL ENCARGADO</span><strong>VehiculosBloc</strong><p>Decide si debe crear o editar y actualiza la lista.</p></div><div><span>4 · EL INVENTARIO</span><strong>VehiculosEstado</strong><p>BlocBuilder recibe el estado y actualiza la vitrina.</p></div></div>
+<div class="bc-pair"><div><span>ANTES · CRUD CON SETSTATE</span><p><code>_MainAppState</code> guarda directamente la lista <code>vehiculos</code>. Los métodos del formulario llaman a <code>setState()</code> para cambiarla.</p></div><div><span>DESPUÉS · EL MISMO CRUD CON BLOC</span><p><code>VehiculosBloc</code> conserva la lista y procesa los eventos. La pantalla sigue teniendo un controlador de texto y un formulario, pero deja de ser la encargada de administrar el inventario.</p></div></div>
+<div class="bc-demo" id="bc-demo" aria-label="Simulación didáctica del CRUD con BLoC"><div class="bc-demo-header"><strong>Prueba antes de programar: evento → BLoC → estado → interfaz</strong><span>Simulación HTML · no ejecuta Flutter</span></div>
+<div class="bc-demo-layout"><div><form id="bc-demo-form"><div class="bc-form-field"><label for="bc-demo-nombre">Nombre del vehículo</label><input id="bc-demo-nombre" type="text" autocomplete="off" placeholder="Renault 9" minlength="3" required></div><button type="submit" id="bc-demo-guardar">Agregar vehículo</button><button class="bc-secondary" type="button" id="bc-demo-cancelar" hidden>Cancelar edición</button></form>
+<div class="bc-demo-message" id="bc-demo-mensaje" role="status" aria-live="polite"></div>
+<label for="bc-demo-buscar">Buscar entre los vehículos registrados</label><input id="bc-demo-buscar" type="search" placeholder="Prueba con Renault, Mazda o Toyota">
+<div class="bc-demo-entries"><ul id="bc-demo-lista" aria-live="polite"></ul></div></div>
+<div class="bc-demo-log"><strong>Evento que enviaría la pantalla</strong><output id="bc-demo-evento">Sin eventos</output><strong>Estado que publicaría BLoC</strong><output id="bc-demo-estado">VehiculosEstado</output><p class="bc-demo-hint" style="color:#c5d7ea">Prueba agregando «Renault 9» y «Mazda 3», filtrando «Mazda», editando el registro visible y eliminándolo. Los cambios son solo de esta página.</p></div></div>
+<p class="bc-demo-hint"><strong>Analogía:</strong> el botón envía una orden (evento); el encargado del almacén decide qué hacer (BLoC); el inventario actualizado es el estado; la vitrina muestra ese estado con BlocBuilder.</p></div>
+<div class="next-section-heading"><span>CONSTRUIR SIN SALTARSE CONCEPTOS</span><h2>De P7 a BLoC, archivo por archivo</h2></div>
+<article class="next-step" id="bloc-crud-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Preparar la misma Tienda y reconocer qué se mueve</h3></div>
+<p><strong>Analogía:</strong> antes una sola persona atendía y actualizaba el inventario. Ahora el vendedor (la pantalla) recibirá el pedido y lo enviará al encargado (BLoC). La apariencia de la Tienda y sus páginas no se borran.</p><div class="next-where"><div class="next-where-action">COMPROBAR Y RESPALDAR: NO PEGAR CÓDIGO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>actividad2/lib/main.dart</code> tras la práctica P7</div><div><strong>Busca con Ctrl + F:</strong> <code>final List&lt;Vehiculo&gt; vehiculos = [];</code></div></div></div>
+<div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p>En P7 la lista, el índice de edición y las funciones CRUD están dentro de <code>_MainAppState</code>. En P8 moveremos esas decisiones a <code>VehiculosBloc</code>. <code>TextEditingController</code>, <code>Form</code>, <code>validator</code>, <code>dispose()</code> y la navegación seguirán formando parte de la interfaz.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Tu código P7 funciona y has guardado una copia de seguridad.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Instalar flutter_bloc desde la terminal integrada</h3></div>
+<p><strong>Analogía:</strong> instalas una herramienta de organización antes de distribuir tareas entre vendedor y encargado. No crea los archivos BLoC automáticamente.</p><div class="next-where"><div class="next-where-action">EJECUTAR UN SOLO COMANDO EN LA TERMINAL DE VS CODE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Terminal abierta en <code>DesarrolloMovilFlutter/actividad2</code>, donde está <code>pubspec.yaml</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en el Explorador de VS Code</div></div></div>
+<div class="code-label">Terminal · instalar dependencia en el proyecto existente</div><pre class="code-block" data-code-mode="terminal"><code>flutter pub add flutter_bloc</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>flutter</code> ejecuta la herramienta, <code>pub</code> administra paquetes y <code>add</code> agrega <code>flutter_bloc</code>. En octubre de 2026, la versión estable documentada en pub.dev es <code>9.1.1</code>; el comando selecciona la versión compatible con tu SDK.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>En <code>pubspec.yaml</code> aparece <code>flutter_bloc</code> en dependencies. No vuelvas a ejecutar <code>flutter create</code> dentro del proyecto.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Crear las órdenes: los eventos</h3></div>
+<p><strong>Analogía:</strong> cada evento es una nota que recibe el encargado. «Guardar», «Empezar a editar», «Cancelar», «Eliminar» y «Buscar» son órdenes diferentes. Ninguna dibuja un botón por sí misma.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO Y PEGAR SU CONTENIDO COMPLETO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_evento.dart</code> (usa la carpeta <code>bloc/</code> que antes estaba vacía)</div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
+<div class="code-label">lib/bloc/vehiculos_evento.dart · contenido completo</div><pre class="code-block" data-code-mode="dart"><code>abstract class VehiculosEvento {}
+
+class VehiculoGuardado extends VehiculosEvento {
+  VehiculoGuardado(this.nombre);
+  final String nombre;
+}
+
+class EdicionIniciada extends VehiculosEvento {
+  EdicionIniciada(this.indice);
+  final int indice;
+}
+
+class EdicionCancelada extends VehiculosEvento {}
+
+class VehiculoEliminado extends VehiculosEvento {
+  VehiculoEliminado(this.indice);
+  final int indice;
+}
+
+class BusquedaCambiada extends VehiculosEvento {
+  BusquedaCambiada(this.texto);
+  final String texto;
+}</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>abstract class VehiculosEvento</code> declara una familia de eventos. <code>extends</code> indica que cada evento pertenece a ella. Un constructor como <code>VehiculoGuardado(this.nombre)</code> recibe el dato escrito. <code>EdicionCancelada</code> no necesita datos. <strong>Nombre y tipo son cosas distintas:</strong> <code>String</code> es texto, <code>int</code> es un número entero que identifica una posición.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Puedes explicar qué información transporta cada evento, aunque aún no haya pantalla conectada.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Definir el estado: qué sabe la Tienda ahora</h3></div>
+<p><strong>Analogía:</strong> el estado es una fotografía del inventario después de cada orden. La foto incluye todos los carros, los visibles según búsqueda y cuál se está editando.</p><div class="next-where"><div class="next-where-action">CREAR UN SEGUNDO ARCHIVO DENTRO DE bloc</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_estado.dart</code></div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
+<div class="code-label">lib/bloc/vehiculos_estado.dart · contenido completo</div><pre class="code-block" data-code-mode="dart"><code>import '../models/vehiculo.dart';
+
+class VehiculosEstado {
+  const VehiculosEstado({
+    required this.vehiculos,
+    required this.visibles,
+    required this.busqueda,
+    this.indiceEnEdicion,
+  });
+
+  final List&lt;Vehiculo&gt; vehiculos;
+  final List&lt;Vehiculo&gt; visibles;
+  final String busqueda;
+  final int? indiceEnEdicion;
+}</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>vehiculos</code> contiene el inventario total; <code>visibles</code> contiene la parte filtrada; <code>busqueda</code> recuerda el texto escrito; <code>int? indiceEnEdicion</code> permite un número o <code>null</code>. <code>required</code> obliga a entregar los datos necesarios al constructor. Las variables <code>final</code> no pueden reasignarse.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Diferencias entre evento y estado: el primero es un pedido; el segundo es el resultado actual.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Crear VehiculosBloc y comenzar por guardar</h3></div>
+<p><strong>Analogía:</strong> ahora contratamos al encargado y programamos su primera responsabilidad: recibir <code>VehiculoGuardado</code>. Un único evento sirve para crear o editar porque el estado indica si existe un índice en edición.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO; PRIMERA PARTE DE LA CLASE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → imports, declaración de clase, constructor y primer manejador</div><div><strong>Busca con Ctrl + F:</strong> Busca <code>VehiculosBloc()</code> en el ejemplo completo</div></div></div>
+<div class="code-label">Inicio del BLoC y primer evento · construiremos el resto</div><pre class="code-block" data-code-mode="dart"><code>import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/vehiculo.dart';
+import 'vehiculos_evento.dart';
+import 'vehiculos_estado.dart';
+
+class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
+  VehiculosBloc()
+      : super(
+          const VehiculosEstado(
+            vehiculos: [],
+            visibles: [],
+            busqueda: '',
+          ),
+        ) {
+    on&lt;VehiculoGuardado&gt;((evento, emit) {
+      final nombre = evento.nombre.trim();
+      if (nombre.length &lt; 3) {
+        return;
+      }
+      final copia = List&lt;Vehiculo&gt;.from(state.vehiculos);
+      final indice = state.indiceEnEdicion;
+      if (indice == null) {
+        copia.add(Vehiculo(nombre: nombre));
+      } else if (indice &gt;= 0 &amp;&amp; indice &lt; copia.length) {
+        final anterior = copia[indice];
+        copia[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+      } else {
+        return;
+      }
+      _publicar(emit, copia, state.busqueda, null);
+    });  }
+}</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>Bloc&lt;VehiculosEvento, VehiculosEstado&gt;</code> significa que esta clase recibe esos eventos y produce esos estados. <code>super(...)</code> entrega el estado inicial vacío. <code>on&lt;VehiculoGuardado&gt;</code> registra qué función ejecutará el encargado. <code>state</code> consulta el estado actual; <code>emit</code> se usa al publicar uno nuevo. <strong>El archivo está en construcción:</strong> todavía debemos agregar los otros manejadores y el método <code>_publicar</code>; no ejecutes Flutter hasta el paso 7.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Identificas dónde se recibe el nombre, dónde actúa <code>trim()</code> y por qué se construye una lista nueva en vez de modificar la del estado directamente.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Añadir edición y eliminación como eventos</h3></div>
+<p><strong>Analogía:</strong> cuando eliges editar, el encargado señala una ficha concreta. Cuando eliminas, la retira del inventario. La pantalla ya no ejecutará <code>removeAt()</code> por su cuenta.</p><div class="next-where"><div class="next-where-action">AGREGAR TRES MANEJADORES DENTRO DEL CONSTRUCTOR</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → después del manejador <code>on&lt;VehiculoGuardado&gt;</code> y antes de cerrar <code>VehiculosBloc()</code></div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;VehiculoGuardado&gt;</code> → justo después de su <code>});</code></div></div></div>
+<div class="code-label">Agregar en el constructor, sin repetir los imports</div><pre class="code-block" data-code-mode="dart"><code>    on&lt;EdicionIniciada&gt;((evento, emit) {
+      if (evento.indice &lt; 0 || evento.indice &gt;= state.vehiculos.length) {
+        return;
+      }
+      _publicar(emit, state.vehiculos, state.busqueda, evento.indice);
+    });
+
+    on&lt;EdicionCancelada&gt;((evento, emit) {
+      _publicar(emit, state.vehiculos, state.busqueda, null);
+    });
+
+    on&lt;VehiculoEliminado&gt;((evento, emit) {
+      if (evento.indice &lt; 0 || evento.indice &gt;= state.vehiculos.length) {
+        return;
+      }
+      final copia = List&lt;Vehiculo&gt;.from(state.vehiculos)
+        ..removeAt(evento.indice);
+      _publicar(emit, copia, state.busqueda, null);
+    });</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>EdicionIniciada</code> guarda la posición del carro seleccionado. <code>EdicionCancelada</code> borra la selección. <code>VehiculoEliminado</code> comprueba el índice antes de usar <code>removeAt</code>. La expresión <code>..removeAt(...)</code> es el operador de cascada de Dart: realiza una operación sobre la lista y mantiene esa lista como resultado; no son puntos suspensivos para omitir código.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>La misma lista de vehículos sirve para registrar, actualizar y eliminar, sin duplicar métodos en la pantalla.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Buscar y emitir un nuevo estado</h3></div>
+<p><strong>Analogía:</strong> el encargado filtra las fichas y publica una nueva fotografía del inventario. BLoC no se limita a recibir órdenes: debe informar el resultado mediante <code>emit</code>.</p><div class="next-where"><div class="next-where-action">COMPLETAR EL CONSTRUCTOR Y AÑADIR EL MÉTODO _publicar</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → manejador de búsqueda dentro del constructor; <code>_publicar</code> después del constructor, pero aún dentro de la clase</div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;BusquedaCambiada&gt;</code> y <code>void _publicar(</code></div></div></div>
+<div class="code-label">Último manejador dentro de VehiculosBloc()</div><pre class="code-block" data-code-mode="dart"><code>    on&lt;BusquedaCambiada&gt;((evento, emit) {
+      _publicar(
+        emit,
+        state.vehiculos,
+        evento.texto,
+        state.indiceEnEdicion,
+      );
+    });</code></pre><div class="code-label">Método privado después de cerrar el constructor</div><pre class="code-block" data-code-mode="dart"><code>  void _publicar(
+    Emitter&lt;VehiculosEstado&gt; emit,
+    List&lt;Vehiculo&gt; vehiculos,
+    String busqueda,
+    int? indiceEnEdicion,
+  ) {
+    final texto = busqueda.trim().toLowerCase();
+    final visibles = vehiculos.where((vehiculo) {
+      return vehiculo.nombre.toLowerCase().contains(texto);
+    }).toList();
+
+    emit(
+      VehiculosEstado(
+        vehiculos: List&lt;Vehiculo&gt;.unmodifiable(vehiculos),
+        visibles: List&lt;Vehiculo&gt;.unmodifiable(visibles),
+        busqueda: busqueda,
+        indiceEnEdicion: indiceEnEdicion,
+      ),
+    );
+  }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>where()</code> recorre los vehículos y conserva las coincidencias; <code>contains()</code> comprueba si un nombre incluye el texto. <code>toLowerCase()</code> evita diferencias entre mayúsculas y minúsculas. <code>List.unmodifiable()</code> impide modificar el inventario publicado mediante esa referencia. <code>emit(VehiculosEstado(...))</code> entrega una nueva foto para que <code>BlocBuilder</code> actualice la interfaz.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Este es el momento de cotejar todo con <a href='./ejemplo_bloc_crud/lib/bloc/vehiculos_bloc.dart' target='_blank' rel='noopener noreferrer'>vehiculos_bloc.dart completo ↗</a>. El archivo debe tener <strong>cinco manejadores</strong> y un método <code>_publicar</code>.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Registrar BLoC en la aplicación</h3></div>
+<p><strong>Analogía:</strong> <code>BlocProvider</code> es la oficina donde se encuentra el encargado; permite que la pantalla le entregue órdenes sin crear un encargado nuevo para cada botón.</p><div class="next-where"><div class="next-where-action">REORGANIZAR EL ENCABEZADO DE main.dart, NO MODIFICAR LOS WIDGETS REUTILIZABLES</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → reemplazar imports, <code>main()</code> y el antiguo <code>MainApp</code>. La Tienda pasa a llamarse <code>TiendaPage</code>, y <code>build</code> devuelve <code>Scaffold</code> porque <code>MaterialApp</code> ya está en la raíz.</div><div><strong>Busca con Ctrl + F:</strong> <code>class MainApp extends StatefulWidget</code>, <code>MaterialApp</code> y <code>class _MainAppState</code></div></div></div>
+<div class="code-label">Nuevo comienzo de main.dart · hasta los campos del formulario</div><pre class="code-block" data-code-mode="dart"><code>import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/vehiculos_bloc.dart';
+import 'bloc/vehiculos_evento.dart';
+import 'bloc/vehiculos_estado.dart';
+import 'pages/acerca_page.dart';
+import 'widgets/boton_tienda.dart';
+import 'widgets/campo_nombre_vehiculo.dart';
+import 'widgets/titulo_seccion.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider&lt;VehiculosBloc&gt;(
+      create: (context) =&gt; VehiculosBloc(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: TiendaPage(),
+      ),
+    );
+  }
+}
+
+class TiendaPage extends StatefulWidget {
+  const TiendaPage({super.key});
+
+  @override
+  State&lt;TiendaPage&gt; createState() =&gt; _TiendaPageState();
+}
+
+class _TiendaPageState extends State&lt;TiendaPage&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>BlocProvider</code> crea y administra <code>VehiculosBloc</code>. <code>StatelessWidget</code> sirve para el contenedor inicial; <code>TiendaPage</code> sigue siendo <code>StatefulWidget</code> porque es propietaria del <code>TextEditingController</code> del formulario. <code>context</code> identifica la posición del widget en el árbol. <strong>No uses simultáneamente el antiguo MainAppState</strong> y el nuevo TiendaPageState.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Solo existe un <code>MaterialApp</code> en la raíz y un <code>BlocProvider</code> por encima de la pantalla.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-9"><div class="next-step-top"><span class="next-step-number">09</span><h3>El formulario ahora envía órdenes, no cambia el inventario</h3></div>
+<p><strong>Analogía:</strong> el vendedor revisa que el nombre sea válido y entrega una orden. Ya no abre ni reorganiza las fichas directamente.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR LOS ANTIGUOS MÉTODOS CRUD DENTRO DE _TiendaPageState</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → después de <code>formularioKey</code> y antes de <code>dispose()</code>. Elimina los antiguos campos <code>List&lt;Vehiculo&gt; vehiculos</code> e <code>indiceEnEdicion</code> que estaban en el <code>State</code> de P7.</div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion(</code>, <code>void borrarVehiculo(</code></div></div></div>
+<div class="code-label">Métodos de la pantalla que envían eventos al BLoC</div><pre class="code-block" data-code-mode="dart"><code>  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    context.read&lt;VehiculosBloc&gt;().add(
+      VehiculoGuardado(vehiculoController.text),
+    );
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    vehiculoController.text = bloc.state.vehiculos[indice].nombre;
+    bloc.add(EdicionIniciada(indice));
+  }
+
+  void borrarVehiculo(int indice) {
+    vehiculoController.clear();
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
+  }
+
+  void cancelarEdicion() {
+    vehiculoController.clear();
+    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
+  }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>context.read&lt;VehiculosBloc&gt;()</code> encuentra al encargado proporcionado por <code>BlocProvider</code>. <code>.add(...)</code> le entrega un evento; <strong>no añade por sí solo un objeto a la lista</strong>. El controlador del formulario sigue siendo responsabilidad de la pantalla y se libera en <code>dispose()</code>. Al editar, se llena el campo con el nombre existente; al eliminar, se limpia para no dejar una edición antigua.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Tu interfaz solo valida, obtiene el texto y emite la orden correspondiente.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-10"><div class="next-step-top"><span class="next-step-number">10</span><h3>Conectar el buscador y el botón a BLoC</h3></div>
+<p>Ahora el buscador no filtra dentro de <code>build()</code>: emite <code>BusquedaCambiada</code>. El botón tampoco mira una variable local de índice; <code>BlocBuilder</code> usa <code>estado.indiceEnEdicion</code> para presentar «Agregar» o «Guardar cambios».</p><div class="next-where"><div class="next-where-action">CAMBIAR DOS COMPONENTES DENTRO DE Column(children)</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → reemplaza el <code>TextField</code> del buscador y el botón <code>BotonTienda</code> que está después del <code>Form</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>hintText: 'Buscar marca o modelo'</code> y <code>BotonTienda(</code> después del formulario</div></div></div>
+<div class="code-label">Buscador · cada cambio genera un evento</div><pre class="code-block" data-code-mode="dart"><code>              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Buscar marca o modelo',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (texto) {
+                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                },
+              ),</code></pre><div class="code-label">Botón · BlocBuilder decide qué texto mostrar</div><pre class="code-block" data-code-mode="dart"><code>              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                builder: (context, estado) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: BotonTienda(
+                          texto: estado.indiceEnEdicion == null
+                              ? 'Agregar vehículo'
+                              : 'Guardar cambios',
+                          alPresionar: guardarVehiculo,
+                        ),
+                      ),
+                      if (estado.indiceEnEdicion != null) ...[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          onPressed: cancelarEdicion,
+                          child: const Text('Cancelar'),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>onChanged</code> se ejecuta al cambiar el campo. <code>BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;</code> escucha los estados publicados y reconstruye el widget que devuelve <code>builder</code>. La forma <code>if (...) ...[ ... ]</code> en <code>children</code> inserta varios widgets solo cuando se edita: los tres puntos <strong>son sintaxis real de Dart</strong>, no indican código omitido.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Al elegir un carro para editar, el botón cambia a «Guardar cambios» y aparece «Cancelar», sin llamar a <code>setState()</code>.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-11"><div class="next-step-top"><span class="next-step-number">11</span><h3>Mostrar y actualizar la lista con BlocBuilder</h3></div>
+<p><strong>Analogía:</strong> <code>ListView.builder</code> monta la vitrina con la foto actual del inventario. La pantalla no calcula el filtro ni decide cómo cambiar la lista: eso lo hizo BLoC.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL ANTIGUO ListView.builder DE P7</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → dentro de <code>Column(children: [ ... ])</code>, después del contador de vehículos y antes del botón «Acerca de y ayuda».</div><div><strong>Busca con Ctrl + F:</strong> <code>ListView.builder(</code> después del formulario</div></div></div>
+<div class="code-label">Lista de vehículos que observa el estado</div><pre class="code-block" data-code-mode="dart"><code>              Expanded(
+                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                  builder: (context, estado) {
+                    if (estado.visibles.isEmpty) {
+                      return Center(
+                        child: Text(
+                          estado.vehiculos.isEmpty
+                              ? 'Todavía no hay vehículos registrados.'
+                              : 'No hay vehículos que coincidan con la búsqueda.',
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: estado.visibles.length,
+                      itemBuilder: (context, indiceVisible) {
+                        final vehiculo = estado.visibles[indiceVisible];
+                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                        return Card(
+                          child: ListTile(
+                            title: Text(vehiculo.nombre),
+                            subtitle: Text(
+                              vehiculo.disponible
+                                  ? 'Disponible'
+                                  : 'No disponible',
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  tooltip: 'Editar vehículo',
+                                  onPressed: () =&gt; comenzarEdicion(indiceReal),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  tooltip: 'Eliminar vehículo',
+                                  onPressed: () =&gt; borrarVehiculo(indiceReal),
+                                  icon: const Icon(Icons.delete_outline),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>estado.visibles</code> es la lista filtrada. <code>indiceVisible</code> es la posición en esa lista. <code>estado.vehiculos.indexOf(vehiculo)</code> calcula la posición real en el inventario total: <strong>usar directamente el índice filtrado podría editar o eliminar otro carro</strong>. Los <code>IconButton</code> mantienen su <code>tooltip</code> explicativo.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Prueba a guardar Renault 9 y Mazda 3; busca Mazda, edítalo y elimínalo. Renault 9 debe permanecer.</p></div></article>
+<article class="next-step" id="bloc-crud-paso-12"><div class="next-step-top"><span class="next-step-number">12</span><h3>Ejecutar, probar y comprobar la navegación</h3></div>
+<p><strong>Analogía:</strong> el encargado debe seguir trabajando aunque el vendedor abra otra página de la Tienda. <code>AcercaPage</code> y <code>AyudaPage</code> de P7 se conservan, y el inventario permanece al regresar.</p><div class="next-where"><div class="next-where-action">TERMINAL + PRUEBAS, SIN PEGAR CÓDIGO DENTRO DE main.dart</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Proyecto <code>actividad2/</code> en la terminal integrada de VS Code; la prueba automatizada de referencia está en <code>ejemplo_bloc_crud/test/</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code>, <code>lib/main.dart</code> y <code>lib/bloc/</code></div></div></div>
+<div class="code-label">Terminal · verificar que no haya errores y ejecutar</div><pre class="code-block" data-code-mode="terminal"><code>flutter pub get
+flutter analyze
+flutter run
+flutter test</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>flutter pub get</code> prepara las dependencias, <code>flutter analyze</code> revisa el código, <code>flutter run</code> abre la aplicación y <code>flutter test</code> ejecuta las pruebas ubicadas en <code>test/</code>. Si todavía no copiaste el test de referencia, <code>flutter test</code> ejecutará únicamente los que ya existan en tu proyecto.</p></div>
+<div class="next-step-result"><strong>Comprueba</strong><p>Realizaste las cuatro operaciones CRUD, probaste el buscador y comprobaste que la navegación no elimina los vehículos. El contenido sigue viviendo solo en memoria.</p></div></article><div class="notice notice-tip"><strong>Comprobar archivos finales, sin perder la práctica anterior</strong>
+<p>Estos son los archivos de referencia completos que deben quedar ubicados dentro de <code>actividad2/lib/</code>, no todos pegados dentro de un único <code>main.dart</code>: <a href="./ejemplo_bloc_crud/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart ↗</a> · <a href="./ejemplo_bloc_crud/lib/bloc/vehiculos_evento.dart" target="_blank" rel="noopener noreferrer">eventos ↗</a> · <a href="./ejemplo_bloc_crud/lib/bloc/vehiculos_estado.dart" target="_blank" rel="noopener noreferrer">estado ↗</a> · <a href="./ejemplo_bloc_crud/lib/bloc/vehiculos_bloc.dart" target="_blank" rel="noopener noreferrer">bloc ↗</a>. <a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/ejemplo_bloc_crud" target="_blank" rel="noopener noreferrer">Ver el ejemplo completo y sus pruebas en GitHub ↗</a>.</p></div>
+<div class="bc-test-grid"><div><strong>CASO 1 · Crear</strong><p>Escribe «Renault 9», valida y guarda. Aparece una nueva fila y aumenta el contador.</p></div><div><strong>CASO 2 · Editar</strong><p>Pulsa Editar en Renault 9, cambia a Renault 21 y guarda. Sigue existiendo un solo registro.</p></div><div><strong>CASO 3 · Eliminar</strong><p>Agrega Mazda 3, busca «Mazda» y elimina el resultado. Renault 21 no debe desaparecer por error.</p></div><div><strong>CASO 4 · Navegar</strong><p>Abre Acerca de, entra a Ayuda y regresa. El inventario no cambia al navegar.</p></div></div>
+<div class="notice notice-warning"><strong>Errores frecuentes que debes reconocer</strong><p>«ProviderNotFoundException» suele indicar que el <code>BuildContext</code> utilizado no está debajo de <code>BlocProvider</code>. Un error de importación significa que falta un archivo o que la ruta del import no coincide. Si editas el carro equivocado después de filtrar, revisa <code>indiceReal</code>. Si reaparece <code>setState()</code> en las operaciones CRUD, todavía queda lógica del inventario dentro de la pantalla.</p></div>
+<div class="checklist" data-checklist="bloc-crud"><label><input type="checkbox"> Distingo eventos, BLoC, estados y widgets.</label><label><input type="checkbox"> Creé los tres archivos dentro de lib/bloc/.</label><label><input type="checkbox"> Conecté BlocProvider y BlocBuilder a main.dart.</label><label><input type="checkbox"> Puedo crear, buscar, editar y eliminar vehículos con BLoC.</label><label><input type="checkbox"> Entiendo por qué se obtiene el índice real después de filtrar.</label><label><input type="checkbox"> Sé que los datos son temporales y la navegación permanece.</label></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL · SUSTENTACIÓN</span><h3>Dibuja el recorrido completo del botón «Guardar»</h3><p>En una hoja, explica con una analogía de tienda: quién recibe el nombre, quién verifica el formulario, quién envía <code>VehiculoGuardado</code>, quién construye el nuevo <code>VehiculosEstado</code> y qué elemento de Flutter actualiza la lista. Después compara esta solución con <code>setState()</code> de P5.1.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="bloc-crud">Marcar módulo como completado</button><a class="next-link" href="#bloc">Consultar también la variante del buscador BLoC →</a></div>
+</section>
+
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Ampliación opcional en actividad2</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>Esta es una práctica alternativa que parte del resultado del <strong>módulo 05</strong>. Antes de tocar <code>main.dart</code>, conserva una copia si también trabajaste el formulario de la ruta A. Primero organizaremos el espacio del buscador para celulares.</p></div>
@@ -2738,7 +3069,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
         
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 10 · BLoC</span><span class="status-pill planned">Teoría y práctica opcional</span><span class="lesson-time">Concepto + 10 pasos</span></div>
-<h1 id="bloc-title">Comprender y aplicar BLoC en la Tienda</h1><p>Primero aprenderás con palabras qué son eventos, lógica y estados. Después, si has terminado <strong>la ruta B, módulo 08</strong>, podrás implementar un buscador real con <code>flutter_bloc</code> en diez pasos. Si vienes de P7 (ruta A), estudia la teoría, pero <strong>no sustituyas tu formulario</strong> por esta práctica.</p><div class="bloc-practice-skip"><button type="button" class="bloc-practice-jump" data-bloc-scroll="bloc-practica">Ir a la práctica guiada de BLoC ↓</button><span>Solo para quienes finalizaron la ruta B hasta el módulo 08</span></div></div>
+<h1 id="bloc-title">Comprender y aplicar BLoC en la Tienda</h1><p>Esta es la variante opcional del buscador. Para aplicar BLoC a crear, editar y eliminar vehículos de la ruta principal, visita <a href="#bloc-crud">la etapa P8 de BLoC CRUD</a>. Aquí primero aprenderás con palabras qué son eventos, lógica y estados. Después, si has terminado <strong>la ruta B, módulo 08</strong>, podrás implementar un buscador real con <code>flutter_bloc</code> en diez pasos. Si vienes de P7 (ruta A), estudia la teoría, pero <strong>no sustituyas tu formulario</strong> por esta práctica.</p><div class="bloc-practice-skip"><button type="button" class="bloc-practice-jump" data-bloc-scroll="bloc-practica">Ir a la práctica guiada de BLoC ↓</button><span>Solo para quienes finalizaron la ruta B hasta el módulo 08</span></div></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Dos momentos distintos</strong><p>Primero, una explicación sin pegar código. Después, la práctica opcional sobre <code>etapas/paso_08_filtro.dart</code> para convertir el buscador que utiliza <code>setState</code> en una versión con eventos y estados de BLoC.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-bloc" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Concepto posterior: no sustituimos el código sin comprender el estado</h2><p>Esta <strong>primera parte</strong> es conceptual. Si seguiste la ruta A conoces el controlador del formulario y <code>onPressed</code>; si seguiste la ruta B también viste <code>setState</code>. BLoC propone separar <strong>qué ocurrió (evento)</strong>, <strong>qué se calcula (lógica)</strong> y <strong>qué se muestra (estado)</strong>.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Primero explica ese recorrido con palabras y un dibujo. En la primera parte <strong>no instalamos paquetes</strong>. En la práctica posterior crearemos archivos BLoC, uno por uno y solamente sobre la ruta B.</p></div>
