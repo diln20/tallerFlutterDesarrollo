@@ -278,3 +278,9 @@ Archivos nuevos para estudiar o comparar (en el proyecto del estudiante se guard
 - [main.dart con BlocProvider y BlocBuilder](etapas/paso_15_bloc_main.dart) → `lib/main.dart`
 
 Primero se instala el paquete ejecutando `flutter pub add flutter_bloc` desde la terminal de VS Code ubicada en `DesarrolloMovilFlutter/actividad2`. Después se crean los archivos de evento, estado y BLoC, se conecta `BlocProvider`, se quita el filtrado antiguo de `build`, se emite el evento desde `onChanged` y se muestran los resultados en `BlocBuilder`. El ejercicio se prueba con búsquedas vacías, `Renault`, `MAZDA` y `xyz`. La simulación web solo ilustra el flujo y **no ejecuta Flutter**. El paquete utiliza la API con `on<Evento>` y `emit`; no se requieren Equatable, repositorios, llamadas a APIs ni estados de carga para este ejercicio.
+
+## Analogías cotidianas y comprobaciones (2026-10-23)
+
+El curso utiliza analogías cotidianas y correspondencias técnicas en 18 secciones, en los 87 pasos interactivos, en los 10 pasos de BLoC y en las fichas de los 128 widgets (77 específicas y 51 por familia). Cada módulo incluye también el límite de la comparación y una pregunta de comprobación.
+
+Guía para el docente: [Analogías para enseñar Flutter](docs/guia-de-analogias-para-docentes.md). Validación sin dependencias: `node tests/verificar-analogias.mjs`.
