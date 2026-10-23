@@ -33,12 +33,22 @@
     {text:"",tier:0},
     {text:"class MainApp extends StatelessWidget {",tier:3},
     {text:"  const MainApp({super.key});",tier:3},
-    {text:"  // Aquí añadiremos build en el siguiente paso.",tier:3},
-    {text:"}",tier:3}
+    {text:"",tier:0},
+    {text:"  @override",tier:3},
+    {text:"  Widget build(BuildContext context) {",tier:3},
+    {text:"    return const MaterialApp(",tier:4},
+    {text:"      home: Scaffold(",tier:4},
+    {text:"        body: Center(",tier:4},
+    {text:"          child: Text('Hello World!'),",tier:4},
+    {text:"        ),",tier:4},
+    {text:"      ),",tier:4},
+    {text:"    );",tier:4},
+    {text:"  }",tier:4},
+    {text:"}",tier:4}
   ];
-  const line=(text,n,isNew)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}"><em>${String(n).padStart(2,'0')}</em><code>${esc(text)||' '}</code></div>`;
+  const line=(text,n,isNew,isReading=false)=>`<div class="pv-ide-code-row${isNew?' pv-ide-new':''}${isReading?' pv-ide-reading':''}"><em>${String(n).padStart(2,'0')}</em><code>${esc(text)||' '}</code></div>`;
   const folder=`<aside class="pv-ide-explorer"><div class="pv-ide-explorer-title">EXPLORADOR</div>
-      <div class="pv-tree-root">▾ actividad2a</div>
+      <div class="pv-tree-root">▾ actividad2</div>
       <div class="pv-tree-item">▸ android</div>
       <div class="pv-tree-item">▾ lib</div>
       <div class="pv-tree-item pv-ide-selected">▤ main.dart <span>ABIERTO</span></div>
@@ -51,29 +61,38 @@
   if(mode==='workspace'&&!opened){
     content=`<div class="pv-ide-welcome"><div class="pv-ide-welcome-icon">◇</div>
       <strong>Sin carpeta de proyecto abierta</strong>
-      <p>En el Explorador todavía no aparece <b>actividad2a</b> ni puedes seleccionar <b>lib/main.dart</b>.</p>
+      <p>En el Explorador todavía no aparece <b>actividad2</b> ni puedes seleccionar <b>lib/main.dart</b>.</p>
       <div class="pv-ide-welcome-hint">Archivo → Abrir carpeta…</div></div>`;
-    footer='PENDIENTE · Abrir actividad2a';
+    footer='PENDIENTE · Abrir actividad2';
   } else if(mode==='workspace'){
     content=`<div class="pv-ide-grid">${folder}
-      <div class="pv-ide-code-pane"><div class="pv-ide-code-caption">lib/main.dart · archivo original de clase</div>
-        ${line("import 'package:flutter/material.dart';",1,true)}
+      <div class="pv-ide-code-pane"><div class="pv-ide-code-caption">lib/main.dart · plantilla mínima generada</div>
+        ${line("import 'package:flutter/material.dart';",1,false)}
         ${line("",2,false)}
         ${line("void main() {",3,false)}
         ${line("  runApp(const MainApp());",4,false)}
         ${line("}",5,false)}
         ${line("",6,false)}
         ${line("class MainApp extends StatelessWidget {",7,false)}
-        <div class="pv-ide-file-found">✓ Archivo seleccionado: lib/main.dart</div>
+        <div class="pv-ide-file-found">✓ Ya existe main.dart con MainApp, build y Text('Hello World!')</div>
       </div></div>`;
-    footer='UBICADO · actividad2a / lib / main.dart';
+    footer='UBICADO · actividad2 / lib / main.dart';
+  } else if(mode==='create'){
+    const finished=Boolean(v.created);
+    content=`<div class="pv-ide-term">
+      <strong class="pv-ide-term-title">POWERSHELL · CARPETA PADRE DE TUS PROYECTOS</strong>
+      <div class="pv-ide-term-line">PS DesarrolloMovilFlutter&gt; <strong>flutter create --empty actividad2</strong></div>
+      ${finished?'<div class="pv-ide-term-line pv-ide-success">✓ Proyecto actividad2 creado (simulación)</div><div class="pv-ide-term-line">  actividad2/lib/main.dart</div><div class="pv-ide-term-line">  actividad2/pubspec.yaml</div><div class="pv-ide-term-line">  actividad2/android/ y web/</div><p class="pv-ide-term-tip">main.dart incluye Hello World!: no quedó vacío.</p>':'<div class="pv-ide-term-suggest">Pendiente: ejecutar el comando UNA vez desde la carpeta padre.</div><p class="pv-ide-term-tip">Aún no se ha creado actividad2 en esta representación.</p>'}
+      <div class="pv-ide-demo-note">Vista de ejemplo: la página no ejecuta Flutter en tu equipo.</div>
+    </div>`;
+    footer=finished?'SIMULACIÓN · Proyecto actividad2 generado':'PENDIENTE · Crear actividad2';
   } else if(mode==='dependencies'){
     const command= v.ready?
-       `<div class="pv-ide-term-line pv-ide-command">PS actividad2a&gt; <strong>flutter pub get</strong></div>
+       `<div class="pv-ide-term-line pv-ide-command">PS actividad2&gt; <strong>flutter pub get</strong></div>
         <div class="pv-ide-term-line">Resolving dependencies...</div>
         <div class="pv-ide-term-line">Downloading packages...</div>
         <div class="pv-ide-term-line pv-ide-success">✓ Got dependencies!</div>`:
-       `<div class="pv-ide-term-line">PS actividad2a&gt; <span class="pv-ide-muted">[escribe aquí el comando]</span></div>
+       `<div class="pv-ide-term-line">PS actividad2&gt; <span class="pv-ide-muted">[escribe aquí el comando]</span></div>
         <div class="pv-ide-term-suggest">Pendiente: <strong>flutter pub get</strong></div>
         <p class="pv-ide-term-tip">Todavía no se han preparado las dependencias en esta representación.</p>`;
     content=`<div class="pv-ide-term"><strong class="pv-ide-term-title">TERMINAL · POWERSHELL</strong>${command}
@@ -82,7 +101,7 @@
     footer=v.ready?'EJEMPLO · Dependencias resueltas':'PENDIENTE · Ejecutar flutter pub get';
   } else if(mode==='run'){
     content=`<div class="pv-ide-term"><strong class="pv-ide-term-title">TERMINAL · POWERSHELL</strong>
-      <div class="pv-ide-term-line">PS actividad2a&gt; <strong>flutter pub get</strong></div>
+      <div class="pv-ide-term-line">PS actividad2&gt; <strong>flutter pub get</strong></div>
       <div class="pv-ide-term-line pv-ide-success">✓ Dependencias preparadas (simulación)</div>
       <div class="pv-ide-term-suggest">Siguiente comando: <strong>flutter run</strong></div>
       <p class="pv-ide-term-tip">La pantalla aún no se ha iniciado. En «Después» verás cómo se representa la aplicación original.</p>
@@ -95,8 +114,8 @@
       '<div class="pv-tree-item pv-folder-created'+(i===count-1&&which==='after'?' pv-folder-new':'')+'">▣ '+esc(name)+'/</div>':
       '<div class="pv-tree-item pv-folder-pending">○ '+esc(name)+'/ · pendiente</div>').join('');
     content='<div class="pv-ide-folder-tree">'+
-      '<div class="pv-ide-explorer-title">EXPLORADOR · actividad2a</div>'+
-      '<div class="pv-tree-root">▾ actividad2a</div>'+
+      '<div class="pv-ide-explorer-title">EXPLORADOR · actividad2</div>'+
+      '<div class="pv-tree-root">▾ actividad2</div>'+
       '<div class="pv-tree-item">▾ lib/</div>'+
       '<div class="pv-tree-item pv-folder-original">▤ main.dart · no mover</div>'+
       rows+
@@ -122,7 +141,7 @@
       'Todavía no existe este archivo en la carpeta '+esc(dir)+'.')+'</div>';
     content='<div class="pv-ide-grid"><aside class="pv-ide-explorer">'+
       '<div class="pv-ide-explorer-title">EXPLORADOR</div>'+
-      '<div class="pv-tree-root">▾ actividad2a</div>'+
+      '<div class="pv-tree-root">▾ actividad2</div>'+
       '<div class="pv-tree-item">▾ lib/</div>'+
       '<div class="pv-tree-item">▾ '+esc(dir)+'/</div>'+
       (exists?'<div class="pv-tree-item pv-ide-selected">▤ '+esc(file)+'</div>':
@@ -134,14 +153,13 @@
     footer=exists?'ARCHIVO CREADO · lib/'+dir+'/'+file:
       'PENDIENTE · Crear '+file;
   } else if(mode==='dart'){
-    const visible=stageCode.filter(x=>x.tier<=codeStage);
-    const code=codeStage>0?visible.map((x,i)=>line(x.text,i+1,x.tier===codeStage&&which==='after')).join(''):
-      '<div class="pv-ide-file-empty">El archivo de práctica está vacío.<br>La primera instrucción será <code>import</code>.</div>';
+    // El archivo --empty ya contiene todo: resaltamos una parte SIN inventar líneas nuevas.
+    const code=stageCode.map((row,i)=>line(row.text,i+1,false,codeStage>0&&row.tier===codeStage&&which==='after')).join('');
     content=`<div class="pv-ide-grid">${folder}<div class="pv-ide-code-pane">
-      <div class="pv-ide-code-caption">${codeStage===0?'Antes de escribir Dart':'Contenido acumulado en main.dart'}</div>
+      <div class="pv-ide-code-caption">actividad2/lib/main.dart · plantilla completa que ya existe</div>
       <div class="pv-ide-code-scroll">${code}</div></div></div>`;
-    footer=codeStage===0?'ETAPA 00 · Archivo de práctica vacío':
-      `ETAPA 0${codeStage} · ${codeStage===1?'Importación':codeStage===2?'Función main()':'Encabezado de MainApp'}${codeStage===3?' · build pendiente':''}`;
+    footer=codeStage===0?'LECTURA · Archivo mínimo generado por Flutter':
+      `LECTURA GUIADA · ${codeStage===1?'Importación':codeStage===2?'Función main() y runApp':codeStage===3?'MainApp y método build':'Estructura inicial de la pantalla'}`;
   }
   return `<div class="pv-editor pv-editor-${mode}" data-pv-editor-mode="${mode}" data-pv-editor-stage="${codeStage}">
     ${title}${tabs}<div class="pv-ide-viewport">${content}</div>
@@ -286,7 +304,7 @@
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const editorTransition=internal&&before.editor&&after.editor;
-    const effectType=editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
+    const effectType=item.readOnly?'Lectura del archivo que Flutter ya generó':editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
     const isExpanded=expandedViews.get(id)!==false;
     slot.innerHTML=`<section class="pv-shell${isExpanded?' pv-large-view':''}" data-pv-module="${id}">
@@ -323,12 +341,12 @@
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
-        <span class="pv-result-status">${editorTransition?'Observa el cambio en el VS Code o terminal simulados; Flutter aún no cambia.':internal?'La pantalla sigue igual: revisa el mapa de la diferencia real y el fragmento Dart.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
+        <span class="pv-result-status">${item.readOnly?'Líneas azules para OBSERVAR en el archivo que Flutter ya creó. No las copies de nuevo.':editorTransition?'Observa la comparación del editor o terminal simulados; Flutter aún no cambia.':internal?'La pantalla sigue igual: revisa el mapa de la diferencia real y el fragmento Dart.':'El contorno amarillo señala lo nuevo o modificado.'}</span>
         <span class="pv-simulation-note">Simulación HTML: no es una captura ni una ejecución real de Flutter.</span>
       </div>
       <div class="pv-code-explain">
         <div class="pv-code-intro"><div><strong>${id==='preparacion'?'¿Qué archivo localizar o comando ejecutar?':id==='bloc'?'¿Qué idea representa el paso?':'¿Qué código corresponde a este paso?'}</strong><p>La vista o el mapa muestran el cambio real. Las líneas coloreadas y la guía inferior indican qué añadir, reemplazar u observar.</p></div><span>${status[item.kind||cfg.kind]}</span></div>
-        <div class="code-label">${id==='preparacion'?(i===0?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':id==='carpetas'?'PowerShell · carpetas':id==='reutilizacion'&&i===0||id==='objeto'&&i===0?'Ruta de archivo':'Dart'} · ${esc(item.name)}</div>
+        <div class="code-label">${id==='preparacion'?(i===1?'Esquema de archivos':'Terminal · PowerShell'):id==='bloc'?'Concepto BLoC (pseudocódigo)':id==='carpetas'?'PowerShell · carpetas':id==='reutilizacion'&&i===0||id==='objeto'&&i===0?'Ruta de archivo':'Dart'} · ${esc(item.name)}</div>
         <pre class="code-block"><code>${esc(item.code)}</code></pre>
       </div>
       <div class="pv-nav-bottom">
@@ -353,7 +371,7 @@
     }
   }
   const maps={
-    preparacion:[1,2,0,2],
+    preparacion:[0,1,2,3],
     'punto-entrada':[4,3,4],
     estructura:[1,2,0,3,4],
     diseno:[4,0,2,3],
