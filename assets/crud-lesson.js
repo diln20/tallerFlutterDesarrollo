@@ -76,7 +76,26 @@ function instalarTooltips() {
   });
   window.addEventListener('scroll', ubicar, {passive:true,capture:true});
   window.addEventListener('resize', ubicar);
+  window.addEventListener('hashchange', cerrar);
 }
-function iniciar() { decorate(); instalarTooltips(); }
+function instalarNavegacionPasos() {
+  document.querySelectorAll('#crud .crud-direct-flow a[href^="#crud-paso-"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      target.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+        block: 'start',
+      });
+      const heading = target.querySelector('h3');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({preventScroll:true});
+      }
+    });
+  });
+}
+function iniciar() { decorate(); instalarTooltips(); instalarNavegacionPasos(); }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar,{once:true});else iniciar();
 })();
