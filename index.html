@@ -1534,8 +1534,526 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <p><a href="./etapas/paso_12_vehiculo.dart" target="_blank" rel="noopener noreferrer">Abrir la clase Vehiculo ↗</a> · <a href="./etapas/paso_12_objeto.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a></p></div>
 <div class="checklist" data-checklist="objeto"><label><input type="checkbox"> Creé lib/models/vehiculo.dart.</label><label><input type="checkbox"> Entiendo String, bool, final, const y required del modelo.</label><label><input type="checkbox"> Importé el modelo en main.dart.</label><label><input type="checkbox"> Construí Vehiculo(nombre: nombre) solo después de validar.</label><label><input type="checkbox"> Mostré las propiedades en consola sin decir que están guardadas.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Crear dos objetos diferentes, uno después del otro</h3><p>Escribe «Renault 9» y luego «Mazda 3». Para cada ejecución, identifica qué dato recibe el constructor y por qué los objetos tienen un nombre diferente aunque utilicen la misma clase.</p></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#responsive">Ampliación opcional: mejorar el diseño →</a></div></section>
+<div class="lesson-end"><button class="button button-complete" data-complete="objeto">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: extraer widgets reutilizables →</a></div></section>
 
+<section class="page lesson next-module" id="extraccion" aria-labelledby="extraccion-title" data-lesson="P6"><div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P6</span><span class="status-pill planned">Continuación guiada</span></div><h1 id="extraccion-title">Extraer widgets reutilizables del código existente</h1><p>La reutilización no consiste solo en inventar clases nuevas. Ahora vamos a <strong>sacar del propio main.dart dos widgets que ya funcionan</strong>: el campo validado y el botón de la Tienda, para que después podamos usarlos en otras páginas.</p></div><div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de esta práctica</strong><p>Conservar exactamente el comportamiento de validación y creación de Vehiculo, pero organizar la interfaz en archivos reutilizables.</p></div></div><div class="notice notice-info"><strong>Desde dónde comenzamos</strong><p>Abre tu copia del código final de <a href="./etapas/paso_12_objeto.dart" target="_blank" rel="noopener noreferrer">la práctica P5</a>. Ya deben existir <code>lib/widgets/titulo_seccion.dart</code> y <code>lib/models/vehiculo.dart</code>. No uses como punto de partida el módulo opcional de filtros.</p></div>
+<div class="next-compare"><div><small>ANTES · TODO EN main.dart</small><code>Form(child: TextFormField(...))</code><code>ElevatedButton(onPressed: ...)</code><p>La vista construye directamente el campo, sus reglas y la apariencia del botón.</p></div><div><small>DESPUÉS · WIDGETS EXTRAÍDOS</small><code>Form(child: CampoNombreVehiculo(...))</code><code>BotonTienda(alPresionar: ...)</code><p>Los widgets viven en archivos separados; el State conserva controller y validación del formulario.</p></div></div>
+<div class="next-section-heading"><span>REFRACTORAR SIN CAMBIAR EL RESULTADO</span><h2>Una extracción a la vez</h2></div><article class="next-step" id="extraccion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Identificar qué código sacaremos de main.dart</h3></div><p>Ya has utilizado <code>TituloSeccion</code> en dos lugares. Ahora aprenderemos a <strong>extraer widgets que tienen comportamiento</strong>. El nuevo <code>CampoNombreVehiculo</code> recibirá el controlador y conservará el <code>validator</code>. El botón también se convertirá en un widget con una acción recibida desde la pantalla.</p><div class="next-where"><div class="next-where-action">OBSERVAR: no pegar todavía</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> _MainAppState.build → Column.children → Form y BotonTienda</div><div><strong>Busca con Ctrl + F:</strong> <code>child: CampoNombreVehiculo(</code></div></div></div><div class="code-label">Esquema de responsabilidades · solo leer</div><pre class="code-block"><code>main.dart (_MainAppState)
+├── formularioKey y vehiculoController    ← permanecen aquí
+├── Form(key: formularioKey)
+│   └── CampoNombreVehiculo(...)           ← archivo nuevo
+└── BotonTienda(alPresionar: ...)          ← archivo nuevo
+
+widgets/
+├── titulo_seccion.dart                    ← ya existía
+├── campo_nombre_vehiculo.dart             ← vamos a crearlo
+└── boton_tienda.dart                       ← vamos a crearlo</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>extraer</code> significa trasladar una pieza de interfaz a su propia clase sin cambiar lo que hace. La <code>GlobalKey</code> y el <code>TextEditingController</code> siguen perteneciendo a la pantalla, que controla sus recursos.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Por ahora no se ha modificado ningún archivo. Puedes señalar las partes que se van a extraer.</p></div></article>
+<article class="next-step" id="extraccion-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Crear el archivo del campo reutilizable</h3></div><p>En la carpeta <code>widgets</code> crea <code>campo_nombre_vehiculo.dart</code>. No reemplaces ni elimines el archivo <code>main.dart</code>; esa pantalla seguirá coordinando el formulario.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO; todavía no mover el formulario</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Ubicación:</strong> VS Code → lib → widgets → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">Ruta del archivo nuevo · no es Dart</div><pre class="code-block"><code>lib/widgets/campo_nombre_vehiculo.dart</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>Es un archivo distinto de <code>titulo_seccion.dart</code>. Su nombre en minúsculas y guiones bajos describe lo que contendrá.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>El archivo existe dentro de widgets, aunque todavía esté vacío.</p></div></article>
+<article class="next-step" id="extraccion-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Escribir la clase del campo con su controller</h3></div><p>Construye una clase <code>StatelessWidget</code> que recibe un <code>TextEditingController</code>. Escribe primero esta versión corta del campo. La regla de validación llegará en el siguiente paso.</p><div class="next-where"><div class="next-where-action">ESCRIBIR CÓDIGO EN EL ARCHIVO NUEVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Ubicación:</strong> Archivo nuevo completo por ahora; todavía falta validator</div><div><strong>Busca con Ctrl + F:</strong> <code>campo_nombre_vehiculo.dart</code></div></div></div><div class="code-label">Dart · primera versión del campo reutilizable</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class CampoNombreVehiculo extends StatelessWidget {
+  const CampoNombreVehiculo({
+    super.key,
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      decoration: const InputDecoration(
+        hintText: &#39;Nombre del vehículo&#39;,
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>required this.controller</code> obliga a pasar el controlador al usar este widget. <code>final TextEditingController controller</code> declara la propiedad. <code>build</code> devuelve un <code>TextFormField</code> usando ese objeto.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>El archivo define un widget, pero todavía no lo estamos usando en main.dart.</p></div></article>
+<article class="next-step" id="extraccion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Trasladar la validación sin perder sus reglas</h3></div><p>Dentro del <code>TextFormField</code> nuevo, después de cerrar <code>decoration</code> y antes de cerrar el campo, coloca el mismo <code>validator</code> que estaba en main.dart. Así no cambiará lo que se considera válido.</p><div class="next-where"><div class="next-where-action">AÑADIR validator en el TextFormField del archivo nuevo</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Ubicación:</strong> CampoNombreVehiculo.build → TextFormField → después de decoration</div><div><strong>Busca con Ctrl + F:</strong> <code>border: OutlineInputBorder()</code></div></div></div><div class="code-label">Dart · añadir dentro de TextFormField</div><pre class="code-block"><code>validator: (valor) {
+  if (valor == null || valor.trim().isEmpty) {
+    return &#39;Escribe un nombre&#39;;
+  }
+  if (valor.trim().length &lt; 3) {
+    return &#39;Mínimo 3 caracteres&#39;;
+  }
+  return null;
+},</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>validator</code> no guarda nada: devuelve un mensaje si el campo es inválido, o <code>null</code> si es correcto. El <code>Form</code> seguirá siendo el encargado de ejecutar la validación.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>El widget nuevo ya contiene la misma regla de nombre obligatorio y mínimo tres caracteres.</p></div></article>
+<article class="next-step" id="extraccion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Importar el campo reutilizable</h3></div><p>Regresa a <code>main.dart</code> y agrega el import del campo. Importar solamente hace que la clase esté disponible; todavía debes utilizarla.</p><div class="next-where"><div class="next-where-action">AÑADIR UN import, sin borrar los existentes</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Al comienzo de main.dart, junto a los imports actuales</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;models/vehiculo.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import</div><pre class="code-block"><code>import &#39;widgets/campo_nombre_vehiculo.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>Como <code>main.dart</code> está dentro de <code>lib/</code>, la ruta relativa puede comenzar directamente con <code>widgets/</code>. El import debe ir fuera de las clases y métodos.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>No hay cambios visuales, pero <code>CampoNombreVehiculo</code> ya se puede nombrar desde main.dart.</p></div></article>
+<article class="next-step" id="extraccion-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Reemplazar solo el TextFormField del Form</h3></div><p>Busca el <code>Form</code> del nombre, deja intacta la línea <code>key: formularioKey</code> y reemplaza <strong>todo su hijo TextFormField</strong> por estas dos líneas. El código de validación anterior ya estará en el archivo nuevo: no debes dejar una segunda copia dentro de main.dart.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR el child, pero conservar Form y su key</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Form(key: formularioKey) → child</div><div><strong>Busca con Ctrl + F:</strong> <code>child: TextFormField(</code></div></div></div><div class="code-label">Dart · reemplazar solo la propiedad child</div><pre class="code-block"><code>child: CampoNombreVehiculo(
+  controller: vehiculoController,
+),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>CampoNombreVehiculo</code> es el widget que acabamos de crear; <code>controller: vehiculoController</code> entrega al hijo el controlador del estado padre. La pantalla sigue llamando <code>validate()</code> desde su botón.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Escribe «AB» y pulsa el botón original: debe seguir saliendo «Mínimo 3 caracteres». No se perdió la validación.</p></div></article>
+<article class="next-step" id="extraccion-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Crear el botón como widget reutilizable</h3></div><p>Ahora extraeremos la <strong>apariencia del botón</strong>, pero no su lógica de negocio. Crea <code>boton_tienda.dart</code> y escribe esta clase completa. El botón recibirá un texto y una función.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO y escribir su clase</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/boton_tienda.dart</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → lib/widgets → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">Dart · archivo completo BotonTienda</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class BotonTienda extends StatelessWidget {
+  const BotonTienda({
+    super.key,
+    required this.texto,
+    required this.alPresionar,
+  });
+
+  final String texto;
+  final VoidCallback alPresionar;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: alPresionar,
+      child: Text(texto),
+    );
+  }
+}
+</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>VoidCallback</code> es el tipo de una función que no recibe argumentos y no devuelve un resultado. <code>onPressed: alPresionar</code> le entrega esa función al botón, <strong>sin ejecutarla de inmediato</strong>. El padre decidirá qué debe hacer.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Ya existe <code>BotonTienda</code>, pero el botón original todavía está en main.dart.</p></div></article>
+<article class="next-step" id="extraccion-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Importar BotonTienda en main.dart</h3></div><p>Agrega la siguiente importación después de la del campo. No dupliques <code>import 'package:flutter/material.dart'</code>.</p><div class="next-where"><div class="next-where-action">AÑADIR import del segundo widget</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Parte superior del archivo, junto al import del campo</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;widgets/campo_nombre_vehiculo.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import</div><pre class="code-block"><code>import &#39;widgets/boton_tienda.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>La importación permite utilizar el componente desde la pantalla. Todavía no cambies la función del botón.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>MainApp reconoce tanto <code>CampoNombreVehiculo</code> como <code>BotonTienda</code>.</p></div></article>
+<article class="next-step" id="extraccion-paso-9"><div class="next-step-top"><span class="next-step-number">09</span><h3>Sustituir ElevatedButton sin perder onPressed</h3></div><p>Busca el <code>ElevatedButton</code> original debajo de <code>Form</code>. Reemplázalo completo por el nuevo widget, pero conserva la validación, la creación de <code>Vehiculo</code>, el <code>debugPrint</code> y <code>clear()</code> dentro de <code>alPresionar</code>.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR todo el botón original, conservar su función</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → botón después de Form</div><div><strong>Busca con Ctrl + F:</strong> <code>child: const Text(&#39;Agregar vehículo&#39;)</code></div></div></div><div class="code-label">Dart · reemplazar el botón completo</div><pre class="code-block"><code>BotonTienda(
+  texto: &#39;Agregar vehículo&#39;,
+  alPresionar: () {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    final nombre = vehiculoController.text.trim();
+    final vehiculo = Vehiculo(nombre: nombre);
+    debugPrint(
+      &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+    );
+    vehiculoController.clear();
+  },
+),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>texto:</code> determina lo que se ve; <code>alPresionar:</code> recibe una función anónima. La clase <code>BotonTienda</code> no valida ni crea vehículos: simplemente avisa al padre de la pulsación.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>El botón funciona igual que antes. Los widgets se extrajeron, pero la responsabilidad de validar y crear el objeto permanece en la pantalla.</p></div></article>
+<div class="notice notice-warning"><strong>¿Por qué no creamos un controller dentro del widget CampoNombreVehiculo?</strong><p>Porque ya lo tiene <code>_MainAppState</code> y debe continuar perteneciendo a la pantalla que lo creó. La pantalla lo pasa como argumento y lo libera con <code>dispose()</code>. Tampoco movemos <code>formularioKey</code> dentro del campo: pertenece al <code>Form</code> que contiene ese widget.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>COMPARAR EL RESULTADO FINAL</span><h2>Los tres archivos después de extraer los widgets</h2><p>Los archivos de referencia del repositorio se trasladan a las rutas indicadas dentro de <code>lib/</code> en la copia de práctica.</p></div>
+<details class="deep-details"><summary>Ver CampoNombreVehiculo completo</summary><div class="deep-details-body"><div class="code-label">lib/widgets/campo_nombre_vehiculo.dart · referencia</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class CampoNombreVehiculo extends StatelessWidget {
+  const CampoNombreVehiculo({
+    super.key,
+    required this.controller,
+  });
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      decoration: const InputDecoration(
+        hintText: &#39;Nombre del vehículo&#39;,
+        border: OutlineInputBorder(),
+      ),
+      validator: (valor) {
+        if (valor == null || valor.trim().isEmpty) {
+          return &#39;Escribe un nombre&#39;;
+        }
+        if (valor.trim().length &lt; 3) {
+          return &#39;Mínimo 3 caracteres&#39;;
+        }
+        return null;
+      },
+    );
+  }
+}
+</code></pre></div></details>
+<details class="deep-details"><summary>Ver BotonTienda completo</summary><div class="deep-details-body"><div class="code-label">lib/widgets/boton_tienda.dart · referencia</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+
+class BotonTienda extends StatelessWidget {
+  const BotonTienda({
+    super.key,
+    required this.texto,
+    required this.alPresionar,
+  });
+
+  final String texto;
+  final VoidCallback alPresionar;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: alPresionar,
+      child: Text(texto),
+    );
+  }
+}
+</code></pre></div></details>
+<details class="deep-details"><summary>Ver main.dart completo después de la extracción</summary><div class="deep-details-body"><div class="code-label">lib/main.dart · referencia final P6</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;models/vehiculo.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: CampoNombreVehiculo(
+                  controller: vehiculoController,
+                ),
+              ),
+              const SizedBox(height: 12),
+              BotonTienda(
+                texto: &#39;Agregar vehículo&#39;,
+                alPresionar: () {
+                  if (formularioKey.currentState?.validate() != true) {
+                    return;
+                  }
+                  final nombre = vehiculoController.text.trim();
+                  final vehiculo = Vehiculo(nombre: nombre);
+                  debugPrint(
+                    &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+                  );
+                  vehiculoController.clear();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_13_extraccion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a></p></div>
+<div class="checklist" data-checklist="extraccion"><label><input type="checkbox"> Creé los archivos en lib/widgets/.</label><label><input type="checkbox"> El campo recibe controller sin crear otro.</label><label><input type="checkbox"> El validator sigue funcionando y no está duplicado.</label><label><input type="checkbox"> BotonTienda recibe texto y VoidCallback.</label><label><input type="checkbox"> El botón continúa creando un Vehiculo válido e imprimiéndolo en la consola.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Explica quién es responsable de cada parte</h3><p>Escribe en una hoja si el controlador, la llave, el validator, la apariencia del botón y la creación del objeto pertenecen a la pantalla o al widget extraído. Cambia únicamente el texto del botón por «Crear vehículo» y explica por qué no debes modificar <code>boton_tienda.dart</code> para hacerlo.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="extraccion">Marcar módulo como completado</button><a class="next-link" href="#navegacion">Siguiente: crear páginas y navegar →</a></div></section>
+
+<section class="page lesson next-module" id="navegacion" aria-labelledby="navegacion-title" data-lesson="P7"><div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P7</span><span class="status-pill planned">Continuación guiada</span></div><h1 id="navegacion-title">Crear páginas y navegar entre ellas</h1><p>Ahora que sabemos extraer y utilizar widgets, empezaremos a utilizar la carpeta <code>pages/</code>. Construiremos dos pantallas muy sencillas: <strong>AcercaPage</strong> y <strong>AyudaPage</strong>. No moveremos la pantalla principal de la Tienda ni crearemos rutas con nombres.</p></div><div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de esta práctica</strong><p>Comprender qué es una página, cómo construirla con Scaffold, cómo abrirla mediante Navigator.push y cómo regresar con Navigator.pop.</p></div></div><div class="notice notice-info"><strong>Punto de partida</strong><p>Continúa desde <a href="./etapas/paso_13_extraccion.dart" target="_blank" rel="noopener noreferrer">el código final de P6</a>. Debes tener los widgets <code>TituloSeccion</code>, <code>CampoNombreVehiculo</code> y <code>BotonTienda</code>. El formulario seguirá validando y creando un objeto de la misma manera.</p></div>
+<div class="next-compare"><div><small>ANTES · UNA SOLA PANTALLA</small><code>MaterialApp(home: Scaffold(...))</code><p>La Tienda muestra su formulario y no tiene una opción para abrir páginas adicionales.</p></div><div><small>DESPUÉS · TRES PANTALLAS</small><code>Tienda → AcercaPage → AyudaPage</code><p>Usamos push para avanzar y pop para regresar, sin introducir navegación avanzada.</p></div></div>
+<div class="next-section-heading"><span>CONSTRUCCIÓN GUIADA</span><h2>Una página y un botón a la vez</h2></div><article class="next-step" id="navegacion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear la primera página en pages/</h3></div><p>La carpeta <code>pages/</code> había permanecido vacía. Ahora crea <code>ayuda_page.dart</code>; una página es simplemente un widget que construye una pantalla, normalmente con <code>Scaffold</code>.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO; todavía sin cambiar la Tienda</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/ayuda_page.dart</code></div><div><strong>Ubicación:</strong> Explorador → lib → pages → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/pages</code></div></div></div><div class="code-label">Ruta · primera página</div><pre class="code-block"><code>lib/pages/ayuda_page.dart</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>El nombre del archivo está en minúsculas. El nombre de la clase será <code>AyudaPage</code>. Todavía no navegamos porque aún no existe la pantalla terminada.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Ya existe el archivo de la primera página.</p></div></article>
+<article class="next-step" id="navegacion-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Construir AyudaPage con AppBar y Text</h3></div><p>Copia este ejemplo básico dentro de <code>ayuda_page.dart</code>. Reutilizamos <code>TituloSeccion</code> desde <code>widgets/</code> usando <code>../widgets/</code>, porque estamos en una carpeta hermana dentro de lib.</p><div class="next-where"><div class="next-where-action">ESCRIBIR CONTENIDO DEL ARCHIVO NUEVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/ayuda_page.dart</code></div><div><strong>Ubicación:</strong> Toda la clase de la página (primera versión)</div><div><strong>Busca con Ctrl + F:</strong> <code>ayuda_page.dart</code></div></div></div><div class="code-label">Dart · primera versión de AyudaPage</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../widgets/titulo_seccion.dart&#39;;
+
+class AyudaPage extends StatelessWidget {
+  const AyudaPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Ayuda&#39;)),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TituloSeccion(texto: &#39;Ayuda de la Tienda&#39;),
+            const SizedBox(height: 12),
+            const Text(&#39;Escribe al menos tres caracteres para crear un vehículo.&#39;),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>Scaffold</code> es la estructura de la nueva pantalla; <code>AppBar</code> contiene su título; <code>Center</code> centra la columna; <code>mainAxisAlignment.center</code> distribuye verticalmente sus elementos. <code>../</code> sube desde <code>pages</code> a <code>lib</code>.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Creaste una página sencilla. Como todavía no hay un enlace, no aparecerá al ejecutar la Tienda.</p></div></article>
+<article class="next-step" id="navegacion-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Importar nuestro botón reutilizable en AyudaPage</h3></div><p>Ahora utilizaremos también el widget <code>BotonTienda</code> que extrajimos en la etapa anterior. Importarlo no crea el botón por sí solo.</p><div class="next-where"><div class="next-where-action">AÑADIR import en la página Ayuda</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/ayuda_page.dart</code></div><div><strong>Ubicación:</strong> Parte superior, después del import de TituloSeccion</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;../widgets/titulo_seccion.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import a AyudaPage</div><pre class="code-block"><code>import &#39;../widgets/boton_tienda.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>Dos puntos <code>../</code> no son necesarios: <code>..</code> significa «subir una carpeta» y la barra indica la carpeta siguiente. Desde <code>pages/</code> llegamos a <code>lib/widgets/</code>.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Puedes utilizar BotonTienda dentro de AyudaPage.</p></div></article>
+<article class="next-step" id="navegacion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Añadir un botón para regresar</h3></div><p>Justo después del <code>Text</code> que explica cómo crear un vehículo, añade la separación y un botón que utilice <code>Navigator.pop(context)</code>. No necesitas crear rutas con nombres.</p><div class="next-where"><div class="next-where-action">AÑADIR DOS WIDGETS AL FINAL DE Column.children</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/ayuda_page.dart</code></div><div><strong>Ubicación:</strong> AyudaPage.build → Column.children → después del Text explicativo</div><div><strong>Busca con Ctrl + F:</strong> <code>Escribe al menos tres caracteres para crear un vehículo.</code></div></div></div><div class="code-label">Dart · añadir debajo del texto de ayuda</div><pre class="code-block"><code>const SizedBox(height: 12),
+BotonTienda(
+  texto: &#39;Volver&#39;,
+  alPresionar: () {
+    Navigator.pop(context);
+  },
+),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>Navigator.pop(context)</code> cierra la página actual y regresa a la anterior. El <code>context</code> es el del método <code>build</code> de AyudaPage; ya se encuentra dentro de MaterialApp cuando esta página se abre mediante push.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>En la futura navegación, este botón permitirá regresar desde AyudaPage.</p></div></article>
+<article class="next-step" id="navegacion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Crear la segunda página: AcercaPage</h3></div><p>Crea <code>acerca_page.dart</code> y escribe esta segunda pantalla. Usaremos <code>TituloSeccion</code> para su encabezado y <code>BotonTienda</code> para volver. Por ahora todavía no enlaza con AyudaPage.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO Y ESCRIBIR LA PÁGINA BÁSICA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/acerca_page.dart</code></div><div><strong>Ubicación:</strong> Explorador → pages → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/pages/</code></div></div></div><div class="code-label">Dart · AcercaPage inicial</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../widgets/titulo_seccion.dart&#39;;
+import &#39;../widgets/boton_tienda.dart&#39;;
+
+class AcercaPage extends StatelessWidget {
+  const AcercaPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Acerca de&#39;)),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TituloSeccion(texto: &#39;Nuestra Tienda&#39;),
+            const SizedBox(height: 12),
+            const Text(&#39;Un ejercicio para aprender Flutter.&#39;),
+            const SizedBox(height: 8),
+            BotonTienda(
+              texto: &#39;Volver a la Tienda&#39;,
+              alPresionar: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>class AcercaPage extends StatelessWidget</code> crea una pantalla sin estado propio. El <code>Navigator.pop(context)</code> permitirá volver a la Tienda cuando la abramos. No se necesita un nuevo <code>MaterialApp</code> dentro de esta página.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Ahora hay dos archivos de páginas con sus respectivos Scaffold.</p></div></article>
+<article class="next-step" id="navegacion-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Importar AyudaPage en AcercaPage</h3></div><p>Vamos a abrir la página de ayuda desde AcercaPage. Como ambas están dentro de <code>pages/</code>, solo necesitamos escribir el nombre del otro archivo, sin subir carpetas.</p><div class="next-where"><div class="next-where-action">AÑADIR import relativo al comienzo</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/acerca_page.dart</code></div><div><strong>Ubicación:</strong> Cabecera de la página, después de los imports de widgets</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;../widgets/boton_tienda.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import en AcercaPage</div><pre class="code-block"><code>import &#39;ayuda_page.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>El nombre de clase <code>AyudaPage</code> quedará disponible dentro de <code>AcercaPage</code>. Importar el archivo no muestra automáticamente esa página.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>AcercaPage conoce ahora la clase AyudaPage.</p></div></article>
+<article class="next-step" id="navegacion-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Abrir AyudaPage con Navigator.push</h3></div><p>Encima del botón «Volver a la Tienda» agrega otro llamado «Ver ayuda». Utiliza <code>Navigator.push</code> para abrir la página recién creada.</p><div class="next-where"><div class="next-where-action">AÑADIR BOTÓN ANTES DE «Volver a la Tienda»</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/pages/acerca_page.dart</code></div><div><strong>Ubicación:</strong> AcercaPage → Column.children → antes del botón Volver</div><div><strong>Busca con Ctrl + F:</strong> <code>texto: &#39;Volver a la Tienda&#39;</code></div></div></div><div class="code-label">Dart · insertar antes del botón de regreso</div><pre class="code-block"><code>const SizedBox(height: 16),
+BotonTienda(
+  texto: &#39;Ver ayuda&#39;,
+  alPresionar: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =&gt; const AyudaPage()),
+    );
+  },
+),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>Navigator.push</code> coloca una nueva página sobre la actual. <code>MaterialPageRoute</code> define la ruta y <code>builder: (context) =&gt; const AyudaPage()</code> construye la nueva pantalla. La flecha <code>=&gt;</code> devuelve la expresión a la derecha.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Cuando se abra AcercaPage, «Ver ayuda» conducirá a AyudaPage.</p></div></article>
+<article class="next-step" id="navegacion-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Importar AcercaPage en main.dart</h3></div><p>Hasta ahora las páginas existen, pero no hay un botón para abrirlas desde la pantalla original. Añade primero el import de AcercaPage.</p><div class="next-where"><div class="next-where-action">AÑADIR import en el archivo principal</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Parte superior de main.dart, tras los imports de widgets</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;widgets/boton_tienda.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import en main.dart</div><pre class="code-block"><code>import &#39;pages/acerca_page.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>Desde <code>lib/main.dart</code>, la ruta relativa es <code>pages/acerca_page.dart</code>. No se debe añadir un segundo <code>MaterialApp</code> en el archivo principal.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>La clase AcercaPage ya está disponible para la Tienda.</p></div></article>
+<article class="next-step" id="navegacion-paso-9"><div class="next-step-top"><span class="next-step-number">09</span><h3>Agregar la navegación desde la Tienda</h3></div><p>Inmediatamente después de cerrar el <code>BotonTienda</code> de creación de vehículos, agrega este botón de navegación. El <code>Builder</code> es importante: en nuestro proyecto <code>MainApp.build</code> devuelve <code>MaterialApp</code>, así que su <code>context</code> original queda fuera del <code>Navigator</code>. <code>Builder</code> proporciona un <code>context</code> interior que sí puede abrir páginas.</p><div class="next-where"><div class="next-where-action">AÑADIR DESPUÉS DE BotonTienda «Agregar vehículo»</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → debajo del botón que crea Vehiculo</div><div><strong>Busca con Ctrl + F:</strong> <code>texto: &#39;Agregar vehículo&#39;</code></div></div></div><div class="code-label">Dart · insertar bloque nuevo debajo del botón existente</div><pre class="code-block"><code>const SizedBox(height: 16),
+Builder(
+  builder: (context) =&gt; BotonTienda(
+    texto: &#39;Acerca de y ayuda&#39;,
+    alPresionar: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =&gt; const AcercaPage()),
+      );
+    },
+  ),
+),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>Builder(builder: ...)</code> crea un contexto dentro de la pantalla. <code>Navigator.push</code> agrega AcercaPage al historial y <code>MaterialPageRoute</code> la construye. No utilices <code>Navigator.push(context, ...)</code> capturando el contexto externo de <code>MainApp.build</code>, porque puede producir «Navigator operation requested with a context that does not include a Navigator».</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Pulsa «Acerca de y ayuda» desde la Tienda; luego «Ver ayuda»; después «Volver» para regresar a Acerca de y «Volver a la Tienda» para terminar.</p></div></article>
+<div class="deep-dive"><div class="deep-heading"><span>VISUALIZA EL RECORRIDO</span><h2>Cómo funciona el historial de páginas</h2><p>Cada llamada a push abre una nueva página encima de la anterior. pop cierra la página actual. Esta explicación es esquemática y no se pega en Dart.</p></div><div class="code-label">Diagrama de navegación · SOLO LECTURA</div><pre class="code-block"><code>Tienda (main.dart)
+    │ pulsa «Acerca de y ayuda»
+    ▼ Navigator.push
+AcercaPage (pages/acerca_page.dart)
+    │ pulsa «Ver ayuda»
+    ▼ Navigator.push
+AyudaPage (pages/ayuda_page.dart)
+    │ pulsa «Volver»
+    ▲ Navigator.pop
+AcercaPage
+    │ pulsa «Volver a la Tienda»
+    ▲ Navigator.pop
+Tienda</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Explicación sencilla</th></tr></thead><tbody>
+<tr><td><code>StatelessWidget</code></td><td>Sirve para definir cada página básica sin estado propio. Un Scaffold completo también es un widget.</td></tr>
+<tr><td><code>MaterialApp</code></td><td>Se mantiene en <code>main.dart</code>; ninguna de estas páginas necesita un segundo MaterialApp.</td></tr>
+<tr><td><code>Navigator.push</code></td><td>Abre una pantalla nueva sobre la actual.</td></tr>
+<tr><td><code>MaterialPageRoute</code></td><td>Construye una ruta de navegación compatible con Material.</td></tr>
+<tr><td><code>Navigator.pop</code></td><td>Cierra la pantalla actual y muestra nuevamente la anterior.</td></tr>
+<tr><td><code>context</code> y <code>Builder</code></td><td>Navigator necesita un contexto que esté <strong>dentro</strong> de MaterialApp. Builder nos proporciona ese contexto para el botón que añadimos a la pantalla principal.</td></tr>
+<tr><td><code>../widgets/</code></td><td>Desde la carpeta <code>pages</code>, subimos una carpeta hacia <code>lib</code> y entramos a <code>widgets</code>.</td></tr></tbody></table></div></div>
+<div class="next-check-cases"><h2>Pruebas que haremos en clase</h2><div class="next-case-grid">
+<div><span>PRUEBA 01</span><strong>Tienda → Acerca de</strong><p>La página abre, muestra su AppBar, el texto explicativo y los botones «Ver ayuda» y «Volver a la Tienda».</p></div>
+<div><span>PRUEBA 02</span><strong>Acerca de → Ayuda → Acerca de</strong><p>Abre Ayuda, pulsa «Volver» y comprueba que regresas exactamente a Acerca de, no directamente a la Tienda.</p></div>
+<div><span>PRUEBA 03</span><strong>Regresar y validar</strong><p>Desde Acerca de vuelve a la Tienda. El campo «Nombre del vehículo» debe seguir validándose y creando objetos en consola.</p></div></div></div>
+<div class="notice notice-warning"><strong>Errores habituales al comenzar</strong><p>Si aparece «Navigator operation requested with a context that does not include a Navigator», revisa que el botón principal esté dentro de <code>Builder</code>. Si una página no se encuentra, comprueba sus imports y la ruta. No escribas <code>MaterialApp</code> dentro de AcercaPage o AyudaPage: ambos devuelven únicamente <code>Scaffold</code>.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>COMPARACIÓN FINAL</span><h2>Los tres archivos después de añadir navegación</h2></div>
+<details class="deep-details"><summary>Ver AyudaPage completo</summary><div class="deep-details-body"><div class="code-label">lib/pages/ayuda_page.dart · referencia</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../widgets/titulo_seccion.dart&#39;;
+import &#39;../widgets/boton_tienda.dart&#39;;
+
+class AyudaPage extends StatelessWidget {
+  const AyudaPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Ayuda&#39;)),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TituloSeccion(texto: &#39;Ayuda de la Tienda&#39;),
+            const SizedBox(height: 12),
+            const Text(&#39;Escribe al menos tres caracteres para crear un vehículo.&#39;),
+            const SizedBox(height: 12),
+            BotonTienda(
+              texto: &#39;Volver&#39;,
+              alPresionar: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<details class="deep-details"><summary>Ver AcercaPage completo</summary><div class="deep-details-body"><div class="code-label">lib/pages/acerca_page.dart · referencia</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../widgets/titulo_seccion.dart&#39;;
+import &#39;../widgets/boton_tienda.dart&#39;;
+import &#39;ayuda_page.dart&#39;;
+
+class AcercaPage extends StatelessWidget {
+  const AcercaPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Acerca de&#39;)),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const TituloSeccion(texto: &#39;Nuestra Tienda&#39;),
+            const SizedBox(height: 12),
+            const Text(&#39;Un ejercicio para aprender Flutter.&#39;),
+            const SizedBox(height: 16),
+            BotonTienda(
+              texto: &#39;Ver ayuda&#39;,
+              alPresionar: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =&gt; const AyudaPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            BotonTienda(
+              texto: &#39;Volver a la Tienda&#39;,
+              alPresionar: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<details class="deep-details"><summary>Ver main.dart final con navegación</summary><div class="deep-details-body"><div class="code-label">lib/main.dart · referencia final P7</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;models/vehiculo.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+import &#39;pages/acerca_page.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        body: Center(
+          child: Column(
+            children: [
+              const TituloSeccion(texto: &#39;Hello dsfdsWorld&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: CampoNombreVehiculo(
+                  controller: vehiculoController,
+                ),
+              ),
+              const SizedBox(height: 12),
+              BotonTienda(
+                texto: &#39;Agregar vehículo&#39;,
+                alPresionar: () {
+                  if (formularioKey.currentState?.validate() != true) {
+                    return;
+                  }
+                  final nombre = vehiculoController.text.trim();
+                  final vehiculo = Vehiculo(nombre: nombre);
+                  debugPrint(
+                    &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+                  );
+                  vehiculoController.clear();
+                },
+              ),
+              const SizedBox(height: 16),
+              Builder(
+                builder: (context) =&gt; BotonTienda(
+                  texto: &#39;Acerca de y ayuda&#39;,
+                  alPresionar: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =&gt; const AcercaPage()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_14_navegacion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final ↗</a></p></div>
+<div class="checklist" data-checklist="navegacion"><label><input type="checkbox"> Creé dos archivos dentro de lib/pages.</label><label><input type="checkbox"> Ambas páginas tienen Scaffold y AppBar.</label><label><input type="checkbox"> Reutilicé TituloSeccion y BotonTienda dentro de las páginas.</label><label><input type="checkbox"> Entiendo por qué push avanza y pop regresa.</label><label><input type="checkbox"> La navegación funciona sin dañar el formulario.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#responsive">Ampliación opcional: diseño adaptable →</a></div></section>
 <section class="page lesson" id="responsive" aria-labelledby="responsive-title" data-lesson="6">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">MÓDULO 06</span><span class="status-pill planned">Propuesta sobre actividad2a</span><span class="lesson-time">30–40 min</span></div>
 <h1 id="responsive-title">Mejorar la misma pantalla «Tienda»</h1><p>En actividad2a tenemos una fila con un icono, un texto y el campo de búsqueda. Vamos a mejorar su presentación para celulares, sin empezar otra aplicación.</p></div>
