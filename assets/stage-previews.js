@@ -4,6 +4,8 @@
   const modules=['preparacion','punto-entrada','estructura','diseno','campo-texto','proyecto','carpetas','reutilizacion','validacion','objeto','extraccion','navegacion','responsive','estado','formularios','bloc'];
   const baseCars=['Renault 9','Renault 21','Mazda 3','Chevrolet Spark'];
   const runtimeMap=new Map();
+  // Ampliacion visible por defecto; el usuario puede alternar por modulo.
+  const expandedViews=new Map();
   const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const S={
     0:{editor:true,opened:false,ready:false},
@@ -286,7 +288,8 @@
     const editorTransition=internal&&before.editor&&after.editor;
     const effectType=editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
     const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
-    slot.innerHTML=`<section class="pv-shell" data-pv-module="${id}">
+    const isExpanded=expandedViews.get(id)!==false;
+    slot.innerHTML=`<section class="pv-shell${isExpanded?' pv-large-view':''}" data-pv-module="${id}">
       <header class="pv-header"><div><span class="pv-kicker">${status[item.kind||cfg.kind]}</span>
         <h2>Así va cambiando tu aplicación</h2>
         <p>Elige un paso, compara el antes y el después y reconoce la instrucción que lo produjo.</p></div>
@@ -303,6 +306,7 @@
         <button type="button" data-pv-phase="before" aria-pressed="${phase==='before'}" class="${phase==='before'?'active':''}">Antes</button>
         <button type="button" data-pv-phase="after" aria-pressed="${phase==='after'}" class="${phase==='after'?'active':''}">Después</button>
       </div>
+      <div class="pv-view-controls"><div><strong>Comparación de tamaño legible</strong><span>${isExpanded?'Cada vista ocupa todo el ancho para leer archivos y pantallas.':'Comparación reducida en dos columnas.'}</span></div><button type="button" data-pv-zoom aria-pressed="${isExpanded}" aria-label="${isExpanded?'Mostrar comparación compacta':'Ampliar comparación'}">${isExpanded?'↙ Vista compacta':'⤢ Ampliar comparación'}</button></div>
       <div class="pv-compare">
         <div class="pv-side${phase==='before'?' pv-selected':''}" data-pv-side="before">
           <div class="pv-side-heading"><strong>ANTES</strong><span>Antes de aplicar el cambio</span></div>
@@ -422,6 +426,21 @@
     const step=target.closest('[data-pv-step]'),dir=target.closest('[data-pv-prev],[data-pv-next]');
     const phase=target.closest('[data-pv-phase]'),jump=target.closest('[data-pv-jump]');
     const submit=target.closest('[data-pv-submit]');
+    const zoom=target.closest('[data-pv-zoom]');
+    if(zoom){
+      const shell=zoom.closest('[data-pv-module]');
+      const id=shell?.dataset.pvModule;
+      if(!shell||!id)return;
+      const large=!shell.classList.contains('pv-large-view');
+      expandedViews.set(id,large);
+      shell.classList.toggle('pv-large-view',large);
+      zoom.setAttribute('aria-pressed',String(large));
+      zoom.setAttribute('aria-label',large?'Mostrar comparación compacta':'Ampliar comparación');
+      zoom.textContent=large?'↙ Vista compacta':'⤢ Ampliar comparación';
+      const detail=shell.querySelector('.pv-view-controls span');
+      if(detail)detail.textContent=large?'Cada vista ocupa todo el ancho para leer archivos y pantallas.':'Comparación reducida en dos columnas.';
+      return;
+    }
     if(step||dir||phase){
       const id=(step||dir||phase).closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       if(step)render(id,Number(step.dataset.pvStep),r.phase);
