@@ -2627,7 +2627,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
     );
   }
 }</code></pre></div></details>
-</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#bloc">Siguiente: concepto de BLoC (sin implementar) →</a></div></section>
+</div><div class="lesson-end"><button class="button button-complete" data-complete="formularios">Marcar módulo como completado</button><a class="next-link" href="#bloc">Ruta B: BLoC explicado y aplicado paso a paso →</a></div></section>
 
         
 <section class="page lesson" id="bloc" aria-labelledby="bloc-title" data-lesson="10">
@@ -2956,9 +2956,10 @@ class _MainAppState extends State&lt;MainApp&gt; {
     );
   }
 }</code></pre></div></details>
-<div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>Terminal integrada de VS Code</code> · dentro de actividad2, después de guardar los 4 archivos</span><span>Ejecuta la aplicación desde el proyecto, no desde la carpeta lib.</span></div><div class="bloc-practice-code">
+<div class="bloc-practice-location"><strong>Ubicación exacta</strong><span><code>Terminal integrada de VS Code</code> · dentro de actividad2, después de guardar los 4 archivos</span><span>Ejecuta primero <code>flutter analyze</code> para revisar errores de Dart; después <code>flutter run</code> para probar la aplicación. Ambos se ejecutan desde la raíz de actividad2.</span></div><div class="bloc-practice-code">
 <div class="bloc-practice-code-label"><span>Terminal · actividad2</span><strong>EJECUTAR</strong></div>
-<pre class="code-block" data-code-mode="terminal"><code>flutter run</code></pre></div>
+<pre class="code-block" data-code-mode="terminal"><code>flutter analyze
+flutter run</code></pre></div>
 <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Prueba</th><th>Qué debe aparecer</th><th>Por qué sucede</th></tr></thead><tbody>
 <tr><td>Campo vacío</td><td>Renault 9, Renault 21, Mazda 3, Chevrolet Spark</td><td>El estado inicial contiene los cuatro vehículos</td></tr>
 <tr><td>Escribir <code>Renault</code></td><td>Renault 9 y Renault 21</td><td>El BLoC filtra coincidencias</td></tr>
