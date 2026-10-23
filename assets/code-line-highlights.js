@@ -94,6 +94,28 @@
       ['Vehículo creado:', 'vehiculo.nombre', 'vehiculo.disponible']
     ],
 
+    extraccion:[
+      ["main.dart", "CampoNombreVehiculo", "BotonTienda"],
+      ["lib/widgets/campo_nombre_vehiculo.dart"],
+      ["class CampoNombreVehiculo", "TextEditingController", "TextFormField("],
+      ["validator:", "length < 3", "return null"],
+      ["import 'widgets/campo_nombre_vehiculo.dart'"],
+      ["CampoNombreVehiculo(", "controller:"],
+      ["class BotonTienda", "VoidCallback", "onPressed:"],
+      ["import 'widgets/boton_tienda.dart'"],
+      ["BotonTienda(", "alPresionar:", "Vehiculo(nombre: nombre)"]
+    ],
+    navegacion:[
+      ["lib/pages/ayuda_page.dart"],
+      ["class AyudaPage", "Scaffold(", "AppBar("],
+      ["import '../widgets/boton_tienda.dart'"],
+      ["BotonTienda(", "Navigator.pop(context)"],
+      ["class AcercaPage", "Scaffold(", "Navigator.pop(context)"],
+      ["import 'ayuda_page.dart'"],
+      ["BotonTienda(", "Navigator.push(", "MaterialPageRoute("],
+      ["import 'pages/acerca_page.dart'"],
+      ["Builder(", "Navigator.push(", "AcercaPage()"]
+    ],
     bloc:[
       ['Interfaz → Evento → BLoC → Estado → Interfaz'],
       ["BuscarVehiculos('Renault')", 'VehiculosEncontrados('],
@@ -185,9 +207,38 @@
       ['Vehículo creado:', 'vehiculo.nombre'],
       ['class Vehiculo', 'final String', 'final bool'],
       null
+    ],
+    extraccion:[
+      ["main.dart", "CampoNombreVehiculo", "BotonTienda"],
+      ["lib/widgets/campo_nombre_vehiculo.dart"],
+      ["class CampoNombreVehiculo", "TextEditingController", "TextFormField("],
+      ["validator:", "length < 3", "return null"],
+      ["import 'widgets/campo_nombre_vehiculo.dart'"],
+      ["CampoNombreVehiculo(", "controller:"],
+      ["class BotonTienda", "VoidCallback", "onPressed:"],
+      ["import 'widgets/boton_tienda.dart'"],
+      ["BotonTienda(", "alPresionar:", "Vehiculo(nombre: nombre)"],
+      ["class CampoNombreVehiculo", "validator:"],
+      ["class BotonTienda", "VoidCallback"],
+      ["CampoNombreVehiculo(", "BotonTienda("]
+    ],
+    navegacion:[
+      ["lib/pages/ayuda_page.dart"],
+      ["class AyudaPage", "Scaffold(", "AppBar("],
+      ["import '../widgets/boton_tienda.dart'"],
+      ["BotonTienda(", "Navigator.pop(context)"],
+      ["class AcercaPage", "Scaffold(", "Navigator.pop(context)"],
+      ["import 'ayuda_page.dart'"],
+      ["BotonTienda(", "Navigator.push(", "MaterialPageRoute("],
+      ["import 'pages/acerca_page.dart'"],
+      ["Builder(", "Navigator.push(", "AcercaPage()"],
+      ["Tienda", "AcercaPage", "AyudaPage"],
+      ["class AyudaPage", "Navigator.pop("],
+      ["class AcercaPage", "Navigator.push("],
+      ["Builder(", "Navigator.push("]
     ]
   };
-  const previous={p03:'p02',p04:'p03',p05:'p04',p06:'p05',p07:'p06',p08:'p07',p09:'p05',p10:'p09',p11:'p10',p12:'p11'};
+  const previous={p03:'p02',p04:'p03',p05:'p04',p06:'p05',p07:'p06',p08:'p07',p09:'p05',p10:'p09',p11:'p10',p12:'p11',p13main:'p12',p14main:'p13main'};
 
   function meaningful(s){
     const t=s.trim();
