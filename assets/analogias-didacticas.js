@@ -763,11 +763,11 @@ window.FlutterLabAnalogias = {
   },
   "blocPractica": [
     [
-      "Como conseguir una herramienta que tu taller todavía no tiene.",
+      "Cómo conseguir una herramienta que tu taller todavía no tiene.",
       "`flutter pub add flutter_bloc` instala la biblioteca; no escribe widgets ni lógica por ti."
     ],
     [
-      "Como separar los mostradores «pedidos», «resultado» y «cocina».",
+      "Cómo separar los mostradores «pedidos», «resultado» y «cocina».",
       "La carpeta `bloc/` guarda evento, estado y lógica en archivos distintos."
     ],
     [

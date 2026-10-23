@@ -377,7 +377,7 @@
     const internal=item.visual===false;
     const editorTransition=internal&&before.editor&&after.editor;
     const effectType=id==='preparacion'?['Carpeta creada en Windows','Abrir carpeta en VS Code','Terminal integrada de VS Code','Proyecto Flutter generado','Archivo main.dart localizado','Primera ejecución de Flutter'][i]:item.readOnly?'Lectura del archivo que Flutter ya generó':editorTransition?'Cambio en VS Code o terminal':internal?'La pantalla Flutter sigue igual':'Cambio representado';
-    const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Concepto futuro'};
+    const status={original:'Basado en el código real',reconstruct:'Reconstrucción didáctica',proposed:'Funcionalidad propuesta',conceptual:'Explicación conceptual'};
     const isExpanded=expandedViews.get(id)!==false;
     slot.innerHTML=`<section class="pv-shell${isExpanded?' pv-large-view':''}" data-pv-module="${id}">
       <header class="pv-header"><div><span class="pv-kicker">${status[item.kind||cfg.kind]}</span>
