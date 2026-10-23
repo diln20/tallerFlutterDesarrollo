@@ -147,6 +147,10 @@
   const SHELL_COMMANDS = new Set(['flutter','dart','cd','Get-Location','Get-ChildItem','Test-Path','Set-Location','Write-Host']);
 
   function syntaxLanguage(pre, source) {
+    const mode = pre.dataset.codeMode;
+    if (['python', 'yaml', 'json', 'xml', 'plain'].includes(mode)) return 'plain';
+    if (['terminal', 'shell', 'powershell'].includes(mode)) return 'shell';
+    if (mode === 'dart') return 'dart';
     const label = pre.previousElementSibling?.classList.contains('code-label')
       ? pre.previousElementSibling.textContent.toLocaleLowerCase('es')
       : '';
