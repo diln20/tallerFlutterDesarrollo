@@ -260,6 +260,8 @@ Cuando un ejercicio solo pide reconocer líneas existentes, no debe mostrar dos 
 
 ## Auditoría de continuidad didáctica (octubre de 2026)
 
+El mapa completo de prerrequisitos, rutas, hallazgos y criterios de comprobación se encuentra en [Auditoría didáctica del 23 de octubre](docs/auditoria-continuidad-didactica-20261023.md).
+
 **Ruta común:** 01–05 (proyecto, archivo main, jerarquía de Flutter, Row/Column y TextField). En el módulo 05 existe una bifurcación explícita. **Ruta A (recomendada):** P1–P7, desde formulario básico y controlador hasta carpetas, reutilización, validación, modelo de datos, extracción y navegación. **Ruta B (alternativa):** 06–08, desde la versión final del módulo 05 hacia espaciado, StatefulWidget con setState y listas/filtrado. Las rutas son ejercicios independientes; no se debe sobreescribir sin respaldo un main.dart avanzado con un ejemplo que vuelve al módulo 05. BLoC permanece conceptual y puede estudiarse después de cualquiera de las dos rutas.
 
 Cada concepto nuevo se presenta con un bloque de prerrequisitos ANTES del fragmento que lo necesita: lista children, TextField/Expanded, variables/eventos/controller, argumentos required, if/null/validator, clase/objeto, VoidCallback, BuildContext/Navigator, espaciado, setState, List/where y evento/estado de BLoC. Se corrigieron enlaces de salida que enviaban de forma circular entre las rutas. Los archivos de referencia de la ruta A y de la ruta B siguen siendo independientes.
