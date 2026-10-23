@@ -17,6 +17,10 @@ El taller contiene ahora **16 módulos**, con **90 pasos** en las secciones «As
 - Primer formulario simulado en **9 pasos**, ahora construido directamente desde el `main.dart` original de 42 líneas: `Text`, `TextField` y `ElevatedButton` se insertan después de la `Row` real. Luego se enseña el cambio a `StatefulWidget`, `TextEditingController`, la acción `debugPrint`, `clear()` y `dispose()`, sin listas ni `for`.
 - En teléfonos pequeños, selector entre Antes y Después en lugar de comprimir ambas pantallas.
 
+### Vista ampliada y accesibilidad de las simulaciones
+
+La sección **«Así va cambiando tu aplicación»** aparece **ampliada por defecto**: en lugar de colocar dos miniaturas una al lado de la otra, muestra **Antes** y **Después** a todo el ancho, en vertical, con tipografía más grande para las pantallas Flutter, el editor de VS Code, el Explorador y los comandos de terminal. Cada simulación tiene un botón **«↙ Vista compacta»** para recuperar el diseño reducido; al pulsarlo, cambia a **«⤢ Ampliar comparación»**. La preferencia se conserva al cambiar de paso dentro del mismo módulo. En móviles se mantiene el selector Antes/Después.
+
 ### Antes y después: diferencias comprobables
 
 La comparación ya no repite el mismo código o la misma imagen cuando el paso ocurre en el editor o en la terminal:
