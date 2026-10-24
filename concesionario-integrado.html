@@ -86,7 +86,9 @@ final precio = (json['precio'] as num).toDouble();</code></pre>
 <div class="step"><span class="stepno">03</span><h3>Separar services de repositories</h3><span class="path">lib/services/api_service.dart</span> <span class="path">lib/repositories/vehiculo_repository.dart</span>
 <p>El servicio conoce direcciones, métodos HTTP, cabeceras y JSON. El repositorio ofrece operaciones comprensibles para el catálogo como <code>crear</code>, <code>editar</code>, <code>eliminar</code>, <code>listar</code>, <code>subirImagen</code> y <code>cambiarFavorito</code>. La página no necesita preparar peticiones HTTP.</p>
 <pre><code>final nuevo = await _repositorio.crear(formulario.datos);
-await _repositorio.subirImagen(nuevo.id, formulario.imagen!);</code></pre><p>Este fragmento resume dos operaciones consecutivas. En la implementación real primero se comprueba si se seleccionó una fotografía, se conserva el ID al editar y se capturan los errores.</p>
+if (formulario.imagen != null) {
+  await _repositorio.subirImagen(nuevo.id, formulario.imagen!);
+}</code></pre><p>Este fragmento resume dos operaciones consecutivas. En la implementación real primero se comprueba si se seleccionó una fotografía, se conserva el ID al editar y se capturan los errores.</p>
 </div>
 <div class="step"><span class="stepno">04</span><h3>Cargar fotos en navegador y móvil</h3><span class="path">lib/services/imagen_service.dart</span>
 <p>Usa <code>image_picker</code> + <code>XFile.readAsBytes()</code>. Eso permite seleccionar archivos sin importar <code>dart:io</code>, incompatible con Flutter web.</p>
@@ -113,7 +115,15 @@ final bytes = await archivo.readAsBytes();</code></pre>
     final vehiculo = datos.datos[index];
     return VehiculoCard(
       key: ValueKey(vehiculo.id),
-      // Las acciones se envían según el rol.
+      vehiculo: vehiculo,
+      urlImagen: widget.api.urlImagen,
+      onFavorito: () => _favorito(vehiculo),
+      onEditar: puedeEditar
+          ? () => _guardarVehiculo(vehiculo)
+          : null,
+      onEliminar: puedeEliminar
+          ? () => _eliminar(vehiculo)
+          : null,
     );
   },
 )</code></pre><p>El fragmento es explicativo: consulta <code>catalogo_page.dart</code> para los argumentos completos del widget.</p>
