@@ -1,0 +1,73 @@
+/* Paginación de la colección: controles claros, accesibles y adaptables. */
+.wc-catalog-page-settings{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:12px;margin:13px 0 12px;padding:12px 15px;border:1px solid var(--border);
+  border-radius:13px;background:var(--surface)}
+.wc-page-size-label{display:inline-flex;align-items:center;gap:10px;color:var(--text-soft);font-size:12px;font-weight:800}
+#catalog-page-size{min-height:44px;border:1px solid var(--border);border-radius:9px;
+  padding:8px 12px;background:var(--surface);color:var(--heading);font:inherit}
+#catalog-range{font-size:12px;font-weight:750;color:var(--heading)}
+.wc-pagination{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:5px;margin:14px 0 18px;padding:8px;border:1px solid var(--border);
+  border-radius:13px;background:var(--surface)}
+.wc-pagination[hidden]{display:none!important}
+.wc-pagination button{min-width:44px;min-height:44px;padding:8px 10px;
+  border:1px solid var(--border);border-radius:9px;background:var(--surface-soft);
+  color:var(--heading);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.wc-pagination button:hover:not(:disabled){color:var(--blue);border-color:var(--blue)}
+.wc-pagination button:disabled{opacity:.44;cursor:not-allowed}
+.wc-pagination button[aria-current="page"]{color:#fff;background:#2058a0;border-color:#2058a0}
+.wc-pagination-numbers{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center}
+.wc-pagination-ellipsis{padding:6px 3px;color:var(--text-soft);font-weight:800}
+.wc-pagination button:focus-visible,#catalog-page-size:focus-visible{outline:3px solid #e2a93e;outline-offset:2px}
+.wc-results-header{scroll-margin-top:18px}
+
+/* P10.1 - paginación local interactiva. */
+.pl-lesson-demo{margin:22px 0;padding:20px;border:1px solid var(--border);border-radius:18px;
+  background:var(--surface-soft);scroll-margin-top:18px}
+.pl-lesson-demo header h2{font-size:18px;margin:6px 0 8px;color:var(--heading)}
+.pl-lesson-demo header p{line-height:1.75;font-size:12.5px;max-width:780px;margin:0 0 16px;color:var(--text-soft)}
+.pl-lesson-controls{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin-bottom:15px}
+.pl-lesson-controls label,.pl-lesson-controls form{display:flex;flex-direction:column;gap:6px;color:var(--heading);font-size:11.5px;font-weight:750}
+.pl-lesson-controls label:first-child{flex:1 1 160px}
+.pl-lesson-controls select,.pl-lesson-controls input{padding:9px 11px;min-height:44px;
+  border-radius:9px;background:var(--surface);color:var(--heading);border:1px solid var(--border);font:inherit}
+.pl-lesson-controls form{flex:1 1 220px}
+.pl-lesson-controls form>div{display:flex;gap:6px;min-width:0}
+.pl-lesson-controls form input{min-width:0;flex:1}
+.pl-lesson-controls form button{min-height:44px;border-radius:9px;padding:9px 13px;
+  background:#175da8;color:#fff;font-weight:800;border:0;cursor:pointer}
+.pl-lesson-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,.85fr);gap:14px}
+.pl-list-box,.pl-calculation-box{min-width:0;background:var(--surface);border:1px solid var(--border);
+  border-radius:13px;padding:12px}
+.pl-list{display:flex;flex-direction:column;gap:5px;min-height:220px}
+.pl-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 11px;
+  background:var(--surface-soft);border:1px solid var(--border);border-radius:8px}
+.pl-row>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.pl-row strong{font-size:12px;color:var(--heading);overflow-wrap:anywhere}
+.pl-row small{font-size:10px;color:var(--text-soft)}
+.pl-row button{min-height:44px;padding:8px 10px;border-radius:8px;border:1px solid #e6c4c4;
+  background:#fff4f4;color:#9c3232;font-size:11px;font-weight:800;cursor:pointer}
+.pl-empty{font-size:12px;line-height:1.7;color:var(--text-soft);margin:20px 0}
+.pl-nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-top:12px}
+.pl-nav button,.pl-reset{border:1px solid var(--border);border-radius:8px;background:var(--surface);
+  color:var(--heading);padding:9px 12px;font-weight:800;font-size:11px;min-height:44px;cursor:pointer}
+.pl-nav button:disabled{opacity:.45;cursor:not-allowed}
+.pl-nav output{font-size:11.5px;font-weight:750;color:var(--heading)}
+.pl-calculation-box>strong{display:block;font-size:12px;color:var(--heading);margin:2px 0 12px}
+.pl-calculation-box pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11.5px;line-height:1.75;
+  padding:12px;border-radius:9px;color:#edf5ff;background:#15263e;min-height:170px;max-height:360px;overflow:auto}
+.pl-calculation-box p,.pl-message{font-size:11px;line-height:1.75;color:var(--text-soft)}
+.pl-message{margin:14px 0 0;min-height:22px}
+.pl-lesson-demo button:focus-visible,.pl-lesson-demo input:focus-visible,.pl-lesson-demo select:focus-visible{outline:3px solid #e5aa3e;outline-offset:2px}
+body[data-theme="dark"] .pl-row button{color:#ffd0cb;background:#402626;border-color:#885353}
+@media(max-width:850px){.pl-lesson-layout{grid-template-columns:1fr}.pl-calculation-box pre{min-height:90px}}
+@media(max-width:640px){
+ .wc-catalog-page-settings{align-items:stretch}
+ #catalog-range{display:block;width:100%;text-align:center}
+ .wc-pagination{gap:4px;padding:7px}
+ .wc-pagination button{min-width:42px}
+ .wc-pagination .wc-pager-word{display:none}
+ .wc-pagination-numbers{gap:2px}
+ .pl-lesson-demo{padding:13px}
+ .pl-lesson-controls label,.pl-lesson-controls form{flex:1 1 100%}
+}
