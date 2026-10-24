@@ -163,6 +163,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     expect(find.text('Catálogo de vehículos'), findsOneWidget);
+    expect(
+      tester.getSize(find.byType(TextField).first).width,
+      greaterThan(285),
+    );
+    expect(
+      tester.getSize(find.byType(DropdownButtonFormField<String>).first).width,
+      greaterThan(285),
+    );
     api.dispose();
     await tester.binding.setSurfaceSize(null);
   });
