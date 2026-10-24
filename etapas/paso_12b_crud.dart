@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/titulo_seccion.dart';
+import 'widgets/contador_toques.dart';
+import 'utils/colores_app.dart';
 import 'models/vehiculo.dart';
 
 void main() {
@@ -65,8 +67,14 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text('Tienda')),
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text('Tienda'),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -116,6 +124,10 @@ class _MainAppState extends State<MainApp> {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: guardarVehiculo,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColoresApp.accion,
+                  foregroundColor: Colors.white,
+                ),
                 child: Text(
                   indiceEnEdicion == null
                       ? 'Agregar vehículo'
@@ -152,6 +164,8 @@ class _MainAppState extends State<MainApp> {
                   );
                 },
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
