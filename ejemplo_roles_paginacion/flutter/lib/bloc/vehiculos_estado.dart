@@ -11,6 +11,7 @@ class VehiculosEstado {
     this.error,
     this.idEnEdicion,
     this.revisionGuardado = 0,
+    this.idRestaurado,
   });
 
   final SesionUsuario? sesion;
@@ -21,6 +22,7 @@ class VehiculosEstado {
   final String? error;
   final int? idEnEdicion;
   final int revisionGuardado;
+  final int? idRestaurado;
 
   bool get autenticado => sesion != null;
   bool get puedeEditar => sesion?.puedeModificar ?? false;
@@ -39,6 +41,7 @@ class VehiculosEstado {
     int? idEnEdicion,
     bool limpiarEdicion = false,
     int? revisionGuardado,
+    int? idRestaurado,
   }) =>
       VehiculosEstado(
         sesion: sesion ?? this.sesion,
@@ -50,5 +53,6 @@ class VehiculosEstado {
         idEnEdicion:
             limpiarEdicion ? null : (idEnEdicion ?? this.idEnEdicion),
         revisionGuardado: revisionGuardado ?? this.revisionGuardado,
+        idRestaurado: idRestaurado ?? this.idRestaurado,
       );
 }
