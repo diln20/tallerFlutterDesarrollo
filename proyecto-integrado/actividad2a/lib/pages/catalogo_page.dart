@@ -278,12 +278,16 @@ class _CatalogoPageState extends State<CatalogoPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 12),
-                  Wrap(
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final anchoMovil = constraints.maxWidth < 650
+                          ? constraints.maxWidth : null;
+                      return Wrap(
                     spacing: 12,
                     runSpacing: 12,
                     children: [
                       SizedBox(
-                        width: 260,
+                        width: anchoMovil ?? 260,
                         child: TextField(
                           controller: _buscar,
                           onChanged: (_) => _programarFiltro(),
@@ -294,7 +298,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
                         ),
                       ),
                       SizedBox(
-                        width: 210,
+                        width: anchoMovil ?? 210,
                         child: TextField(
                           controller: _marca,
                           onChanged: (_) => _programarFiltro(),
@@ -305,7 +309,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
                         ),
                       ),
                       SizedBox(
-                        width: 230,
+                        width: anchoMovil ?? 230,
                         child: DropdownButtonFormField<double?>(
                           initialValue: _precioMaximo,
                           isExpanded: true,
@@ -341,7 +345,7 @@ class _CatalogoPageState extends State<CatalogoPage> {
                         ),
                       ),
                       SizedBox(
-                        width: 205,
+                        width: anchoMovil ?? 205,
                         child: DropdownButtonFormField<String>(
                           isExpanded: true,
                           initialValue: _orden,
@@ -375,6 +379,8 @@ class _CatalogoPageState extends State<CatalogoPage> {
                         ),
                       ),
                     ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 4),
                   Wrap(
