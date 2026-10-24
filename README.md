@@ -360,3 +360,28 @@ Para validar el contenido sin abrir Flutter:
 node tests/verificar-conceptos-flutter.mjs
 node tests/validar-secuencia-flutter.mjs
 ~~~
+
+## P5.1 ampliado: cómo listar objetos con ListView.builder
+
+[Ver la explicación paso a paso](index.html#crud-listado-detallado)
+y [el informe didáctico](docs/listview-builder-listtile-p51.md).
+
+La sección explica uno a uno `List<Vehiculo>`, `ListView`, el constructor
+`ListView.builder`, `itemCount`, `itemBuilder`, `context`, `indice`,
+`vehiculos[indice]`, `ListTile`, `title`, `subtitle`, los cierres de
+paréntesis y las opciones de la fila. También permite probar 0, 1 y 3
+vehículos desde una demostración interactiva.
+
+La variante que parte de P1 con `SingleChildScrollView` usa
+`ListView.builder(shrinkWrap: true, physics: NeverScrollableScrollPhysics())`
+sin envolverla en `Expanded` vertical. Se conserva y explica la variante
+con `Expanded` para columnas de altura limitada. Las referencias
+`etapas/paso_12b_crud.dart`, `paso_13_extraccion.dart` y
+`paso_14_navegacion.dart` siguen la misma solución de P1.
+
+Para verificar estos archivos:
+
+~~~powershell
+node tests/verificar-listado-crud.mjs
+node tests/validar-secuencia-flutter.mjs
+~~~

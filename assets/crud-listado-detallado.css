@@ -1,0 +1,39 @@
+/* P5.1: Explicación de ListView.builder, índices y ListTile. */
+.crud-list-guide{margin:22px 0 24px;padding:clamp(14px,2vw,24px);border:1px solid var(--border,#d6dfef);border-radius:16px;background:var(--surface-soft,#f4f7fc)}
+.crud-list-guide>.deep-heading h3{font-size:clamp(18px,2vw,23px);line-height:1.38;color:var(--heading,#17223f);margin:10px 0}
+.crud-list-guide p{font-size:13px;line-height:1.8}
+.crud-list-guide .code-label{margin-top:12px}
+.crud-list-guide .code-block{max-width:100%;overflow:auto}
+.crud-list-concept{margin:16px 0;padding:16px 17px 14px;border:1px solid var(--border,#cbd6e7);border-radius:12px;background:var(--surface,#fff)}
+.crud-list-concept-head{display:flex;gap:12px;align-items:center}
+.crud-list-concept-head h4{margin:0;font-size:15px;color:var(--heading,#14203d);line-height:1.5}
+.crud-list-number{display:inline-flex;align-items:center;justify-content:center;flex:none;width:36px;height:36px;border-radius:10px;background:#e0ebff;color:#1e4e9b;font-weight:800;font-size:12px}
+.crud-list-where{border-left:3px solid #527ec0;background:var(--surface-soft,#edf3fb);border-radius:0 8px 8px 0;padding:9px 12px;margin:11px 0;font-size:12px;line-height:1.7;color:var(--text,#263755)}
+.crud-list-explanation{padding:0 2px}
+.crud-list-explanation p{margin:10px 0 0}
+.crud-list-guide .lesson-table{min-width:550px}
+.crud-list-guide .lesson-table td,.crud-list-guide .lesson-table th{font-size:12px;line-height:1.7}
+.crud-list-guide>.notice{margin:16px 0}
+.crud-list-lab{margin:20px 0;padding:clamp(12px,2vw,20px);border:1px solid #afc3e1;border-radius:14px;background:var(--surface,#fff)}
+.crud-list-lab-head>strong{display:block;font-size:15px;color:var(--heading,#16223d)}
+.crud-list-lab-controls{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.crud-list-lab-controls button{border:1px solid #93abce;border-radius:9px;padding:10px 14px;min-height:44px;background:var(--surface-soft,#f1f5ff);color:var(--text,#1e3354);font-weight:700;font-size:12px;cursor:pointer}
+.crud-list-lab-controls button[aria-pressed=true]{background:#173f84;color:#fff;border-color:#173f84}
+.crud-list-lab-controls button:focus-visible{outline:3px solid #4ea6e3;outline-offset:3px}
+.crud-list-lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.crud-list-lab-values,.crud-list-lab-view{border-radius:11px;border:1px solid var(--border,#d5dce9);padding:13px;min-width:0;background:var(--surface-soft,#f4f7fc)}
+.crud-list-lab-values>span,.crud-list-lab-view>span{display:block;font-size:12px;color:var(--heading,#243e68);font-weight:700;margin-bottom:11px}
+.crud-list-lab-source{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:2;word-break:break-word}
+.crud-list-lab-source code{display:block;padding:5px 8px;border-radius:6px;background:var(--surface,#fff);color:var(--text,#233452);margin:4px 0}
+.crud-list-lab-count{font-size:12px;font-weight:700;margin:11px 0 0;line-height:1.5}
+.crud-list-lab-output{display:flex;flex-direction:column;gap:7px;min-height:76px}
+.crud-list-lab-row{display:flex;align-items:center;gap:10px;border:1px solid #c4d4e9;border-radius:9px;background:var(--surface,#fff);padding:9px 11px}
+.crud-list-lab-index{flex:none;border-radius:7px;background:#dbeafe;color:#174582;font-size:11px;font-weight:800;padding:6px 7px}
+.crud-list-lab-row strong{display:block;color:var(--heading,#122344);font-size:12px;line-height:1.5}
+.crud-list-lab-row small{font-size:11px;color:var(--text-soft,#62728f)}
+.crud-list-lab-empty{font-size:13px;color:var(--text-soft,#566580);line-height:1.7;margin:12px 0}
+.crud-list-lab-hint{font-size:12px;line-height:1.7;color:var(--text-soft,#54667f);margin:12px 0 0}
+.crud-list-extension{margin:22px 0;padding:18px;border:1px solid var(--border,#d6dfef);border-radius:12px;background:var(--surface-soft,#f4f7fc)}
+.crud-list-extension h4{margin:0 0 12px;font-size:16px;line-height:1.4;color:var(--heading,#172542)}
+.crud-list-extension .lesson-table{min-width:500px}
+@media(max-width:760px){.crud-list-lab-grid{grid-template-columns:1fr}.crud-list-guide{padding:13px}.crud-list-concept{padding:13px}.crud-list-extension{padding:13px}}

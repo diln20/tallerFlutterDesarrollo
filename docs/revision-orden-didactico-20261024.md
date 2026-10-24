@@ -66,3 +66,16 @@ completo, luego crea `ContadorToques` (StatefulWidget), centraliza
 los colores en `ColoresApp` y verifica el resultado. La práctica de
 validación P4 continúa sobre el mismo formulario sin borrar estas
 ampliaciones opcionales. Se conservan los archivos base para comparar.
+
+
+## Listas de objetos ampliadas en P5.1
+
+El listado se explica ANTES del bloque final de código en nueve pasos:
+`List<Vehiculo>`, `ListView`, `SizedBox`, `itemCount`, `itemBuilder`,
+`indice`, `ListTile`, `shrinkWrap`/physics y cierres de código. Después
+se agregan las acciones Editar y Eliminar. La demostración interactiva
+prueba 0, 1 y 3 vehículos.
+
+Se corrigió la continuidad con P1: las referencias P5.1, P6 y P7 usan
+`SingleChildScrollView` y listas adaptadas sin `Expanded` vertical.
+Ver [informe específico P5.1](listview-builder-listtile-p51.md).

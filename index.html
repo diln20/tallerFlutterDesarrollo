@@ -24,6 +24,7 @@
   <script src="./assets/stage-preview-data.js?v=bloc-practica-01" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
   <script src="./assets/crud-lesson.js?v=20261023-P14-glosario-final" defer></script>
+  <script src="./assets/crud-listado-detallado.js?v=20261024-crud-list-v1" defer></script>
   <script src="./assets/bloc-crud.js?v=20261023-P8" defer></script>
   <script src="./assets/advanced-lessons.js?v=P14-sintaxis-v1" defer></script>
   <script src="./assets/propiedades-flutter.js?v=20261024-valores-v1" defer></script>
@@ -53,6 +54,7 @@
   <link rel="stylesheet" href="./assets/preview-code-focus.css?v=20261023-vscode-lectura-v9">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
   <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023-DirectCRUD-v1">
+  <link rel="stylesheet" href="./assets/crud-listado-detallado.css?v=20261024-crud-list-v1">
   <link rel="stylesheet" href="./assets/bloc-crud.css?v=20261023-P8">
   <link rel="stylesheet" href="./assets/advanced-lessons.css?v=P14-debug-banner-v2">
   <link rel="stylesheet" href="./assets/propiedades-flutter.css?v=20261024-valores-v1">
@@ -2244,23 +2246,99 @@ final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>child: const Text('Agregar vehículo')</code></div>
 <div><strong>Ubicación exacta:</strong> En el mismo <code>Column(children: [...])</code>, después del cierre <code>),</code> del botón del paso 3 y antes de <code>],</code> que cierra la lista principal de widgets.</div></div></div>
-<div class="code-label">AÑADE este bloque después del botón existente</div><pre class="code-block"><code>const SizedBox(height: 12),
-Expanded(
-  child: ListView.builder(
-    itemCount: vehiculos.length,
-    itemBuilder: (context, indice) {
-      final vehiculo = vehiculos[indice];
-      return ListTile(
-        title: Text(vehiculo.nombre),
-        subtitle: Text(vehiculo.disponible
-            ? 'Disponible'
-            : 'No disponible'),
-      );
-    },
+<div class="crud-list-guide" id="crud-listado-detallado">
+<div class="deep-heading"><span>P5.1 · EL LISTADO DESDE CERO</span>
+<h3>Comprender cómo se muestra cada vehículo, línea por línea</h3>
+<p>Antes de insertar el bloque completo, vamos a reconocer cada widget, su propiedad y el objeto que recibe. Todos los fragmentos pequeños son <strong>solo para leer y comprender</strong>. El único código que debes añadir a <code>main.dart</code> está después de estos ejemplos, en el apartado «Código completo del paso 4».</p></div>
+<div class="notice notice-info"><strong>En qué archivo estás:</strong><p>Continúa en <code>actividad2/lib/main.dart</code>, dentro de <code>_MainAppState.build</code>, en <code>Scaffold → body → SingleChildScrollView → Column → children</code>. No crees otra clase ni otra lista de vehículos. Si conservaste un <code>Center → Column</code> con altura limitada, consulta la variante con <code>Expanded</code> al final de esta explicación.</p></div>
+<section class="crud-list-concept" id="crud-list-concept-1"><div class="crud-list-concept-head"><span class="crud-list-number">01</span><h4>La lista de objetos: ¿qué se va a dibujar?</h4></div><p>En el paso 1 declaraste una <code>List&lt;Vehiculo&gt;</code>. Cada elemento contiene un <code>nombre</code> y un <code>disponible</code>. La lista empieza vacía; <code>guardarVehiculo()</code> añade cada objeto y llama a <code>setState</code> para actualizar la pantalla.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> <code>_MainAppState</code>, fuera de <code>build</code> (creada en el paso 1)</div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>final List&lt;Vehiculo&gt; vehiculos = [];
+// Después de guardar un vehículo:
+vehiculos.add(Vehiculo(nombre: nombre));</code></pre><div class="crud-list-explanation"><p><code>List&lt;Vehiculo&gt;</code> significa una lista de objetos de tipo <code>Vehiculo</code>. <code>[]</code> es una lista vacía; <code>add()</code> inserta un nuevo objeto al final. No escribas <code>add()</code> dentro de <code>build</code> ni dentro de <code>itemBuilder</code>: duplicarías registros al reconstruirse la interfaz.</p></div></section><section class="crud-list-concept" id="crud-list-concept-2"><div class="crud-list-concept-head"><span class="crud-list-number">02</span><h4>ListView y ListView.builder: no son dos listas distintas</h4></div><p><code>ListView</code> organiza filas que pueden desplazarse. <code>ListView(children: [...])</code> sirve cuando conoces pocas filas y las escribes a mano. <code>ListView.builder</code> es un <strong>constructor nombrado</strong> de la misma clase, pensado para generar filas a partir de datos.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Es el widget que dibuja la colección; se insertará en <code>Column.children</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>ListView(
+  children: const [
+    ListTile(title: Text(&#x27;Renault 9&#x27;)),
+    ListTile(title: Text(&#x27;Mazda 3&#x27;)),
+  ],
+)</code></pre><div class="crud-list-explanation"><p>El ejemplo anterior tiene dos filas escritas manualmente y sirve solo como comparación. <strong>No lo añadas al proyecto.</strong> En tu Tienda los vehículos cambian al pulsar «Agregar», así que utilizaremos <code>ListView.builder</code>: obtiene los elementos de <code>vehiculos</code> sin escribir a mano un <code>ListTile</code> por cada carro.</p></div></section><section class="crud-list-concept" id="crud-list-concept-3"><div class="crud-list-concept-head"><span class="crud-list-number">03</span><h4>Separación visual con SizedBox</h4></div><p>Al terminar <code>ElevatedButton</code>, el listado quedaría pegado al botón. <code>SizedBox</code> crea un espacio de 12 píxeles lógicos en altura y no muestra contenido.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> <code>Column(children: [ ... ])</code>, después del cierre del botón Guardar</div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>const SizedBox(height: 12),</code></pre><div class="crud-list-explanation"><p><code>height: 12</code> indica la separación vertical. Puedes utilizar otras medidas numéricas, por ejemplo <code>8</code>, <code>16</code> o <code>24</code>. La coma final es necesaria porque este widget es un elemento de <code>children: [ ]</code>.</p></div></section><section class="crud-list-concept" id="crud-list-concept-4"><div class="crud-list-concept-head"><span class="crud-list-number">04</span><h4>itemCount: ¿cuántas filas hay?</h4></div><p><code>itemCount</code> recibe un <code>int</code> que indica cuántos elementos debe producir el listado. La propiedad <code>length</code> devuelve el tamaño actual de la lista de objetos.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Dentro de <code>ListView.builder(</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>itemCount: vehiculos.length,</code></pre><div class="crud-list-explanation"><p>Con cero vehículos, <code>vehiculos.length</code> vale <code>0</code> y no se solicita ninguna fila. Con Renault 9 vale <code>1</code>; con Renault 9, Mazda 3 y Chevrolet Spark vale <code>3</code>. <strong>No escribas un número fijo como <code>itemCount: 10</code></strong> si solo guardaste dos objetos: un acceso a un índice inexistente puede causar un error.</p></div></section><section class="crud-list-concept" id="crud-list-concept-5"><div class="crud-list-concept-head"><span class="crud-list-number">05</span><h4>itemBuilder: ¿quién construye cada fila?</h4></div><p><code>itemBuilder</code> recibe una <strong>función</strong> que Flutter llama cuando necesita construir una fila visible. La función recibe dos argumentos: <code>context</code> e <code>indice</code>.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Dentro del mismo <code>ListView.builder(</code>, después de <code>itemCount</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>itemBuilder: (context, indice) {
+  // Aquí construiremos la fila del vehículo solicitado.
+},</code></pre><div class="crud-list-explanation"><p><code>context</code> es el <code>BuildContext</code> asociado a esa posición del árbol de widgets. <code>indice</code> es un <code>int</code> que empieza en <code>0</code>: 0 para el primer carro, 1 para el segundo, 2 para el tercero. <code>{ }</code> delimita el cuerpo de la función; <code>},</code> cierra la propiedad <code>itemBuilder</code>. La versión final debe <strong>devolver un Widget</strong> mediante <code>return</code>.</p></div></section><section class="crud-list-concept" id="crud-list-concept-6"><div class="crud-list-concept-head"><span class="crud-list-number">06</span><h4>Leer el objeto que corresponde a indice</h4></div><p><code>vehiculos[indice]</code> busca un elemento por su posición. Lo guardamos en la variable local <code>vehiculo</code> para poder leer <code>vehiculo.nombre</code> y <code>vehiculo.disponible</code> varias veces.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Dentro de las llaves de <code>itemBuilder</code>, antes del <code>return</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>final vehiculo = vehiculos[indice];</code></pre><div class="crud-list-explanation"><p>Cuando <code>indice == 0</code>, obtienes el primer objeto. <code>final</code> impide reasignar esa variable local, pero no cambia los objetos de la lista. Recuerda la diferencia entre <code>vehiculos</code> (plural: <strong>toda la lista</strong>) y <code>vehiculo</code> (singular: <strong>un elemento</strong>). Flutter solicita índices menores que <code>itemCount</code>.</p></div></section><section class="crud-list-concept" id="crud-list-concept-7"><div class="crud-list-concept-head"><span class="crud-list-number">07</span><h4>ListTile: construir una fila con título y subtítulo</h4></div><p><code>ListTile</code> es un widget Material que organiza la información de una fila. Su propiedad <code>title</code> recibe el widget principal, aquí <code>Text(vehiculo.nombre)</code>; <code>subtitle</code> recibe el texto secundario.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> El valor que devuelve <code>itemBuilder</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>return ListTile(
+  title: Text(vehiculo.nombre),
+  subtitle: Text(
+    vehiculo.disponible ? &#x27;Disponible&#x27; : &#x27;No disponible&#x27;,
   ),
+);</code></pre><div class="crud-list-explanation"><p>El operador <code>condición ? valorSiEsVerdadero : valorSiEsFalso</code> revisa el booleano <code>vehiculo.disponible</code>. Si vale <code>true</code>, muestra «Disponible»; si vale <code>false</code>, muestra «No disponible». <code>Text(...)</code> dibuja esas palabras. <code>return</code> entrega a Flutter <strong>un widget de fila</strong> para el índice solicitado.</p></div></section><section class="crud-list-concept" id="crud-list-concept-8"><div class="crud-list-concept-head"><span class="crud-list-number">08</span><h4>shrinkWrap y physics: evitar dos desplazamientos verticales</h4></div><p>En P1 ya usaste <code>SingleChildScrollView</code> para que el formulario pueda desplazarse cuando aparece el teclado. Aquí la lista es pequeña y está dentro de ese desplazamiento general.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Dentro de <code>ListView.builder(</code>, antes de <code>itemCount</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>shrinkWrap: true,
+physics: const NeverScrollableScrollPhysics(),</code></pre><div class="crud-list-explanation"><p><code>shrinkWrap: true</code> pide a la lista que calcule su altura según el contenido, en lugar de expandirse a una altura ilimitada. <code>NeverScrollableScrollPhysics()</code> impide que esta lista intente desplazarse por separado; se desplaza la página exterior. Es adecuado para <strong>pocos vehículos de la práctica</strong>. Para cientos o miles de registros es preferible una lista con altura limitada y construcción verdaderamente perezosa, o la paginación que se estudiará en P13.</p></div></section><section class="crud-list-concept" id="crud-list-concept-9"><div class="crud-list-concept-head"><span class="crud-list-number">09</span><h4>Cómo cerrar las funciones y los widgets sin perder paréntesis</h4></div><p>Flutter usa cierres diferentes para cada bloque. <code>};</code> termina una instrucción Dart; <code>},</code> termina la función usada como argumento; <code>),</code> cierra una llamada a un constructor y deja lista una nueva propiedad o un nuevo hijo.</p><div class="crud-list-where"><strong>Dónde se encuentra:</strong> Al final de la lista, dentro del mismo <code>Column.children</code></div><div class="code-label">OBSERVA ESTAS LÍNEAS · no las pegues por separado</div><pre class="code-block" data-code-mode="dart"><code>    return ListTile(
+      title: Text(vehiculo.nombre),
+    );
+  },
+),</code></pre><div class="crud-list-explanation"><p>Lee desde adentro: <code>);</code> termina el <code>return ListTile(...);</code>. Después <code>},</code> cierra la función <code>itemBuilder</code>. Por último <code>),</code> cierra <code>ListView.builder</code> dentro de <code>children</code>. No agregues aquí un segundo <code>Column</code> ni un nuevo <code>Scaffold</code>.</p></div></section><h4>Opciones frecuentes de ListTile, para ampliar la misma fila después</h4>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Propiedad</th><th>Qué admite</th><th>Ejemplo de la Tienda</th></tr></thead><tbody>
+<tr><td><code>leading</code></td><td>Un <code>Widget</code> antes del título.</td><td><code>const Icon(Icons.directions_car)</code>.</td></tr>
+<tr><td><code>title</code></td><td>Un <code>Widget</code> principal.</td><td><code>Text(vehiculo.nombre)</code>.</td></tr>
+<tr><td><code>subtitle</code></td><td>Un <code>Widget</code> secundario o <code>null</code>.</td><td>Disponibilidad del vehículo.</td></tr>
+<tr><td><code>trailing</code></td><td>Un <code>Widget</code> al final de la fila.</td><td>Un <code>IconButton</code> para editar; se añadirá en el paso 5.</td></tr>
+<tr><td><code>onTap</code></td><td>Una función o <code>null</code>.</td><td>Puede abrir detalles al pulsar la fila completa; aún no necesitamos esa acción.</td></tr>
+<tr><td><code>enabled</code></td><td><code>true</code> o <code>false</code>.</td><td>Habilitar o deshabilitar la interacción.</td></tr>
+<tr><td><code>dense</code></td><td><code>true</code>, <code>false</code> o <code>null</code>.</td><td>Solicitar filas más compactas.</td></tr>
+<tr><td><code>contentPadding</code></td><td>Un <code>EdgeInsets</code>.</td><td><code>const EdgeInsets.symmetric(horizontal: 12)</code>.</td></tr>
+</tbody></table></div>
+<div class="notice notice-tip"><strong>Después de aprender ListTile:</strong><p>En el paso 5 añadirás <code>trailing</code> y el botón «Editar». En el paso 6 agregarás «Eliminar». No implementes todavía esos botones mientras compruebas que el listado básico funciona.</p></div>
+
+<div class="crud-list-lab" id="crud-list-lab" aria-label="Simulación del listado de objetos en Flutter">
+  <div class="crud-list-lab-head"><strong>Comprueba cómo itemCount e indice generan las filas</strong>
+    <p>Selecciona 0, 1 o 3 vehículos. La simulación representa lo que construiría <code>ListView.builder</code>; no modifica tu app ni guarda datos.</p></div>
+  <div class="crud-list-lab-controls" role="group" aria-label="Cantidad de vehículos para probar">
+    <button type="button" data-crud-quantity="0" aria-pressed="true">0 vehículos</button>
+    <button type="button" data-crud-quantity="1" aria-pressed="false">1 vehículo</button>
+    <button type="button" data-crud-quantity="3" aria-pressed="false">3 vehículos</button>
+  </div>
+  <div class="crud-list-lab-grid">
+    <div class="crud-list-lab-values"><span>Datos en memoria</span>
+      <div data-crud-source class="crud-list-lab-source"></div>
+      <p class="crud-list-lab-count" data-crud-count aria-live="polite"></p>
+    </div>
+    <div class="crud-list-lab-view"><span>Filas que muestra ListTile</span>
+      <div data-crud-output class="crud-list-lab-output" aria-live="polite"></div>
+    </div>
+  </div>
+  <p class="crud-list-lab-hint" data-crud-hint></p>
+</div>
+<h4>¿Y Expanded? Cuándo sí y cuándo no</h4>
+<p>El código de la imagen original mostraba <code>Expanded(child: ListView.builder(...))</code>. <strong>Ese ejemplo es correcto cuando la Column tiene una altura limitada</strong>, por ejemplo, si es el <code>body</code> directo de <code>Scaffold</code>. <code>Expanded</code> obliga a la lista a ocupar el espacio restante.</p>
+<div class="code-label">SOLO LECTURA · alternativa con Column de altura limitada</div><pre class="code-block" data-code-mode="dart"><code>body: Column(
+  children: [
+    const Text(&#x27;Inventario de la Tienda&#x27;),
+    Expanded(
+      child: ListView.builder(
+        itemCount: vehiculos.length,
+        itemBuilder: (context, indice) {
+          return ListTile(
+            title: Text(vehiculos[indice].nombre),
+          );
+        },
+      ),
+    ),
+  ],
+),</code></pre><div class="notice notice-warning"><strong>No mezcles las dos soluciones:</strong><p>Si tu <code>body</code> ya es <code>SingleChildScrollView(child: Column(...))</code>, <strong>no pongas <code>Expanded</code> vertical</strong> en sus <code>children</code>, porque la altura en la dirección del scroll no está acotada. Utiliza el bloque recomendado abajo con <code>shrinkWrap</code> y <code>NeverScrollableScrollPhysics</code>. El <code>Expanded</code> del buscador <strong>dentro de una Row</strong> sigue siendo válido: distribuye ancho, no alto.</p></div>
+<p><a href="https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html" target="_blank" rel="noopener noreferrer">Documentación de ListView.builder</a> · <a href="https://api.flutter.dev/flutter/material/ListTile-class.html" target="_blank" rel="noopener noreferrer">Propiedades de ListTile</a> · <a href="https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html" target="_blank" rel="noopener noreferrer">SingleChildScrollView</a>.</p>
+</div>
+
+<div class="code-label">CÓDIGO COMPLETO DEL PASO 4 · AÑADE UNA SOLA VEZ DESPUÉS DEL BOTÓN</div><pre class="code-block" data-code-mode="dart"><code>const SizedBox(height: 12),
+ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  itemCount: vehiculos.length,
+  itemBuilder: (context, indice) {
+    final vehiculo = vehiculos[indice];
+    return ListTile(
+      title: Text(vehiculo.nombre),
+      subtitle: Text(
+        vehiculo.disponible ? &#x27;Disponible&#x27; : &#x27;No disponible&#x27;,
+      ),
+    );
+  },
 ),</code></pre>
-<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>Expanded</code> permite que la lista use el espacio vertical disponible sin desbordar la <code>Column</code>. <code>itemCount</code> es el número de carros guardados; <code>itemBuilder</code> construye cada fila según su posición (<code>indice</code>); <code>ListTile</code> presenta nombre y disponibilidad.</p></div>
-<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Prueba agregar «Renault 9» y luego «Mazda 3». Deben aparecer <strong>dos filas</strong> debajo del formulario sin cambiar de página.</p></div>
+<div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>ListView.builder</code> recorre la colección de objetos por índice. <code>itemCount</code> conoce el número de carros; <code>itemBuilder</code> obtiene el objeto de cada índice y <code>ListTile</code> muestra el nombre y la disponibilidad. La lista no provoca un segundo desplazamiento: la pantalla principal sigue siendo desplazable cuando aparece el teclado.</p></div>
+<div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Prueba con cero vehículos (no hay filas) y después agrega «Renault 9» y «Mazda 3». Deben aparecer <strong>dos filas</strong> debajo del formulario sin cambiar de página. Pulsa Hot Reload y comprueba que al guardar se actualiza gracias al <code>setState</code> del paso 2.</p></div>
 </article>
 <article class="next-step crud-direct-step" id="crud-paso-5">
 <div class="next-step-top"><span class="next-step-number">05</span><div><span class="crud-step-kicker">CAMBIO 5 · REALIZAR 4 CAMBIOS CONCRETOS</span><h3>Editar el nombre de un vehículo</h3></div></div>
@@ -2312,6 +2390,17 @@ Expanded(
     icon: const Icon(Icons.edit),
   ),
 );</code></pre></div>
+<div class="crud-list-extension" id="crud-listtile-edicion">
+<h4>¿Qué se agregó realmente a cada ListTile para poder editar?</h4>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Widget / propiedad</th><th>Por qué se coloca aquí</th><th>Acción concreta</th></tr></thead><tbody>
+<tr><td><code>trailing:</code></td><td>Recibe el widget que se muestra al final de la fila.</td><td>Agrega el control de edición junto al nombre.</td></tr>
+<tr><td><code>IconButton</code></td><td>Es un botón que puede mostrar un icono.</td><td>La persona pulsa el lápiz de su vehículo.</td></tr>
+<tr><td><code>icon: const Icon(Icons.edit)</code></td><td>Selecciona el dibujo del lápiz; no ejecuta una acción por sí mismo.</td><td>Se ve el icono de editar.</td></tr>
+<tr><td><code>tooltip:</code></td><td>Ofrece una descripción al pasar el mouse o en tecnologías de asistencia.</td><td>Se muestra «Editar vehículo».</td></tr>
+<tr><td><code>onPressed: () =&gt; comenzarEdicion(indice)</code></td><td>Ejecuta la función <strong>cuando se pulsa</strong>. La flecha equivale a una función corta.</td><td>Carga en el formulario el vehículo de esa fila, no todos.</td></tr>
+</tbody></table></div>
+<p>El <code>indice</code> llega desde el <code>itemBuilder</code> del paso 4; por eso cada fila puede enviar su propia posición a <code>comenzarEdicion</code>. En el paso 6 habrá dos iconos y necesitaremos <code>Row(mainAxisSize: MainAxisSize.min)</code> dentro de <code>trailing</code> para que ocupen solo el ancho necesario.</p>
+</div>
 <div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p><code>int?</code> admite un número o <code>null</code>. Si vale <code>null</code>, el usuario está creando; si tiene un índice, está editando esa posición. El operador <code>!</code> de <code>indiceEnEdicion!</code> se usa únicamente tras comprobar que no es nulo. <code>vehiculos[indice] = Vehiculo(...)</code> reemplaza el objeto existente, sin añadir un duplicado.</p></div>
 <div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Pulsa «Editar» sobre Renault 9: su nombre aparece en el formulario, el botón cambia a «Guardar cambios». Cámbialo a «Renault 21»: debe continuar habiendo dos carros, no tres.</p></div>
 </article>
@@ -2358,10 +2447,10 @@ flutter run</code></pre>
 <div class="next-step-meaning"><strong>Lo que acabas de cambiar</strong><p>El análisis te informa sobre errores de Dart y Flutter. <code>flutter run</code> ejecuta la Tienda en el dispositivo seleccionado. Prueba crear dos objetos, editar el primero y eliminar el segundo. Este CRUD guarda información <strong>solo en memoria</strong>, no en una base de datos.</p></div>
 <div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Puedes comparar tu <code>lib/main.dart</code> con el archivo final de referencia. Si todo funciona, continúa a P6 sin reemplazarlo.</p></div>
 </article>
-<div class="crud-final-reference"><div><span class="crud-final-mark">RESULTADO COMPLETO</span><h2>Tu archivo final de P5.1</h2><p>Este archivo es una guía de verificación. Si seguiste los siete cambios, ya deberías tenerlo construido. <strong>No lo pegues encima sin revisar tu propio trabajo.</strong></p><a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final de la etapa ↗</a></div>
-<details class="crud-full-details"><summary>Comparar con el archivo completo de referencia (desplegable)</summary><div class="code-label">lib/main.dart · así debe quedar al terminar P5.1</div><pre class="code-block"><code>import 'package:flutter/material.dart';
-import 'widgets/titulo_seccion.dart';
-import 'models/vehiculo.dart';
+<div class="crud-final-reference"><div><span class="crud-final-mark">RESULTADO COMPLETO</span><h2>Tu archivo final de P5.1</h2><p>Este archivo es una guía de verificación. Se usa <code>SingleChildScrollView</code> y una lista con <code>shrinkWrap</code> para que también funcione cuando el teclado reduce la altura disponible. Si seguiste los siete cambios, ya deberías tenerlo construido. <strong>No lo pegues encima sin revisar tu propio trabajo.</strong></p><a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final de la etapa ↗</a></div>
+<details class="crud-full-details"><summary>Comparar con el archivo completo de referencia (desplegable)</summary><div class="code-label">lib/main.dart · así debe quedar al terminar P5.1</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+import &#x27;widgets/titulo_seccion.dart&#x27;;
+import &#x27;models/vehiculo.dart&#x27;;
 
 void main() {
   runApp(const MainApp());
@@ -2379,7 +2468,6 @@ class _MainAppState extends State&lt;MainApp&gt; {
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
   final List&lt;Vehiculo&gt; vehiculos = [];
   int? indiceEnEdicion;
-
 
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
@@ -2428,11 +2516,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Tienda')),
-        body: Center(
+        appBar: AppBar(title: const Text(&#x27;Tienda&#x27;)),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TituloSeccion(texto: 'Primer widget'),
+              const TituloSeccion(texto: &#x27;Primer widget&#x27;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -2440,33 +2531,33 @@ class _MainAppState extends State&lt;MainApp&gt; {
                 children: [
                   Icon(Icons.directions_car),
                   const SizedBox(width: 8),
-                  Text('Ingenieria de Sistemas'),
+                  Text(&#x27;Ingenieria de Sistemas&#x27;),
                   Expanded(
                     child: TextField(
                       decoration: const InputDecoration(
-                        hintText: 'Buscar marca o modelo',
+                        hintText: &#x27;Buscar marca o modelo&#x27;,
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const TituloSeccion(texto: 'Agregar un vehículo'),
+              const TituloSeccion(texto: &#x27;Agregar un vehículo&#x27;),
               const SizedBox(height: 10),
               Form(
                 key: formularioKey,
                 child: TextFormField(
                   controller: vehiculoController,
                   decoration: const InputDecoration(
-                    hintText: 'Nombre del vehículo',
+                    hintText: &#x27;Nombre del vehículo&#x27;,
                     border: OutlineInputBorder(),
                   ),
                   validator: (valor) {
                     if (valor == null || valor.trim().isEmpty) {
-                      return 'Escribe un nombre';
+                      return &#x27;Escribe un nombre&#x27;;
                     }
                     if (valor.trim().length &lt; 3) {
-                      return 'Mínimo 3 caracteres';
+                      return &#x27;Mínimo 3 caracteres&#x27;;
                     }
                     return null;
                   },
@@ -2475,37 +2566,41 @@ class _MainAppState extends State&lt;MainApp&gt; {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: guardarVehiculo,
-                child: Text(indiceEnEdicion == null ? 'Agregar vehículo' : 'Guardar cambios'),
+                child: Text(
+                  indiceEnEdicion == null
+                      ? &#x27;Agregar vehículo&#x27;
+                      : &#x27;Guardar cambios&#x27;,
+                ),
               ),
               const SizedBox(height: 12),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: vehiculos.length,
-                  itemBuilder: (context, indice) {
-                    final vehiculo = vehiculos[indice];
-                    return ListTile(
-                      title: Text(vehiculo.nombre),
-                      subtitle: Text(vehiculo.disponible
-                          ? 'Disponible'
-                          : 'No disponible'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            tooltip: 'Editar vehículo',
-                            onPressed: () =&gt; comenzarEdicion(indice),
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            tooltip: 'Eliminar vehículo',
-                            onPressed: () =&gt; borrarVehiculo(indice),
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vehiculos.length,
+                itemBuilder: (context, indice) {
+                  final vehiculo = vehiculos[indice];
+                  return ListTile(
+                    title: Text(vehiculo.nombre),
+                    subtitle: Text(
+                      vehiculo.disponible ? &#x27;Disponible&#x27; : &#x27;No disponible&#x27;,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: &#x27;Editar vehículo&#x27;,
+                          onPressed: () =&gt; comenzarEdicion(indice),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          tooltip: &#x27;Eliminar vehículo&#x27;,
+                          onPressed: () =&gt; borrarVehiculo(indice),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -2513,10 +2608,11 @@ class _MainAppState extends State&lt;MainApp&gt; {
       ),
     );
   }
-}</code></pre></details>
+}
+</code></pre></details>
 </div>
 <div class="notice notice-info crud-parse-note"><strong>¿Y <code>parse()</code> o <code>tryParse()</code>?</strong><p>En este CRUD todavía no los necesitas: <code>nombre</code> es texto (<code>String</code>) y el índice de la lista ya es un número (<code>int</code>) que entrega el botón. <code>int.parse()</code> convierte texto a entero, pero lanza un error si el texto no es numérico; <code>int.tryParse()</code> devuelve <code>null</code> cuando no puede convertirlo. Los usaremos cuando agreguemos un campo numérico real, como el año o el precio de un vehículo. Así no introduces código que <strong>no pertenece todavía</strong> a esta aplicación.</p></div>
-<div class="checklist" data-checklist="crud"><label><input type="checkbox"> Agregué la lista dentro de _MainAppState.</label><label><input type="checkbox"> El botón original llama a guardarVehiculo().</label><label><input type="checkbox"> Los carros nuevos aparecen en ListView.</label><label><input type="checkbox"> Puedo editar un vehículo sin duplicarlo.</label><label><input type="checkbox"> Eliminar retira solo el carro seleccionado.</label><label><input type="checkbox"> Entiendo trim(), setState(), add() y removeAt() dentro del proyecto.</label></div>
+<div class="checklist" data-checklist="crud"><label><input type="checkbox"> Agregué la lista dentro de _MainAppState.</label><label><input type="checkbox"> El botón original llama a guardarVehiculo().</label><label><input type="checkbox"> Entiendo la diferencia entre ListView y ListView.builder.</label><label><input type="checkbox"> Sé qué representan itemCount, itemBuilder, context e indice.</label><label><input type="checkbox"> Comprendo cómo ListTile muestra nombre y disponibilidad.</label><label><input type="checkbox"> Distingo cuándo usar Expanded y cuándo usar shrinkWrap en un formulario desplazable.</label><label><input type="checkbox"> Los carros nuevos aparecen en ListView.</label><label><input type="checkbox"> Puedo editar un vehículo sin duplicarlo.</label><label><input type="checkbox"> Eliminar retira solo el carro seleccionado.</label><label><input type="checkbox"> Entiendo trim(), setState(), add() y removeAt() dentro del proyecto.</label></div>
 <div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL · EN TU APP</span><h3>Completa estas cuatro comprobaciones</h3><p>Agrega «Renault 9» y «Mazda 3». Modifica Renault 9 por «Renault 21», elimina Mazda 3 y confirma que solo aparece Renault 21. Explica qué función se ejecuta con cada botón y por qué <code>setState()</code> actualiza la pantalla.</p></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="crud">Marcar módulo como completado</button><a class="next-link" href="#extraccion">Siguiente: reutilizar los widgets que acabas de construir →</a></div>
 </section>

@@ -21,7 +21,6 @@ class _MainAppState extends State<MainApp> {
   final List<Vehiculo> vehiculos = [];
   int? indiceEnEdicion;
 
-
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
       return;
@@ -70,8 +69,11 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Tienda')),
-        body: Center(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TituloSeccion(texto: 'Primer widget'),
               const SizedBox(height: 20),
@@ -96,44 +98,44 @@ class _MainAppState extends State<MainApp> {
               const SizedBox(height: 10),
               Form(
                 key: formularioKey,
-                child: CampoNombreVehiculo(
-                  controller: vehiculoController,
-                ),
+                child: CampoNombreVehiculo(controller: vehiculoController),
               ),
               const SizedBox(height: 12),
               BotonTienda(
-                texto: indiceEnEdicion == null ? 'Agregar vehículo' : 'Guardar cambios',
+                texto: indiceEnEdicion == null
+                    ? 'Agregar vehículo'
+                    : 'Guardar cambios',
                 alPresionar: guardarVehiculo,
               ),
               const SizedBox(height: 12),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: vehiculos.length,
-                  itemBuilder: (context, indice) {
-                    final vehiculo = vehiculos[indice];
-                    return ListTile(
-                      title: Text(vehiculo.nombre),
-                      subtitle: Text(vehiculo.disponible
-                          ? 'Disponible'
-                          : 'No disponible'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            tooltip: 'Editar vehículo',
-                            onPressed: () => comenzarEdicion(indice),
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            tooltip: 'Eliminar vehículo',
-                            onPressed: () => borrarVehiculo(indice),
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vehiculos.length,
+                itemBuilder: (context, indice) {
+                  final vehiculo = vehiculos[indice];
+                  return ListTile(
+                    title: Text(vehiculo.nombre),
+                    subtitle: Text(
+                      vehiculo.disponible ? 'Disponible' : 'No disponible',
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: 'Editar vehículo',
+                          onPressed: () => comenzarEdicion(indice),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          tooltip: 'Eliminar vehículo',
+                          onPressed: () => borrarVehiculo(indice),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
