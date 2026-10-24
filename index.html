@@ -52,9 +52,11 @@
   <script src="./assets/widget-catalog-explanations.js?v=catalogo-20261023-v5" defer></script>
   <script src="./assets/catalog-listview-lab.js?v=catalogo-20261023-v5" defer></script>
   <script src="./assets/paginacion-local-demo.js?v=20261023-p101" defer></script>
+  <script src="./assets/mejoras-acumulativas-demo.js?v=20261023-p103a" defer></script>
   <link rel="stylesheet" href="./assets/widget-catalog-extended.css">
   <link rel="stylesheet" href="./assets/widget-collection-refresh.css?v=catalogo-20261023-v5">
   <link rel="stylesheet" href="./assets/catalog-pagination.css?v=20261023-p101">
+  <link rel="stylesheet" href="./assets/mejoras-acumulativas.css?v=20261023-p103a">
   <link rel="stylesheet" href="./assets/preview-accessibility.css?v=20261023-ampliado">
   <link rel="stylesheet" href="./assets/preview-vscode-icons.css?v=20261023-v1">
   <link rel="stylesheet" href="./assets/preview-focus.css?v=20261023-auditoria-v3">
@@ -5646,6 +5648,18 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <tr><td>Ordenar</td><td><code>OrdenVehiculos</code> en el estado del BLoC</td><td>Selector de nombre o precio</td></tr>
 <tr><td>Paginar resultados</td><td><code>paginaActual</code> y <code>registrosPorPagina</code> de P10.1</td><td>Se muestran únicamente los resultados filtrados de la página</td></tr>
 </tbody></table></div>
+<section class="ux-lesson-lab" id="ux-lab-p102" data-ux-demo="filters" aria-labelledby="ux-title-p102">
+<span class="wc-lab-kicker">DEMOSTRACIÓN PRÁCTICA · P10.2</span><h2 id="ux-title-p102">Prueba favoritos, filtros y disponibilidad</h2><p>Activa una estrella, cambia la disponibilidad y ordena por nombre o precio. Observa que los objetos se conservan aunque la lista visible cambie. Esta es una simulación HTML; en tu aplicación real las acciones se envían al BLoC.</p>
+<div class="ux-example-layout"><div class="ux-example-list">
+<div class="ux-example-chiprow" role="group" aria-label="Filtros del ejemplo">
+<button type="button" data-ux-filter="todos" aria-pressed="true">Todos</button>
+<button type="button" data-ux-filter="disponibles" aria-pressed="false">Disponibles</button>
+<button type="button" data-ux-filter="favoritos" aria-pressed="false">★ Favoritos</button></div>
+<div class="ux-example-head"><strong>Inventario filtrado</strong><label for="ux-order-p102">Orden
+<select id="ux-order-p102" data-ux-order><option value="recientes">Registro</option><option value="nombre">Nombre A–Z</option><option value="precio">Precio menor</option></select></label></div>
+<div data-ux-list aria-live="polite"></div></div>
+<aside class="ux-example-info"><strong>¿Qué está ocurriendo?</strong><p>La estrella cambia <code>favorito</code>; el estado de disponibilidad cambia <code>disponible</code>. Los chips eligen un valor de <code>FiltroVehiculos</code> y la lista resultante se ordena antes de paginar.</p><p data-ux-feedback class="ux-example-feedback" role="status">Selecciona una acción para observar el cambio.</p><button type="button" class="ux-example-reset" data-ux-reset>Restablecer la práctica</button></aside></div>
+</section>
 <div class="next-section-heading"><span>TRABAJO ACUMULATIVO · 7 PASOS</span><h2>Agrega nuevas funciones a la aplicación existente</h2></div>
 <article class="next-step" id="p102-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Ampliar el objeto Vehiculo sin perder sus campos anteriores</h3></div><p>El objeto del paso anterior ya tiene nombre, año, precio, correo y disponible. Agrega <code>favorito</code> con valor predeterminado <code>false</code> y un método <code>copiarCon()</code> para conservar los atributos que no cambian.</p><div class="next-where"><div class="next-where-action">MODIFICAR EL MODELO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/models/vehiculo.dart</code></div><div><strong>Ubicación:</strong> Dentro de <code>class Vehiculo</code>, después de la propiedad <code>disponible</code>.</div><div><strong>Buscar con Ctrl + F:</strong> <code>final bool disponible;</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>final bool disponible;
 final bool favorito;
@@ -6436,6 +6450,17 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P10.3</span><span class="status-pill planned">Continúa directamente desde P10.2</span></div><h1 id="mejoras-panel-title">Resumen interactivo, confirmación y Deshacer</h1><p>Seguimos con <strong>la misma Tienda</strong>. Aprovecharemos la pestaña <strong>Resumen</strong> que creaste en P7.1 para mostrar indicadores calculados desde BLoC. También haremos más segura la eliminación de vehículos con <code>AlertDialog</code> y <code>SnackBarAction</code>.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Resultado esperado</strong><p>La pantalla Resumen mostrará total registrados, disponibles, favoritos y precio promedio, más una barra de progreso. El botón «Explorar favoritos» abrirá directamente los registros favoritos de la Tienda. Al eliminar aparecerá una confirmación y un mensaje <strong>Deshacer</strong>.</p></div></div>
 <div class="notice notice-info"><strong>Punto de partida: P10.2 completamente funcional.</strong><p>En esta etapa <strong>no cambias</strong> el formulario ni los filtros; solo amplías <code>lib/main.dart</code>, los eventos, el BLoC y agregas el widget reutilizable <code>lib/widgets/tarjeta_indicador.dart</code>. El modelo, la búsqueda y la paginación permanecen.</p></div>
+<section class="ux-lesson-lab" id="ux-lab-p103" data-ux-demo="summary" aria-labelledby="ux-title-p103">
+<span class="wc-lab-kicker">DEMOSTRACIÓN PRÁCTICA · P10.3</span><h2 id="ux-title-p103">Resumen vivo y recuperación de un vehículo</h2><p>Las cuatro tarjetas consultan la misma colección. Pulsa Eliminar, cancela o confirma y luego utiliza <strong>Deshacer</strong>. Los totales y la disponibilidad cambian con los registros. Es una simulación del comportamiento Flutter, no una conexión real con PostgreSQL.</p>
+<div class="ux-example-layout"><div class="ux-example-list"><div class="ux-example-head"><strong>Vehículos registrados</strong></div><div data-ux-list aria-live="polite"></div>
+<div class="ux-example-confirm" data-ux-confirm hidden><p>¿Eliminar <strong data-ux-confirm-name></strong>?</p><button type="button" data-ux-cancel>Cancelar</button> <button type="button" data-ux-accept>Eliminar</button></div>
+<div class="ux-example-snackbar" data-ux-snackbar hidden><span>Vehículo eliminado</span><button type="button" data-ux-undo>Deshacer</button></div></div>
+<aside class="ux-example-info"><strong>Indicadores del BLoC</strong><div class="ux-example-stats" data-ux-summary>
+<div class="ux-example-stat"><span>Registrados</span><strong data-ux-stat="total">5</strong></div>
+<div class="ux-example-stat"><span>Disponibles</span><strong data-ux-stat="available">4</strong></div>
+<div class="ux-example-stat"><span>Favoritos</span><strong data-ux-stat="favorites">2</strong></div>
+<div class="ux-example-stat"><span>Precio promedio</span><strong data-ux-stat="mean">0</strong></div></div>
+<label for="ux-progress-p103">Disponibilidad</label><progress id="ux-progress-p103" data-ux-progress max="1" value="0.8"></progress><p class="ux-example-feedback" data-ux-feedback role="status">Prueba eliminar y restaurar un vehículo favorito.</p><button type="button" class="ux-example-reset" data-ux-reset>Restablecer la práctica</button></aside></div></section>
 <div class="next-section-heading"><span>CONTINUIDAD DEL PROYECTO · 6 PASOS</span><h2>Una pantalla Resumen útil y acciones reversibles</h2></div>
 <article class="next-step" id="p103-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear una tarjeta reutilizable para indicadores</h3></div><p>La pestaña Resumen tendrá cuatro tarjetas con el mismo estilo. En vez de escribir cuatro estructuras completas, crea un <code>StatelessWidget</code> que reciba texto, número, icono y color.</p><div class="next-where"><div class="next-where-action">CREAR UN WIDGET REUTILIZABLE</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/tarjeta_indicador.dart</code></div><div><strong>Ubicación:</strong> Crea este archivo dentro de la carpeta <code>widgets</code> existente; no crees otra carpeta lib.</div><div><strong>Buscar con Ctrl + F:</strong> <code>lib/widgets/</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>class TarjetaIndicador extends StatelessWidget {
   const TarjetaIndicador({
