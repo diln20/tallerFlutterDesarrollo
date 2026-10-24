@@ -7,43 +7,49 @@ Esta carpeta contiene la **implementación final coherente** del taller, publica
 - `actividad2a_api/`: FastAPI, SQLite, permisos, archivos de imagen, pruebas.
 - [Guía paso a paso y auditoría](./actividad2a/docs/GUIA_INTEGRACION_FINAL.md).
 
-## Ejecutar en un equipo nuevo
-En una carpeta de trabajo:
+## Ejecutar directamente desde GitHub
+
+**Método recomendado y verificado en una copia recién clonada.** No necesitas copiar clases manualmente ni borrar el código existente.
 
 ```powershell
-flutter create --empty actividad2a
-```
+git clone https://github.com/diln20/tallerFlutterDesarrollo.git
+cd tallerFlutterDesarrollo\proyecto-integrado\actividad2a
 
-Copia **el contenido completo** de `proyecto-integrado/actividad2a/lib/`, `test/`, `docs/`, `pubspec.yaml`, `pubspec.lock` y `analysis_options.yaml` encima del proyecto generado. Integra las modificaciones de los manifiestos Android/iOS desde esta carpeta (sin sustituir el proyecto entero si tus versiones de Flutter difieren). Luego:
+# Genera los archivos de plataforma que no se almacenan en esta guía.
+# Flutter conserva lib/main.dart, pubspec.yaml y los manifiestos ya existentes.
+flutter create --empty --platforms android,ios,web --project-name actividad2a .
 
-```powershell
-cd actividad2a
 flutter pub get
 flutter analyze
 flutter test
 ```
 
-En otra terminal coloca la carpeta `proyecto-integrado/actividad2a_api` como `actividad2a_api` al lado de la app:
+Se comprobó que este procedimiento conserva sin cambios los archivos propios de la app y que las 12 pruebas Flutter pasan después de regenerar Android, iOS y web. Si usas una versión de Flutter distinta, revisa primero su compatibilidad.
+
+En una segunda terminal, inicia la **API independiente** que está junto a la app:
 
 ```powershell
-cd actividad2a_api
+cd tallerFlutterDesarrollo\proyecto-integrado\actividad2a_api
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 .venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8091
 ```
 
-Abre `http://127.0.0.1:8091/docs`.
+Si ya te encuentras en la carpeta `actividad2a`, usa `cd ..\actividad2a_api`. Abre `http://127.0.0.1:8091/docs` para conocer la API.
 
-**Web**:
+**Web:** ejecuta desde `actividad2a`:
+
 ```powershell
-cd actividad2a
 flutter run -d chrome --dart-define=API_URL=http://127.0.0.1:8091
 ```
 
-**Emulador Android**:
+**Emulador Android:** desde la misma carpeta:
+
 ```powershell
 flutter run -d emulator-5554 --dart-define=API_URL=http://10.0.2.2:8091
 ```
+
+En un teléfono físico la URL cambia a una dirección alcanzable del servidor; fuera del laboratorio debes configurar HTTPS, no exponer las credenciales de ejemplo.
 
 ## Cuentas exclusivamente de práctica local
 - Administrador: `admin@demo.local`, clave `admin12345`.
