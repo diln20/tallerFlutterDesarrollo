@@ -9,7 +9,7 @@ const js=read('assets/widget-catalog.js');
 const lesson=read('etapas/paso_17b_paginacion_local.dart');
 const demo=read('assets/paginacion-local-demo.js');
 assert.ok(app.includes("'paginacion-local'"),'P10.1 debe ser navegable');
-const ids=['validaciones-esenciales','paginacion-local','api-postgres'];
+const ids=['validaciones-esenciales','paginacion-local','mejoras-favoritos'];
 const locate=(id)=>html.indexOf('<section class="page lesson next-module advanced-module" id="'+id+'"');
 const positions=ids.map(locate);
 assert.ok(positions.every(x=>x>=0),'Falta una de las lecciones');
@@ -31,7 +31,7 @@ for(const id of ['catalog-page-size','catalog-range','catalog-pagination-top','c
  assert.ok(html.includes('id="'+id+'"'),'Falta control '+id);
 }
 assert.ok(html.includes('href="#paginacion-local">Siguiente: paginación local de ListView'));
-assert.ok(region.includes('href="#api-postgres"'));
+assert.ok(region.includes('href="#mejoras-favoritos"'));
 assert.ok(html.includes('./assets/catalog-pagination.css'));
 assert.ok(html.includes('./assets/paginacion-local-demo.js'));
 assert.doesNotThrow(()=>new Script(js), 'JS de catálogo sintácticamente válido');
