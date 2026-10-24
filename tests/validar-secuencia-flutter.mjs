@@ -28,7 +28,12 @@ const secciones = [...html.matchAll(/<section\b[^>]*\bclass="page[^"]*"[^>]*\bid
 comprobar(JSON.stringify(secciones) === JSON.stringify(esperadas.filter(id => id !== 'catalogo-widgets').concat('catalogo-widgets')), 'secciones visibles en orden');
 const sidebar = [...html.matchAll(/<a\s+class="nav-link[^"]*"[^>]*\bdata-route="([^"]+)"/g)].map(m => m[1]);
 const sinCatalogo = x => x.filter(id => id !== 'catalogo-widgets');
-comprobar(JSON.stringify(sinCatalogo(sidebar)) === JSON.stringify(sinCatalogo(esperadas)), 'menu principal respeta la misma secuencia');
+// El menú visual destaca P9 y P10 justo después de P7.1. La secuencia
+// de estudio mantiene P8 antes de P9/P10 porque estas lecciones usan BLoC.
+const esperadoMenu = esperadas.filter(id => !['menu-hamburguesa','validaciones-esenciales'].includes(id));
+const posicionBarra = esperadoMenu.indexOf('barra-navegacion');
+esperadoMenu.splice(posicionBarra + 1, 0, 'menu-hamburguesa', 'validaciones-esenciales');
+comprobar(JSON.stringify(sinCatalogo(sidebar)) === JSON.stringify(sinCatalogo(esperadoMenu)), 'menu: P9 y P10 inmediatamente despues de barra inferior P7.1');
 
 const todosIds = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
 comprobar(new Set(todosIds).size === todosIds.length, 'IDs HTML no se repiten');
