@@ -84,11 +84,12 @@ class VehiculosApi {
     );
   }
 
-  Future<void> crear({
+  Future<int> crear({
     required String nombre,
     required int anio,
     required double precio,
     required String correo,
+    bool disponible = true,
   }) async {
     final respuesta = await _cliente.post(
       Uri.parse(urlBase + '/vehiculos'),
@@ -98,10 +99,12 @@ class VehiculosApi {
         'anio': anio,
         'precio': precio,
         'correo': correo,
-        'disponible': true,
+        'disponible': disponible,
       }),
     );
     _verificar(respuesta, 201);
+    final objeto = jsonDecode(respuesta.body) as Map<String, dynamic>;
+    return objeto['id'] as int;
   }
 
   Future<void> actualizar({
