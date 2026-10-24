@@ -60,6 +60,8 @@ class _TiendaPageState extends State<TiendaPage> {
   final buscarController = TextEditingController();
 
   int _revisionVista = 0;
+  int? _idRestauradoProcesado;
+  int? _idFavoritoPendiente;
   int indicePestana = 0;
   FiltroVista filtroVista = FiltroVista.todos;
   OrdenVista ordenVista = OrdenVista.recientes;
@@ -111,11 +113,13 @@ class _TiendaPageState extends State<TiendaPage> {
   }
 
   Future<void> confirmarEliminar(Vehiculo vehiculo) async {
+    final bloc = context.read<VehiculosBloc>();
+    if (!bloc.state.puedeEditar || bloc.state.enviando) return;
     final confirmado = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text('¿Eliminar vehículo?'),
-        content: Text('Se eliminará ' + vehiculo.nombre + '. Esta acción no se puede deshacer.'),
+        content: Text('Se eliminará ${vehiculo.nombre} del servidor.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
@@ -129,7 +133,33 @@ class _TiendaPageState extends State<TiendaPage> {
       ),
     );
     if (!mounted || confirmado != true) return;
-    context.read<VehiculosBloc>().add(VehiculoEliminado(vehiculo.id));
+    bloc.add(VehiculoEliminado(vehiculo.id));
+    final fin = await bloc.stream.firstWhere((estado) =>
+        !estado.enviando &&
+        (estado.error != null ||
+            !estado.pagina.datos.any((v) => v.id == vehiculo.id)));
+    if (!mounted) return;
+    if (fin.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(fin.error!)),
+      );
+      return;
+    }
+    final mensajes = ScaffoldMessenger.of(context);
+    mensajes.hideCurrentSnackBar();
+    mensajes.showSnackBar(SnackBar(
+      content: Text('${vehiculo.nombre} eliminado del servidor'),
+      duration: const Duration(seconds: 7),
+      action: SnackBarAction(
+        label: 'Deshacer',
+        onPressed: () {
+          if (bloc.isClosed) return;
+          _idFavoritoPendiente =
+              favoritos.contains(vehiculo.id) ? vehiculo.id : null;
+          bloc.add(VehiculoRestaurado(vehiculo));
+        },
+      ),
+    ));
   }
 
   @override
@@ -149,6 +179,23 @@ class _TiendaPageState extends State<TiendaPage> {
     return BlocConsumer<VehiculosBloc, VehiculosEstado>(
       listener: (context, estado) {
         if (estado.autenticado) claveController.clear();
+        if (estado.idRestaurado != null &&
+            estado.idRestaurado != _idRestauradoProcesado) {
+          _idRestauradoProcesado = estado.idRestaurado;
+          if (_idFavoritoPendiente != null) {
+            favoritos.remove(_idFavoritoPendiente);
+            favoritos.add(estado.idRestaurado!);
+            _idFavoritoPendiente = null;
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text(
+              'Vehículo restaurado por la API con un nuevo ID')),
+          );
+        }
+        if (estado.error != null && _idFavoritoPendiente != null) {
+          favoritos.remove(_idFavoritoPendiente);
+          _idFavoritoPendiente = null;
+        }
         if (estado.revisionGuardado > _revisionVista) {
           _revisionVista = estado.revisionGuardado;
           limpiarFormulario();
@@ -328,6 +375,8 @@ class _TiendaPageState extends State<TiendaPage> {
                   limpiarFormulario();
                   buscarController.clear();
                   _revisionVista = 0;
+                  _idRestauradoProcesado = null;
+                  _idFavoritoPendiente = null;
                   favoritos.clear();
                   filtroVista = FiltroVista.todos;
                   ordenVista = OrdenVista.recientes;
