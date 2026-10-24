@@ -3698,10 +3698,11 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="lesson-end"><button class="button button-complete" data-complete="barra-navegacion">Marcar módulo como completado</button><a class="next-link" href="#bloc-crud">Siguiente: BLoC aplicado al CRUD →</a></div>
 </section>
 <section class="page lesson next-module" id="bloc-crud" aria-labelledby="bloc-crud-title" data-lesson="P8">
-<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA P8</span><span class="status-pill planned">Misma Tienda después de P7</span><span class="lesson-time">BLoC aplicado a crear, buscar, editar y eliminar</span></div>
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA P8</span><span class="status-pill planned">Misma Tienda después de P7.1</span><span class="lesson-time">BLoC aplicado a crear, buscar, editar y eliminar</span></div>
 <h1 id="bloc-crud-title">Aplicar BLoC al CRUD de vehículos</h1><p>En P5.1 construiste un CRUD usando <code>setState</code>. Ahora trasladarás la lógica a <strong>BLoC</strong>, sin cambiar el objetivo de la Tienda: crear vehículos, verlos, buscarlos, editarlos y eliminarlos. Conservamos el modelo, el formulario, los widgets reutilizables y las páginas de P7.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Lo que aprenderás</strong><p>Comprender <code>BlocProvider</code>, <code>BlocBuilder</code>, eventos, estados, <code>on&lt;Evento&gt;</code>, <code>emit()</code> y <code>context.read()</code>, con ejemplos concretos y ubicación exacta de los archivos. Tendrás también un ejemplo completo, no solo fragmentos sueltos.</p></div></div>
-<div class="notice notice-info"><strong>Punto de partida: P7 terminado</strong><p>Trabaja en <code>DesarrolloMovilFlutter/actividad2</code>. Deben existir <code>lib/models/vehiculo.dart</code>, <code>lib/widgets/</code> y <code>lib/pages/</code>. Guarda una copia de <code>lib/main.dart</code> fuera de <code>lib/</code> antes de reemplazar la gestión de estado. Esta es la <strong>ruta principal</strong>: no utilices los archivos del buscador BLoC opcional de la ruta B.</p></div>
+<div class="notice notice-info"><strong>Punto de partida: P7.1 terminado</strong><p>Trabaja en <code>DesarrolloMovilFlutter/actividad2</code>. Deben existir <code>lib/models/vehiculo.dart</code>, <code>lib/widgets/</code> y <code>lib/pages/</code>. Guarda una copia de <code>lib/main.dart</code> fuera de <code>lib/</code> antes de reemplazar la gestión de estado. Esta es la <strong>ruta principal</strong>: no utilices los archivos del buscador BLoC opcional de la ruta B.</p></div>
+<div class="notice notice-info"><strong>Continuidad con NavigationBar de P7.1</strong><p>La barra inferior se mantiene en la versión BLoC. La variable <code>indicePestana</code>, <code>onDestinationSelected</code> y <code>IndexedStack</code> siguen perteneciendo a la pantalla; <code>setState</code> se usa aquí únicamente para cambiar pestañas. En cambio, crear, editar, eliminar y buscar vehículos se realiza con eventos BLoC. El <a href="./ejemplo_bloc_crud/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart completo de P8</a> ya incluye ambas partes; no lo reemplaces con fragmentos de versiones anteriores.</p></div>
 <div class="bc-flow"><div><span>1 · EL CLIENTE</span><strong>Interfaz Flutter</strong><p>El botón detecta «Guardar Renault 9».</p></div><div><span>2 · LA ORDEN</span><strong>VehiculoGuardado</strong><p>Un evento comunica la intención.</p></div><div><span>3 · EL ENCARGADO</span><strong>VehiculosBloc</strong><p>Decide si debe crear o editar y actualiza la lista.</p></div><div><span>4 · EL INVENTARIO</span><strong>VehiculosEstado</strong><p>BlocBuilder recibe el estado y actualiza la vitrina.</p></div></div>
 <div class="bc-pair"><div><span>ANTES · CRUD CON SETSTATE</span><p><code>_MainAppState</code> guarda directamente la lista <code>vehiculos</code>. Los métodos del formulario llaman a <code>setState()</code> para cambiarla.</p></div><div><span>DESPUÉS · EL MISMO CRUD CON BLOC</span><p><code>VehiculosBloc</code> conserva la lista y procesa los eventos. La pantalla sigue teniendo un controlador de texto y un formulario, pero deja de ser la encargada de administrar el inventario.</p></div></div>
 <div class="bc-demo" id="bc-demo" aria-label="Simulación didáctica del CRUD con BLoC"><div class="bc-demo-header"><strong>Prueba antes de programar: evento → BLoC → estado → interfaz</strong><span>Simulación HTML · no ejecuta Flutter</span></div>
@@ -4032,6 +4033,7 @@ flutter test</code></pre><div class="next-step-meaning"><strong>¿Cómo se inter
 <p>Ya construiste la Tienda, aprendiste navegación en P7 y separaste la lógica con BLoC en P8. Ahora agregarás el icono <strong>☰</strong> y un menú lateral <code>Drawer</code> a <strong>la misma aplicación actividad2</strong>, sin instalar paquetes nuevos.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Meta de esta práctica</strong><p>Usar <code>Scaffold.drawer</code>, <code>DrawerHeader</code>, <code>ListTile</code>, <code>Navigator.pop()</code> y <code>Navigator.push()</code> para abrir Tienda, Acerca de y Ayuda. Se conserva el CRUD con BLoC.</p></div></div>
 <div class="notice notice-info"><strong>Antes de escribir código</strong><p>Continúa desde la <a href="#bloc-crud">P8 de BLoC CRUD</a>. Tu archivo editable sigue siendo <code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code>. Las páginas <code>lib/pages/acerca_page.dart</code> y <code>lib/pages/ayuda_page.dart</code> ya se crearon en P7. <strong>No escribas otro <code>MaterialApp</code> ni otro <code>main()</code>.</strong></p></div>
+<div class="notice notice-info"><strong>El Drawer se añade sin perder NavigationBar.</strong><p>El menú hamburguesa vive en <code>Scaffold.drawer</code> y la barra inferior permanece en <code>Scaffold.bottomNavigationBar</code>. Ambos pueden existir simultáneamente. Para esta etapa añade solo <code>drawer</code> al <code>Scaffold</code> de P8 y conserva <code>indicePestana</code>, <code>IndexedStack</code>, el formulario y el CRUD.</p></div>
 <div class="al-bridge"><div><span>YA SABES</span><strong>Scaffold y AppBar</strong><p>La Tienda ya tiene una barra superior que Flutter construye.</p></div><div><span>AHORA APRENDES</span><strong>Drawer</strong><p>Es el panel lateral que se abre desde el icono de tres líneas.</p></div><div><span>SE CONSERVA</span><strong>BlocProvider</strong><p>Navegar entre páginas no borra la lógica del inventario.</p></div></div>
 <div class="al-demo" id="al-menu-demo"><div class="al-demo-head"><strong>Prueba el menú antes de programarlo</strong><span>Simulación HTML de un Drawer; no ejecuta Flutter</span></div>
 <div class="al-drawer-frame">
@@ -4175,6 +4177,7 @@ class TiendaPage extends StatefulWidget {
 class _TiendaPageState extends State&lt;TiendaPage&gt; {
   final TextEditingController vehiculoController = TextEditingController();
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  int indicePestana = 0;
 
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
@@ -4212,6 +4215,29 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() =&gt; indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: &#39;Tienda&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.summarize_outlined),
+            selectedIcon: Icon(Icons.summarize),
+            label: &#39;Resumen&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.lightbulb_outline),
+            selectedIcon: Icon(Icons.lightbulb),
+            label: &#39;Consejos&#39;,
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: SafeArea(
           child: ListView(
@@ -4262,7 +4288,10 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
           ),
         ),
       ),
-      body: SafeArea(
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -4385,10 +4414,30 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
             ],
           ),
         ),
+          ),
+          BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+            builder: (context, estado) {
+              return Center(
+                child: Text(&#39;Vehículos registrados: ${estado.vehiculos.length}&#39;),
+              );
+            },
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                &#39;Para registrar un vehículo, escribe un nombre válido &#39;
+                &#39;y pulsa Agregar en la pestaña Tienda.&#39;,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}</code></pre></details>
+}
+</code></pre></details>
 <div class="checklist" data-checklist="menu-hamburguesa"><label><input type="checkbox"> Encontré Scaffold y agregué drawer sin duplicarlo.</label><label><input type="checkbox"> El AppBar muestra el botón ☰ automáticamente.</label><label><input type="checkbox"> Acerca de y Ayuda abren desde Drawer.</label><label><input type="checkbox"> El CRUD y BLoC permanecen funcionando.</label></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="menu-hamburguesa">Marcar módulo como completado</button><a class="next-link" href="#validaciones-esenciales">Siguiente: validar campos de la Tienda →</a></div></section>
 
@@ -4397,6 +4446,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <h1 id="validaciones-esenciales-title">Validar campos de la Tienda con Flutter</h1>
 <p>En P4 aprendiste a validar un nombre. Ahora aplicaremos las validaciones más utilizadas en formularios reales a <strong>la misma aplicación con BLoC y menú hamburguesa</strong>: nombre obligatorio, longitud, año entero, precio decimal y correo electrónico. Cada validación se conecta a un campo verdadero de la Tienda.</p></div>
 <div class="notice notice-info"><strong>Punto de partida:</strong> continúa desde el <a href="#menu-hamburguesa">menú de P9</a>. El proyecto sigue estando en <code>DesarrolloMovilFlutter/actividad2</code>. En esta etapa agregaremos <code>lib/validators/validadores.dart</code>, ampliaremos el modelo <code>Vehiculo</code> y adaptaremos el mismo <code>VehiculosBloc</code>. <strong>Por ahora los registros siguen en memoria.</strong></div>
+<div class="notice notice-info"><strong>Conserva ambas formas de navegación.</strong><p>Los nuevos campos y validadores se agregan al <code>Form</code> de la pestaña Tienda: no se eliminan el <code>Drawer</code> ni la <code>NavigationBar</code> de P7.1. El <a href="./etapas/paso_17_formulario_validado.dart" target="_blank" rel="noopener noreferrer">archivo completo de esta etapa</a> incluye la barra, los campos y el menú lateral.</p></div>
 <div class="al-bridge"><div><span>DATOS DE TEXTO</span><strong>Obligatorio y longitud</strong><p>El nombre no puede estar vacío ni ser demasiado corto o largo.</p></div><div><span>DATOS NUMÉRICOS</span><strong>Año y precio</strong><p>Convertimos las cadenas con <code>tryParse</code> y comprobamos rangos.</p></div><div><span>FORMATO</span><strong>Correo de contacto</strong><p>Utilizamos una expresión regular sencilla para detectar errores comunes.</p></div></div>
 <div class="al-demo"><div class="al-demo-head"><strong>Antes de escribir el validador, comprueba las reglas</strong><span>Simulación HTML de los campos; no guarda datos</span></div>
 <form class="al-validation" id="al-validacion-demo" novalidate>
@@ -4485,193 +4535,6 @@ $&#39;).hasMatch(texto)) {
 <div class="next-where"><div class="next-where-action">MODIFICAR WIDGET REUTILIZABLE</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/campo_nombre_vehiculo.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>validator: (valor) {</code></div></div></div>
 <div class="code-label">REEMPLAZA el archivo por esta versión que llama a Validadores.nombre</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
-import &#39;../validators/validadores.dart&#39;;
-
-class CampoNombreVehiculo extends StatelessWidget {
-  const CampoNombreVehiculo({super.key, required this.controller});
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      textCapitalization: TextCapitalization.words,
-      decoration: const InputDecoration(
-        labelText: &#39;Nombre del vehículo&#39;,
-        hintText: &#39;Renault 9&#39;,
-        border: OutlineInputBorder(),
-      ),
-      validator: Validadores.nombre,
-    );
-  }
-}</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>import '../validators/validadores.dart'</code> permite usar la clase del paso 3. <code>validator: Validadores.nombre</code> entrega la función, sin paréntesis, para que Flutter la llame al validar. Los campos nuevos usarán el mismo patrón.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>El campo Nombre muestra errores si está vacío, tiene menos de tres caracteres o supera 60.</p></div></article>
-<article class="next-step" id="al-paso-10-5">
-<div class="next-step-top"><span class="next-step-number">10-5</span><div class="al-step-info"><span class="al-step-kicker">MODIFICAR EVENTO Y MANEJADOR</span><h3>Actualizar el evento y la lógica del BLoC</h3></div></div><p>El encargado solo puede almacenar los datos que recibió. Ahora el evento debe transportar el año, precio y correo además del nombre.</p>
-<div class="next-where"><div class="next-where-action">MODIFICAR EVENTO Y MANEJADOR</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/bloc/vehiculos_evento.dart</code> y <code>lib/bloc/vehiculos_bloc.dart</code></div><div><strong>Busca con Ctrl + F:</strong> <code>class VehiculoGuardado</code> y <code>on&lt;VehiculoGuardado&gt;</code></div></div></div>
-<div class="al-substep"><strong>A · Reemplaza solamente la clase VehiculoGuardado en eventos</strong><div class="code-label">Reemplaza desde class VehiculoGuardado hasta su llave final</div><pre class="code-block" data-code-mode="dart"><code>class VehiculoGuardado extends VehiculosEvento {
-  VehiculoGuardado({
-    required this.nombre,
-    required this.anio,
-    required this.precio,
-    required this.correo,
-  });
-
-  final String nombre;
-  final int anio;
-  final double precio;
-  final String correo;
-}</code></pre></div>
-<div class="al-substep"><strong>B · Reemplaza el manejador on&lt;VehiculoGuardado&gt; completo</strong><div class="code-label">Dentro del constructor VehiculosBloc(), antes de on<EdicionIniciada></div><pre class="code-block" data-code-mode="dart"><code>on&lt;VehiculoGuardado&gt;((evento, emit) {
-      final nombre = evento.nombre.trim();
-      if (nombre.length &lt; 3) {
-        return;
-      }
-      final copia = List&lt;Vehiculo&gt;.from(state.vehiculos);
-      final indice = state.indiceEnEdicion;
-      if (indice == null) {
-        copia.add(Vehiculo(
-          nombre: nombre,
-          anio: evento.anio,
-          precio: evento.precio,
-          correo: evento.correo.trim(),
-        ));
-      } else if (indice &gt;= 0 &amp;&amp; indice &lt; copia.length) {
-        final anterior = copia[indice];
-        copia[indice] = Vehiculo(
-          nombre: nombre,
-          anio: evento.anio,
-          precio: evento.precio,
-          correo: evento.correo.trim(),
-          disponible: anterior.disponible,
-        );
-      } else {
-        return;
-      }
-      _publicar(emit, copia, state.busqueda, null);
-    });</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>evento.anio</code>, <code>evento.precio</code> y <code>evento.correo</code> llevan los campos al objeto <code>Vehiculo</code>. El BLoC conserva el mismo comportamiento de agregar o editar. No copies los otros cuatro manejadores dos veces.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Una vez actualizado el evento y el manejador, vuelven a coincidir los argumentos obligatorios del modelo.</p></div></article>
-<article class="next-step" id="al-paso-10-6">
-<div class="next-step-top"><span class="next-step-number">10-6</span><div class="al-step-info"><span class="al-step-kicker">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</span><h3>Agregar los controles nuevos al formulario</h3></div></div><p>Los nuevos campos se colocan debajo de Nombre en la Tienda que ya existe. No crees otra pantalla con un formulario completo.</p>
-<div class="next-where"><div class="next-where-action">AGREGAR CONTROLADORES Y REEMPLAZAR EL FORM</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → <code>_TiendaPageState</code> y <code>Column.children</code></div><div><strong>Busca con Ctrl + F:</strong> <code>final TextEditingController vehiculoController</code> y <code>Form(key:</code></div></div></div>
-<div class="al-substep"><strong>A · Agrega controladores debajo de vehiculoController</strong><div class="code-label">AGREGA únicamente estas tres declaraciones, debajo de vehiculoController</div><pre class="code-block" data-code-mode="dart"><code>final TextEditingController anioController = TextEditingController();
-final TextEditingController precioController = TextEditingController();
-final TextEditingController correoController = TextEditingController();</code></pre></div>
-<div class="al-substep"><strong>B · Sustituye solo Form(...) dentro de Column.children</strong><div class="code-label">Formulario con nombre, año, precio y correo</div><pre class="code-block" data-code-mode="dart"><code>Form(
-                key: formularioKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: [
-                    CampoNombreVehiculo(controller: vehiculoController),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: anioController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Año del vehículo&#39;,
-                        hintText: &#39;2020&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.anio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: precioController,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: &#39;Precio&#39;,
-                        hintText: &#39;25000000.50&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.precio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: correoController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Correo de contacto&#39;,
-                        hintText: &#39;cliente@ejemplo.com&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.correo,
-                    ),
-                  ],
-                ),
-              ),</code></pre></div>
-<div class="al-substep"><strong>C · Actualiza dispose() para liberar los cuatro controladores</strong><div class="code-label">El método dispose() completo</div><pre class="code-block" data-code-mode="dart"><code>@override
-  void dispose() {
-    vehiculoController.dispose();
-    anioController.dispose();
-    precioController.dispose();
-    correoController.dispose();
-    super.dispose();
-  }</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>keyboardType</code> pide un teclado apropiado; no valida por sí solo. <code>autovalidateMode: AutovalidateMode.onUserInteraction</code> muestra errores tras interactuar. <code>controller</code> conserva el valor escrito y <code>dispose()</code> libera cada controlador. La validación sigue trabajando con el mismo <code>formularioKey</code>.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Tu pantalla muestra cuatro campos y no pierde el Drawer ni los botones de CRUD.</p></div></article>
-<div class="fv-properties-block" id="fv-propiedades-formulario"><span class="fv-property-badge">VALORES DISPONIBLES · REFERENCIA</span><h3>Valores posibles de las propiedades del formulario</h3><p>Estas opciones se usan en el formulario que acabas de construir; no son nombres inventados de variables. Los tipos que terminan en palabras como <code>AutovalidateMode</code> o <code>TextCapitalization</code> tienen valores concretos definidos por Flutter.</p><h4>autovalidateMode · cinco valores</h4><p>Controla cuando se llama automáticamente al validator. El formulario todavia puede validarse manualmente con FormState.validate().</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>AutovalidateMode.disabled</code></td><td>No valida automáticamente (valor habitual inicial).</td><td>Valida al pulsar Guardar.</td></tr><tr><td><code>AutovalidateMode.always</code></td><td>Valida incluso antes de tocar los campos.</td><td>Util para ver los requisitos desde el inicio; puede mostrar muchos errores.</td></tr><tr><td><code>AutovalidateMode.onUserInteraction</code></td><td>Valida al interactuar con el campo.</td><td>El usado en la Tienda cuando el estudiante empieza a escribir.</td></tr><tr><td><code>AutovalidateMode.onUnfocus</code></td><td>Valida cuando el campo pierde el foco.</td><td>Muestra el mensaje despues de salir del campo.</td></tr><tr><td><code>AutovalidateMode.onUserInteractionIfError</code></td><td>Revalida durante la interaccion si ya hay error.</td><td>Revisar correcciones sin validar continuamente todos los campos.</td></tr></tbody></table></div><h4>textCapitalization · cuatro valores</h4><p>Sugiere la capitalizacion del teclado; NO transforma automáticamente ni valida el texto escrito en todos los dispositivos.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>TextCapitalization.none</code></td><td>Sin sugerencia de mayúsculas automaticas.</td><td>Codigos y datos escritos libremente.</td></tr><tr><td><code>TextCapitalization.characters</code></td><td>Sugiere mayúsculas para todos los caracteres.</td><td>Siglas o referencias, segun teclado.</td></tr><tr><td><code>TextCapitalization.words</code></td><td>Sugiere mayúscula inicial en cada palabra.</td><td>Nombre del vehiculo.</td></tr><tr><td><code>TextCapitalization.sentences</code></td><td>Sugiere mayúscula al inicio de cada frase.</td><td>Observaciones o descripcion.</td></tr></tbody></table></div><h4>keyboardType · opciones de TextInputType</h4><p>Estos valores solicitan un teclado apropiado al sistema operativo, pero <strong>no impiden escribir caracteres inválidos ni reemplazan al validator</strong>. En el ejemplo se usan <code>number</code>, <code>numberWithOptions(decimal: true)</code> y <code>emailAddress</code>.</p><details><summary>Ver las 13 opciones principales y el teclado numerico con opciones</summary><h4>Valores de TextInputType</h4><p>El teclado concreto depende del dispositivo y del proveedor de teclado.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>TextInputType.text</code></td><td>Teclado de texto habitual.</td><td>Nombre del vehiculo.</td></tr><tr><td><code>TextInputType.multiline</code></td><td>Texto de varias líneas.</td><td>Observaciones.</td></tr><tr><td><code>TextInputType.number</code></td><td>Teclado numerico.</td><td>Año del vehiculo.</td></tr><tr><td><code>TextInputType.phone</code></td><td>Teclado adaptado a teléfonos.</td><td>Telefono del vendedor.</td></tr><tr><td><code>TextInputType.datetime</code></td><td>Entrada de fecha u hora.</td><td>Fecha de entrega.</td></tr><tr><td><code>TextInputType.emailAddress</code></td><td>Teclado apropiado para correo.</td><td>Correo de contacto.</td></tr><tr><td><code>TextInputType.url</code></td><td>Teclado para direcciones web.</td><td>Pagina del concesionario.</td></tr><tr><td><code>TextInputType.visiblePassword</code></td><td>Teclado para contraseña visible.</td><td>Clave con letras y números.</td></tr><tr><td><code>TextInputType.name</code></td><td>Teclado adaptado a nombres.</td><td>Nombre del vendedor.</td></tr><tr><td><code>TextInputType.streetAddress</code></td><td>Teclado para direcciones.</td><td>Direccion de entrega.</td></tr><tr><td><code>TextInputType.none</code></td><td>No solicita teclado virtual.</td><td>Campo con selector propio.</td></tr><tr><td><code>TextInputType.webSearch</code></td><td>Teclado para busquedas web.</td><td>Busqueda general.</td></tr><tr><td><code>TextInputType.twitter</code></td><td>Teclado para redes sociales.</td><td>Usuario social.</td></tr><tr><td><code>TextInputType.numberWithOptions(decimal: true, signed: false)</code></td><td>Constructor numerico: decimal y signed admiten true/false.</td><td>Precio con decimales (decimal: true).</td></tr></tbody></table></div></details><div class="fv-tip"><p><strong>Ubicación:</strong> dentro de <code>TextFormField(</code> se escribe <code>keyboardType:</code> o <code>textCapitalization:</code>; dentro de <code>Form(</code> se escribe <code>autovalidateMode:</code>. No pongas <code>autovalidateMode</code> dentro de <code>InputDecoration</code>.</p></div><p><a href="https://api.flutter.dev/flutter/widgets/AutovalidateMode.html" target="_blank" rel="noopener noreferrer">AutovalidateMode oficial</a>  · <a href="https://api.flutter.dev/flutter/services/TextCapitalization.html" target="_blank" rel="noopener noreferrer">TextCapitalization oficial</a>  · <a href="https://api.flutter.dev/flutter/services/TextInputType-class.html" target="_blank" rel="noopener noreferrer">TextInputType oficial</a></p></div>
-<article class="next-step" id="al-paso-10-7">
-<div class="next-step-top"><span class="next-step-number">10-7</span><div class="al-step-info"><span class="al-step-kicker">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</span><h3>Enviar datos válidos al BLoC y rellenar al editar</h3></div></div><p>El usuario no debería perder los datos que editó. Se lee cada campo, se transforma el texto numérico y se envía un evento con los cuatro valores.</p>
-<div class="next-where"><div class="next-where-action">REEMPLAZAR LOS MÉTODOS DE LA PANTALLA</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code> → métodos de <code>_TiendaPageState</code></div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion</code> y <code>void cancelarEdicion</code></div></div></div>
-<div class="al-substep"><strong>A · Reemplaza guardarVehiculo()</strong><div class="code-label">Validar, convertir y enviar el evento</div><pre class="code-block" data-code-mode="dart"><code>void guardarVehiculo() {
-    if (formularioKey.currentState?.validate() != true) {
-      return;
-    }
-    final anio = int.tryParse(anioController.text.trim());
-    final precio = double.tryParse(precioController.text.trim());
-    if (anio == null || precio == null) return;
-
-    context.read&lt;VehiculosBloc&gt;().add(
-      VehiculoGuardado(
-        nombre: vehiculoController.text.trim(),
-        anio: anio,
-        precio: precio,
-        correo: correoController.text.trim(),
-      ),
-    );
-    limpiarCampos();
-  }</code></pre></div>
-<div class="al-substep"><strong>B · Agrega limpiarCampos() y actualiza editar/eliminar/cancelar</strong><div class="code-label">Métodos que reutilizan el formulario</div><pre class="code-block" data-code-mode="dart"><code>void comenzarEdicion(int indice) {
-    final bloc = context.read&lt;VehiculosBloc&gt;();
-    final vehiculo = bloc.state.vehiculos[indice];
-    vehiculoController.text = vehiculo.nombre;
-    anioController.text = vehiculo.anio.toString();
-    precioController.text = vehiculo.precio.toString();
-    correoController.text = vehiculo.correo;
-    bloc.add(EdicionIniciada(indice));
-  }
-
-  void borrarVehiculo(int indice) {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
-  }
-
-  void cancelarEdicion() {
-    limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
-  }</code></pre></div>
-<div class="al-substep"><strong>C · Amplía el detalle visible de cada carro</strong><div class="code-label">Sustituye el antiguo subtitle: Text(...)</div><pre class="code-block" data-code-mode="dart"><code>isThreeLine: true,
-                            subtitle: Text(
-                              &#39;Año: &#39; + vehiculo.anio.toString() +
-                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
-                              &#39;\nCorreo: &#39; + vehiculo.correo,
-                            ),</code></pre></div><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>int.tryParse</code> y <code>double.tryParse</code> evitan excepciones inesperadas; aunque <code>validate()</code> ya verificó, repetimos la conversión de manera segura antes de enviar el evento. Al editar se rellenan los controladores con los valores del vehículo existente.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Agrega dos carros con año, precio y correo; pulsa Editar, cambia uno y comprueba que se actualiza sin duplicarse.</p></div></article>
-<article class="next-step" id="al-paso-10-8">
-<div class="next-step-top"><span class="next-step-number">10-8</span><div class="al-step-info"><span class="al-step-kicker">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</span><h3>Probar casos inválidos y válidos</h3></div></div><p>Un formulario se aprende probando tanto lo que debe aceptar como lo que debe rechazar.</p>
-<div class="next-where"><div class="next-where-action">EJECUTAR LA APP Y DOCUMENTAR PRUEBAS</div>
-<div class="next-where-details"><div><strong>Archivo:</strong> Terminal VS Code en <code>actividad2</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en la carpeta del proyecto</div></div></div>
-<div class="code-label">Comandos de verificación</div><pre class="code-block" data-code-mode="shell"><code>flutter analyze
-flutter run</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p>Prueba nombre vacío y corto, año con letras o fuera del rango, precio cero o letras y correo mal formado. Después escribe datos válidos, guarda, edita y elimina. Al pasar a P11, FastAPI volverá a validar por seguridad: <strong>el navegador o el móvil no son fuentes confiables</strong>.</p></div>
-<div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Todas las reglas funcionan desde la misma pantalla y el BLoC aún utiliza una lista temporal.</p></div></article>
-<div class="al-tip"><strong>Validaciones fundamentales adicionales:</strong> confirmación de contraseñas, números de teléfono, fechas y selección obligatoria funcionan con el mismo patrón <code>TextFormField → validator → mensaje o null</code>. No añadimos esos campos a la Tienda porque no pertenecen a un vehículo. El correo de contacto incluido es un ejemplo del formato más frecuente.</div>
-<div class="al-filelinks"><a href="./etapas/paso_17_modelo_validado.dart" target="_blank" rel="noopener noreferrer">Modelo final ↗</a><a href="./etapas/paso_17_validadores.dart" target="_blank" rel="noopener noreferrer">Validadores ↗</a><a href="./etapas/paso_17_eventos.dart" target="_blank" rel="noopener noreferrer">Evento BLoC ↗</a><a href="./etapas/paso_17_bloc.dart" target="_blank" rel="noopener noreferrer">BLoC completo ↗</a><a href="./etapas/paso_17_formulario_validado.dart" target="_blank" rel="noopener noreferrer">main.dart P10 ↗</a></div>
-<details class="al-full-reference"><summary>Comprobar archivo completo: main.dart después de agregar validaciones P10</summary><p>Abre el ejemplo completo para comparar tu resultado <strong>después</strong> de realizar los pasos. No pegues código de etapas anteriores otra vez.</p><div class="code-label">main.dart después de agregar validaciones P10</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
 import &#39;bloc/vehiculos_bloc.dart&#39;;
 import &#39;bloc/vehiculos_evento.dart&#39;;
@@ -4715,6 +4578,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   final TextEditingController precioController = TextEditingController();
   final TextEditingController correoController = TextEditingController();
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  int indicePestana = 0;
 
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
@@ -4775,6 +4639,29 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() =&gt; indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: &#39;Tienda&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.summarize_outlined),
+            selectedIcon: Icon(Icons.summarize),
+            label: &#39;Resumen&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.lightbulb_outline),
+            selectedIcon: Icon(Icons.lightbulb),
+            label: &#39;Consejos&#39;,
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: SafeArea(
           child: ListView(
@@ -4825,7 +4712,10 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
           ),
         ),
       ),
-      body: SafeArea(
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -4989,10 +4879,30 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
             ],
           ),
         ),
+          ),
+          BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+            builder: (context, estado) {
+              return Center(
+                child: Text(&#39;Vehículos registrados: ${estado.vehiculos.length}&#39;),
+              );
+            },
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                &#39;Para registrar un vehículo, escribe un nombre válido &#39;
+                &#39;y pulsa Agregar en la pestaña Tienda.&#39;,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}</code></pre></details>
+}
+</code></pre></details>
 <div class="checklist" data-checklist="validaciones-esenciales"><label><input type="checkbox"> Amplié el modelo Vehiculo con año, precio y correo.</label><label><input type="checkbox"> Creé validadores reutilizables.</label><label><input type="checkbox"> Los cuatro campos muestran errores claros.</label><label><input type="checkbox"> BLoC recibe todos los valores sin errores.</label><label><input type="checkbox"> El menú hamburguesa y el CRUD siguen funcionando.</label></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="validaciones-esenciales">Marcar módulo como completado</button><a class="next-link" href="#api-postgres">Siguiente: crear FastAPI + PostgreSQL →</a></div></section>
 <section class="page lesson next-module advanced-module" id="api-postgres" aria-labelledby="api-postgres-title">
