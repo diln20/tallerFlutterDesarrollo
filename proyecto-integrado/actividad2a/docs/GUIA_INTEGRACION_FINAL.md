@@ -33,7 +33,11 @@ DesarrolloMovilFlutter/
       docs/GUIA_INTEGRACION_FINAL.md
     test/
       concesionario_test.dart
+      imagenes_test.dart
       interfaz_test.dart
+    scripts/
+      e2e-web.js                      <- flujo real automatizado con Chrome
+      README.md                       <- instrucciones npm y servidores
   actividad2a_api/                    <- servidor aislado, NO tienda_api anterior
     app.py
     requirements.txt
@@ -44,14 +48,31 @@ DesarrolloMovilFlutter/
 
 **¿Por qué separar carpetas?** El modelo describe los datos, el servicio se comunica con el exterior, el repositorio ofrece acciones al catálogo y la página solamente gestiona lo que ve el usuario. Esto permite sustituir el almacenamiento o rediseñar la interfaz sin reescribir todo.
 
-## 2. Arrancar el proyecto desde cero
+## 2. Descargar el código final sin mezclar versiones
 
-1. En VS Code abre la carpeta `C:\Users\user\Documents\DesarrolloMovilFlutter`.
-2. Si no tienes el proyecto, ejecuta `flutter create --empty actividad2a`. Si ya existe, **no lo recrees**: conserva su carpeta y copia solamente los archivos nuevos siguiendo la lección.
-3. En `actividad2a` instala `flutter pub add http http_parser image_picker`.
-4. En `actividad2a_api` crea el entorno: `python -m venv .venv` y ejecuta `.venv\Scripts\python.exe -m pip install -r requirements.txt`.
-5. Ejecuta `.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8091` desde `actividad2a_api`.
-6. Abre `http://127.0.0.1:8091/docs` para ver el catálogo de endpoints y `http://127.0.0.1:8091/salud` para comprobar la API.
+**Para trabajar desde cero**, clona el repositorio en una carpeta nueva, abre la carpeta clonada en VS Code y ejecuta:
+
+```powershell
+git clone https://github.com/diln20/tallerFlutterDesarrollo.git
+cd tallerFlutterDesarrollo\proyecto-integrado\actividad2a
+flutter create --empty --platforms android,ios,web --project-name actividad2a .
+flutter pub get
+flutter analyze
+flutter test
+```
+
+Este procedimiento fue **comprobado en una copia recién clonada**: `flutter create` generó las carpetas de plataforma sin modificar `lib/main.dart`, `pubspec.yaml` ni los manifiestos Android/iOS ya incluidos; las 12 pruebas Flutter aprobaron después. No necesitas pegar clases de la tienda antigua. Si `actividad2a` ya está creada y funcionando en tu equipo, consérvala y no vuelvas a generar el proyecto solo por repetir la guía.
+
+En la carpeta hermana `actividad2a_api`, crea y arranca el servicio independiente:
+
+```powershell
+cd ..\actividad2a_api
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8091
+```
+
+Abre `http://127.0.0.1:8091/docs` para conocer los endpoints y `http://127.0.0.1:8091/salud` para verificar la API. Usa otra terminal en `actividad2a` para ejecutar Flutter.
 
 Los datos persisten en `actividad2a_api/data/concesionario.sqlite3` y las fotos en `actividad2a_api/media/`; el servidor crea esos directorios. No insertes cuentas reales ni secretos institucionales en esta API de práctica.
 
