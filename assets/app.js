@@ -5,7 +5,7 @@
   const ROUTES = [
     'inicio', 'preparacion', 'punto-entrada', 'estructura', 'diseno',
     'campo-texto', 'proyecto', 'carpetas', 'reutilizacion', 'validacion',
-    'objeto', 'crud', 'extraccion', 'navegacion', 'barra-navegacion', 'bloc-crud', 'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local', 'api-postgres', 'roles-usuarios', 'paginacion-widget', 'heuristicas-ux', 'responsive', 'estado', 'formularios', 'bloc', 'catalogo-widgets'
+    'objeto', 'crud', 'extraccion', 'navegacion', 'barra-navegacion', 'bloc-crud', 'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local', 'mejoras-favoritos', 'mejoras-panel', 'api-postgres', 'roles-usuarios', 'paginacion-widget', 'heuristicas-ux', 'responsive', 'estado', 'formularios', 'bloc', 'catalogo-widgets'
   ];
   const LESSONS = ROUTES.filter((route) => route !== 'inicio' && route !== 'catalogo-widgets');
   const STORAGE_PREFIX = 'tallerFlutterDesarrollo.v1.';
