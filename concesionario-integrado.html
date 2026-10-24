@@ -61,9 +61,14 @@ footer{max-width:1120px;margin:auto;padding:24px 26px 65px;color:var(--muted)}
 </tbody></table></section>
 <section class="section" id="ruta"><h2>Construcción paso a paso</h2>
 <div class="step"><span class="stepno">01</span><h3>Crear el proyecto y la API</h3><span class="path">DesarrolloMovilFlutter/</span>
-<p>Abre la carpeta en VS Code y crea el proyecto inicial solo si aún no existe.</p>
-<pre><code>flutter create --empty actividad2a</code></pre>
-<p>Integra el contenido de la carpeta <a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/proyecto-integrado">proyecto-integrado</a> y prepara la API en una carpeta hermana. La API anterior <code>tienda_api</code> es independiente: no se sobreescribe.</p>
+<p>Para comenzar desde la misma versión comprobada, clona el repositorio y genera los archivos de plataforma que faltan. Este proceso conserva el modelo completo, el formulario, los repositorios, las pruebas y los manifiestos personalizados.</p>
+<pre><code>git clone https://github.com/diln20/tallerFlutterDesarrollo.git
+cd tallerFlutterDesarrollo\proyecto-integrado\actividad2a
+flutter create --empty --platforms android,ios,web --project-name actividad2a .
+flutter pub get
+flutter analyze
+flutter test</code></pre>
+<p><strong>No vuelvas a pegar encima una versión antigua</strong> de <code>main.dart</code> ni de <code>vehiculo.dart</code>. La API de referencia está en la carpeta hermana <code>actividad2a_api</code>; la API anterior <code>tienda_api</code> permanece intacta.</p>
 <details><summary>Comandos de arranque</summary><pre><code>cd actividad2a
 flutter pub get
 flutter analyze
