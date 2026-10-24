@@ -37,6 +37,7 @@ class TiendaPage extends StatefulWidget {
 class _TiendaPageState extends State<TiendaPage> {
   final TextEditingController vehiculoController = TextEditingController();
   final GlobalKey<FormState> formularioKey = GlobalKey<FormState>();
+  int indicePestana = 0;
 
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
@@ -74,7 +75,33 @@ class _TiendaPageState extends State<TiendaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tienda')),
-      body: SafeArea(
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() => indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: 'Tienda',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.summarize_outlined),
+            selectedIcon: Icon(Icons.summarize),
+            label: 'Resumen',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.lightbulb_outline),
+            selectedIcon: Icon(Icons.lightbulb),
+            label: 'Consejos',
+          ),
+        ],
+      ),
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -213,6 +240,25 @@ class _TiendaPageState extends State<TiendaPage> {
             ],
           ),
         ),
+          ),
+          BlocBuilder<VehiculosBloc, VehiculosEstado>(
+            builder: (context, estado) {
+              return Center(
+                child: Text('Vehículos registrados: ${estado.vehiculos.length}'),
+              );
+            },
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                'Para registrar un vehículo, escribe un nombre válido '
+                'y pulsa Agregar en la pestaña Tienda.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
