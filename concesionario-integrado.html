@@ -152,6 +152,30 @@ flutter run -d emulator-5554 --dart-define=API_URL=http://10.0.2.2:8091</code></
 </div>
 <div class="note" style="margin-top:16px"><strong>Verificaciones en la versión de referencia:</strong> análisis Flutter sin errores, pruebas de widgets aprobadas, API con pruebas de permisos e imágenes aprobadas, compilación web y APK de depuración correctas. La validación manual de galería/cámara debe repetirse en los dispositivos reales de clase. Desde Windows no se compila iOS.</div>
 </section>
+<section class="section" id="pruebas-reales">
+<h2>Prueba automática de toda la aplicación</h2>
+<p>Una prueba no se limita a que el programa compile. También necesitamos comprobar que el formulario, el servicio HTTP, el repositorio y la base de datos realmente intercambian información. Para eso incorporamos una prueba E2E (de extremo a extremo) ejecutada con Chrome.</p>
+<div class="step">
+<span class="stepno">09</span><h3>Ejecutar el flujo completo con un navegador real</h3>
+<span class="path">actividad2a/scripts/e2e-web.js</span>
+<p>Con la API en el puerto 8091 y la compilación web servida en el 5174, entra en la carpeta <code>scripts</code> y ejecuta:</p>
+<pre><code>npm install
+npm run test:e2e</code></pre>
+<p>El script abre Chrome, inicia sesión, registra un vehículo, selecciona una fotografía PNG real desde el navegador, comprueba la URL persistente, guarda favoritos y verifica las diferencias entre administrador, vendedor y cliente. Además, cambia la pantalla a 390 × 844 para comprobar la navegación móvil y revisa los errores JavaScript.</p>
+<p>El vehículo de prueba se elimina al finalizar y la prueba solo se permite contra servidores locales. <a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/proyecto-integrado/actividad2a/scripts">Consulta el código y los requisitos para ejecutarla</a>.</p>
+</div>
+<div class="step">
+<h3>¿Qué comprueba cada capa?</h3>
+<table><thead><tr><th>Paso</th><th>Clase involucrada</th><th>Resultado esperado</th></tr></thead><tbody>
+<tr><td>Registrar</td><td><code>VehiculoFormDialog</code> → <code>CatalogoPage</code></td><td>Se validan nombre, marca, precio y disponibilidad</td></tr>
+<tr><td>Persistir</td><td><code>VehiculoRepository</code> → <code>ApiService</code></td><td>POST devuelve un ID real del servidor</td></tr>
+<tr><td>Adjuntar imagen</td><td><code>ImagenService</code> → <code>ApiService.subirImagen</code></td><td>Archivo multipart válido, URL en <code>imagen_url</code></td></tr>
+<tr><td>Listar</td><td><code>CatalogoPage</code> → <code>ListView.builder</code></td><td>Se muestran los datos y la foto conservados en SQLite y archivos</td></tr>
+<tr><td>Permisos</td><td><code>Usuario</code> y dependencias FastAPI</td><td>Cliente no edita ni administra; vendedor no elimina; servidor devuelve 403</td></tr>
+</tbody></table>
+</div>
+<div class="note">**Importante para clase:** que la versión web haya pasado la prueba real no garantiza que la cámara funcione en todos los teléfonos. El proyecto Android compiló correctamente, pero los permisos y la selección de fotos deben probarse también en un dispositivo físico. iOS requiere macOS y Xcode.</div>
+</section>
 <section class="section" id="actividades"><h2>Actividades de comprobación</h2>
 <div class="grids">
 <div class="tile"><h3>Actividad A — Catálogo</h3><p>Registra Renault Logan, Mazda 2 y un tercer vehículo. Filtra por marca, ordena por precio y usa paginación. Explica de dónde proviene `total_paginas`.</p></div>
