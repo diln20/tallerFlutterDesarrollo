@@ -1,3 +1,5 @@
+import '../models/vehiculo.dart';
+
 abstract class VehiculosEvento {}
 
 class SesionIniciada extends VehiculosEvento {
@@ -51,4 +53,9 @@ class VehiculoEliminado extends VehiculosEvento {
 class DisponibilidadAlternada extends VehiculosEvento {
   DisponibilidadAlternada(this.id);
   final int id;
+}
+
+class VehiculoRestaurado extends VehiculosEvento {
+  VehiculoRestaurado(this.vehiculo);
+  final Vehiculo vehiculo;
 }
