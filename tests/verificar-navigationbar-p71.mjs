@@ -11,8 +11,14 @@ for (const id of ids) {
  assert.ok(app.includes("'"+id+"'"), 'Ruta ausente en app.js: '+id);
  assert.equal([...html.matchAll(new RegExp('data-route="'+id+'"','g'))].length,1,'Sidebar tiene una entrada por ruta '+id);
 }
-const headerLinks = html.slice(html.indexOf('data-route="navegacion"'),html.indexOf('data-route="validaciones-esenciales"'));
-assert.ok(!headerLinks.includes('nav-group-label'), 'P7 P7.1 P8 P9 P10 deben aparecer en el mismo nivel/grupo del sidebar');
+const sidebar = [...html.matchAll(/<a\\s+class="nav-link"[^>]*data-route="([^"]+)"/g)].map(m=>m[1]);
+const at = sidebar.indexOf('barra-navegacion');
+assert.deepEqual(sidebar.slice(at,at + 4),
+  ['barra-navegacion','menu-hamburguesa','validaciones-esenciales','bloc-crud'],
+  'P9 y P10 deben aparecer inmediatamente despues de la barra inferior en el menu');
+const headerLinks = html.slice(html.indexOf('data-route="navegacion"'), html.indexOf('data-route="api-postgres"'));
+assert.ok(!headerLinks.includes('nav-group-label'),
+  'P7 a P10 deben permanecer en el mismo nivel visual del sidebar');
 const segment = (from,to) => html.slice(html.indexOf('<section class="page lesson next-module" id="'+from+'"'),
   html.indexOf('<section class="page lesson next-module" id="'+to+'"'));
 const nav = segment('barra-navegacion','bloc-crud');
