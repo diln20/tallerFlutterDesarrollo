@@ -138,7 +138,7 @@ Secuencia acumulativa:
 
 `lib/pages/catalogo_page.dart` combina:
 - `TextField` para texto y marca, con espera de 330 ms (`Timer`) antes de enviar la consulta.
-- `DropdownButtonFormField` para máximo de precio y ordenamiento. Usa `isExpanded: true` para que su contenido no se desborde en pantallas pequeñas.
+- `DropdownButtonFormField` para máximo de precio y ordenamiento. Usa `isExpanded: true` para que su contenido no se desborde en pantallas pequeñas. El bloque de filtros utiliza `LayoutBuilder`: con menos de 650 píxeles disponibles cada control ocupa el ancho de su contenedor. Una prueba widget verifica esos tamaños en la vista móvil.
 - `FilterChip` para mostrar solo disponibles o solo favoritos.
 - `ListView.builder` genera las tarjetas de la página recibida de la API.
 - `itemCount` es la cantidad de vehículos de esa página; `itemBuilder(context, index)` construye cada tarjeta por posición. La tarjeta usa `ValueKey(vehiculo.id)` para conservar identidad estable.
