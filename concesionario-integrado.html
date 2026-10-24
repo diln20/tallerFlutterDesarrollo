@@ -135,7 +135,7 @@ final bytes = await archivo.readAsBytes();</code></pre>
 </div>
 <div class="step"><span class="stepno">07</span><h3>Añadir filtros, favoritos y paginación</h3>
 <p>Conserva el catálogo original y añade búsqueda por modelo/marca, precio máximo, disponibilidad, orden ascendente/descendente, favoritos personales y botones de página. Los filtros se aplican en el servidor; al cambiar uno se regresa a la primera página.</p>
-<p>La búsqueda aplica una espera de 330 ms antes de enviar solicitudes. El selector de orden utiliza <code>isExpanded: true</code> para no desbordarse en móvil.</p>
+<p>La búsqueda aplica una espera de 330 ms antes de enviar solicitudes. Los campos y selectores utilizan <code>LayoutBuilder</code> para ocupar el ancho disponible en pantallas inferiores a 650 px. Cada menú desplegable también usa <code>isExpanded: true</code> para evitar el desbordamiento del texto.</p>
 </div>
 <div class="step"><span class="stepno">08</span><h3>Agregar las pantallas por perfil y los permisos</h3><span class="path">lib/pages/usuarios_page.dart</span>
 <p>Administrador: gestiona cuentas y vehículos. Vendedor: registra y edita vehículos. Cliente: consulta y marca favoritos. El menú usa <code>NavigationBar</code> en teléfono y <code>NavigationRail</code> en escritorio; <code>IndexedStack</code> evita reiniciar cada página al cambiar de tab.</p>
