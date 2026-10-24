@@ -10,6 +10,7 @@ class VistaVehiculos extends StatelessWidget {
     required this.alEliminar,
     required this.esFavorito,
     required this.alFavorito,
+    required this.alCambiarDisponibilidad,
   });
 
   final List<Vehiculo> vehiculos;
@@ -18,6 +19,7 @@ class VistaVehiculos extends StatelessWidget {
   final ValueChanged<Vehiculo> alEliminar;
   final bool Function(Vehiculo) esFavorito;
   final ValueChanged<Vehiculo> alFavorito;
+  final ValueChanged<Vehiculo> alCambiarDisponibilidad;
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +63,18 @@ class VistaVehiculos extends StatelessWidget {
                           onSelected: (opcion) {
                             if (opcion == 'editar') alEditar(auto);
                             if (opcion == 'eliminar') alEliminar(auto);
+                            if (opcion == 'disponibilidad') alCambiarDisponibilidad(auto);
                           },
-                          itemBuilder: (_) => const [
+                          itemBuilder: (_) => [
                             PopupMenuItem(
+                              value: 'disponibilidad',
+                              child: Text(auto.disponible ? 'Marcar no disponible' : 'Marcar disponible'),
+                            ),
+                            const PopupMenuItem(
                               value: 'editar',
                               child: Text('Editar'),
                             ),
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: 'eliminar',
                               child: Text('Eliminar'),
                             ),
@@ -113,6 +120,11 @@ class VistaVehiculos extends StatelessWidget {
                         tooltip: 'Editar ' + auto.nombre,
                         onPressed: () => alEditar(auto),
                         icon: const Icon(Icons.edit_outlined),
+                      ),
+                      IconButton(
+                        tooltip: auto.disponible ? 'Marcar no disponible' : 'Marcar disponible',
+                        onPressed: () => alCambiarDisponibilidad(auto),
+                        icon: Icon(auto.disponible ? Icons.toggle_on : Icons.toggle_off),
                       ),
                       IconButton(
                         tooltip: 'Eliminar ' + auto.nombre,
