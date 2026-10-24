@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 
 const read = path => readFileSync(new URL('../'+path, import.meta.url), 'utf8');
+const norm = value => value.replace(/\r\n/g,'\n');
 const html = read('index.html');
 const colors = read('etapas/paso_10_colores_app.dart');
 assert.ok(colors.includes('static const Color primario') && colors.includes('static const Color accion'));
@@ -58,7 +59,7 @@ const expected={
 for (const [key,path] of Object.entries(expected)) {
   const source=cpl.window.FlutterCodePlacementData.references[key];
   assert.equal(source.path,path);
-  assert.equal(source.text,read(path),'Referencia de colocacion desactualizada: '+key);
+  assert.equal(norm(source.text),norm(read(path)),'Referencia de colocacion desactualizada: '+key);
 }
 const preview={window:{}};
 runInNewContext(read('assets/stage-preview-data.js'),preview);
