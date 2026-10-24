@@ -79,6 +79,7 @@
       panel=document.createElement('details');
       panel.id='wc-code-line-notes';
       panel.className='wc-line-explainer';
+      panel.open=['ListView','ListTile','GridView'].includes(name);
       const summary=document.createElement('summary');
       summary.textContent='Explicación línea por línea del código';
       const p=document.createElement('p');
