@@ -8,12 +8,16 @@ class VistaVehiculos extends StatelessWidget {
     required this.puedeEditar,
     required this.alEditar,
     required this.alEliminar,
+    required this.esFavorito,
+    required this.alFavorito,
   });
 
   final List<Vehiculo> vehiculos;
   final bool puedeEditar;
   final ValueChanged<Vehiculo> alEditar;
   final ValueChanged<Vehiculo> alEliminar;
+  final bool Function(Vehiculo) esFavorito;
+  final ValueChanged<Vehiculo> alFavorito;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +42,17 @@ class VistaVehiculos extends StatelessWidget {
               return Card(
                 key: ValueKey(auto.id),
                 child: ListTile(
+                  leading: IconButton(
+                    tooltip: esFavorito(auto) ? 'Quitar de favoritos' : 'Marcar favorito',
+                    icon: Icon(esFavorito(auto) ? Icons.star : Icons.star_border),
+                    onPressed: () => alFavorito(auto),
+                  ),
                   title: Text(auto.nombre),
                   subtitle: Text(
                     'Año ' + auto.anio.toString() +
                     ' · Precio ' + auto.precio.toStringAsFixed(2) +
-                    '\n' + auto.correo,
+                    '\n' + auto.correo +
+                    (auto.disponible ? ' · Disponible' : ' · No disponible'),
                   ),
                   isThreeLine: true,
                   trailing: puedeEditar
@@ -74,6 +84,7 @@ class VistaVehiculos extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: DataTable(
             columns: [
+              const DataColumn(label: Text('Favorito')),
               const DataColumn(label: Text('ID')),
               const DataColumn(label: Text('Vehículo')),
               const DataColumn(label: Text('Año')),
@@ -84,6 +95,11 @@ class VistaVehiculos extends StatelessWidget {
             ],
             rows: vehiculos.map((auto) => DataRow(
               cells: [
+                DataCell(IconButton(
+                  tooltip: esFavorito(auto) ? 'Quitar de favoritos' : 'Marcar favorito',
+                  onPressed: () => alFavorito(auto),
+                  icon: Icon(esFavorito(auto) ? Icons.star : Icons.star_border),
+                )),
                 DataCell(Text(auto.id.toString())),
                 DataCell(Text(auto.nombre)),
                 DataCell(Text(auto.anio.toString())),
