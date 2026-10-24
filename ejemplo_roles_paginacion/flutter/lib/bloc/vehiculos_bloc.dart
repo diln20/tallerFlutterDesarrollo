@@ -115,6 +115,26 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       }
     });
 
+    on<VehiculoRestaurado>((evento, emit) async {
+      if (!state.puedeEditar || state.enviando) return;
+      final v = evento.vehiculo;
+      emit(state.copyWith(enviando: true, borrarError: true));
+      try {
+        // La API crea otro ID: no se altera solo la lista de Flutter.
+        final nuevoId = await api.crear(
+          nombre: v.nombre,
+          anio: v.anio,
+          precio: v.precio,
+          correo: v.correo,
+          disponible: v.disponible,
+        );
+        await _cargar(emit, numero: state.pagina.pagina);
+        emit(state.copyWith(enviando: false, idRestaurado: nuevoId));
+      } catch (error) {
+        emit(state.copyWith(enviando: false, error: _mensaje(error)));
+      }
+    });
+
     on<VehiculoEliminado>((evento, emit) async {
       if (!state.puedeEditar || state.enviando) return;
       emit(state.copyWith(enviando: true, borrarError: true));
