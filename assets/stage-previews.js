@@ -318,7 +318,7 @@
     const centered=v.centered?' pv-centered':'';
     const bodyHL=highlight==='body'&&which==='after'?' pv-body-glow':'';
     const noteHL=(kind)=>highlight===kind&&which==='after'?' pv-glow':'';
-    return `<div class="pv-device">
+    return `<div class="pv-device${v.colorsReady?' pv-uses-colores':''}">
       <div class="pv-status">9:41 <span>◉ ▰</span></div>
       <div class="pv-app-screen">
         ${v.appbar!==false?`<div class="pv-appbar${noteHL('appbar')}${v.appbarCentered?' pv-title-center':''}"${v.colorsReady?' style="background:#1d4ed8;color:#fff"':''}>
