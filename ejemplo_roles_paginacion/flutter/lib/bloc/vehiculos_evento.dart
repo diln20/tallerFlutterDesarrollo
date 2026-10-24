@@ -47,3 +47,8 @@ class VehiculoEliminado extends VehiculosEvento {
   VehiculoEliminado(this.id);
   final int id;
 }
+
+class DisponibilidadAlternada extends VehiculosEvento {
+  DisponibilidadAlternada(this.id);
+  final int id;
+}
