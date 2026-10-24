@@ -6,6 +6,7 @@ class Vehiculo {
     required this.precio,
     required this.correo,
     required this.disponible,
+    this.favorito = false,
   });
 
   final int id;
@@ -14,6 +15,19 @@ class Vehiculo {
   final double precio;
   final String correo;
   final bool disponible;
+  final bool favorito;
+
+  Vehiculo copiarCon({bool? disponible, bool? favorito}) {
+    return Vehiculo(
+      id: id,
+      nombre: nombre,
+      anio: anio,
+      precio: precio,
+      correo: correo,
+      disponible: disponible ?? this.disponible,
+      favorito: favorito ?? this.favorito,
+    );
+  }
 
   factory Vehiculo.fromJson(Map<String, dynamic> json) {
     return Vehiculo(
