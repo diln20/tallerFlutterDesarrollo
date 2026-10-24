@@ -53,7 +53,7 @@
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
   <link rel="stylesheet" href="./assets/crud-lesson.css?v=20261023-DirectCRUD-v1">
   <link rel="stylesheet" href="./assets/bloc-crud.css?v=20261023-P8">
-  <link rel="stylesheet" href="./assets/advanced-lessons.css?v=P14-sintaxis-v1">
+  <link rel="stylesheet" href="./assets/advanced-lessons.css?v=P14-debug-banner-v2">
   <link rel="stylesheet" href="./assets/roles-pagination-ux.css?v=P12-P14-v1">
 </head>
 <body>
@@ -521,8 +521,57 @@ class MainApp extends StatelessWidget {
           <div id="appbar-properties-table" class="wc-appbar-property-host"></div>
           <div class="notice notice-info"><strong>¿Y si tengo un Drawer o varias páginas?</strong><p>Cuando <code>automaticallyImplyLeading</code> está activo, AppBar puede incluir automáticamente el icono para abrir un Drawer o el botón de regreso. Si escribes un <code>leading</code> propio, ese comportamiento automático cambia. Por eso debes estudiar primero el concepto de navegación.</p></div>
           <p><a href="https://api.flutter.dev/flutter/material/AppBar/AppBar.html" target="_blank" rel="noopener noreferrer">Ver la firma del constructor AppBar en la documentación oficial ↗</a></p>
-        </div><h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
-          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label></div>
+        </div>
+<div class="debug-banner-guide" id="etiqueta-debug">
+  <h2>4. ¿Qué significa la etiqueta roja DEBUG de Flutter?</h2>
+  <p>Al ejecutar la aplicación en modo de desarrollo, Flutter puede dibujar una cinta diagonal roja con la palabra <strong>DEBUG</strong> en la esquina superior derecha. Es una señal visual para saber que estás probando el programa, <strong>no es un error</strong> ni forma parte de la pantalla de tus usuarios.</p>
+  <p><strong>Analogía:</strong> es como poner un letrero de «Vehículo en pruebas» en el concesionario: solo identifica una demostración, no cambia el funcionamiento del motor.</p>
+  <div class="debug-banner-comparison" aria-label="Comparación de pantalla Flutter con y sin la etiqueta DEBUG">
+    <div class="debug-banner-demo-panel">
+      <strong>Cuando se muestra la etiqueta</strong>
+      <div class="debug-banner-demo-screen">
+        <div class="debug-banner-demo-toolbar">Tienda de vehículos</div>
+        <div class="debug-banner-demo-content">Primer widget</div>
+        <span class="debug-banner-demo-ribbon" aria-hidden="true">DEBUG</span>
+      </div>
+      <code>debugShowCheckedModeBanner: true</code>
+    </div>
+    <div class="debug-banner-demo-panel">
+      <strong>Cuando se oculta la etiqueta</strong>
+      <div class="debug-banner-demo-screen">
+        <div class="debug-banner-demo-toolbar">Tienda de vehículos</div>
+        <div class="debug-banner-demo-content">Primer widget</div>
+      </div>
+      <code>debugShowCheckedModeBanner: false</code>
+    </div>
+  </div>
+  <h3>¿En qué archivo y en qué lugar se escribe?</h3>
+  <p>Abre el archivo <code>lib/main.dart</code> de tu copia del ejercicio del módulo 03. Busca <code>return MaterialApp(</code> y <strong>agrega la propiedad justo dentro de MaterialApp, antes de home:</strong>. No va dentro de <code>Scaffold</code>, <code>AppBar</code> o <code>Text</code>.</p>
+  <div class="code-label">lib/main.dart · AGREGA esta propiedad dentro de MaterialApp</div>
+  <pre class="code-block" data-code-mode="dart"><code>return MaterialApp(
+  debugShowCheckedModeBanner: false,
+  home: Scaffold(
+    appBar: AppBar(title: const Text('Tienda')),
+    body: const Center(child: Text('Primer widget')),
+  ),
+);</code></pre>
+  <p>En el <strong>proyecto integrado <code>actividad2</code></strong>, el <code>MaterialApp</code> principal está en <code>lib/app.dart</code>, y la Tienda con API tiene otro ejemplo en <code>lib/tienda_api/main.dart</code>. Ambos ya incluyen <code>debugShowCheckedModeBanner: false</code>; <strong>no dupliques la propiedad</strong>. Conserva los argumentos actuales como <code>theme:</code> y <code>routes:</code>.</p>
+  <div class="notice notice-info"><strong>Importante:</strong> ocultar la cinta <strong>no desactiva el modo debug</strong>. Hot Reload, los puntos de interrupción, <code>debugPrint()</code> y la consola siguen funcionando. La compilación para distribución es algo distinto, por ejemplo <code>flutter build web --release</code>.</div>
+  <div class="table-scroll"><table class="lesson-table">
+    <thead><tr><th>Concepto</th><th>Qué hace realmente</th></tr></thead>
+    <tbody>
+      <tr><td><code>true</code></td><td>Muestra la cinta en modo depuración.</td></tr>
+      <tr><td><code>false</code></td><td>Oculta únicamente la cinta en modo depuración.</td></tr>
+      <tr><td><code>debugPrint('Hola')</code></td><td>Escribe en la consola; no controla la cinta.</td></tr>
+      <tr><td><code>flutter run</code></td><td>Por defecto ejecuta en modo de desarrollo.</td></tr>
+      <tr><td><code>flutter build web --release</code></td><td>Genera una versión web para distribución.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="notice notice-tip"><strong>Comprueba el resultado:</strong> ejecuta tu práctica y verifica que desaparezca la cinta. Cambia temporalmente a <code>true</code>, observa la diferencia y vuelve a <code>false</code>. Puedes usar Hot Reload.</div>
+  <p><a href="./etapas/paso_03_tienda_sin_debug.dart" target="_blank" rel="noopener noreferrer">Ver el archivo completo del módulo 03 con la cinta DEBUG oculta ↗</a> · <a href="https://api.flutter.dev/flutter/material/MaterialApp/debugShowCheckedModeBanner.html" target="_blank" rel="noopener noreferrer">Documentación oficial de Flutter ↗</a></p>
+</div>
+<h2>5. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
+          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label><label><input type="checkbox"> Sé ocultar la etiqueta DEBUG desde <code>MaterialApp</code> y distingo la cinta del modo de ejecución.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dibuja tu propia jerarquía</h3><p>Representa en una hoja el árbol de widgets desde <code>MainApp</code> hasta el primer <code>Text</code> del cuerpo. Usa flechas para indicar qué widget está dentro de cuál.</p><details><summary>Ver orientación</summary><p>MainApp → MaterialApp → Scaffold → body → Center → Column → Text.</p></details></div>
           <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_03_tienda.dart" target="_blank" rel="noopener noreferrer">Construir la barra Tienda: paso_03_tienda.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="estructura">Marcar módulo como completado</button><a class="next-link" href="#diseno">Siguiente: Organizar widgets →</a></div>
         </section>
