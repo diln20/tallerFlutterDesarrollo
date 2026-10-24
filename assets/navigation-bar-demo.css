@@ -1,0 +1,19 @@
+/* Demostración didáctica de NavigationBar, separada de Flutter real. */
+.nb-demo { max-width:720px; margin:22px auto; border:1px solid #bfcee5; padding:16px; border-radius:18px; background:var(--surface-soft,#f7faff); }
+.nb-demo .nb-demo-title { font-size:15px; color:var(--heading,#183153); margin:0 0 10px; font-weight:800; }
+.nb-demo-phone { margin:auto; width:min(100%,390px); border:7px solid #14233d; border-radius:28px; overflow:hidden; background:#fff; box-shadow:0 14px 28px rgba(18,40,76,.12); }
+.nb-demo-appbar { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; color:#fff; background:#1d4ed8; font-weight:700; font-size:14px; }
+.nb-demo-panel { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:12px; min-height:240px; padding:20px 22px; text-align:center; color:#172554; font-size:14px; }
+.nb-demo-panel[hidden] { display:none !important; }
+.nb-demo-panel .nb-demo-emoji { font-size:39px; line-height:1; }
+.nb-demo-panel strong { font-size:16px; }
+.nb-demo-panel p { margin:0; line-height:1.6; }
+.nb-demo-nav { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); background:#ecf2fb; border-top:1px solid #cbd5e1; }
+.nb-demo-nav button { display:flex; flex-direction:column; gap:5px; align-items:center; justify-content:center; min-width:0; min-height:74px; padding:8px 4px; color:#435771; border:0; background:transparent; font:700 11px/1.3 inherit; cursor:pointer; }
+.nb-demo-nav button[aria-selected="true"] { color:#1d4ed8; background:#d9e6fc; }
+.nb-demo-nav button:focus-visible { outline:3px solid #2563eb; outline-offset:-4px; }
+.nb-demo-nav .nb-demo-symbol { font-size:22px; line-height:1.1; }
+.nb-demo-caption { margin:14px 0 0; color:var(--text-soft,#53647c); font-size:12px; line-height:1.7; }
+.nb-demo-state { font-size:12px; font-weight:700; color:#1d4ed8; text-align:center; margin:10px 0 0; }
+@media (max-width:480px) { .nb-demo{padding:10px;} .nb-demo-panel{min-height:195px;} .nb-demo-nav button{min-height:68px;} }
+@media print { .nb-demo-phone{box-shadow:none;} }
