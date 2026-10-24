@@ -52,6 +52,12 @@ flutter run -d emulator-5554 --dart-define=API_URL=http://10.0.2.2:8091
 
 Usa esas cuentas solo para aprender. **No expongas este servidor a Internet**: la autenticación HTTP Basic de esta práctica exige un rediseño con HTTPS, gestión de sesiones y secretos antes de producción.
 
+## Prueba de navegador completa
+
+Además de las pruebas de Flutter y pytest, se añadió una prueba E2E real con Chrome que verifica registro de vehículo, selección/subida de imagen PNG, persistencia, favoritos individuales, navegación móvil y roles de administrador, vendedor y cliente. Se ejecuta **solo en localhost** para evitar modificar sistemas ajenos y elimina su vehículo temporal.
+
+Lee [las instrucciones para ejecutar la prueba E2E](./actividad2a/scripts/README.md) y su [código fuente](./actividad2a/scripts/e2e-web.js).
+
 ## Qué funciona
 CRUD por roles, filtros y búsqueda, favoritos por usuario, paginación de servidor, carga y visualización de fotos JPEG/PNG/WebP mediante selector web y móvil, y almacenamiento persistente en SQLite y archivos del backend. Se incluyen pruebas de Flutter y de API.
 
