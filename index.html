@@ -2733,7 +2733,7 @@ class BotonTienda extends StatelessWidget {
 <details class="deep-details" id="extraccion-guardar-referencia"><summary>¿Dónde está guardarVehiculo()? Mostrar ubicación y función completa</summary><div class="deep-details-body">
 <p>El método se creó inicialmente en <a href="#crud-paso-2">P5.1, paso 2</a> y se reemplazó por su versión de crear/editar en <a href="#crud-paso-5">P5.1, paso 5</a>. Debe aparecer <strong>una sola vez</strong> en <code>_MainAppState</code>, <strong>después de las variables</strong> (<code>vehiculoController</code>, <code>formularioKey</code>, <code>vehiculos</code> e <code>indiceEnEdicion</code>) y <strong>antes de <code>dispose()</code> y <code>build()</code></strong>. No lo pegues dentro de <code>Column</code> ni de <code>BotonTienda</code>.</p>
 <div class="code-label">REFERENCIA · cuerpo completo que ya debe existir en _MainAppState</div>
-<pre class="code-review-block"><code>  void guardarVehiculo() {
+<pre class="code-block"><code>  void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
       return;
     }
