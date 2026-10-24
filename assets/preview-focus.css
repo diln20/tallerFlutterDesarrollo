@@ -328,3 +328,5 @@ body[data-theme=dark] .pv-side-heading .pv-focus-open {
   .pv-crud-demo{padding:9px}
   .pv-crud-name{flex-basis:85px}
 }
+
+.pv-uses-colores .pv-body-text{color:#172554}
