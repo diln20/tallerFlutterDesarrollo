@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ruta didáctica final del concesionario Flutter: API, roles, widgets, repositorios e imágenes web y móvil.">
+<title>Mi concesionario | Integración final de Flutter</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1527;--paper:#14223b;--paper2:#1a304e;--line:#344865;--ink:#edf5ff;--muted:#bed0e5;--accent:#71d7ee;--green:#77dab4;--gold:#ffd893;--red:#ffb4ba}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--accent)}header{background:radial-gradient(circle at 75% 20%,#255076 0,transparent 40%),linear-gradient(135deg,#15284a,#0d1629);border-bottom:1px solid var(--line)}
+.hero{max-width:1120px;margin:auto;padding:62px 26px}header nav a{display:inline-block;margin-right:20px;font-size:14px;text-decoration:none}.kicker{display:inline-block;border:1px solid #5089a0;color:#b8f0ff;padding:5px 12px;border-radius:50px;font-size:13px;margin:32px 0 8px}
+h1{font-size:clamp(2.1rem,5vw,3.5rem);line-height:1.13;max-width:850px;margin:8px 0 20px}h2{font-size:clamp(1.4rem,2.4vw,2rem);margin:0 0 12px}h3{font-size:1.15rem;margin:16px 0 6px;color:#acf0f7}
+p{margin:9px 0 15px}.hero p{max-width:850px;color:var(--muted);font-size:18px}
+main{max-width:1120px;margin:0 auto;padding:24px 26px 70px}.section{padding:32px 0;border-bottom:1px solid var(--line)}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin:25px 0}.pill{background:#224665;border:1px solid #355978;color:#e5f6ff;border-radius:100px;padding:5px 12px;font-size:13px}
+.grids{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.tile,.step,.note{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px}.step{margin:18px 0 22px}
+.stepno{display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#26627d;color:white;border-radius:7px;padding:4px 10px;margin-right:10px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{font-size:.89em;background:#1b344f;color:#b7f2e3;padding:2px 5px;border-radius:5px}pre{background:#090f1d;border:1px solid #374967;border-radius:12px;padding:17px;overflow:auto;line-height:1.5;font-size:13px}pre code{padding:0;background:none;color:#daeaff}
+.note{border-left:4px solid var(--green)}.warning{border-left:4px solid var(--gold)}.muted{color:var(--muted)}.meta{color:#80e4bc;font-size:14px;font-weight:600}
+.path{display:inline-block;border:1px solid #496783;border-radius:8px;padding:4px 9px;font-size:13px;color:#bfe9fc;font-family:ui-monospace,monospace;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;margin:14px 0}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:13px 11px}th{color:#aadfe9;font-size:14px}
+details{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:13px 16px;margin-top:12px}details summary{cursor:pointer;font-weight:600}
+button{font:inherit;background:#67cfe6;border:0;color:#06223b;padding:9px 13px;border-radius:9px;font-weight:600;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #f4d28c;outline-offset:3px}.rolebuttons{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.rolebuttons button[aria-pressed=true]{background:#c6efb3}.preview{padding:15px;border:1px dashed #6185a9;border-radius:12px;background:#172a45}.feature{display:flex;align-items:flex-start;gap:10px;padding:9px 0}.feature span{flex:1}.feature em{font-style:normal;font-size:14px;color:var(--green)}
+a.cta{display:inline-block;background:#67cfe6;color:#06223b;text-decoration:none;padding:12px 18px;border-radius:11px;font-weight:700;margin:12px 12px 0 0}
+footer{max-width:1120px;margin:auto;padding:24px 26px 65px;color:var(--muted)}
+@media(min-width:950px){.two{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px}.two>aside{position:sticky;top:18px;align-self:start}}
+@media(max-width:540px){.hero{padding:30px 18px}main{padding:16px}th,td{padding:9px 6px;font-size:13px}pre{font-size:12px}.step{padding:15px}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<nav aria-label="Ruta"><a href="./index.html">Taller FlutterLab</a><a href="./guia-imagenes-web-movil.html">Etapa de imágenes</a><a href="./etapa-vehiculos-usuarios-roles.html">Etapa de roles</a></nav>
+<span class="kicker">RUTA FINAL · UNA SOLA VERSIÓN DE CÓDIGO</span>
+<h1>Mi concesionario: del primer widget a una aplicación completa</h1>
+<p>Conexión progresiva de formularios, modelos, repositorios, servicios HTTP, fotos compatibles con navegador y móvil, filtros, paginación y permisos de administrador, vendedor y cliente.</p>
+<div class="badges"><span class="pill">Flutter / Dart</span><span class="pill">FastAPI + SQLite</span><span class="pill">Android y Web</span><span class="pill">Código revisado con pruebas</span></div>
+<a class="cta" href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/proyecto-integrado">Ver código final completo</a>
+<a class="cta" href="./proyecto-integrado/actividad2a/docs/GUIA_INTEGRACION_FINAL.md">Leer guía técnica</a>
+</div></header>
+<main>
+<section class="section" id="version">
+<h2>Una regla: no volver a pegar una versión anterior</h2>
+<div class="note"><strong>Esta es la implementación integrada.</strong> En las etapas iniciales el objeto <code>Vehiculo</code> tenía únicamente nombre y disponibilidad; luego se agregaron imágenes como bytes temporales. La versión final conserva el ID real, nombre, marca, precio, disponibilidad, URL de la foto y favoritos. Los pasos previos enseñan conceptos, pero no se deben copiar directamente sobre los archivos finales.</div>
+<div class="grids" style="margin-top:16px">
+<div class="tile"><span class="meta">ANTES · LISTA LOCAL</span><p><code>Vehiculo(nombre, disponible)</code> + <code>List&lt;Vehiculo&gt;</code> dentro de la página.</p><p class="muted">Adecuado para entender variables y <code>setState</code>, pero no conserva datos.</p></div>
+<div class="tile"><span class="meta">DESPUÉS · MODELO DEFINITIVO</span><p><code>Vehiculo(id, nombre, marca, precio, disponible, imagenUrl, esFavorito)</code> y <code>VehiculoRepository</code>.</p><p class="muted">El backend crea los ID y almacena autos, fotos y favoritos.</p></div>
+</div>
+</section>
+<section class="section" id="estructura"><h2>¿Dónde va cada pieza?</h2>
+<table><thead><tr><th>Carpeta</th><th>Responsabilidad</th><th>Archivos reales</th></tr></thead><tbody>
+<tr><td><code>models</code></td><td>Forma de los datos</td><td><code>vehiculo.dart</code>, <code>usuario.dart</code>, <code>permiso.dart</code></td></tr>
+<tr><td><code>services</code></td><td>Comunicación externa, imágenes</td><td><code>api_service.dart</code>, <code>imagen_service.dart</code></td></tr>
+<tr><td><code>repositories</code></td><td>CRUD y consultas</td><td><code>vehiculo_repository.dart</code>, <code>usuario_repository.dart</code></td></tr>
+<tr><td><code>pages</code></td><td>Pantallas y estado</td><td><code>login_page.dart</code>, <code>catalogo_page.dart</code>, <code>usuarios_page.dart</code>, <code>perfil_page.dart</code></td></tr>
+<tr><td><code>widgets</code></td><td>Controles reutilizables</td><td><code>vehiculo_form_dialog.dart</code>, <code>vehiculo_card.dart</code></td></tr>
+<tr><td><code>test</code></td><td>Pruebas automáticas</td><td><code>concesionario_test.dart</code>, <code>interfaz_test.dart</code></td></tr>
+<tr><td><code>actividad2a_api</code></td><td>Servidor y persistencia</td><td><code>app.py</code>, <code>tests/test_app.py</code>, SQLite y archivos</td></tr>
+</tbody></table></section>
+<section class="section" id="ruta"><h2>Construcción paso a paso</h2>
+<div class="step"><span class="stepno">01</span><h3>Crear el proyecto y la API</h3><span class="path">DesarrolloMovilFlutter/</span>
+<p>Abre la carpeta en VS Code y crea el proyecto inicial solo si aún no existe.</p>
+<pre><code>flutter create --empty actividad2a</code></pre>
+<p>Integra el contenido de la carpeta <a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/proyecto-integrado">proyecto-integrado</a> y prepara la API en una carpeta hermana. La API anterior <code>tienda_api</code> es independiente: no se sobreescribe.</p>
+<details><summary>Comandos de arranque</summary><pre><code>cd actividad2a
+flutter pub get
+flutter analyze
+flutter test
+
+cd ..\actividad2a_api
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8091</code></pre></details>
+</div>
+<div class="step"><span class="stepno">02</span><h3>Crear los modelos</h3><span class="path">lib/models/vehiculo.dart</span> <span class="path">lib/models/usuario.dart</span>
+<p>Los modelos no dibujan pantallas. <code>Vehiculo.fromJson</code> interpreta la respuesta recibida; <code>DatosVehiculo.toJson</code> prepara lo que se envía al servidor. Un usuario es otro objeto, no una propiedad del vehículo.</p>
+<pre><code>enum RolUsuario { administrador, vendedor, cliente }
+
+// Ejemplo de lectura en el modelo actual:
+final nombre = json['nombre'] as String;
+final precio = (json['precio'] as num).toDouble();</code></pre>
+<p>El <code>id</code> del vehículo llega desde la API. Un formulario nuevo nunca debe inventar el ID. <code>json</code> proviene del método <code>fromJson</code> del archivo real.</p>
+</div>
+<div class="step"><span class="stepno">03</span><h3>Separar services de repositories</h3><span class="path">lib/services/api_service.dart</span> <span class="path">lib/repositories/vehiculo_repository.dart</span>
+<p>El servicio conoce direcciones, métodos HTTP, cabeceras y JSON. El repositorio ofrece operaciones comprensibles para el catálogo como <code>crear</code>, <code>editar</code>, <code>eliminar</code>, <code>listar</code>, <code>subirImagen</code> y <code>cambiarFavorito</code>. La página no necesita preparar peticiones HTTP.</p>
+<pre><code>final nuevo = await _repositorio.crear(formulario.datos);
+await _repositorio.subirImagen(nuevo.id, formulario.imagen!);</code></pre><p>Este fragmento resume dos operaciones consecutivas. En la implementación real primero se comprueba si se seleccionó una fotografía, se conserva el ID al editar y se capturan los errores.</p>
+</div>
+<div class="step"><span class="stepno">04</span><h3>Cargar fotos en navegador y móvil</h3><span class="path">lib/services/imagen_service.dart</span>
+<p>Usa <code>image_picker</code> + <code>XFile.readAsBytes()</code>. Eso permite seleccionar archivos sin importar <code>dart:io</code>, incompatible con Flutter web.</p>
+<pre><code>final XFile? archivo = await _picker.pickImage(
+  source: ImageSource.gallery,
+  maxWidth: 1600,
+  imageQuality: 75,
+);
+if (archivo == null) return null;
+final bytes = await archivo.readAsBytes();</code></pre>
+<p><code>await</code> espera al usuario; <code>XFile?</code> permite cancelación; <code>Image.memory</code> muestra la vista previa; <code>Image.network</code> muestra la foto después de guardarla en el servidor. Se admiten JPEG, PNG y WebP, máximo 5 MB. El backend comprueba también el contenido real.</p>
+</div>
+<div class="step"><span class="stepno">05</span><h3>Construir el formulario reutilizable</h3><span class="path">lib/widgets/vehiculo_form_dialog.dart</span>
+<p>Explica uno por uno: <code>Form</code>, <code>GlobalKey&lt;FormState&gt;</code>, <code>TextEditingController</code>, <code>TextFormField</code>, <code>validator</code>, <code>SwitchListTile</code>, selección de imagen y botones.</p>
+<p>El formulario utiliza <code>SingleChildScrollView</code>, así el teclado del teléfono no obliga a que toda la pantalla desborde. Los controladores se liberan en <code>dispose()</code>.</p>
+<details><summary>¿Dónde quedó guardarVehiculo?</summary><p>En esta versión el método de página se llama <code>_guardarVehiculo(Vehiculo? anterior)</code> y está en <code>lib/pages/catalogo_page.dart</code>; abre el modal y llama al repositorio. Dentro de <code>VehiculoFormDialog</code>, el método <code>_guardar()</code> valida los campos y entrega los datos al callback <code>onGuardar</code>. No son dos implementaciones distintas del CRUD: forman parte del mismo flujo.</p></details>
+</div>
+<div class="step"><span class="stepno">06</span><h3>Crear el listado con ListView.builder</h3><span class="path">lib/pages/catalogo_page.dart</span><p><code>itemCount</code> es la cantidad de registros recibidos y <code>itemBuilder</code> genera cada tarjeta. Al anidar el listado dentro del desplazamiento general, el ejemplo final usa <code>shrinkWrap: true</code> y <code>NeverScrollableScrollPhysics</code>.</p>
+<pre><code>ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  itemCount: datos.datos.length,
+  itemBuilder: (context, index) {
+    final vehiculo = datos.datos[index];
+    return VehiculoCard(
+      key: ValueKey(vehiculo.id),
+      // Las acciones se envían según el rol.
+    );
+  },
+)</code></pre><p>El fragmento es explicativo: consulta <code>catalogo_page.dart</code> para los argumentos completos del widget.</p>
+</div>
+<div class="step"><span class="stepno">07</span><h3>Añadir filtros, favoritos y paginación</h3>
+<p>Conserva el catálogo original y añade búsqueda por modelo/marca, precio máximo, disponibilidad, orden ascendente/descendente, favoritos personales y botones de página. Los filtros se aplican en el servidor; al cambiar uno se regresa a la primera página.</p>
+<p>La búsqueda aplica una espera de 330 ms antes de enviar solicitudes. El selector de orden utiliza <code>isExpanded: true</code> para no desbordarse en móvil.</p>
+</div>
+<div class="step"><span class="stepno">08</span><h3>Agregar las pantallas por perfil y los permisos</h3><span class="path">lib/pages/usuarios_page.dart</span>
+<p>Administrador: gestiona cuentas y vehículos. Vendedor: registra y edita vehículos. Cliente: consulta y marca favoritos. El menú usa <code>NavigationBar</code> en teléfono y <code>NavigationRail</code> en escritorio; <code>IndexedStack</code> evita reiniciar cada página al cambiar de tab.</p>
+<pre><code>if (widget.usuario.esAdministrador)
+  UsuariosPage(api: widget.api, actual: widget.usuario)</code></pre>
+<p>Ese <code>if</code> cambia la interfaz, pero la API comprueba los permisos de nuevo. Ante una operación no permitida devuelve 403.</p>
+</div>
+</section>
+<section class="section" id="permisos"><div class="two"><div><h2>Prueba interactiva de los roles</h2><p>Selecciona un perfil y comprueba qué permisos deben aparecer. Es una simulación explicativa; los permisos reales los aplica la API.</p><div class="rolebuttons" role="group" aria-label="Seleccionar perfil">
+<button type="button" data-rol="administrador" aria-pressed="true">Administrador</button><button type="button" data-rol="vendedor" aria-pressed="false">Vendedor</button><button type="button" data-rol="cliente" aria-pressed="false">Cliente</button></div>
+<div class="preview" id="vista-rol" aria-live="polite"><strong>Administrador</strong><div class="feature"><span>Ver catálogo y favoritos</span><em>Permitido</em></div><div class="feature"><span>Crear o editar vehículos</span><em>Permitido</em></div><div class="feature"><span>Eliminar vehículos</span><em>Permitido</em></div><div class="feature"><span>Administrar usuarios y roles</span><em>Permitido</em></div></div></div>
+<aside class="warning note"><h3>Autenticación frente a autorización</h3><p>La autenticación comprueba quién es la persona. La autorización valida cada operación. Aunque alguien haga aparecer un botón con herramientas de navegador, el backend debe seguir rechazando la acción.</p><p>HTTP Basic con contraseñas demo solo sirve para un laboratorio local. No lo despliegues como servicio público.</p></aside></div></section>
+<section class="section" id="ejecutar"><h2>Ejecutar y verificar</h2>
+<div class="grids">
+<div class="tile"><h3>Web</h3><pre><code>cd actividad2a
+flutter run -d chrome --dart-define=API_URL=http://127.0.0.1:8091</code></pre><p>Usa el servidor de desarrollo local con CORS permitido para localhost.</p></div>
+<div class="tile"><h3>Emulador Android</h3><pre><code>cd actividad2a
+flutter run -d emulator-5554 --dart-define=API_URL=http://10.0.2.2:8091</code></pre><p><code>10.0.2.2</code> conecta el emulador al computador. En un teléfono físico se configura otra dirección.</p></div>
+</div>
+<div class="note" style="margin-top:16px"><strong>Verificaciones en la versión de referencia:</strong> análisis Flutter sin errores, pruebas de widgets aprobadas, API con pruebas de permisos e imágenes aprobadas, compilación web y APK de depuración correctas. La validación manual de galería/cámara debe repetirse en los dispositivos reales de clase. Desde Windows no se compila iOS.</div>
+</section>
+<section class="section" id="actividades"><h2>Actividades de comprobación</h2>
+<div class="grids">
+<div class="tile"><h3>Actividad A — Catálogo</h3><p>Registra Renault Logan, Mazda 2 y un tercer vehículo. Filtra por marca, ordena por precio y usa paginación. Explica de dónde proviene `total_paginas`.</p></div>
+<div class="tile"><h3>Actividad B — Fotos</h3><p>Adjunta una foto, visualízala, modifica el vehículo, cierra sesión y vuelve a entrar. ¿Por qué se conserva la fotografía? Explica qué hace el repository.</p></div>
+<div class="tile"><h3>Actividad C — Roles</h3><p>Entra como cliente e intenta gestionar usuarios. Después entra como vendedor e intenta borrar. Describe cuál es la respuesta correcta del servidor y por qué.</p></div>
+<div class="tile"><h3>Actividad D — Componentes</h3><p>Explica `StatelessWidget` y `StatefulWidget` usando `VehiculoCard`, `CatalogoPage` y el formulario reutilizable. Describe `dispose` y `mounted`.</p></div>
+</div></section>
+</main>
+<footer><p>Versión integrada · 24 de octubre de 2026 · <a href="./index.html">Volver al taller FlutterLab</a> · <a href="https://github.com/diln20/tallerFlutterDesarrollo/tree/main/proyecto-integrado">Archivos fuente y pruebas</a></p></footer>
+<script>
+const acciones=['Ver catálogo y favoritos','Crear o editar vehículos','Eliminar vehículos','Administrar usuarios y roles'];
+const roles={administrador:[true,true,true,true],vendedor:[true,true,false,false],cliente:[true,false,false,false]};
+for(const b of document.querySelectorAll('[data-rol]')){
+ b.addEventListener('click',()=>{
+  const rol=b.dataset.rol, permitido=roles[rol];
+  for(const otro of document.querySelectorAll('[data-rol]'))otro.setAttribute('aria-pressed',String(otro===b));
+  const panel=document.getElementById('vista-rol');panel.replaceChildren();
+  const titulo=document.createElement('strong');titulo.textContent=rol.charAt(0).toUpperCase()+rol.slice(1);panel.append(titulo);
+  acciones.forEach((accion,i)=>{
+    const fila=document.createElement('div');fila.className='feature';
+    const texto=document.createElement('span');texto.textContent=accion;
+    const estado=document.createElement('em');estado.textContent=permitido[i]?'Permitido':'Restringido';
+    if(!permitido[i])estado.style.color='var(--red)';
+    fila.append(texto,estado);panel.append(fila);
+  });
+ });
+}
+</script>
+</body></html>
