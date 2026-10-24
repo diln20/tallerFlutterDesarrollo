@@ -1,0 +1,100 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Imágenes en Flutter | Web y móvil</title><style>body{font:16px/1.6 system-ui;background:#111827;color:#eff6ff;max-width:880px;margin:auto;padding:24px}h1,h2,h3{color:#93c5fd}pre{background:#080e1c;padding:18px;border:1px solid #334155;border-radius:10px;overflow:auto}code{color:#a7f3d0}a{color:#7dd3fc}.step{padding:18px;border:1px solid #334155;border-radius:14px;margin:18px 0}.warning{border-left:4px solid #fbbf24;padding-left:16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #334155;padding:8px;text-align:left}</style></head><body><a href="./index.html">← Taller principal</a><h1>Subir imágenes de vehículos en Flutter: navegador y móvil</h1><p>Continuación de la creación del objeto Vehículo, el formulario y el CRUD. El objetivo es poder escoger una fotografía, visualizarla, guardarla en memoria junto al vehículo, editarla y eliminarla.</p><div class="step"><h2>1. Revisar el punto de partida</h2><p>El archivo <code>lib/models/vehiculo.dart</code> de actividad2a inicialmente solo tiene <code>nombre</code> y <code>disponible</code>. No tiene <code>id</code>, <code>marca</code> ni <code>precio</code>. No añadas estos atributos por accidente al copiar ejercicios de otras etapas; se explicarán por separado cuando se amplíe el catálogo.</p><p>Antes de editar, crear un respaldo o guardar un commit del estado inicial.</p></div><div class="step"><h2>2. Instalar la dependencia</h2><pre>flutter pub add image_picker</pre><p>El paquete proporciona <code>ImagePicker</code>, <code>ImageSource.gallery</code> y <code>XFile</code>. Abre un selector de fotografías compatible con navegador, Android e iOS. En Windows, algunas compilaciones con plugins requieren activar el modo desarrollador para habilitar enlaces simbólicos.</p></div><div class="step"><h2>3. Crear la estructura de carpetas</h2><pre>lib/
+  models/
+    vehiculo.dart
+  repositories/
+    vehiculo_repository.dart
+  services/
+    imagen_service.dart
+  pages/
+    acerca_page.dart
+  widgets/
+    campo_nombre_vehiculo.dart
+  main.dart</pre><p><strong>models</strong>: estructura de los datos; <strong>services</strong>: conexión con el selector de imágenes; <strong>repositories</strong>: almacenamiento y operaciones CRUD; <strong>pages</strong>: pantallas; <strong>widgets</strong>: controles reutilizables. El método <code>build</code> no debería seleccionar archivos ni almacenar datos directamente.</p></div><div class="step"><h2>4. Ampliar el objeto en lib/models/vehiculo.dart</h2><pre>import 'dart:typed_data';
+
+class Vehiculo {
+  const Vehiculo({
+    required this.nombre,
+    this.disponible = true,
+    this.imagenBytes,
+  });
+
+  final String nombre;
+  final bool disponible;
+  final Uint8List? imagenBytes;
+}</pre><p><code>Uint8List</code> representa bytes (los datos binarios de la fotografía); el signo <code>?</code> permite que no haya imagen. <code>required</code> obliga a proporcionar nombre, mientras que <code>disponible</code> tiene un valor por defecto. En la implementación de clase se añadió también <code>copyWith</code> para actualizaciones sin mutar el objeto.</p></div><div class="step"><h2>5. Crear lib/services/imagen_service.dart</h2><pre>import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+
+class ImagenService {
+  final ImagePicker picker = ImagePicker();
+
+  Future&lt;Uint8List?&gt; seleccionarImagen() async {
+    final XFile? archivo = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 75,
+      maxWidth: 1600,
+    );
+    if (archivo == null) return null;
+    final bytes = await archivo.readAsBytes();
+    if (bytes.isEmpty) {
+      throw const FormatException('Imagen vacía');
+    }
+    if (bytes.length > 5 * 1024 * 1024) {
+      throw const FormatException('La imagen supera 5 MB');
+    }
+    return bytes;
+  }
+}</pre><p><code>Future</code> indica una respuesta futura. <code>async</code> habilita operaciones asíncronas; <code>await</code> espera la selección o lectura sin bloquear toda la interfaz. <code>XFile?</code> puede ser nulo si el usuario cancela. <code>readAsBytes</code> funciona en navegador y móvil; no se usa <code>File</code> ni <code>dart:io</code>, que no son compatibles con Flutter web.</p></div><div class="step"><h2>6. Crear lib/repositories/vehiculo_repository.dart</h2><pre>import '../models/vehiculo.dart';
+
+class VehiculoRepository {
+  final List&lt;Vehiculo&gt; _vehiculos = [];
+
+  List&lt;Vehiculo&gt; listar() => List.unmodifiable(_vehiculos);
+
+  void guardar(Vehiculo vehiculo, {int? indice}) {
+    if (indice == null) {
+      _vehiculos.add(vehiculo);
+    } else {
+      _vehiculos[indice] = vehiculo;
+    }
+  }
+
+  void eliminar(int indice) {
+    _vehiculos.removeAt(indice);
+  }
+}</pre><p>El repositorio separa el almacenamiento del formulario. Por ahora los vehículos e imágenes permanecen solo en memoria. Recargar la web o cerrar la aplicación elimina los registros; más adelante la API podrá guardar las fotografías de forma persistente.</p></div><div class="step"><h2>7. Conectar el servicio a la página</h2><p>Dentro del <code>State</code> de la pantalla Tienda, antes de <code>build</code>, define:</p><pre>final ImagenService _imagenService = ImagenService();
+Uint8List? _imagenSeleccionada;
+bool _seleccionando = false;</pre><p>Y agrega el método:</p><pre>Future&lt;void&gt; _seleccionarImagen() async {
+  setState(() => _seleccionando = true);
+  try {
+    final bytes = await _imagenService.seleccionarImagen();
+    if (!mounted) return;
+    if (bytes != null) {
+      setState(() => _imagenSeleccionada = bytes);
+    }
+  } catch (error) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $error')),
+    );
+  } finally {
+    if (mounted) setState(() => _seleccionando = false);
+  }
+}</pre><p><code>setState</code> redibuja la pantalla; <code>mounted</code> verifica que la página siga abierta después de la selección; <code>try/catch</code> maneja fallas; <code>finally</code> restablece el botón aunque ocurra un error.</p></div><div class="step"><h2>8. Añadir botón y vista previa al formulario</h2><pre>OutlinedButton.icon(
+  onPressed: _seleccionando ? null : _seleccionarImagen,
+  icon: const Icon(Icons.add_photo_alternate_outlined),
+  label: const Text('Elegir imagen'),
+),
+if (_imagenSeleccionada != null)
+  Image.memory(
+    _imagenSeleccionada!,
+    height: 100,
+    width: 150,
+    fit: BoxFit.cover,
+  ),</pre><p><code>OutlinedButton.icon</code> muestra icono y texto; <code>onPressed</code> llama el servicio; <code>Image.memory</code> pinta bytes sin depender de una ruta física; <code>BoxFit.cover</code> ajusta el recorte visual. El operador <code>!</code> se usa aquí después de comprobar que no es nula.</p></div><div class="step"><h2>9. Guardar, editar y mostrar</h2><p>Al presionar guardar, crea <code>Vehiculo(nombre: nombre, imagenBytes: _imagenSeleccionada)</code> y pásalo a <code>VehiculoRepository.guardar</code>. Al editar, recupera <code>vehiculo.imagenBytes</code> para que vuelva a mostrarse en el formulario. En cada <code>ListTile</code> del listado usa:</p><pre>leading: vehiculo.imagenBytes == null
+  ? const Icon(Icons.directions_car)
+  : Image.memory(
+      vehiculo.imagenBytes!,
+      width: 64,
+      height: 56,
+      fit: BoxFit.cover,
+    ),</pre><p>Al borrar se retira el vehículo del repositorio y su imagen asociada. La implementación de <code>actividad2a/lib/main.dart</code> ya contiene estos pasos conectados.</p></div><div class="step"><h2>10. Verificar la compatibilidad</h2><table><tr><th>Prueba</th><th>Navegador</th><th>Android/iOS</th></tr><tr><td>Elegir foto de la galería/archivos</td><td>Selector web</td><td>Galería del equipo</td></tr><tr><td>Cancelar</td><td>No cambia selección</td><td>No cambia selección</td></tr><tr><td>Mostrar imagen</td><td>Image.memory</td><td>Image.memory</td></tr><tr><td>Imagen vacía o mayor de 5 MB</td><td>Error controlado</td><td>Error controlado</td></tr><tr><td>Recargar/cerrar</td><td>Se pierden datos en memoria</td><td>Se pierden datos en memoria</td></tr></table><p class="warning"><strong>Nota de seguridad:</strong> para subir imágenes al servidor realmente hay que construir un endpoint autenticado, comprobar permisos por rol, validar tamaño, tipo y contenido en el backend, y almacenar el archivo fuera de la memoria de la app. La previsualización y la selección no equivalen a una subida HTTP.</p></div><div class="step"><h2>11. Ejercicios para estudiantes</h2><ol><li>Crear un vehículo sin foto; debe aparecer el icono del carro.</li><li>Seleccionar una imagen; comprobar la vista previa.</li><li>Guardar el vehículo y editarlo; debe conservar su foto.</li><li>Quitar la imagen seleccionada sin borrar el nombre.</li><li>Filtrar por nombre; comprobar que la foto sigue asociada al vehículo correcto.</li><li>Explicar por qué se usan <code>services</code> y <code>repositories</code> y por qué no se utiliza <code>dart:io</code> en Flutter web.</li></ol></div><p><a href="./etapa-vehiculos-usuarios-roles.html">Siguiente: roles y permisos →</a></p></body></html>
