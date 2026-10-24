@@ -9141,7 +9141,9 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 
 <section class="page lesson next-module post-api-lesson" id="roles-usuarios" aria-labelledby="roles-usuarios-title">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P12</span><span class="status-pill planned">Autenticación y autorización con dos perfiles</span></div>
-<h1 id="roles-usuarios-title">Roles y permisos: primero la seguridad</h1><p>Antes de mejorar la lista, da prioridad a decidir quién puede consultarla y quién puede modificarla. Usaremos roles reales en el servidor para continuar con la misma Tienda.</p></div><div class="notice notice-info"><strong>Punto de partida:</strong> conserva <code>actividad2</code> y <code>tienda_api</code> del P11. Esta etapa enseña <strong>autenticación</strong> (comprobar identidad) antes de <strong>autorización</strong> (comprobar permisos). Las contraseñas son de práctica local; no son un sistema de identidad apto para producción.</div>
+<h1 id="roles-usuarios-title">Roles y permisos: primero la seguridad</h1><p>Antes de mejorar la lista, da prioridad a decidir quién puede consultarla y quién puede modificarla. Usaremos roles reales en el servidor para continuar con la misma Tienda.</p></div>
+<div class="notice notice-info"><strong>Las nuevas funciones siguen en la misma Tienda.</strong><p>La referencia completa de <a href="./ejemplo_roles_paginacion/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart con roles</a> conserva <code>NavigationBar</code>, <code>Drawer</code>, la pestaña Resumen, los favoritos y las tarjetas reutilizables de P10.3; agrega inicio de sesión sin eliminar esos widgets. El rol <strong>lector</strong> puede consultar y marcar favoritos personales, pero nunca cambia el inventario del servidor. El administrador puede cambiar disponibilidad desde el menú de cada vehículo.</p></div>
+<div class="notice notice-info"><strong>Punto de partida:</strong> conserva <code>actividad2</code> y <code>tienda_api</code> del P11. Esta etapa enseña <strong>autenticación</strong> (comprobar identidad) antes de <strong>autorización</strong> (comprobar permisos). Las contraseñas son de práctica local; no son un sistema de identidad apto para producción.</div>
 <div class="pu-bridge"><div><span>1 · IDENTIDAD</span><strong>¿Quién entra?</strong><p>HTTP Basic presenta usuario y contraseña a FastAPI.</p></div><div><span>2 · ROL</span><strong>¿Qué puede hacer?</strong><p>El servidor asigna Lector o Administrador después de autenticar.</p></div><div><span>3 · PERMISO</span><strong>¿Se permite la acción?</strong><p>El backend rechaza escrituras para Lector, aunque modifique la interfaz.</p></div></div>
 <div class="pu-demo" id="pu-roles-demo"><h3>Prueba qué puede hacer cada rol</h3><p>Simulación HTML didáctica. Los roles reales se verifican al iniciar sesión en FastAPI; cambiar este selector no otorga permisos reales.</p><div class="pu-row" role="group" aria-label="Seleccionar rol de ejemplo"><button type="button" data-pu-rol-elegir="lector" aria-pressed="true">Lector</button><button type="button" data-pu-rol-elegir="administrador" aria-pressed="false">Administrador</button></div>
 <p>Rol simulado: <strong data-pu-rol>Lector</strong>. Controles que normalmente ve este usuario:</p><div class="pu-visible-actions" data-pu-permisos></div>
@@ -9403,7 +9405,9 @@ def consultar_sesion(usuario: Usuario):
 <div class="lesson-end"><button class="button button-complete" data-complete="roles-usuarios">Marcar módulo como completado</button><a class="next-link" href="#paginacion-widget">Siguiente etapa →</a></div></section>
 <section class="page lesson next-module post-api-lesson" id="paginacion-widget" aria-labelledby="paginacion-widget-title">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P13</span><span class="status-pill planned">JSON · BLoC · ListView · DataTable</span></div>
-<h1 id="paginacion-widget-title">Consumir objetos de la API y paginar datos en los widgets</h1><p>La misma Tienda ya tiene roles. Ahora haremos que una respuesta JSON real se convierta en objetos Dart y se muestre de manera eficiente con controles de páginas, búsqueda y adaptación a pantallas móviles.</p></div><div class="notice notice-info"><strong>Punto de partida:</strong> ya está activa la autorización de P12. Ahora consumirás respuestas paginadas de FastAPI y las transformarás en <code>List&lt;Vehiculo&gt;</code> para dibujarlas. <strong>No cambies el modelo por mapas JSON sueltos en la interfaz.</strong></div>
+<h1 id="paginacion-widget-title">Consumir objetos de la API y paginar datos en los widgets</h1><p>La misma Tienda ya tiene roles. Ahora haremos que una respuesta JSON real se convierta en objetos Dart y se muestre de manera eficiente con controles de páginas, búsqueda y adaptación a pantallas móviles.</p></div>
+<div class="notice notice-info"><strong>La paginación de la API continúa las mejoras anteriores.</strong><p>En <a href="./ejemplo_roles_paginacion/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">la Tienda final con roles y páginas</a> permanecen la barra inferior, favoritos, disponibilidad y Resumen. Las tarjetas compactas y <code>DataTable</code> reutilizan <a href="./ejemplo_roles_paginacion/flutter/lib/widgets/vista_vehiculos.dart" target="_blank" rel="noopener noreferrer">VistaVehiculos</a> con estrella y acciones. <strong>Importante:</strong> cuando FastAPI entrega solo una página, los chips y el orden local afectan a esa página, no a todos los registros de PostgreSQL. Para buscar por nombre en toda la base de datos, usa el campo que consulta <code>GET /vehiculos</code> con parámetros.</p></div>
+<div class="notice notice-info"><strong>Punto de partida:</strong> ya está activa la autorización de P12. Ahora consumirás respuestas paginadas de FastAPI y las transformarás en <code>List&lt;Vehiculo&gt;</code> para dibujarlas. <strong>No cambies el modelo por mapas JSON sueltos en la interfaz.</strong></div>
 <div class="pu-bridge"><div><span>1 · RESPUESTA HTTP</span><strong>JSON estructurado</strong><p>FastAPI responde con datos y metadatos de paginación.</p></div><div><span>2 · OBJETOS DART</span><strong>fromJson()</strong><p>Vehiculo y PaginaVehiculos interpretan cada campo.</p></div><div><span>3 · WIDGETS</span><strong>ListView y DataTable</strong><p>La interfaz dibuja solo los vehículos de esa página.</p></div></div>
 <div class="pu-demo" id="pu-paginas-demo"><h3>Prueba una página antes de escribir el widget</h3><p>Simulación con 13 vehículos; cambia el tamaño o busca un nombre. Observa cómo el JSON contiene solo la página visible y cómo cada fila corresponde a un objeto <code>Vehiculo</code>.</p>
 <div class="pu-row"><label for="pu-buscar">Buscar vehículo</label><input id="pu-buscar" data-pu-buscar placeholder="Renault, Mazda..." type="search"><label for="pu-tamano">Registros por página</label><select id="pu-tamano" data-pu-tamano><option value="5">5</option><option value="10">10</option><option value="20">20</option></select></div>
@@ -9711,12 +9715,18 @@ class VistaVehiculos extends StatelessWidget {
     required this.puedeEditar,
     required this.alEditar,
     required this.alEliminar,
+    required this.esFavorito,
+    required this.alFavorito,
+    required this.alCambiarDisponibilidad,
   });
 
   final List&lt;Vehiculo&gt; vehiculos;
   final bool puedeEditar;
   final ValueChanged&lt;Vehiculo&gt; alEditar;
   final ValueChanged&lt;Vehiculo&gt; alEliminar;
+  final bool Function(Vehiculo) esFavorito;
+  final ValueChanged&lt;Vehiculo&gt; alFavorito;
+  final ValueChanged&lt;Vehiculo&gt; alCambiarDisponibilidad;
 
   @override
   Widget build(BuildContext context) {
@@ -9741,11 +9751,17 @@ class VistaVehiculos extends StatelessWidget {
               return Card(
                 key: ValueKey(auto.id),
                 child: ListTile(
+                  leading: IconButton(
+                    tooltip: esFavorito(auto) ? &#39;Quitar de favoritos&#39; : &#39;Marcar favorito&#39;,
+                    icon: Icon(esFavorito(auto) ? Icons.star : Icons.star_border),
+                    onPressed: () =&gt; alFavorito(auto),
+                  ),
                   title: Text(auto.nombre),
                   subtitle: Text(
                     &#39;Año &#39; + auto.anio.toString() +
                     &#39; · Precio &#39; + auto.precio.toStringAsFixed(2) +
-                    &#39;\n&#39; + auto.correo,
+                    &#39;\n&#39; + auto.correo +
+                    (auto.disponible ? &#39; · Disponible&#39; : &#39; · No disponible&#39;),
                   ),
                   isThreeLine: true,
                   trailing: puedeEditar
@@ -9754,13 +9770,18 @@ class VistaVehiculos extends StatelessWidget {
                           onSelected: (opcion) {
                             if (opcion == &#39;editar&#39;) alEditar(auto);
                             if (opcion == &#39;eliminar&#39;) alEliminar(auto);
+                            if (opcion == &#39;disponibilidad&#39;) alCambiarDisponibilidad(auto);
                           },
-                          itemBuilder: (_) =&gt; const [
+                          itemBuilder: (_) =&gt; [
                             PopupMenuItem(
+                              value: &#39;disponibilidad&#39;,
+                              child: Text(auto.disponible ? &#39;Marcar no disponible&#39; : &#39;Marcar disponible&#39;),
+                            ),
+                            const PopupMenuItem(
                               value: &#39;editar&#39;,
                               child: Text(&#39;Editar&#39;),
                             ),
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               value: &#39;eliminar&#39;,
                               child: Text(&#39;Eliminar&#39;),
                             ),
@@ -9777,6 +9798,7 @@ class VistaVehiculos extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: DataTable(
             columns: [
+              const DataColumn(label: Text(&#39;Favorito&#39;)),
               const DataColumn(label: Text(&#39;ID&#39;)),
               const DataColumn(label: Text(&#39;Vehículo&#39;)),
               const DataColumn(label: Text(&#39;Año&#39;)),
@@ -9787,6 +9809,11 @@ class VistaVehiculos extends StatelessWidget {
             ],
             rows: vehiculos.map((auto) =&gt; DataRow(
               cells: [
+                DataCell(IconButton(
+                  tooltip: esFavorito(auto) ? &#39;Quitar de favoritos&#39; : &#39;Marcar favorito&#39;,
+                  onPressed: () =&gt; alFavorito(auto),
+                  icon: Icon(esFavorito(auto) ? Icons.star : Icons.star_border),
+                )),
                 DataCell(Text(auto.id.toString())),
                 DataCell(Text(auto.nombre)),
                 DataCell(Text(auto.anio.toString())),
@@ -9802,6 +9829,11 @@ class VistaVehiculos extends StatelessWidget {
                         icon: const Icon(Icons.edit_outlined),
                       ),
                       IconButton(
+                        tooltip: auto.disponible ? &#39;Marcar no disponible&#39; : &#39;Marcar disponible&#39;,
+                        onPressed: () =&gt; alCambiarDisponibilidad(auto),
+                        icon: Icon(auto.disponible ? Icons.toggle_on : Icons.toggle_off),
+                      ),
+                      IconButton(
                         tooltip: &#39;Eliminar &#39; + auto.nombre,
                         onPressed: () =&gt; alEliminar(auto),
                         icon: const Icon(Icons.delete_outline),
@@ -9815,7 +9847,8 @@ class VistaVehiculos extends StatelessWidget {
       },
     );
   }
-}</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>LayoutBuilder</code> lee el ancho disponible. Si es menor a 720, <code>ListView.builder</code> crea tarjetas. En pantallas amplias, <code>DataTable</code> construye filas desde la <strong>misma lista tipada</strong>. El ID real acompaña a cada objeto y evita confusiones al filtrar.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Los campos nombre, año, precio y correo aparecen en ambas presentaciones. Para Lector no se dibujan acciones de editar o eliminar.</p></div></article>
+}
+</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>LayoutBuilder</code> lee el ancho disponible. Si es menor a 720, <code>ListView.builder</code> crea tarjetas. En pantallas amplias, <code>DataTable</code> construye filas desde la <strong>misma lista tipada</strong>. El ID real acompaña a cada objeto y evita confusiones al filtrar.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Los campos nombre, año, precio y correo aparecen en ambas presentaciones. Para Lector no se dibujan acciones de editar o eliminar.</p></div></article>
 <div class="fv-properties-block" id="fv-propiedades-paginador"><span class="fv-property-badge">VALORES DISPONIBLES · REFERENCIA</span><h3>Valores posibles de Wrap y desplazamiento</h3><h4>alignment: WrapAlignment · seis opciones</h4><p>En Wrap, alignment distribuye los hijos dentro de cada línea, no usa MainAxisAlignment.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>WrapAlignment.start</code></td><td>Agrupa hacia el inicio.</td><td>Primer control a la izquierda.</td></tr><tr><td><code>WrapAlignment.end</code></td><td>Agrupa hacia el final.</td><td>Ultimo control a la derecha.</td></tr><tr><td><code>WrapAlignment.center</code></td><td>Centra los controles en cada fila.</td><td>La practica utiliza center.</td></tr><tr><td><code>WrapAlignment.spaceBetween</code></td><td>Reparte espacio entre controles.</td><td>Botones separados.</td></tr><tr><td><code>WrapAlignment.spaceAround</code></td><td>Deja espacios alrededor.</td><td>Separacion lateral moderada.</td></tr><tr><td><code>WrapAlignment.spaceEvenly</code></td><td>Espacios similares entre y alrededor.</td><td>Controles equidistantes.</td></tr></tbody></table></div><h4>crossAxisAlignment: WrapCrossAlignment · tres opciones</h4><p>Importante: este tipo es WrapCrossAlignment, no CrossAxisAlignment de Row y Column.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>WrapCrossAlignment.start</code></td><td>Alinea elementos al comienzo transversal de su línea.</td><td>Controles arriba.</td></tr><tr><td><code>WrapCrossAlignment.end</code></td><td>Alinea elementos al final transversal de su línea.</td><td>Controles abajo.</td></tr><tr><td><code>WrapCrossAlignment.center</code></td><td>Centra elementos transversalmente.</td><td>Controles de alturas distintas centrados.</td></tr></tbody></table></div><h4>scrollDirection: Axis · dos opciones</h4><p>Se utiliza por ejemplo en SingleChildScrollView, ListView o GridView.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th scope="col">Valor que puedes escribir</th><th scope="col">Qué produce</th><th scope="col">Ejemplo en la Tienda</th></tr></thead><tbody><tr><td><code>Axis.vertical</code></td><td>Desplazamiento vertical.</td><td>Lista de vehiculos hacia abajo.</td></tr><tr><td><code>Axis.horizontal</code></td><td>Desplazamiento horizontal.</td><td>Tabla amplia que se desliza hacia los lados.</td></tr></tbody></table></div><p><code>spacing: 12</code> deja 12 pixeles lógicos entre hijos de una misma línea de <code>Wrap</code>, y <code>runSpacing: 8</code> deja 8 entre líneas. Son <strong>números no negativos</strong> que puedes ajustar, no enums. Al cambiar el tamaño de pantalla, Wrap crea nuevas líneas si hace falta.</p><div class="fv-tip"><p><strong>Busca exactamente:</strong> <code>Wrap(</code> dentro de <code>controles_paginacion.dart</code> para <code>alignment</code>, <code>crossAxisAlignment</code>, <code>spacing</code> y <code>runSpacing</code>. Busca <code>SingleChildScrollView(</code> en <code>vista_vehiculos.dart</code> para <code>scrollDirection</code>.</p></div></div>
 <article class="next-step" id="pu-step-13-9"><div class="next-step-top"><span class="next-step-number">13-9</span><div><span class="pu-badge">COMPARAR DOS ENFOQUES</span><h3>Distinguir PaginatedDataTable de la paginación API</h3></div></div><p>Flutter incluye una tabla paginada que funciona con un <code>DataTableSource</code> de larga duración. Es distinta de pedir páginas al servidor: el widget no descarga registros por sí solo.</p><div class="next-where"><div class="next-where-action">COMPARAR DOS ENFOQUES</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>lib/widgets/tabla_paginada_local.dart</code> (práctica opcional)</div><div><strong>Buscar con Ctrl+F:</strong> <code>DataTableSource</code> y <code>PaginatedDataTable</code></div></div></div><div class="code-label">Referencia opcional: PaginatedDataTable solo con lista completa</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;../models/vehiculo.dart&#39;;
@@ -9902,7 +9935,10 @@ class _TablaPaginadaLocalState extends State&lt;TablaPaginadaLocal&gt; {
   }
 }</code></pre><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>getRow(indice)</code> dibuja una fila local y <code>rowCount</code> es el total de objetos que ya tienes. <code>notifyListeners()</code> comunica cambios en esa fuente. <strong>No combines este ejemplo con el paginado remoto P13:</strong> de lo contrario puedes contar como total solo los cinco objetos recibidos del servidor.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Sabes cuándo utilizar DataTable, PaginatedDataTable y ListView; distingues datos de la página de un conjunto completo en memoria.</p></div></article>
 <article class="next-step" id="pu-step-13-10"><div class="next-step-top"><span class="next-step-number">13-10</span><div><span class="pu-badge">EDITAR MAIN.DART Y VALIDAR</span><h3>Conectar el paginador al BLoC y probar 13 vehículos</h3></div></div><p>El formulario, menú y roles que construiste siguen disponibles. La vista de resultados recibe <code>estado.pagina.datos</code>, no todo el JSON como texto.</p><div class="next-where"><div class="next-where-action">EDITAR MAIN.DART Y VALIDAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>VistaVehiculos</code>, <code>ControlesPaginacion</code>, <code>BlocConsumer</code></div></div></div><div class="code-label">Fragmento: mostrar widgets paginados</div><pre class="code-block" data-code-mode="dart"><code>VistaVehiculos(
-              vehiculos: estado.pagina.datos,
+              vehiculos: visibles, // filtrados en la página recibida
+              esFavorito: (v) => favoritos.contains(v.id),
+              alFavorito: alternarFavorito,
+              alCambiarDisponibilidad: cambiarDisponibilidad,
               puedeEditar: estado.puedeEditar &amp;&amp; !estado.enviando,
               alEditar: editarVehiculo,
               alEliminar: confirmarEliminar,
