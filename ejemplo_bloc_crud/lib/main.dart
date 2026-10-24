@@ -102,144 +102,144 @@ class _TiendaPageState extends State<TiendaPage> {
         index: indicePestana,
         children: [
           SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TituloSeccion(texto: 'Tienda de vehículos'),
-              const SizedBox(height: 12),
-              const Row(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.directions_car),
-                  SizedBox(width: 8),
+                  const TituloSeccion(texto: 'Tienda de vehículos'),
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Ingenieria de Sistemas',
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Buscar marca o modelo',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (texto) {
+                      context.read<VehiculosBloc>().add(BusquedaCambiada(texto));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const TituloSeccion(texto: 'Agregar un vehículo'),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    child: CampoNombreVehiculo(controller: vehiculoController),
+                  ),
+                  const SizedBox(height: 10),
+                  BlocBuilder<VehiculosBloc, VehiculosEstado>(
+                    builder: (context, estado) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: BotonTienda(
+                              texto: estado.indiceEnEdicion == null
+                                  ? 'Agregar vehículo'
+                                  : 'Guardar cambios',
+                              alPresionar: guardarVehiculo,
+                            ),
+                          ),
+                          if (estado.indiceEnEdicion != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: cancelarEdicion,
+                              child: const Text('Cancelar'),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  BlocBuilder<VehiculosBloc, VehiculosEstado>(
+                    builder: (context, estado) {
+                      return Text(
+                        'Registrados: ${estado.vehiculos.length} · '
+                        'Visibles: ${estado.visibles.length}',
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
-                    child: Text(
-                      'Ingenieria de Sistemas',
-                      overflow: TextOverflow.ellipsis,
+                    child: BlocBuilder<VehiculosBloc, VehiculosEstado>(
+                      builder: (context, estado) {
+                        if (estado.visibles.isEmpty) {
+                          return Center(
+                            child: Text(
+                              estado.vehiculos.isEmpty
+                                  ? 'Todavía no hay vehículos registrados.'
+                                  : 'No hay vehículos que coincidan con la búsqueda.',
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          itemCount: estado.visibles.length,
+                          itemBuilder: (context, indiceVisible) {
+                            final vehiculo = estado.visibles[indiceVisible];
+                            final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                            return Card(
+                              child: ListTile(
+                                title: Text(vehiculo.nombre),
+                                subtitle: Text(
+                                  vehiculo.disponible
+                                      ? 'Disponible'
+                                      : 'No disponible',
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      tooltip: 'Editar vehículo',
+                                      onPressed: () => comenzarEdicion(indiceReal),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      tooltip: 'Eliminar vehículo',
+                                      onPressed: () => borrarVehiculo(indiceReal),
+                                      icon: const Icon(Icons.delete_outline),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      icon: const Icon(Icons.info_outline),
+                      label: const Text('Acerca de y ayuda'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AcercaPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Buscar marca o modelo',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (texto) {
-                  context.read<VehiculosBloc>().add(BusquedaCambiada(texto));
-                },
-              ),
-              const SizedBox(height: 16),
-              const TituloSeccion(texto: 'Agregar un vehículo'),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                child: CampoNombreVehiculo(controller: vehiculoController),
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder<VehiculosBloc, VehiculosEstado>(
-                builder: (context, estado) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: BotonTienda(
-                          texto: estado.indiceEnEdicion == null
-                              ? 'Agregar vehículo'
-                              : 'Guardar cambios',
-                          alPresionar: guardarVehiculo,
-                        ),
-                      ),
-                      if (estado.indiceEnEdicion != null) ...[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: cancelarEdicion,
-                          child: const Text('Cancelar'),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 14),
-              BlocBuilder<VehiculosBloc, VehiculosEstado>(
-                builder: (context, estado) {
-                  return Text(
-                    'Registrados: ${estado.vehiculos.length} · '
-                    'Visibles: ${estado.visibles.length}',
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: BlocBuilder<VehiculosBloc, VehiculosEstado>(
-                  builder: (context, estado) {
-                    if (estado.visibles.isEmpty) {
-                      return Center(
-                        child: Text(
-                          estado.vehiculos.isEmpty
-                              ? 'Todavía no hay vehículos registrados.'
-                              : 'No hay vehículos que coincidan con la búsqueda.',
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: estado.visibles.length,
-                      itemBuilder: (context, indiceVisible) {
-                        final vehiculo = estado.visibles[indiceVisible];
-                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
-                        return Card(
-                          child: ListTile(
-                            title: Text(vehiculo.nombre),
-                            subtitle: Text(
-                              vehiculo.disponible
-                                  ? 'Disponible'
-                                  : 'No disponible',
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  tooltip: 'Editar vehículo',
-                                  onPressed: () => comenzarEdicion(indiceReal),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  tooltip: 'Eliminar vehículo',
-                                  onPressed: () => borrarVehiculo(indiceReal),
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  icon: const Icon(Icons.info_outline),
-                  label: const Text('Acerca de y ayuda'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AcercaPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
           ),
           BlocBuilder<VehiculosBloc, VehiculosEstado>(
             builder: (context, estado) {
