@@ -38,6 +38,7 @@ class VehiculosApi {
     required int anio,
     required double precio,
     required String correo,
+    bool disponible = true,
   }) async {
     final respuesta = await _cliente.post(
       _ruta,
@@ -47,7 +48,7 @@ class VehiculosApi {
         'anio': anio,
         'precio': precio,
         'correo': correo,
-        'disponible': true,
+        'disponible': disponible,
       }),
     );
     _verificar(respuesta, 201);
