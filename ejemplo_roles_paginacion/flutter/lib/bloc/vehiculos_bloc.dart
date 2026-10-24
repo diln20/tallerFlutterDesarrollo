@@ -93,6 +93,28 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       }
     });
 
+    on<DisponibilidadAlternada>((evento, emit) async {
+      if (!state.puedeEditar || state.enviando) return;
+      final actuales=state.pagina.datos.where((v) => v.id == evento.id);
+      if (actuales.isEmpty) return;
+      final v=actuales.first;
+      emit(state.copyWith(enviando: true, borrarError: true));
+      try {
+        await api.actualizar(
+          id: v.id,
+          nombre: v.nombre,
+          anio: v.anio,
+          precio: v.precio,
+          correo: v.correo,
+          disponible: !v.disponible,
+        );
+        await _cargar(emit, numero: state.pagina.pagina);
+        emit(state.copyWith(enviando: false));
+      } catch (error) {
+        emit(state.copyWith(enviando: false, error: _mensaje(error)));
+      }
+    });
+
     on<VehiculoEliminado>((evento, emit) async {
       if (!state.puedeEditar || state.enviando) return;
       emit(state.copyWith(enviando: true, borrarError: true));
