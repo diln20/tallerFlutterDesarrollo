@@ -108,92 +108,92 @@ class _MainAppState extends State<MainApp> {
           index: indicePestana,
           children: [
             SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const TituloSeccion(texto: 'Primer widget'),
-              const SizedBox(height: 20),
-              Icon(Icons.directions_car),
-              const SizedBox(height: 8),
-              Row(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const TituloSeccion(texto: 'Primer widget'),
+                  const SizedBox(height: 20),
                   Icon(Icons.directions_car),
-                  const SizedBox(width: 8),
-                  Text('Ingenieria de Sistemas'),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Buscar marca o modelo',
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      const SizedBox(width: 8),
+                      Text('Ingenieria de Sistemas'),
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            hintText: 'Buscar marca o modelo',
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const TituloSeccion(texto: 'Agregar un vehículo'),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    child: CampoNombreVehiculo(controller: vehiculoController),
+                  ),
+                  const SizedBox(height: 12),
+                  BotonTienda(
+                    texto: indiceEnEdicion == null
+                        ? 'Agregar vehículo'
+                        : 'Guardar cambios',
+                    alPresionar: guardarVehiculo,
+                  ),
+                  const SizedBox(height: 12),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: vehiculos.length,
+                    itemBuilder: (context, indice) {
+                      final vehiculo = vehiculos[indice];
+                      return ListTile(
+                        title: Text(vehiculo.nombre),
+                        subtitle: Text(
+                          vehiculo.disponible ? 'Disponible' : 'No disponible',
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              tooltip: 'Editar vehículo',
+                              onPressed: () => comenzarEdicion(indice),
+                              icon: const Icon(Icons.edit),
+                            ),
+                            IconButton(
+                              tooltip: 'Eliminar vehículo',
+                              onPressed: () => borrarVehiculo(indice),
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Builder(
+                    builder: (context) => BotonTienda(
+                      texto: 'Acerca de y ayuda',
+                      alPresionar: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AcercaPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  const ContadorToques(),
                 ],
               ),
-              const SizedBox(height: 20),
-              const TituloSeccion(texto: 'Agregar un vehículo'),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                child: CampoNombreVehiculo(controller: vehiculoController),
-              ),
-              const SizedBox(height: 12),
-              BotonTienda(
-                texto: indiceEnEdicion == null
-                    ? 'Agregar vehículo'
-                    : 'Guardar cambios',
-                alPresionar: guardarVehiculo,
-              ),
-              const SizedBox(height: 12),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: vehiculos.length,
-                itemBuilder: (context, indice) {
-                  final vehiculo = vehiculos[indice];
-                  return ListTile(
-                    title: Text(vehiculo.nombre),
-                    subtitle: Text(
-                      vehiculo.disponible ? 'Disponible' : 'No disponible',
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          tooltip: 'Editar vehículo',
-                          onPressed: () => comenzarEdicion(indice),
-                          icon: const Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          tooltip: 'Eliminar vehículo',
-                          onPressed: () => borrarVehiculo(indice),
-                          icon: const Icon(Icons.delete),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              Builder(
-                builder: (context) => BotonTienda(
-                  texto: 'Acerca de y ayuda',
-                  alPresionar: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AcercaPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              const ContadorToques(),
-            ],
-          ),
-        ),
+            ),
             Center(
               child: Text('Vehículos registrados: ${vehiculos.length}'),
             ),
