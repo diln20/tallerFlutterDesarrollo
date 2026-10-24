@@ -94,3 +94,18 @@ body[data-theme=dark] .al-drawer-frame{background:#243b58;color:#e9f2ff}
 .post-api-lesson pre.code-block code .al-syntax-comment{color:#90aabc;font-style:italic}
 .post-api-lesson pre.code-block code .al-syntax-name{color:#78d9ed}
 .post-api-lesson pre.code-block code .al-syntax-tag{color:#88bff2}
+
+
+/* Etiqueta DEBUG: demostracion pedagogica del modulo 03. */
+.debug-banner-guide{margin:24px 0;padding:clamp(16px,2.2vw,26px);border:1px solid var(--border);border-radius:14px;background:var(--surface-soft)}
+.debug-banner-guide>h2{margin-top:0}
+.debug-banner-guide>p{line-height:1.85}
+.debug-banner-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0 22px}
+.debug-banner-demo-panel{min-width:0;display:flex;flex-direction:column;gap:11px;padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.debug-banner-demo-panel>strong{font-size:13px;color:var(--heading)}
+.debug-banner-demo-panel>code{font-size:12px;overflow-wrap:anywhere}
+.debug-banner-demo-screen{position:relative;overflow:hidden;min-height:155px;background:#eaf2fb;border-radius:9px;border:1px solid #a9bfd9}
+.debug-banner-demo-toolbar{background:#153f83;color:#fff;font-size:12px;padding:14px 18px;min-height:45px}
+.debug-banner-demo-content{display:flex;align-items:center;justify-content:center;padding:31px 12px;color:#17374b;font-size:13px}
+.debug-banner-demo-ribbon{position:absolute;top:17px;right:-37px;width:144px;transform:rotate(45deg);padding:5px 0;background:#ba1a1a;color:#fff;font-weight:800;letter-spacing:.065em;font-size:12px;text-align:center;box-shadow:0 2px 5px #09234033}
+@media(max-width:640px){.debug-banner-comparison{grid-template-columns:1fr}}
