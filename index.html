@@ -22,6 +22,7 @@
   <script src="./assets/app.js?v=20261023-P14-rutas-v1" defer></script>
   <script src="./assets/bloc-practice.js?v=20261023-bloc-guia-v2" defer></script>
   <script src="./assets/stage-preview-data.js?v=20261023-auditoria-v3" defer></script>
+  <script src="./assets/navigation-bar-demo.js?v=20261023-p71" defer></script>
   <script src="./assets/dart-syntax.js?v=20261023-unificado-v4" defer></script>
   <script src="./assets/crud-lesson.js?v=20261023-P14-glosario-final" defer></script>
   <script src="./assets/crud-listado-detallado.js?v=20261024-crud-list-v1" defer></script>
@@ -50,6 +51,7 @@
   <link rel="stylesheet" href="./assets/preview-accessibility.css?v=20261023-ampliado">
   <link rel="stylesheet" href="./assets/preview-vscode-icons.css?v=20261023-v1">
   <link rel="stylesheet" href="./assets/preview-focus.css?v=20261023-auditoria-v3">
+  <link rel="stylesheet" href="./assets/navigation-bar-demo.css?v=20261023-p71">
   <link rel="stylesheet" href="./assets/project-start-ui.css?v=20261023-vscode-carpetas-01">
   <link rel="stylesheet" href="./assets/preview-code-focus.css?v=20261023-vscode-lectura-v9">
   <link rel="stylesheet" href="./assets/dart-syntax.css?v=20261023-unificado-v4">
@@ -98,7 +100,7 @@
         <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">RUTA A · CONTINÚA DESDE EL MÓDULO 05</div>
         <a class="nav-link" href="#proyecto" data-route="proyecto" data-search="primera practica formulario actividad2a Text TextField botón controller debugPrint sin for"><span class="lesson-index">P1</span><span>Primer formulario</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <div class="nav-group-label">RUTA A · DE FORMULARIO A NAVEGACIÓN</div>
+        <div class="nav-group-label">RUTA A · NAVEGACIÓN, INTERFAZ Y VALIDACIONES</div>
         <a class="nav-link" href="#carpetas" data-route="carpetas" data-search="carpetas pages widgets models services repositories bloc organizar archivos crear vacias sin mover main dart"><span class="lesson-index">P2</span><span>Crear y explicar carpetas</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#reutilizacion" data-route="reutilizacion" data-search="reutilización widgets TituloSeccion StatelessWidget required import archivo componente reutilizable"><span class="lesson-index">P3</span><span>Reutilizar widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#validacion" data-route="validacion" data-search="validar campo Form TextFormField GlobalKey FormState validator validate formulario"><span class="lesson-index">P4</span><span>Validación del campo</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -106,8 +108,8 @@
         <a class="nav-link" href="#crud" data-route="crud" data-search="crear editar eliminar carro vehiculo funciones trim parse tryParse lista CRUD"><span class="lesson-index">P5.1</span><span>CRUD de vehículos</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#extraccion" data-route="extraccion" data-search="extraccion widgets reutilizables CampoNombreVehiculo BotonTienda TextFormField validator VoidCallback"><span class="lesson-index">P6</span><span>Extraer widgets del código</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#navegacion" data-route="navegacion" data-search="navegacion páginas ayuda acerca Navigator.push Navigator.pop Builder MaterialPageRoute"><span class="lesson-index">P7</span><span>Crear páginas y navegar</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#barra-navegacion" data-route="barra-navegacion" data-search="P7.1 NavigationBar barra inferior Scaffold.bottomNavigationBar NavigationDestination selectedIndex IndexedStack"><span class="lesson-index">P7.1</span><span>Barra de navegación inferior</span><span class="nav-check" aria-hidden="true">✓</span></a>
                 <a class="nav-link" href="#bloc-crud" data-route="bloc-crud" data-search="bloc CRUD vehiculos eventos estados crear editar eliminar buscar aplicacion BlocProvider BlocBuilder"><span class="lesson-index">P8</span><span>BLoC aplicado al CRUD</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <div class="nav-group-label">CONTINUACIÓN · INTERFAZ Y VALIDACIÓN</div>
 <a class="nav-link" href="#menu-hamburguesa" data-route="menu-hamburguesa" data-search="P9 Drawer AppBar menú hamburguesa navegación flutter"><span class="lesson-index">P9</span><span>Menú hamburguesa</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#validaciones-esenciales" data-route="validaciones-esenciales" data-search="P10 validadores formulario correo precio año regex tryParse email TextFormField"><span class="lesson-index">P10</span><span>Validaciones de campos</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#api-postgres" data-route="api-postgres" data-search="P11 FastAPI Python PostgreSQL Docker SQLModel API REST HTTP JSON BLoC Flutter"><span class="lesson-index">P11</span><span>API con FastAPI y PostgreSQL</span><span class="nav-check" aria-hidden="true">✓</span></a>
@@ -3418,7 +3420,283 @@ class _MainAppState extends State&lt;MainApp&gt; {
 </code></pre></div></details>
 <p><a href="./etapas/paso_14_navegacion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final ↗</a></p></div>
 <div class="checklist" data-checklist="navegacion"><label><input type="checkbox"> Creé dos archivos dentro de lib/pages.</label><label><input type="checkbox"> Ambas páginas tienen Scaffold y AppBar.</label><label><input type="checkbox"> Reutilicé TituloSeccion y BotonTienda dentro de las páginas.</label><label><input type="checkbox"> Entiendo por qué push avanza y pop regresa.</label><label><input type="checkbox"> La navegación funciona sin dañar el formulario.</label></div>
-<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#bloc-crud">Siguiente: aplicar BLoC al CRUD →</a></div></section>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar un mensaje de una página</h3><p>Modifica únicamente el texto de ayuda por «Para crear un vehículo necesitas un nombre válido». Comprueba que solo cambia AyudaPage. Después dibuja en una hoja el recorrido <code>Tienda → Acerca de → Ayuda → Acerca de → Tienda</code> e indica en qué momentos se ejecuta push y pop.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="navegacion">Marcar módulo como completado</button><a class="next-link" href="#barra-navegacion">Siguiente: crear una barra inferior →</a></div></section>
+<section class="page lesson next-module" id="barra-navegacion" aria-labelledby="barra-navegacion-title" data-lesson="P7.1">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P7.1</span><span class="status-pill planned">Después de crear páginas y navegar</span></div><h1 id="barra-navegacion-title">Crear una NavigationBar inferior paso a paso</h1><p>Aprenderás a cambiar de Tienda a Resumen y Consejos con una barra permanente sin perder los vehículos, el formulario, el contador ni las páginas de la etapa anterior.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Meta de la práctica</strong><p>Crear <code>Scaffold.bottomNavigationBar</code> con tres destinos, <code>selectedIndex</code> y <code>onDestinationSelected</code>, y aprender por qué <code>IndexedStack</code> conserva el contenido mientras cambias de vista.</p></div></div>
+<div class="notice notice-info"><strong>Punto de partida:</strong><p>Continúa en <code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code> desde <a href="#navegacion">P7 · Crear páginas y navegar</a>. No instales ningún paquete ni reemplaces el proyecto por otro.</p></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Ubicación</th><th>Para qué sirve</th></tr></thead><tbody><tr><td><code>Navigator.push/pop</code></td><td>Acción del botón de P7</td><td>Abrir otra ruta y regresar por el historial.</td></tr><tr><td><code>NavigationBar</code></td><td><code>Scaffold.bottomNavigationBar</code></td><td>Mostrar opciones fijas en la parte inferior.</td></tr><tr><td><code>IndexedStack</code></td><td><code>Scaffold.body</code></td><td>Mostrar una de varias vistas sin desmontar las otras.</td></tr></tbody></table></div>
+<div class="next-section-heading"><span>APRENDIZAJE PROGRESIVO</span><h2>Seis cambios pequeños en el mismo main.dart</h2></div>
+<article class="next-step" id="barra-navegacion-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Ubicar Scaffold y comprender las dos formas de navegar</h3></div><p>En P7 usaste <code>Navigator.push()</code> para abrir <code>AcercaPage</code> como nueva ruta y <code>Navigator.pop()</code> para regresar. Una <code>NavigationBar</code> es distinta: <strong>permanece fija en la parte inferior</strong> y permite seleccionar contenidos de la misma pantalla.</p><div class="next-where"><div class="next-where-action">OBSERVAR EL LUGAR ANTES DE EDITAR</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> En <code>_MainAppState.build()</code>, identifica <code>appBar</code> y <code>body</code> dentro del <code>Scaffold</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>home: Scaffold(</code></div></div></div><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p>Una ruta apilada (push) crea otro paso en el historial. La barra inferior no requiere push: conserva el mismo Scaffold y cambia qué pestaña muestra su body.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Identifica cuál es la barra superior y dónde aparecerá la nueva barra inferior.</p></div></article>
+<article class="next-step" id="barra-navegacion-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Crear la variable indicePestana</h3></div><p>La Tienda ya usa <code>StatefulWidget</code>, por lo que se puede guardar qué pestaña está seleccionada.</p><div class="next-where"><div class="next-where-action">AGREGAR SOLO ESTA VARIABLE</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> En <code>class _MainAppState</code>, justo después de <code>int? indiceEnEdicion;</code> y antes de <code>guardarVehiculo()</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>int? indiceEnEdicion;</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>  int indicePestana = 0;</code></pre><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p><code>int</code> almacena un número entero. <code>0</code> representa Tienda, <code>1</code> Resumen y <code>2</code> Consejos. No confundas <code>indicePestana</code> con <code>indiceEnEdicion</code>: el segundo indica qué vehículo estás editando.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>La variable se agrega una sola vez, fuera de build. Todavía no cambia la pantalla.</p></div></article>
+<article class="next-step" id="barra-navegacion-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Agregar NavigationBar después de AppBar</h3></div><p>Inserta la barra en su región propia del <code>Scaffold</code>. No va dentro de <code>Column.children</code>.</p><div class="next-where"><div class="next-where-action">AGREGAR ESTA PROPIEDAD COMPLETA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Dentro de <code>Scaffold</code>, después de cerrar <code>appBar</code> y antes del <code>body</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>body: SingleChildScrollView(</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>bottomNavigationBar: NavigationBar(
+  selectedIndex: indicePestana,
+  onDestinationSelected: (indice) {
+    setState(() {
+      indicePestana = indice;
+    });
+  },
+  destinations: const [
+    NavigationDestination(
+      icon: Icon(Icons.storefront_outlined),
+      selectedIcon: Icon(Icons.storefront),
+      label: &#39;Tienda&#39;,
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.summarize_outlined),
+      selectedIcon: Icon(Icons.summarize),
+      label: &#39;Resumen&#39;,
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.lightbulb_outline),
+      selectedIcon: Icon(Icons.lightbulb),
+      label: &#39;Consejos&#39;,
+    ),
+  ],
+),</code></pre><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p><code>selectedIndex</code> recibe la pestaña actual. <code>onDestinationSelected</code> obtiene el índice pulsado y <code>setState</code> actualiza la selección visual. <code>destinations</code> recibe los tres <code>NavigationDestination</code>. <code>icon</code> dibuja el icono habitual, <code>selectedIcon</code> el resaltado y <code>label</code> su texto. No usamos paquetes nuevos.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Al iniciar, aparece la barra inferior. Aún falta cambiar el body al cambiar la pestaña.</p></div></article>
+<article class="next-step" id="barra-navegacion-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Envolver el body existente en IndexedStack</h3></div><p>No vas a borrar el <code>SingleChildScrollView</code>, el <code>ListView.builder</code> ni <code>guardarVehiculo()</code>. Vas a poner el contenido actual como el <strong>primer hijo</strong> de <code>IndexedStack</code>.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL INICIO DEL BODY</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Busca el inicio de <code>body: SingleChildScrollView(</code> y reemplaza únicamente ese inicio; deja todo el ScrollView, incluidos sus cierres y los widgets interiores.</div><div><strong>Busca con Ctrl + F:</strong> <code>body: SingleChildScrollView(</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>body: IndexedStack(
+  index: indicePestana,
+  children: [
+    SingleChildScrollView(</code></pre><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p><code>IndexedStack</code> tiene varios hijos pero muestra solo el indicado por <code>index</code>. El ScrollView permanece como la pestaña 0, por lo que la Tienda conserva el CRUD y su desplazamiento incluso cuando aparece el teclado.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>En el código final, el ScrollView debe ser hijo de IndexedStack; no debe haber otro Scaffold dentro de él.</p></div></article>
+<article class="next-step" id="barra-navegacion-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Agregar las pestañas Resumen y Consejos</h3></div><p>Cuando termines el <code>SingleChildScrollView</code> actual, añade dos widgets <code>Center</code> como hermanos suyos y cierra <code>IndexedStack</code>.</p><div class="next-where"><div class="next-where-action">GUÍA DE CIERRES Y DOS VISTAS NUEVAS</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Después del <code>),</code> que cierra <code>SingleChildScrollView</code>, antes de cerrar <code>IndexedStack</code>. Comprueba el anidamiento en el archivo final para no duplicar cierres.</div><div><strong>Busca con Ctrl + F:</strong> <code>const ContadorToques(),</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>        ),
+        Center(
+          child: Text(&#39;Vehículos registrados: ${vehiculos.length}&#39;),
+        ),
+        const Center(
+          child: Text(
+            &#39;Escribe un nombre de al menos tres letras. &#39;
+            &#39;Puedes editar o eliminar cada vehículo en la pestaña Tienda.&#39;,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    ),</code></pre><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p><code>Text('Vehículos registrados: ${vehiculos.length}')</code> consulta cuántos objetos contiene la misma lista; no crea otra. <code>const Center</code> muestra instrucciones fijas. <code>IndexedStack</code> mantiene montados los otros hijos cuando no están visibles. <strong>El fragmento muestra los cierres:</strong> úsalo para comparar la estructura, no para pegar un segundo cierre de ScrollView.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Agrega Renault 9, entra a Resumen y comprueba el total. Regresa a Tienda y verifica que se conserva.</p></div></article>
+<article class="next-step" id="barra-navegacion-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Comprobar en Flutter y continuar a BLoC</h3></div><p>Los tres destinos deben funcionar antes de avanzar. Mantén las páginas <code>AcercaPage</code> y <code>AyudaPage</code> de P7: siguen abiertas desde su botón.</p><div class="next-where"><div class="next-where-action">EJECUTAR UN COMANDO POR VEZ</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>Terminal integrada de VS Code</code></div><div><strong>Ubicación:</strong> Abre el proyecto <code>actividad2</code> y ejecuta los comandos desde su carpeta raíz, no desde <code>lib</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>flutter analyze
+flutter run</code></pre><div class="next-step-meaning"><strong>Por qué se utiliza</strong><p><code>flutter analyze</code> verifica sintaxis y tipos; <code>flutter run</code> abre la app. El <code>setState</code> de la barra solo actualiza la interfaz, mientras que en la próxima etapa BLoC gestionará el inventario.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Puedes agregar, editar y eliminar sin perder datos al alternar las pestañas.</p></div></article>
+<div class="nb-demo" id="nb-demostracion"><h3 class="nb-demo-title">Prueba interactiva: elige la pestaña</h3><div class="nb-demo-phone">
+<div class="nb-demo-appbar"><span>Tienda de vehículos</span><span>⋮</span></div>
+<div class="nb-demo-panel" data-nb-panel="0"><span class="nb-demo-emoji" aria-hidden="true">🚗</span><strong>Tienda</strong><p>Renault 9 y Mazda 3</p><p>El formulario, el listado, el botón de guardar y el contador siguen aquí.</p></div>
+<div class="nb-demo-panel" data-nb-panel="1" hidden><span class="nb-demo-emoji" aria-hidden="true">📊</span><strong>Resumen</strong><p>Vehículos registrados: 2</p><p>La cantidad se consulta desde la misma lista.</p></div>
+<div class="nb-demo-panel" data-nb-panel="2" hidden><span class="nb-demo-emoji" aria-hidden="true">💡</span><strong>Consejos</strong><p>Para agregar un vehículo escribe un nombre válido y pulsa el botón de la Tienda.</p></div>
+<nav class="nb-demo-nav" role="tablist" aria-label="Pestañas de ejemplo"><button type="button" data-nb-tab="0" data-nb-label="Tienda" role="tab" aria-selected="true"><span class="nb-demo-symbol">⌂</span>Tienda</button><button type="button" data-nb-tab="1" data-nb-label="Resumen" role="tab" aria-selected="false"><span class="nb-demo-symbol">▥</span>Resumen</button><button type="button" data-nb-tab="2" data-nb-label="Consejos" role="tab" aria-selected="false"><span class="nb-demo-symbol">✧</span>Consejos</button></nav></div><p class="nb-demo-state" data-nb-state>selectedIndex = 0 · pestaña Tienda</p><p class="nb-demo-caption">Simulación HTML educativa (no captura ni ejecución Flutter). Cambia de pestaña y observa cómo cambia selectedIndex sin borrar los dos vehículos.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>COMPARACIÓN FINAL</span><h2>main.dart completo con la NavigationBar funcionando</h2><p>Úsalo para revisar imports, paréntesis y posición de los nuevos widgets después de seguir los pasos.</p></div><details class="deep-details"><summary>Ver main.dart de P7.1 completo</summary><div class="deep-details-body"><div class="code-label">etapas/paso_14b_navigation_bar.dart → actividad2/lib/main.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
+import &#39;models/vehiculo.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+import &#39;pages/acerca_page.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  final List&lt;Vehiculo&gt; vehiculos = [];
+  int? indiceEnEdicion;
+  int indicePestana = 0;
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }
+
+  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: indicePestana,
+          onDestinationSelected: (indice) {
+            setState(() {
+              indicePestana = indice;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.storefront_outlined),
+              selectedIcon: Icon(Icons.storefront),
+              label: &#39;Tienda&#39;,
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.summarize_outlined),
+              selectedIcon: Icon(Icons.summarize),
+              label: &#39;Resumen&#39;,
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.lightbulb_outline),
+              selectedIcon: Icon(Icons.lightbulb),
+              label: &#39;Consejos&#39;,
+            ),
+          ],
+        ),
+        body: IndexedStack(
+          index: indicePestana,
+          children: [
+            SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#39;Buscar marca o modelo&#39;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: CampoNombreVehiculo(controller: vehiculoController),
+              ),
+              const SizedBox(height: 12),
+              BotonTienda(
+                texto: indiceEnEdicion == null
+                    ? &#39;Agregar vehículo&#39;
+                    : &#39;Guardar cambios&#39;,
+                alPresionar: guardarVehiculo,
+              ),
+              const SizedBox(height: 12),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vehiculos.length,
+                itemBuilder: (context, indice) {
+                  final vehiculo = vehiculos[indice];
+                  return ListTile(
+                    title: Text(vehiculo.nombre),
+                    subtitle: Text(
+                      vehiculo.disponible ? &#39;Disponible&#39; : &#39;No disponible&#39;,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: &#39;Editar vehículo&#39;,
+                          onPressed: () =&gt; comenzarEdicion(indice),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          tooltip: &#39;Eliminar vehículo&#39;,
+                          onPressed: () =&gt; borrarVehiculo(indice),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              Builder(
+                builder: (context) =&gt; BotonTienda(
+                  texto: &#39;Acerca de y ayuda&#39;,
+                  alPresionar: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =&gt; const AcercaPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
+            ],
+          ),
+        ),
+            Center(
+              child: Text(&#39;Vehículos registrados: ${vehiculos.length}&#39;),
+            ),
+            const Center(
+              child: Text(
+                &#39;Escribe un nombre de al menos tres letras. &#39;
+                &#39;Puedes editar o eliminar cada vehículo en la pestaña Tienda.&#39;,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details><p><a href="./etapas/paso_14b_navigation_bar.dart" target="_blank" rel="noopener noreferrer">Abrir el archivo Dart completo ↗</a> · <a href="https://api.flutter.dev/flutter/material/NavigationBar-class.html" target="_blank" rel="noopener noreferrer">Documentación oficial NavigationBar ↗</a> · <a href="https://api.flutter.dev/flutter/widgets/IndexedStack-class.html" target="_blank" rel="noopener noreferrer">Documentación de IndexedStack ↗</a></p></div>
+<div class="notice notice-info"><strong>La barra continúa en las etapas siguientes.</strong><p>Cuando pases a <a href="#bloc-crud">P8 BLoC</a>, los vehículos pasarán a un estado BLoC, pero <code>indicePestana</code> seguirá en el <code>State</code> de la pantalla porque es un dato visual. También se conserva la barra al añadir el menú hamburguesa y las validaciones.</p></div>
+<div class="checklist" data-checklist="barra-navegacion"><label><input type="checkbox"> Entiendo que Navigator y NavigationBar resuelven tareas distintas.</label><label><input type="checkbox"> Declaré indicePestana y lo actualicé con setState.</label><label><input type="checkbox"> Coloqué la barra directamente dentro de Scaffold.</label><label><input type="checkbox"> Conservé el CRUD dentro de SingleChildScrollView.</label><label><input type="checkbox"> Probé Tienda, Resumen y Consejos sin perder vehículos.</label></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL</span><h3>Comprueba si se mantienen los datos</h3><p>Agrega Renault 9 y Mazda 3, cambia a Resumen, vuelve a Tienda y edita el primer vehículo. Explica en una hoja qué número tiene <code>indicePestana</code> en cada selección. Cambia el icono de Consejos por <code>Icons.help_outline</code> y prueba de nuevo.</p></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="barra-navegacion">Marcar módulo como completado</button><a class="next-link" href="#bloc-crud">Siguiente: BLoC aplicado al CRUD →</a></div>
+</section>
 <section class="page lesson next-module" id="bloc-crud" aria-labelledby="bloc-crud-title" data-lesson="P8">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA P8</span><span class="status-pill planned">Misma Tienda después de P7</span><span class="lesson-time">BLoC aplicado a crear, buscar, editar y eliminar</span></div>
 <h1 id="bloc-crud-title">Aplicar BLoC al CRUD de vehículos</h1><p>En P5.1 construiste un CRUD usando <code>setState</code>. Ahora trasladarás la lógica a <strong>BLoC</strong>, sin cambiar el objetivo de la Tienda: crear vehículos, verlos, buscarlos, editarlos y eliminarlos. Conservamos el modelo, el formulario, los widgets reutilizables y las páginas de P7.</p></div>
