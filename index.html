@@ -45,9 +45,14 @@
   <script src="./assets/widgets-core.js" defer></script>
   <script src="./assets/widgets-controls.js" defer></script>
   <script src="./assets/widgets-advanced.js" defer></script>
-  <script src="./assets/widget-catalog.js" defer></script>
-  <script src="./assets/widget-catalog-extended.js" defer></script>
+  <script src="./assets/widgets-collection-extra.js?v=catalogo-20261023-v4" defer></script>
+  <script src="./assets/widgets-catalog-programs.js?v=catalogo-20261023-v4" defer></script>
+  <script src="./assets/widget-catalog.js?v=catalogo-20261023-v4" defer></script>
+  <script src="./assets/widget-catalog-extended.js?v=catalogo-20261023-v4" defer></script>
+  <script src="./assets/widget-catalog-explanations.js?v=catalogo-20261023-v4" defer></script>
+  <script src="./assets/catalog-listview-lab.js?v=catalogo-20261023-v4" defer></script>
   <link rel="stylesheet" href="./assets/widget-catalog-extended.css">
+  <link rel="stylesheet" href="./assets/widget-collection-refresh.css?v=catalogo-20261023-v4">
   <link rel="stylesheet" href="./assets/preview-accessibility.css?v=20261023-ampliado">
   <link rel="stylesheet" href="./assets/preview-vscode-icons.css?v=20261023-v1">
   <link rel="stylesheet" href="./assets/preview-focus.css?v=20261023-auditoria-v3">
@@ -8014,22 +8019,81 @@ flutter run</code></pre></div>
             <div class="wc-hero-intro">
               <span class="wc-eyebrow">BIBLIOTECA VISUAL DE FLUTTER</span>
               <h1 id="catalogo-title">Catálogo de widgets <span>con vista previa</span></h1>
-              <p>Aprende qué hace cada widget, cómo se ve y cuáles son sus propiedades. Puedes buscar por nombre, propiedad o función. Los widgets que ya utilizas en <code>actividad2a</code> están identificados.</p>
-              <div class="wc-hero-facts"><span><strong id="catalog-total">128</strong> widgets didácticos</span><span><strong>10</strong> categorías</span><span><strong>34</strong> propiedades de AppBar</span></div>
+              <p>Aprende qué hace cada widget, cómo se ve y cuáles son sus propiedades. Puedes buscar por nombre, propiedad o función. Los widgets utilizados en el taller están identificados. Explóralos en una lista compacta o como tarjetas, guarda favoritos y estudia sus ejemplos Dart línea por línea.</p>
+              <div class="wc-hero-facts"><span><strong id="catalog-total">167</strong> widgets didácticos</span><span><strong>11</strong> categorías</span><span><strong>34</strong> propiedades de AppBar</span></div>
             </div>
             <div class="wc-hero-art" aria-hidden="true"><div class="wc-art-phone"><div class="wc-art-appbar"><span>☰</span><strong>Tienda</strong><span>⌕</span></div><div class="wc-art-body"><div>🚘</div><span>Buscar marca o modelo</span><p></p><p></p></div></div><div class="wc-art-label">Material · AppBar</div></div>
           </div>
           <details class="fv-properties-block" id="fv-resumen-propiedades"><summary>Consulta rapida: propiedades, tipos y opciones disponibles</summary><p>Cuando veas una propiedad escrita como <code>NombreDelTipo.valor</code>, busca sus valores permitidos antes de reemplazar el ejemplo. Las propiedades numéricas como <code>height: 20</code> y <code>fontSize: 24</code> no tienen una lista cerrada de palabras.</p><div class="table-scroll"><table class="lesson-table"><thead><tr><th>Propiedad y widget</th><th>Tipo</th><th>Modulo en el que se explican sus valores</th></tr></thead><tbody><tr><td>mainAxisAlignment · Row/Column</td><td>MainAxisAlignment (6)</td><td><a href="#diseno">Modulo 04, ejes</a></td></tr><tr><td>crossAxisAlignment · Row/Column</td><td>CrossAxisAlignment (5)</td><td><a href="#diseno">Modulo 04, ejes</a></td></tr><tr><td>mainAxisSize · Row/Column</td><td>MainAxisSize (2)</td><td><a href="#diseno">Modulo 04, ejes</a></td></tr><tr><td>alignment · Align</td><td>Alignment (9 constantes comunes)</td><td><a href="#menu-hamburguesa">Menu hamburguesa</a></td></tr><tr><td>autovalidateMode · Form</td><td>AutovalidateMode (5)</td><td><a href="#validaciones-esenciales">Validaciones</a></td></tr><tr><td>keyboardType · TextFormField</td><td>TextInputType (13 + opciones numéricas)</td><td><a href="#validaciones-esenciales">Validaciones</a></td></tr><tr><td>textCapitalization · TextFormField</td><td>TextCapitalization (4)</td><td><a href="#validaciones-esenciales">Validaciones</a></td></tr><tr><td>overflow · Text</td><td>TextOverflow (4)</td><td><a href="#responsive">Responsividad</a></td></tr><tr><td>textAlign · Text</td><td>TextAlign (6)</td><td><a href="#roles-usuarios">Login y roles</a></td></tr><tr><td>obscureText · TextFormField</td><td>bool (2)</td><td><a href="#roles-usuarios">Login y roles</a></td></tr><tr><td>alignment · Wrap</td><td>WrapAlignment (6)</td><td><a href="#paginacion-widget">Paginacion</a></td></tr><tr><td>crossAxisAlignment · Wrap</td><td>WrapCrossAlignment (3)</td><td><a href="#paginacion-widget">Paginacion</a></td></tr><tr><td>scrollDirection · ListView/ScrollView</td><td>Axis (2)</td><td><a href="#paginacion-widget">Paginacion</a></td></tr></tbody></table></div><p>Las referencias se verifican con la <a href="https://api.flutter.dev/" target="_blank" rel="noopener noreferrer">API oficial de Flutter</a>. Para cada valor revisa tambien que restricciones impone el widget padre.</p></details>
-<div class="wc-catalog-intro">
+<section class="wc-list-lab" id="catalog-listview-lab" aria-labelledby="wc-lab-heading">
+<header class="wc-lab-head">
+  <div><span class="wc-lab-kicker">PRÁCTICA VISUAL · LISTAS Y CUADRÍCULAS</span>
+  <h2 id="wc-lab-heading">De una lista sencilla a ListView.builder</h2>
+  <p>Compara cuatro constructores, añade, busca y elimina vehículos. Al cambiar la vista, los registros permanecen. <strong>La simulación es HTML; el código a la izquierda es Dart de referencia.</strong></p></div>
+  <a href="./etapas/catalogo_listview_tienda.dart" target="_blank" rel="noopener noreferrer">Ver main.dart completo ↗</a>
+</header>
+<div class="wc-lab-tabs" role="group" aria-label="Elegir constructor de lista">
+  <button type="button" data-wc-mode="children" aria-pressed="false">Lista fija</button>
+  <button type="button" data-wc-mode="builder" aria-pressed="true">ListView.builder</button>
+  <button type="button" data-wc-mode="separated" aria-pressed="false">ListView.separated</button>
+  <button type="button" data-wc-mode="grid" aria-pressed="false">GridView.builder</button>
+</div>
+<div class="wc-lab-stage">
+  <section class="wc-lab-code-panel">
+    <h3 id="wc-lab-mode-title">ListView.builder</h3>
+    <p id="wc-lab-mode-explain">itemCount determina la cantidad e itemBuilder construye la fila requerida.</p>
+    <div class="code-label">Dart · dentro de Scaffold.body o Expanded</div>
+    <pre class="code-block"><code id="wc-lab-source"></code></pre>
+    <div class="wc-lab-code-footer"><button type="button" data-wc-copy-snippet>Copiar este fragmento</button>
+    <a href="https://docs.flutter.dev/cookbook/lists/long-lists" target="_blank" rel="noopener noreferrer">Receta oficial ↗</a></div>
+  </section>
+  <section class="wc-lab-phone-panel">
+    <span class="wc-lab-phone-title">Vista previa interactiva de la Tienda</span>
+    <div class="wc-lab-phone"><div class="wc-lab-phone-appbar"><strong>Inventario de vehículos</strong><span aria-hidden="true">⋮</span></div>
+      <div class="wc-lab-phone-inner">
+        <form class="wc-lab-form" id="wc-lab-form"><label class="sr-only" for="wc-lab-new">Nuevo vehículo</label>
+          <input id="wc-lab-new" type="text" placeholder="Ej. Renault 4" maxlength="80" autocomplete="off">
+          <button type="submit" aria-label="Agregar vehículo" title="Agregar vehículo">+</button>
+        </form>
+        <label class="sr-only" for="wc-lab-search">Buscar vehículo</label>
+        <input id="wc-lab-search" class="wc-lab-search" type="search" placeholder="Buscar por nombre…" autocomplete="off">
+        <span class="wc-lab-number" id="wc-lab-count">4 visibles · 4 registrados</span>
+        <div id="wc-lab-list" class="wc-lab-list" role="list" aria-label="Vehículos simulados"></div>
+      </div>
+    </div>
+    <p class="wc-lab-feedback" id="wc-lab-feedback" role="status" aria-live="polite">Agrega, busca o elimina para ver cómo cambian los datos.</p>
+    <button class="wc-lab-reset" type="button" data-wc-reset>Restablecer los ejemplos</button>
+  </section>
+</div>
+<div class="wc-lab-guides">
+  <div><strong>1 · itemCount</strong><p>Indica cuántos registros existen. Al agregar uno, <code>vehiculos.length</code> aumenta.</p></div>
+  <div><strong>2 · itemBuilder y ListTile</strong><p><code>itemBuilder(context, indice)</code> construye cada fila. <code>ListTile</code> admite título, subtítulo y botones.</p></div>
+  <div><strong>3 · Expanded o shrinkWrap</strong><p>Dentro de <code>Column</code>, usa <code>Expanded</code> para proporcionar una altura. Con scroll anidado, revisa <code>shrinkWrap</code> y <code>physics</code>.</p></div>
+</div>
+<p class="wc-lab-reality">Esta actividad continúa el <a href="#crud">CRUD P5.1</a>. Los cambios en la simulación no afectan tu proyecto Flutter. Usa el <a href="./etapas/catalogo_listview_tienda.dart" target="_blank" rel="noopener noreferrer">ejemplo Dart completo</a> para practicar en VS Code. <a href="https://api.flutter.dev/flutter/widgets/ListView-class.html" target="_blank" rel="noopener noreferrer">Documentación de ListView ↗</a>.</p>
+</section>
+          <div class="wc-catalog-intro">
             <div><h2>Explora los componentes</h2><p>Selecciona una tarjeta para ver la simulación en grande, las propiedades, el código Dart y su documentación oficial.</p></div>
             <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">Índice oficial completo de Flutter ↗</a>
           </div>
           <div class="wc-search-bar"><label for="catalog-search">Buscar por widget, propiedad o uso</label><div class="wc-search-line"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Ej. AppBar, TextField, backgroundColor, formularios…" autocomplete="off"><button id="catalog-clear" type="button" hidden>Limpiar</button></div></div>
+          <div class="wc-catalog-toolbar">
+  <div class="wc-toolbar-left"><div class="wc-view-mode" role="group" aria-label="Vista del catálogo">
+    <button type="button" data-catalog-view="list" aria-pressed="true">☷ Lista compacta</button>
+    <button type="button" data-catalog-view="grid" aria-pressed="false">▦ Tarjetas</button>
+  </div><button id="catalog-only-favorites" class="wc-favorite-filter" type="button" aria-pressed="false">☆ Favoritos <span id="catalog-favorite-count">0</span></button></div>
+  <div class="wc-toolbar-right">
+    <label class="wc-toolbar-sort" for="catalog-sort">Ordenar
+      <select id="catalog-sort" aria-label="Ordenar widgets"><option value="recomendados">Recomendados</option><option value="az">Nombre A–Z</option><option value="categoria">Por categoría</option></select>
+    </label>
+    <button class="wc-list-shortcut" id="catalog-list-jump" type="button">Solo listas y desplazamiento →</button>
+  </div>
+</div>
           <div class="wc-filter-row" id="catalog-filters" role="group" aria-label="Filtrar por categoría"></div>
           <div class="wc-results-header"><strong id="catalog-count" aria-live="polite">Cargando widgets…</strong><span>Ejemplos de Dart y propiedades explicadas</span></div>
           <div class="wc-catalog-grid" id="catalog-grid"></div>
           <div id="catalog-empty" class="wc-empty" hidden><strong>No encontramos widgets con ese texto.</strong><p>Prueba otra palabra, como «layout», «AppBar», «text» o «color».</p></div>
-          <div class="wc-catalog-footer"><strong>¿Buscas absolutamente todos los widgets del SDK?</strong><p>Esta biblioteca reúne 128 componentes relevantes para el taller y aplicaciones Flutter habituales; Flutter incluye muchos más, y su catálogo crece. Para consultar el inventario íntegro y actualizado, utiliza el <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">índice oficial de Flutter ↗</a>.</p></div>
+          <div class="wc-catalog-footer"><strong>¿Buscas absolutamente todos los widgets del SDK?</strong><p>Esta biblioteca reúne 167 componentes relevantes para el taller y aplicaciones Flutter habituales; Flutter incluye muchos más, y su catálogo crece. Para consultar el inventario íntegro y actualizado, utiliza el <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">índice oficial de Flutter ↗</a>.</p></div>
         </section>
       </main>
       <footer class="page-footer"><span>FlutterLab · Taller de Desarrollo Móvil</span><span>Práctica: <code>actividad2</code> · referencia: <code>actividad2a</code> · <a href="https://github.com/diln20/tallerFlutterDesarrollo" target="_blank" rel="noopener noreferrer">Ver el código fuente ↗</a></span></footer>
