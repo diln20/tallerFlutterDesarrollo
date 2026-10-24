@@ -11,6 +11,10 @@ import 'repositories/vehiculos_api.dart';
 import 'validators/validadores.dart';
 import 'widgets/controles_paginacion.dart';
 import 'widgets/vista_vehiculos.dart';
+import 'widgets/tarjeta_indicador.dart';
+
+enum FiltroVista { todos, favoritos, disponibles }
+enum OrdenVista { recientes, nombre, precioMenor, precioMayor }
 
 void main() {
   runApp(const MainApp());
@@ -56,6 +60,20 @@ class _TiendaPageState extends State<TiendaPage> {
   final buscarController = TextEditingController();
 
   int _revisionVista = 0;
+  int indicePestana = 0;
+  FiltroVista filtroVista = FiltroVista.todos;
+  OrdenVista ordenVista = OrdenVista.recientes;
+  final Set<int> favoritos = {};
+
+  void alternarFavorito(Vehiculo vehiculo) {
+    setState(() {
+      if (!favoritos.add(vehiculo.id)) favoritos.remove(vehiculo.id);
+    });
+  }
+
+  void cambiarDisponibilidad(Vehiculo vehiculo) {
+    context.read<VehiculosBloc>().add(DisponibilidadAlternada(vehiculo.id));
+  }
 
   void iniciarSesion() {
     if (loginKey.currentState?.validate() != true) return;
@@ -225,6 +243,25 @@ class _TiendaPageState extends State<TiendaPage> {
 
   Widget _pantallaTienda(VehiculosEstado estado) {
     final rol = estado.sesion!.rol;
+    // Solo filtramos/ordenamos la página entregada por FastAPI.
+    final visibles = estado.pagina.datos.where((v) {
+      if (filtroVista == FiltroVista.favoritos) return favoritos.contains(v.id);
+      if (filtroVista == FiltroVista.disponibles) return v.disponible;
+      return true;
+    }).toList();
+    switch (ordenVista) {
+      case OrdenVista.recientes:
+        break;
+      case OrdenVista.nombre:
+        visibles.sort((a,b) => a.nombre.toLowerCase().compareTo(b.nombre.toLowerCase()));
+        break;
+      case OrdenVista.precioMenor:
+        visibles.sort((a,b) => a.precio.compareTo(b.precio));
+        break;
+      case OrdenVista.precioMayor:
+        visibles.sort((a,b) => b.precio.compareTo(a.precio));
+        break;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tienda de vehículos'),
@@ -291,6 +328,10 @@ class _TiendaPageState extends State<TiendaPage> {
                   limpiarFormulario();
                   buscarController.clear();
                   _revisionVista = 0;
+                  favoritos.clear();
+                  filtroVista = FiltroVista.todos;
+                  ordenVista = OrdenVista.recientes;
+                  indicePestana = 0;
                   context.read<VehiculosBloc>().add(SesionCerrada());
                 },
               ),
@@ -298,9 +339,23 @@ class _TiendaPageState extends State<TiendaPage> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() => indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.storefront), label: 'Tienda'),
+          NavigationDestination(icon: Icon(Icons.bar_chart), label: 'Resumen'),
+          NavigationDestination(icon: Icon(Icons.info_outline), label: 'Consejos'),
+        ],
+      ),
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
           children: [
             Text(
               'Bienvenido, ' + estado.sesion!.nombre,
@@ -346,6 +401,51 @@ class _TiendaPageState extends State<TiendaPage> {
               ],
             ),
             const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ChoiceChip(
+                  label: const Text('Todos'),
+                  selected: filtroVista == FiltroVista.todos,
+                  onSelected: (_) => setState(() => filtroVista = FiltroVista.todos),
+                ),
+                ChoiceChip(
+                  label: const Text('Disponibles'),
+                  selected: filtroVista == FiltroVista.disponibles,
+                  onSelected: (_) => setState(() => filtroVista = FiltroVista.disponibles),
+                ),
+                ChoiceChip(
+                  label: const Text('Favoritos'),
+                  selected: filtroVista == FiltroVista.favoritos,
+                  onSelected: (_) => setState(() => filtroVista = FiltroVista.favoritos),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<OrdenVista>(
+              initialValue: ordenVista,
+              isExpanded: true,
+              decoration: const InputDecoration(
+                labelText: 'Orden visual de esta página',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: OrdenVista.recientes, child: Text('Orden del servidor')),
+                DropdownMenuItem(value: OrdenVista.nombre, child: Text('Nombre A–Z')),
+                DropdownMenuItem(value: OrdenVista.precioMenor, child: Text('Precio menor')),
+                DropdownMenuItem(value: OrdenVista.precioMayor, child: Text('Precio mayor')),
+              ],
+              onChanged: (valor) {
+                if (valor != null) setState(() => ordenVista = valor);
+              },
+            ),
+            const SizedBox(height: 9),
+            const Text(
+              'Los chips y el orden afectan solo la página recibida. '
+              'Para buscar en todo el inventario usa el campo Buscar nombre.',
+            ),
+            const SizedBox(height: 12),
             if (estado.cargando) ...[
               const LinearProgressIndicator(),
               const SizedBox(height: 8),
@@ -372,7 +472,10 @@ class _TiendaPageState extends State<TiendaPage> {
               ),
             ],
             VistaVehiculos(
-              vehiculos: estado.pagina.datos,
+              vehiculos: visibles,
+              esFavorito: (auto) => favoritos.contains(auto.id),
+              alFavorito: alternarFavorito,
+              alCambiarDisponibilidad: cambiarDisponibilidad,
               puedeEditar: estado.puedeEditar && !estado.enviando,
               alEditar: editarVehiculo,
               alEliminar: confirmarEliminar,
@@ -394,6 +497,71 @@ class _TiendaPageState extends State<TiendaPage> {
             ),
           ],
         ),
+      ),
+      _resumenPagina(estado),
+      const Center(
+        child: Padding(
+          padding: EdgeInsets.all(22),
+          child: Text(
+            'Usa Tienda para buscar, filtrar, crear y actualizar vehículos. '
+            'El rol lector puede consultar y guardar favoritos de esta sesión, '
+            'pero no puede modificar datos del servidor.',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+  }
+
+  Widget _resumenPagina(VehiculosEstado estado) {
+    final lista = estado.pagina.datos;
+    final disponibles=lista.where((v) => v.disponible).length;
+    final favoritosPagina=lista.where((v)=>favoritos.contains(v.id)).length;
+    final promedio=lista.isEmpty ? 0.0 :
+        lista.fold<double>(0,(ac,v)=>ac+v.precio)/lista.length;
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text('Resumen del inventario',style:
+              TextStyle(fontSize:22,fontWeight:FontWeight.bold)),
+          const SizedBox(height:8),
+          const Text('El total proviene de FastAPI; las otras estadísticas describen '
+              'la página descargada y los favoritos de esta sesión.'),
+          const SizedBox(height:16),
+          Wrap(spacing:10,runSpacing:10,children:[
+            TarjetaIndicador(titulo:'Total en API',valor:'${estado.pagina.total}',
+                icono:Icons.storage,color:Colors.indigo),
+            TarjetaIndicador(titulo:'Disponibles en página',valor:'$disponibles',
+                icono:Icons.check_circle_outline,color:Colors.teal),
+            TarjetaIndicador(titulo:'Favoritos de esta página',valor:'$favoritosPagina',
+                icono:Icons.star,color:Colors.orange),
+            TarjetaIndicador(titulo:'Promedio de esta página',valor:promedio.toStringAsFixed(0),
+                icono:Icons.payments_outlined,color:Colors.blueGrey),
+          ]),
+          const SizedBox(height:18),
+          Text('Disponibilidad en página: $disponibles de ${lista.length}'),
+          const SizedBox(height:8),
+          LinearProgressIndicator(
+            value: lista.isEmpty ? 0 : disponibles/lista.length,
+            minHeight:10,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          const SizedBox(height:18),
+          FilledButton.icon(
+            onPressed: (){
+              setState((){
+                filtroVista=FiltroVista.favoritos;
+                indicePestana=0;
+              });
+            },
+            icon: const Icon(Icons.star),
+            label: const Text('Explorar favoritos de esta página'),
+          ),
+        ],
       ),
     );
   }
