@@ -30,7 +30,7 @@ assert.ok(list.completeExample.includes('dispose()'));
 assert.ok(list.completeExample.includes('Expanded('));
 assert.ok(list.completeExample.includes('removeAt(indiceReal)'));
 assert.ok(list.completeExample.includes('asMap().entries'));
-assert.equal(list.completeExample,read('etapas/catalogo_listview_tienda.dart'));
+assert.equal(list.completeExample.replace(/\r\n/g,'\n'),read('etapas/catalogo_listview_tienda.dart').replace(/\r\n/g,'\n'));
 for(const path of ['assets/widget-catalog.js','assets/widget-catalog-extended.js','assets/widget-catalog-explanations.js','assets/catalog-listview-lab.js']){
   assert.doesNotThrow(()=>new Script(read(path),{filename:path}),path+' inválido');
 }
