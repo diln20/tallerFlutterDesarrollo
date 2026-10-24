@@ -34,14 +34,17 @@ assert.equal(list.completeExample.replace(/\r\n/g,'\n'),read('etapas/catalogo_li
 for(const path of ['assets/widget-catalog.js','assets/widget-catalog-extended.js','assets/widget-catalog-explanations.js','assets/catalog-listview-lab.js']){
   assert.doesNotThrow(()=>new Script(read(path),{filename:path}),path+' inválido');
 }
-for(const id of ['catalog-listview-lab','wc-lab-source','wc-lab-list','wc-lab-search','wc-lab-new','wc-lab-form','catalog-grid','catalog-sort','catalog-only-favorites','catalog-favorite-count','widget-detail']){
+for(const id of ['catalog-listview-lab','wc-lab-source','wc-lab-list','wc-lab-search','wc-lab-new','wc-lab-form','catalog-grid','catalog-sort','catalog-only-favorites','catalog-favorite-count','catalog-page-size','catalog-range','catalog-pagination-top','catalog-pagination-bottom','widget-detail']){
   assert.ok(html.includes('id="'+id+'"'),'Falta el elemento '+id);
 }
-for(const file of ['widgets-collection-extra.js','widgets-catalog-programs.js','widget-catalog.js','widget-catalog-extended.js','widget-catalog-explanations.js','catalog-listview-lab.js','widget-collection-refresh.css']){
+for(const file of ['widgets-collection-extra.js','widgets-catalog-programs.js','widget-catalog.js','widget-catalog-extended.js','widget-catalog-explanations.js','catalog-listview-lab.js','widget-collection-refresh.css','catalog-pagination.css','paginacion-local-demo.js']){
   assert.ok(html.includes('./assets/'+file),'No se incluyó '+file);
 }
 assert.ok(read('assets/widget-catalog.js').includes("viewMode==='list'"));
 assert.ok(read('assets/widget-catalog.js').includes("persist('favoritos'"));
+assert.ok(read('assets/widget-catalog.js').includes('matches.slice(start,end)'));
+assert.ok(read('assets/widget-catalog.js').includes('currentPage=1'));
+assert.ok(read('assets/widget-catalog.js').includes('pageSizeSelect'));
 assert.ok(read('assets/widget-catalog-explanations.js').includes('itemBuilder'));
 assert.ok(read('assets/catalog-listview-lab.js').includes('records.findIndex(item=>item.id===id)'));
 assert.ok(read('assets/widget-catalog-extended.js').includes('widget.completeExample || fullProgram(widget)'));
