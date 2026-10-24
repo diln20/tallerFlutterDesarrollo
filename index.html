@@ -51,8 +51,10 @@
   <script src="./assets/widget-catalog-extended.js?v=catalogo-20261023-v5" defer></script>
   <script src="./assets/widget-catalog-explanations.js?v=catalogo-20261023-v5" defer></script>
   <script src="./assets/catalog-listview-lab.js?v=catalogo-20261023-v5" defer></script>
+  <script src="./assets/paginacion-local-demo.js?v=20261023-p101" defer></script>
   <link rel="stylesheet" href="./assets/widget-catalog-extended.css">
   <link rel="stylesheet" href="./assets/widget-collection-refresh.css?v=catalogo-20261023-v5">
+  <link rel="stylesheet" href="./assets/catalog-pagination.css?v=20261023-p101">
   <link rel="stylesheet" href="./assets/preview-accessibility.css?v=20261023-ampliado">
   <link rel="stylesheet" href="./assets/preview-vscode-icons.css?v=20261023-v1">
   <link rel="stylesheet" href="./assets/preview-focus.css?v=20261023-auditoria-v3">
@@ -116,6 +118,7 @@
                 <a class="nav-link" href="#barra-navegacion" data-route="barra-navegacion" data-search="P7.1 NavigationBar barra inferior Scaffold.bottomNavigationBar NavigationDestination selectedIndex IndexedStack"><span class="lesson-index">P7.1</span><span>Barra de navegación inferior</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#menu-hamburguesa" data-route="menu-hamburguesa" data-search="P9 Drawer AppBar menú hamburguesa navegación flutter"><span class="lesson-index">P9</span><span>Menú hamburguesa</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#validaciones-esenciales" data-route="validaciones-esenciales" data-search="P10 validadores formulario correo precio año regex tryParse email TextFormField"><span class="lesson-index">P10</span><span>Validaciones de campos</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#paginacion-local" data-route="paginacion-local" data-search="P10.1 paginacion local Flutter ListView builder skip take BLoC tamaño pagina"><span class="lesson-index">P10.1</span><span>Paginación de ListView</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#bloc-crud" data-route="bloc-crud" data-search="bloc CRUD vehiculos eventos estados crear editar eliminar buscar aplicacion BlocProvider BlocBuilder"><span class="lesson-index">P8</span><span>BLoC aplicado al CRUD</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <a class="nav-link" href="#api-postgres" data-route="api-postgres" data-search="P11 FastAPI Python PostgreSQL Docker SQLModel API REST HTTP JSON BLoC Flutter"><span class="lesson-index">P11</span><span>API con FastAPI y PostgreSQL</span><span class="nav-check" aria-hidden="true">✓</span></a>
 <div class="nav-group-label">CONTINUACIÓN · DATOS, PERMISOS Y USABILIDAD</div>
@@ -5096,11 +5099,545 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 }
 </code></pre></details>
 <div class="checklist" data-checklist="validaciones-esenciales"><label><input type="checkbox"> Amplié el modelo Vehiculo con año, precio y correo.</label><label><input type="checkbox"> Creé validadores reutilizables.</label><label><input type="checkbox"> Los cuatro campos muestran errores claros.</label><label><input type="checkbox"> BLoC recibe todos los valores sin errores.</label><label><input type="checkbox"> El menú hamburguesa y el CRUD siguen funcionando.</label></div>
-<div class="lesson-end"><button class="button button-complete" data-complete="validaciones-esenciales">Marcar módulo como completado</button><a class="next-link" href="#api-postgres">Siguiente: crear FastAPI + PostgreSQL →</a></div></section>
+<div class="lesson-end"><button class="button button-complete" data-complete="validaciones-esenciales">Marcar módulo como completado</button><a class="next-link" href="#paginacion-local">Siguiente: paginación local de ListView →</a></div></section>
+<section class="page lesson next-module advanced-module" id="paginacion-local" aria-labelledby="paginacion-local-title">
+<div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P10.1</span><span class="status-pill planned">Después de Validaciones de campos</span></div>
+<h1 id="paginacion-local-title">Paginación local con ListView.builder</h1><p>Continuamos la misma Tienda que construiste en <a href="#validaciones-esenciales">P10</a>. Aprenderás a mostrar cinco, diez o veinte vehículos por página, sin perder las validaciones, el menú hamburguesa, la barra de navegación ni BLoC.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Resultado de la práctica</strong><p>Paginación en memoria con <code>skip()</code>, <code>take()</code> y <code>ListView.builder</code>. La lección <a href="#paginacion-widget">P13</a> continuará este concepto con resultados traídos desde FastAPI.</p></div></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Para qué sirve</th><th>Ejemplo</th></tr></thead><tbody>
+<tr><td><code>paginaActual</code></td><td>Identifica la página visible empezando en 1</td><td>Segunda página = 2</td></tr>
+<tr><td><code>registrosPorPagina</code></td><td>Máximo de vehículos que se muestran</td><td>5</td></tr>
+<tr><td><code>(total + tamaño − 1) ~/ tamaño</code></td><td>División entera para redondear páginas hacia arriba</td><td><code>(23 + 5 - 1) ~/ 5 = 5</code></td></tr>
+<tr><td><code>(paginaActual - 1) * tamaño</code></td><td>Índice inicial de la página</td><td>Para página 2 = 5</td></tr>
+<tr><td><code>skip(5).take(5)</code></td><td>Salta los cinco primeros y obtiene hasta cinco más</td><td>Índices 5 a 9</td></tr>
+</tbody></table></div>
+<section id="paginacion-local-demo" class="pl-lesson-demo" aria-labelledby="pl-demo-title">
+<header><span class="wc-lab-kicker">PRÁCTICA INTERACTIVA · 23 VEHÍCULOS</span><h2 id="pl-demo-title">Paginación de una lista en memoria</h2><p>Prueba la búsqueda, cambia el tamaño de página, agrega un vehículo o elimina el último de la página. A la derecha verás cómo se calcula el fragmento con <code>skip()</code> y <code>take()</code>.</p></header>
+<div class="pl-lesson-controls"><label for="pl-search">Buscar<input id="pl-search" type="search" data-pl-search placeholder="Renault, Mazda…"></label>
+<label for="pl-size">Por página<select id="pl-size" data-pl-size><option value="5">5</option><option value="10">10</option><option value="20">20</option></select></label>
+<form data-pl-form><label for="pl-name">Nuevo vehículo</label><div><input id="pl-name" type="text" data-pl-name placeholder="Ej. Renault 4" maxlength="60"><button type="submit">Agregar</button></div></form></div>
+<div class="pl-lesson-layout"><div class="pl-list-box"><div class="pl-list" data-pl-list role="list" aria-label="Registros de la página"></div><nav class="pl-nav" aria-label="Páginas del ejemplo"><button type="button" data-pl-prev>← Anterior</button><output data-pl-info aria-live="polite">Página 1</output><button type="button" data-pl-next>Siguiente →</button></nav></div>
+<div class="pl-calculation-box"><strong>Qué datos tomaría Dart</strong><pre data-pl-calculation aria-label="Cálculo de la página actual"></pre><p>Este simulador usa datos en el navegador; no consulta una API ni modifica el proyecto Flutter.</p><button type="button" class="pl-reset" data-pl-reset>Restablecer ejemplo</button></div></div><p class="pl-message" data-pl-feedback role="status" aria-live="polite">Usa los controles para practicar la paginación.</p>
+</section>
+<div class="next-section-heading"><span>UNA MODIFICACIÓN A LA VEZ</span><h2>Construir el paginador en siete pasos</h2></div>
+<article class="next-step" id="pl-local-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Comprender la paginación local</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> En el listado de vehículos, debajo del formulario.</div><div><strong>Busca con Ctrl + F:</strong> <code>ListView.builder(</code></div></div></div><div class="next-step-meaning"><strong>Por qué se hace</strong><p>La lista completa permanece en <code>estado.visibles</code>. Con 23 elementos y cinco por página, se muestran 5 páginas; pasar de página no borra ni vuelve a descargar objetos. <a href="#paginacion-widget">P13</a> enseñará después a pedir páginas desde FastAPI.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Con 23 vehículos y cinco por página, la última página muestra tres.</p></div></article>
+<article class="next-step" id="pl-local-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Declarar el estado de la página</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> En <code>_TiendaPageState</code>, después de la variable <code>indicePestana</code>, antes de <code>guardarVehiculo()</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>int indicePestana = 0;</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>int paginaActual = 1;
+int registrosPorPagina = 5;
+
+void cambiarPagina(int nuevaPagina, int totalPaginas) {
+  if (nuevaPagina &lt; 1 || nuevaPagina &gt; totalPaginas) return;
+  setState(() =&gt; paginaActual = nuevaPagina);
+}</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p><code>paginaActual</code> inicia en 1. <code>registrosPorPagina</code> define el máximo de filas y <code>cambiarPagina</code> impide índices de página inválidos. No confundas <code>indicePestana</code> de NavigationBar con la página del listado.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Declara estas variables una sola vez; aún no cambia el aspecto de la lista.</p></div></article>
+<article class="next-step" id="pl-local-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Reiniciar la página al buscar</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> En el campo <code>TextField</code> con la etiqueta «Buscar marca o modelo».</div><div><strong>Busca con Ctrl + F:</strong> <code>onChanged: (texto) {</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>onChanged: (texto) {
+  setState(() =&gt; paginaActual = 1);
+  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+},</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p>Al escribir un filtro, los resultados pueden disminuir. El <code>setState</code> pone la página en 1 y el evento <code>BusquedaCambiada</code> actualiza la lista filtrada en BLoC. No reemplaces la búsqueda original por una lista nueva.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Después de buscar «Renault», comienza en la primera página de las coincidencias.</p></div></article>
+<article class="next-step" id="pl-local-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Calcular cuántas páginas existen</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> Al comienzo del <code>builder</code> del <code>BlocBuilder</code> que construye el listado.</div><div><strong>Busca con Ctrl + F:</strong> <code>if (estado.visibles.isEmpty) {</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>final cantidad = estado.visibles.length;
+final totalPaginas = cantidad == 0
+    ? 1
+    : (cantidad + registrosPorPagina - 1) ~/ registrosPorPagina;
+final paginaSegura =
+    paginaActual &gt; totalPaginas ? totalPaginas : paginaActual;
+final inicio = (paginaSegura - 1) * registrosPorPagina;
+final visiblesPagina = estado.visibles
+    .skip(inicio)
+    .take(registrosPorPagina)
+    .toList();</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p>El operador <code>~/</code> realiza división entera. <code>skip(inicio)</code> omite los vehículos anteriores a la página y <code>take(registrosPorPagina)</code> obtiene solo sus filas. <code>paginaSegura</code> corrige el índice si se elimina un registro de la última página.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>En la segunda página de cinco elementos, inicio es 5 y se muestran los índices del 5 al 9.</p></div></article>
+<article class="next-step" id="pl-local-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Usar ListView.builder con el fragmento seleccionado</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> En el listado existente: conserva las tarjetas de vehículo y los botones Editar/Eliminar.</div><div><strong>Busca con Ctrl + F:</strong> <code>itemCount: estado.visibles.length,</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  itemCount: visiblesPagina.length,
+  itemBuilder: (context, indiceVisible) {
+    final vehiculo = visiblesPagina[indiceVisible];
+    final indiceReal = estado.vehiculos.indexOf(vehiculo);
+    return ListTile(
+      title: Text(vehiculo.nombre),
+      trailing: IconButton(
+        tooltip: &#39;Eliminar&#39;,
+        icon: const Icon(Icons.delete_outline),
+        onPressed: () =&gt; borrarVehiculo(indiceReal),
+      ),
+    );
+  },
+)</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p>El <code>itemBuilder</code> recibe un índice de la página. <code>indiceReal</code> busca la posición del objeto en el inventario completo para no editar o borrar otro vehículo. <code>shrinkWrap</code> y <code>NeverScrollableScrollPhysics</code> permiten la lista corta dentro de <code>SingleChildScrollView</code>, que también evita el desbordamiento al abrir el teclado.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>El CRUD y el formulario siguen funcionando con el listado paginado.</p></div></article>
+<article class="next-step" id="pl-local-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Agregar los controles debajo del listado</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>actividad2/lib/main.dart</code></div><div><strong>Ubicación:</strong> Después del <code>BlocBuilder</code> del listado, dentro de <code>Column.children</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>ListView.builder(</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>DropdownButton&lt;int&gt;(
+  value: registrosPorPagina,
+  items: const [
+    DropdownMenuItem(value: 5, child: Text(&#39;5 por página&#39;)),
+    DropdownMenuItem(value: 10, child: Text(&#39;10 por página&#39;)),
+    DropdownMenuItem(value: 20, child: Text(&#39;20 por página&#39;)),
+  ],
+  onChanged: (valor) {
+    if (valor == null) return;
+    setState(() {
+      registrosPorPagina = valor;
+      paginaActual = 1;
+    });
+  },
+)</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p>El <code>DropdownButton</code> permite escoger el tamaño de página. El archivo completo también contiene <code>IconButton</code> Anterior y Siguiente, deshabilitados mediante <code>onPressed: null</code> cuando no existen más páginas. Compara los cierres de <code>BlocBuilder</code> y <code>Wrap</code> en la referencia final.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>En la primera página no se puede retroceder; en la última, no se puede avanzar.</p></div></article>
+<article class="next-step" id="pl-local-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Ejecutar y probar los casos límite</h3></div><div class="next-where"><div class="next-where-action">CONTINUAR EN LA MISMA TIENDA</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>Terminal integrada de VS Code</code></div><div><strong>Ubicación:</strong> Abre la carpeta <code>actividad2</code>, no <code>lib</code>.</div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code></div></div></div><pre class="code-block" data-code-mode="dart"><code>flutter pub get
+flutter analyze
+flutter run</code></pre><div class="next-step-meaning"><strong>Por qué se hace</strong><p>Prueba con 23 vehículos, cambia a 10 por página, busca una palabra y elimina la última fila de la última página. Comprueba también el desplazamiento del formulario con el teclado abierto y que <code>Drawer</code>, <code>NavigationBar</code> y BLoC permanezcan intactos.</p></div><div class="next-step-result"><strong>Comprueba</strong><p>Puedes explicar los valores de página actual, total de páginas e inicio sin perder datos.</p></div></article>
+<div class="deep-dive"><div class="deep-heading"><span>REFERENCIA COMPLETA</span><h2>main.dart con paginación después de P10</h2><p>Compara el archivo al terminar cada paso. Se conservan los widgets y eventos del CRUD anterior; no debes volver a pegar toda la aplicación desde cero.</p></div>
+<details class="deep-details"><summary>Ver main.dart completo de P10.1</summary><div class="deep-details-body"><div class="code-label">actividad2/lib/main.dart · resultado final de P10.1</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
+import &#39;bloc/vehiculos_bloc.dart&#39;;
+import &#39;bloc/vehiculos_evento.dart&#39;;
+import &#39;bloc/vehiculos_estado.dart&#39;;
+import &#39;pages/acerca_page.dart&#39;;
+import &#39;pages/ayuda_page.dart&#39;;
+import &#39;widgets/boton_tienda.dart&#39;;
+import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;validators/validadores.dart&#39;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider&lt;VehiculosBloc&gt;(
+      create: (context) =&gt; VehiculosBloc(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: TiendaPage(),
+      ),
+    );
+  }
+}
+
+class TiendaPage extends StatefulWidget {
+  const TiendaPage({super.key});
+
+  @override
+  State&lt;TiendaPage&gt; createState() =&gt; _TiendaPageState();
+}
+
+class _TiendaPageState extends State&lt;TiendaPage&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+  final TextEditingController anioController = TextEditingController();
+  final TextEditingController precioController = TextEditingController();
+  final TextEditingController correoController = TextEditingController();
+  final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  int indicePestana = 0;
+  int paginaActual = 1;
+  int registrosPorPagina = 5;
+
+  void cambiarPagina(int nuevaPagina, int totalPaginas) {
+    if (nuevaPagina &lt; 1 || nuevaPagina &gt; totalPaginas) return;
+    setState(() =&gt; paginaActual = nuevaPagina);
+  }
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+    final anio = int.tryParse(anioController.text.trim());
+    final precio = double.tryParse(precioController.text.trim());
+    if (anio == null || precio == null) return;
+
+    context.read&lt;VehiculosBloc&gt;().add(
+      VehiculoGuardado(
+        nombre: vehiculoController.text.trim(),
+        anio: anio,
+        precio: precio,
+        correo: correoController.text.trim(),
+      ),
+    );
+    limpiarCampos();
+  }
+
+  void limpiarCampos() {
+    vehiculoController.clear();
+    anioController.clear();
+    precioController.clear();
+    correoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final vehiculo = bloc.state.vehiculos[indice];
+    vehiculoController.text = vehiculo.nombre;
+    anioController.text = vehiculo.anio.toString();
+    precioController.text = vehiculo.precio.toString();
+    correoController.text = vehiculo.correo;
+    bloc.add(EdicionIniciada(indice));
+  }
+
+  void borrarVehiculo(int indice) {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(indice));
+  }
+
+  void cancelarEdicion() {
+    limpiarCampos();
+    context.read&lt;VehiculosBloc&gt;().add(EdicionCancelada());
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    anioController.dispose();
+    precioController.dispose();
+    correoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() =&gt; indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: &#39;Tienda&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.summarize_outlined),
+            selectedIcon: Icon(Icons.summarize),
+            label: &#39;Resumen&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.lightbulb_outline),
+            selectedIcon: Icon(Icons.lightbulb),
+            label: &#39;Consejos&#39;,
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Color(0xFF183B61)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.directions_car, color: Colors.white, size: 42),
+                    SizedBox(height: 12),
+                    Text(&#39;Tienda de vehículos&#39;,
+                        style: TextStyle(color: Colors.white, fontSize: 19)),
+                    Text(&#39;Menú de navegación&#39;,
+                        style: TextStyle(color: Colors.white70)),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.storefront),
+                title: const Text(&#39;Tienda&#39;),
+                onTap: () =&gt; Navigator.pop(context),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text(&#39;Acerca de&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AcercaPage()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: const Text(&#39;Ayuda&#39;),
+                onTap: () {
+                  final navegador = Navigator.of(context);
+                  navegador.pop();
+                  navegador.push(
+                    MaterialPageRoute(builder: (_) =&gt; const AyudaPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          &#39;Ingenieria de Sistemas&#39;,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: &#39;Buscar marca o modelo&#39;,
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (texto) {
+                      setState(() =&gt; paginaActual = 1);
+                      context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        CampoNombreVehiculo(controller: vehiculoController),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: anioController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Año del vehículo&#39;,
+                            hintText: &#39;2020&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.anio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: precioController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: &#39;Precio&#39;,
+                            hintText: &#39;25000000.50&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.precio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: correoController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Correo de contacto&#39;,
+                            hintText: &#39;cliente@ejemplo.com&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.correo,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: BotonTienda(
+                              texto: estado.indiceEnEdicion == null
+                                  ? &#39;Agregar vehículo&#39;
+                                  : &#39;Guardar cambios&#39;,
+                              alPresionar: guardarVehiculo,
+                            ),
+                          ),
+                          if (estado.indiceEnEdicion != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: cancelarEdicion,
+                              child: const Text(&#39;Cancelar&#39;),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Text(
+                        &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                        &#39;Visibles: ${estado.visibles.length}&#39;,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      final cantidad = estado.visibles.length;
+                      final totalPaginas = cantidad == 0
+                          ? 1
+                          : (cantidad + registrosPorPagina - 1) ~/ registrosPorPagina;
+                      final paginaSegura =
+                          paginaActual &gt; totalPaginas ? totalPaginas : paginaActual;
+                      final inicio = (paginaSegura - 1) * registrosPorPagina;
+                      final visiblesPagina = estado.visibles
+                          .skip(inicio)
+                          .take(registrosPorPagina)
+                          .toList();
+
+                      if (visiblesPagina.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            estado.vehiculos.isEmpty
+                                ? &#39;Todavía no hay vehículos registrados.&#39;
+                                : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: visiblesPagina.length,
+                        itemBuilder: (context, indiceVisible) {
+                          final vehiculo = visiblesPagina[indiceVisible];
+                          // El índice REAL evita editar otro vehículo al filtrar.
+                          final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                          return Card(
+                            child: ListTile(
+                              title: Text(vehiculo.nombre),
+                              isThreeLine: true,
+                              subtitle: Text(
+                                &#39;Año: &#39; + vehiculo.anio.toString() +
+                                &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
+                                &#39;\nCorreo: &#39; + vehiculo.correo,
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    tooltip: &#39;Editar vehículo&#39;,
+                                    onPressed: () =&gt; comenzarEdicion(indiceReal),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  IconButton(
+                                    tooltip: &#39;Eliminar vehículo&#39;,
+                                    onPressed: () =&gt; borrarVehiculo(indiceReal),
+                                    icon: const Icon(Icons.delete_outline),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      final cantidad = estado.visibles.length;
+                      final totalPaginas = cantidad == 0
+                          ? 1
+                          : (cantidad + registrosPorPagina - 1) ~/ registrosPorPagina;
+                      final paginaSegura =
+                          paginaActual &gt; totalPaginas ? totalPaginas : paginaActual;
+                      final inicio = cantidad == 0
+                          ? 0
+                          : (paginaSegura - 1) * registrosPorPagina + 1;
+                      final fin = cantidad &lt; paginaSegura * registrosPorPagina
+                          ? cantidad
+                          : paginaSegura * registrosPorPagina;
+
+                      return Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: [
+                          Text(&#39;$inicio–$fin de $cantidad&#39;),
+                          DropdownButton&lt;int&gt;(
+                            value: registrosPorPagina,
+                            items: const [
+                              DropdownMenuItem(value: 5, child: Text(&#39;5 por página&#39;)),
+                              DropdownMenuItem(value: 10, child: Text(&#39;10 por página&#39;)),
+                              DropdownMenuItem(value: 20, child: Text(&#39;20 por página&#39;)),
+                            ],
+                            onChanged: (valor) {
+                              if (valor == null) return;
+                              setState(() {
+                                registrosPorPagina = valor;
+                                paginaActual = 1;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            tooltip: &#39;Página anterior&#39;,
+                            icon: const Icon(Icons.chevron_left),
+                            onPressed: paginaSegura &gt; 1
+                                ? () =&gt; cambiarPagina(paginaSegura - 1, totalPaginas)
+                                : null,
+                          ),
+                          Text(&#39;Página $paginaSegura de $totalPaginas&#39;),
+                          IconButton(
+                            tooltip: &#39;Página siguiente&#39;,
+                            icon: const Icon(Icons.chevron_right),
+                            onPressed: paginaSegura &lt; totalPaginas
+                                ? () =&gt; cambiarPagina(paginaSegura + 1, totalPaginas)
+                                : null,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+            builder: (context, estado) {
+              return Center(
+                child: Text(&#39;Vehículos registrados: ${estado.vehiculos.length}&#39;),
+              );
+            },
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                &#39;Para registrar un vehículo, escribe un nombre válido &#39;
+                &#39;y pulsa Agregar en la pestaña Tienda.&#39;,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><a href="./etapas/paso_17b_paginacion_local.dart" target="_blank" rel="noopener noreferrer">Abrir código completo ↗</a> · <a href="https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html" target="_blank" rel="noopener noreferrer">Documentación de ListView.builder ↗</a></p></div>
+<div class="notice notice-info"><strong>Aplicación de esta mejora en el catálogo.</strong><p>Ahora puedes entrar al <a href="#catalogo-widgets">catálogo de widgets</a> y navegar sus 167 componentes por páginas de 12, 24 o 48, o mostrarlos todos. Buscar, cambiar categoría u ordenar reinicia la página para evitar resultados vacíos.</p></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD</span><h3>Demuestra cómo evitar una página inexistente</h3><p>Registra 23 vehículos, avanza hasta la última página de cinco, elimina tres y comprueba cómo se ajusta la numeración. Luego busca un vehículo y cambia a diez por página. Explica <code>inicio</code> y <code>visiblesPagina.length</code>.</p></div>
+<div class="checklist" data-checklist="paginacion-local"><label><input type="checkbox"> Distingo paginación local de paginación por API.</label><label><input type="checkbox"> Calculé totalPaginas, inicio y páginaSegura.</label><label><input type="checkbox"> ListView.builder muestra únicamente los elementos de la página.</label><label><input type="checkbox"> El buscador y el selector reinician a la primera página.</label><label><input type="checkbox"> El CRUD conserva sus validaciones y botones de editar/eliminar.</label></div>
+<div class="lesson-end"><button class="button button-complete" data-complete="paginacion-local">Marcar módulo como completado</button><a class="next-link" href="#api-postgres">Siguiente: FastAPI y PostgreSQL →</a></div>
+</section>
 <section class="page lesson next-module advanced-module" id="api-postgres" aria-labelledby="api-postgres-title">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · P11</span><span class="status-pill planned">Flutter + FastAPI + PostgreSQL</span></div>
 <h1 id="api-postgres-title">Guardar los vehículos con una API FastAPI y PostgreSQL</h1>
-<p>Hasta P10, los vehículos desaparecen al cerrar la aplicación porque están en memoria. Ahora aprenderás a guardarlos de forma persistente, conectando <strong>la misma Tienda Flutter</strong> con una API sencilla en Python y una base de datos PostgreSQL. Partiremos desde lo básico, sin asumir conocimientos previos de servidores.</p></div>
+<p>Hasta P10.1, los vehículos desaparecen al cerrar la aplicación porque están en memoria. Ahora aprenderás a guardarlos de forma persistente, conectando <strong>la misma Tienda Flutter</strong> con una API sencilla en Python y una base de datos PostgreSQL. Partiremos desde lo básico, sin asumir conocimientos previos de servidores.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Resultado final de la práctica</strong><p>La aplicación móvil o web podrá <strong>consultar, crear, editar y eliminar</strong> vehículos por HTTP. FastAPI validará los datos y los guardará en PostgreSQL. Tras cerrar y abrir Flutter, los registros continuarán disponibles.</p></div></div>
 <div class="notice notice-warning"><strong>Punto de partida</strong><p>Debes haber terminado <a href="#bloc-crud">BLoC</a>, <a href="#menu-hamburguesa">menú hamburguesa</a> y <a href="#validaciones-esenciales">validación de campos</a>. <code>actividad2</code> continúa siendo tu proyecto Flutter. La API se crea en otra carpeta hermana llamada <code>tienda_api</code> porque <strong>Python y Dart no se escriben en el mismo archivo</strong>. Este es un proyecto local de aprendizaje: todavía no tiene usuarios ni seguridad de producción.</p></div>
 <div class="al-flow" aria-label="Diagrama de comunicación entre Flutter FastAPI y PostgreSQL">
@@ -8091,8 +8628,13 @@ flutter run</code></pre></div>
 </div>
           <div class="wc-filter-row" id="catalog-filters" role="group" aria-label="Filtrar por categoría"></div>
           <div class="wc-results-header"><strong id="catalog-count" aria-live="polite">Cargando widgets…</strong><span>Ejemplos de Dart y propiedades explicadas</span></div>
-          <div class="wc-catalog-grid" id="catalog-grid"></div>
-          <div id="catalog-empty" class="wc-empty" hidden><strong>No encontramos widgets con ese texto.</strong><p>Prueba otra palabra, como «layout», «AppBar», «text» o «color».</p></div>
+          <div class="wc-catalog-page-settings"><label class="wc-page-size-label" for="catalog-page-size">Widgets por página
+<select id="catalog-page-size" aria-label="Widgets por página"><option value="12" selected>12</option><option value="24">24</option><option value="48">48</option><option value="all">Todos</option></select></label>
+<output id="catalog-range" role="status" aria-live="polite">Cargando widgets…</output></div>
+<nav id="catalog-pagination-top" class="wc-pagination" data-catalog-pagination aria-label="Páginas superiores del catálogo"></nav>
+<div class="wc-catalog-grid" id="catalog-grid"></div>
+          <nav id="catalog-pagination-bottom" class="wc-pagination" data-catalog-pagination aria-label="Páginas inferiores del catálogo"></nav>
+<div id="catalog-empty" class="wc-empty" hidden><strong>No encontramos widgets con ese texto.</strong><p>Prueba otra palabra, como «layout», «AppBar», «text» o «color».</p></div>
           <div class="wc-catalog-footer"><strong>¿Buscas absolutamente todos los widgets del SDK?</strong><p>Esta biblioteca reúne 167 componentes relevantes para el taller y aplicaciones Flutter habituales; Flutter incluye muchos más, y su catálogo crece. Para consultar el inventario íntegro y actualizado, utiliza el <a href="https://docs.flutter.dev/reference/widgets" target="_blank" rel="noopener noreferrer">índice oficial de Flutter ↗</a>.</p></div>
         </section>
       </main>
