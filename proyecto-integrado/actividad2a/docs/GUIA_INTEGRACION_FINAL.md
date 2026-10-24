@@ -204,3 +204,21 @@ Actividades de sustentación:
 - `actividad2` y `tienda_api` del taller histórico no fueron alterados; no copies sus implementaciones anteriores sobre `actividad2a`.
 
 **Fuente de referencia:** los archivos reales de `actividad2a/lib`, `actividad2a/test`, `actividad2a_api/app.py` y `actividad2a_api/tests` que acompañan a esta guía. Todos los ejemplos deben consultar esa misma versión.
+
+## 13. Prueba real de extremo a extremo en Chrome
+
+Además de `flutter test` y `pytest`, existe el script **`actividad2a/scripts/e2e-web.js`**. Prueba la interfaz web compilada contra la API y SQLite reales, incluyendo el selector nativo de archivos del navegador y una imagen PNG válida. No usa datos simulados para los resultados del vehículo; solamente genera el archivo de imagen de prueba en memoria.
+
+Con la API escuchando en el puerto 8091 y la compilación web servida en el 5174:
+
+```powershell
+cd C:\Users\user\Documents\DesarrolloMovilFlutter\actividad2a\scripts
+npm install
+npm run test:e2e
+```
+
+Consulta `scripts/README.md` para iniciar los servicios. La prueba valida el administrador, cliente, vendedor, creación de vehículo, carga multipart, URL de imagen persistente, favoritos por usuario, rechazo HTTP 403, acceso al panel de usuarios, navegación móvil (390 × 844) y ausencia de errores JavaScript. Borra el vehículo temporal en `finally`. El script rechaza URLs que no sean `localhost` o `127.0.0.1`.
+
+**Verificación del 24 de octubre de 2026:** 12 pruebas Flutter, 10 de API y recorrido automatizado real de Chrome aprobados. La aplicación compiló en web y Android (APK debug x64). La selección de galería/cámara en teléfonos físicos y la compilación iOS siguen requiriendo pruebas en dispositivos correspondientes.
+
+**Precaución:** la versión publicada de `proyecto-integrado/actividad2a` es código fuente para superponer sobre el esqueleto generado por `flutter create --empty actividad2a`. Si se clona desde GitHub, sigue los pasos del README de `proyecto-integrado` para generar las carpetas de plataforma necesarias antes de ejecutar Flutter.

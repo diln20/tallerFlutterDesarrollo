@@ -1,0 +1,12 @@
+{
+  "name": "concesionario-e2e-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pruebas de navegador para el laboratorio Flutter y FastAPI",
+  "scripts": {
+    "test:e2e": "node e2e-web.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.58.2"
+  }
+}
