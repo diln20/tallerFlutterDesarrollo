@@ -79,13 +79,14 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       emit(_nuevoEstado(state.vehiculos, enviando: true));
       try {
         final v = evento.vehiculo;
-        await api.crear(
+        final nuevoId = await api.crear(
           nombre: v.nombre,
           anio: v.anio,
           precio: v.precio,
           correo: v.correo,
           disponible: v.disponible,
         );
+        if (v.favorito) _favoritos.add(nuevoId);
         final datos = await api.listar();
         emit(_nuevoEstado(datos));
       } catch (error) {
