@@ -30,8 +30,8 @@
   <script src="./assets/roles-pagination-ux.js?v=P12-P14-v1" defer></script>
   <script src="./assets/analogias-didacticas.js?v=20261023-analogias-v3" defer></script>
   <script src="./assets/analogias-catalogo.js?v=20261023-analogias-v2" defer></script>
-  <script src="./assets/stage-previews.js?v=20261023-analogias-v3" defer></script>
-  <script src="./assets/analogias-ui.js?v=20261023-analogias-v2" defer></script>
+  <script src="./assets/stage-previews.js?v=20261024-ejemplos-v1" defer></script>
+  <script src="./assets/analogias-ui.js?v=20261024-ejemplos-v1" defer></script>
   <script src="./assets/preview-vscode-icons.js?v=20261023-v1" defer></script>
   <script src="./assets/project-start-ui.js?v=20261023-actividad2" defer></script>
   <script src="./assets/preview-focus.js?v=20261023-lectura-grande" defer></script>
@@ -358,7 +358,39 @@ class MainApp extends StatelessWidget {
             <div><strong>8 · <code>Widget build(BuildContext context)</code></strong><p>Es el método que describe qué interfaz debe construir Flutter. <code>context</code> informa dónde se encuentra este widget en el árbol.</p></div>
             <div><strong>9 · <code>return MaterialApp(...)</code></strong><p>Devuelve la interfaz de la aplicación, empezando por la configuración de Material Design.</p></div>
           </div>
-          <h2>3. Primero entiende este recorrido</h2>
+          <div class="deep-dive" id="explicacion-widget-build">
+<div class="deep-heading"><span>ANTES DE USAR BUILD EN OTROS WIDGETS</span><h2>¿Qué significa <code>Widget build(BuildContext context)</code>?</h2>
+<p>Esta declaración aparece en <code>MainApp</code>, en los componentes reutilizables y también en el objeto <code>State</code> de un <code>StatefulWidget</code>. Comprenderla ahora evita copiarla sin saber para qué sirve.</p></div>
+<div class="code-label">Código real · ejemplo de un widget que muestra texto</div><pre class="code-block" data-code-mode="dart"><code>class EtiquetaDisponible extends StatelessWidget {
+  const EtiquetaDisponible({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(&#x27;Disponible en la Tienda&#x27;);
+  }
+}</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Parte</th><th>Qué representa</th><th>Ejemplo concreto</th></tr></thead><tbody>
+<tr><td><code>@override</code></td><td>La clase proporciona su propia versión de un método definido en la clase padre.</td><td><code>EtiquetaDisponible</code> implementa <code>build</code> de <code>StatelessWidget</code>.</td></tr>
+<tr><td><code>Widget</code></td><td>Es el tipo de dato que el método debe devolver.</td><td>El <code>Text</code> del ejemplo es un <code>Widget</code>; no puedes devolver una cadena sola.</td></tr>
+<tr><td><code>build</code></td><td>Es el método que describe la parte de interfaz que se va a mostrar. Flutter lo llama cuando necesita construir o actualizar esa zona.</td><td>El método devuelve un <code>Text</code> con el texto «Disponible en la Tienda».</td></tr>
+<tr><td><code>BuildContext</code></td><td>Es el tipo de un objeto que representa <strong>la ubicación de ese widget dentro del árbol de widgets</strong>.</td><td>Un título dentro de <code>Scaffold.body</code> tiene un contexto relacionado con esa ubicación.</td></tr>
+<tr><td><code>context</code></td><td>Es el nombre de la variable que recibe ese objeto; podrías darle otro nombre, pero <code>context</code> es la convención habitual.</td><td>En una pantalla hija puedes consultar <code>Theme.of(context)</code> para obtener el tema disponible allí.</td></tr>
+<tr><td><code>return</code></td><td>Entrega el widget que Flutter deberá mostrar en esta parte de la pantalla.</td><td><code>return const Text(...)</code> produce un texto visible; en <code>MainApp</code>, <code>return MaterialApp(...)</code> entrega la estructura general.</td></tr>
+</tbody></table></div>
+<h3>¿Para qué utilizar <code>context</code> si aquí solo devolvemos Text?</h3>
+<p>El método puede usar el contexto para consultar información cercana del árbol. Cuando el widget se encuentra <strong>dentro de MaterialApp</strong>, <code>Theme.of(context)</code> puede recuperar los colores del tema que reciben sus descendientes.</p>
+<div class="code-label">Ejemplo · dentro de un widget hijo de MaterialApp</div><pre class="code-block" data-code-mode="dart"><code>@override
+Widget build(BuildContext context) {
+  final color = Theme.of(context).colorScheme.primary;
+  return Text(
+    &#x27;Vehículos disponibles&#x27;,
+    style: TextStyle(color: color),
+  );
+}</code></pre>
+<p>En este fragmento, <code>Theme.of(context)</code> busca el tema disponible para <strong>este widget hijo</strong>. No debe suponerse que el <code>context</code> de <code>MainApp.build</code> ya está por debajo de su propio <code>MaterialApp</code>: ese árbol se construye como resultado del <code>return</code>.</p>
+<div class="notice notice-info"><strong>Qué recordar:</strong><p><code>build()</code> puede ejecutarse varias veces. Su trabajo es describir la interfaz, <strong>no guardar vehículos, abrir conexiones ni producir efectos secundarios</strong>. Más adelante P3 mostrará que el objeto <code>State</code> también implementa <code>build(context)</code>, y que <code>setState</code> solicita actualizar lo visible.</p></div>
+<p><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html" target="_blank" rel="noopener noreferrer">Definición oficial de BuildContext</a> · <a href="https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html" target="_blank" rel="noopener noreferrer">StatelessWidget</a></p></div>
+<h2>3. Primero entiende este recorrido</h2>
           <div class="diagram" role="img" aria-label="La ejecución comienza en main, sigue por runApp, MainApp y build, y termina en MaterialApp">
             <div class="diagram-node">main()</div><span aria-hidden="true">→</span><div class="diagram-node">runApp()</div><span aria-hidden="true">→</span><div class="diagram-node">MainApp</div><span aria-hidden="true">→</span><div class="diagram-node accent">build()</div><span aria-hidden="true">→</span><div class="diagram-node">MaterialApp</div>
           </div>
@@ -527,7 +559,7 @@ class MainApp extends StatelessWidget {
 <div class="debug-banner-guide" id="etiqueta-debug">
   <h2>La etiqueta roja DEBUG de Flutter</h2>
   <p>Al ejecutar la aplicación en modo de desarrollo, Flutter puede dibujar una cinta diagonal roja con la palabra <strong>DEBUG</strong> en la esquina superior derecha. Es una señal visual para saber que estás probando el programa, <strong>no es un error</strong> ni forma parte de la pantalla de tus usuarios.</p>
-  <p><strong>Analogía:</strong> es como poner un letrero de «Vehículo en pruebas» en el concesionario: solo identifica una demostración, no cambia el funcionamiento del motor.</p>
+  <p><strong>Ejemplo:</strong> es como poner un letrero de «Vehículo en pruebas» en el concesionario: solo identifica una demostración, no cambia el funcionamiento del motor.</p>
   <div class="debug-banner-comparison" aria-label="Comparación de pantalla Flutter con y sin la etiqueta DEBUG">
     <div class="debug-banner-demo-panel">
       <strong>Cuando se muestra la etiqueta</strong>
@@ -744,7 +776,38 @@ class MainApp extends StatelessWidget {
   ),
 ),</code></pre>
           <div class="line-notes numbered"><div><strong><code>Expanded</code></strong><p>Le indica al hijo de la <code>Row</code> que utilice el espacio horizontal flexible que queda disponible.</p></div><div><strong><code>child: TextField(...)</code></strong><p>El hijo de <code>Expanded</code> es un campo donde el usuario puede escribir.</p></div><div><strong><code>decoration: InputDecoration(...)</code></strong><p>Define cómo se presenta visualmente el campo: texto de ayuda, bordes, iconos y otros detalles.</p></div><div><strong><code>hintText</code></strong><p>Muestra una sugerencia mientras el campo está vacío. No es el texto que escribió el usuario.</p></div></div>
-          <h2>2. Prueba un nuevo texto de ayuda</h2><p>En tu copia para ejercicios, sustituye únicamente <code>hintText</code>:</p><div class="code-label">Propuesta de práctica · un cambio pequeño</div><pre class="code-block"><code>hintText: 'Escribe el nombre del vehículo',</code></pre><p>Ejecuta Hot Reload. El texto se verá dentro del campo cuando esté vacío.</p>
+          <div class="deep-dive" id="input-decoration-guia">
+<div class="deep-heading"><span>DETALLE DE TEXTFIELD · ANTES DEL FORMULARIO</span><h2>¿Para qué sirve <code>InputDecoration</code>?</h2>
+<p><code>TextField</code> permite escribir. <code>InputDecoration</code> describe <strong>la presentación visual</strong> de ese campo: título, pista, explicación, iconos, relleno, bordes y mensajes. <code>InputDecoration</code> no lee el texto del usuario, no lo guarda y no comprueba si es válido por sí sola.</p></div>
+<div class="code-label">Dart · reemplaza solo el TextField de prueba, no toda la pantalla</div><pre class="code-block" data-code-mode="dart"><code>TextField(
+  decoration: const InputDecoration(
+    labelText: &#x27;Nombre del vehículo&#x27;,
+    hintText: &#x27;Ejemplo: Renault 9&#x27;,
+    helperText: &#x27;Escribe la marca y el modelo.&#x27;,
+    prefixIcon: Icon(Icons.directions_car),
+    border: OutlineInputBorder(),
+    filled: true,
+    fillColor: Color(0xFFF1F5F9),
+  ),
+)</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Propiedad</th><th>Qué puedes escribir</th><th>Cómo se ve en la Tienda</th></tr></thead><tbody>
+<tr><td><code>decoration:</code></td><td><code>const InputDecoration(...)</code></td><td>Conjunto de opciones visuales del campo.</td></tr>
+<tr><td><code>labelText:</code></td><td>Un texto, por ejemplo <code>'Nombre del vehículo'</code>.</td><td>Identifica qué dato se solicita y puede flotar cuando se escribe.</td></tr>
+<tr><td><code>hintText:</code></td><td>Un texto, como <code>'Ejemplo: Renault 9'</code>.</td><td>Pista que aparece mientras el campo está vacío.</td></tr>
+<tr><td><code>helperText:</code></td><td>Un texto corto.</td><td>Aclaración debajo del campo.</td></tr>
+<tr><td><code>prefixIcon:</code></td><td>Un widget como <code>Icon(Icons.directions_car)</code>.</td><td>Icono dentro del campo, a la izquierda en esta interfaz.</td></tr>
+<tr><td><code>suffixIcon:</code></td><td>Un widget como <code>Icon(Icons.edit_outlined)</code>.</td><td>Icono al final del campo; no hace una acción por sí solo.</td></tr>
+<tr><td><code>border:</code></td><td><code>OutlineInputBorder()</code>, <code>UnderlineInputBorder()</code> o <code>InputBorder.none</code>.</td><td>Borde completo, línea inferior o sin borde.</td></tr>
+<tr><td><code>filled:</code> y <code>fillColor:</code></td><td><code>true</code> / <code>false</code> y un <code>Color</code>.</td><td>Activa un fondo de color, como gris claro.</td></tr>
+<tr><td><code>contentPadding:</code></td><td><code>EdgeInsets.all(12)</code> u otros EdgeInsets.</td><td>Deja espacio entre el borde y el contenido.</td></tr>
+<tr><td><code>errorText:</code></td><td>Un mensaje o <code>null</code>.</td><td>Muestra un error visual; las reglas de validación se enseñarán en P4.</td></tr>
+</tbody></table></div>
+<div class="notice notice-info"><strong>¿Dónde se escribe?</strong><p>Dentro de <code>TextField(</code> agrega o modifica su propiedad <code>decoration:</code>. Si ya tiene un <code>InputDecoration</code>, añade las opciones <strong>dentro de ese objeto</strong>; no crees dos propiedades <code>decoration:</code>. <code>controller:</code>, <code>onChanged:</code> y <code>keyboardType:</code> pertenecen al propio <code>TextField</code>, no a <code>InputDecoration</code>.</p></div>
+<h3>Diferencia entre mostrar una pista, recoger un dato y validar</h3>
+<p><code>hintText</code> solo orienta. En P1 utilizarás <code>TextEditingController</code> para leer lo escrito, y en P4 cambiarás el campo a <code>TextFormField</code> con <code>validator:</code> para comprobar el valor. Por ejemplo, mostrar «Renault 9» como pista <strong>no significa que el campo contenga Renault 9</strong>.</p>
+<p><a href="https://api.flutter.dev/flutter/material/InputDecoration-class.html" target="_blank" rel="noopener noreferrer">Consultar todas las propiedades oficiales de InputDecoration</a>.</p>
+</div>
+<h2>2. Prueba un nuevo texto de ayuda</h2><p>En tu copia para ejercicios, sustituye únicamente <code>hintText</code>:</p><div class="code-label">Propuesta de práctica · un cambio pequeño</div><pre class="code-block"><code>hintText: 'Escribe el nombre del vehículo',</code></pre><p>Ejecuta Hot Reload. El texto se verá dentro del campo cuando esté vacío.</p>
           <div class="notice notice-info"><strong>¿Ya busca vehículos?</strong><p>No todavía. El código actual muestra un campo de texto, pero no contiene una función que filtre productos. Primero aprenderemos a leer el valor que el usuario escribe y después a reaccionar a él.</p></div>
           <h2>4. Código completo de nuestra práctica actividad2</h2>
 <p>Este es el resultado de nuestra práctica tras los módulos 01–05. Conservamos <code>Primer widget</code> desde el módulo 02 y la organización de widgets aprendida de la referencia. No copiamos literalmente todos los textos del docente; su archivo original permanece disponible en <code>codigo-base/main.dart</code> y no se modifica.</p>
@@ -1078,7 +1141,7 @@ class MainApp extends StatelessWidget {
         
 <section class="page lesson" id="proyecto" aria-labelledby="proyecto-title" data-lesson="9">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">SIGUIENTE CLASE · FORMULARIO BÁSICO</span><span class="status-pill planned">Basado en el código real de actividad2a</span><span class="lesson-time">9 pasos</span></div><h1 id="proyecto-title">Text, TextField y botón en la misma Tienda</h1><p>En la <strong>ruta A</strong>, continúas desde el código construido al finalizar el <strong>módulo 05</strong>: una <code>MainApp</code> con <code>StatelessWidget</code>, una <code>Row</code> y el campo «Buscar marca o modelo». Vamos a añadir un formulario sencillo después de esa fila. <strong>Si terminaste la ruta B (B1–B4), no pegues este código encima del filtro</strong>: recupera primero tu versión del módulo 05, conservando una copia de la ruta B.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Requisito: haber terminado los módulos 01–05. Los etapas B1–B4 pertenecen a otra ruta.</strong><p>Esos módulos proponen mejoras posteriores. El <code>for (final vehiculo in resultados)</code> nació en la práctica opcional de filtrado, pero <strong>NO existe en el main.dart original</strong>. En esta etapa no usaremos ningún <code>for</code>, <code>List</code> ni filtro.</p></div></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Requisito: haber terminado los módulos 01–05. Las etapas B1–B4 pertenecen a otra ruta.</strong><p>Esos módulos proponen mejoras posteriores. El <code>for (final vehiculo in resultados)</code> nació en la práctica opcional de filtrado, pero <strong>NO existe en el main.dart original</strong>. En esta etapa no usaremos ningún <code>for</code>, <code>List</code> ni filtro.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-proyecto" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: valor, evento y controlador</h2><p>Primero: una <strong>variable</strong> guarda un dato, por ejemplo <code>String nombre = 'Mazda';</code>. Segundo: <code>onPressed: () { debugPrint('Pulsado'); }</code> recibe una <strong>función</strong> que se ejecutará al pulsar el botón; el código entre llaves no se ejecuta por dibujar el botón. Tercero: <code>TextEditingController</code> permite leer <code>controller.text</code>, y <code>dispose()</code> libera ese recurso cuando se retira el widget.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Aquí pasamos de <code>StatelessWidget</code> a <code>StatefulWidget</code> para mantener el controlador. <strong>No necesitamos <code>setState</code> todavía</strong>: el botón solamente lee, muestra en consola y limpia el campo. Los nueve pasos explican cada modificación en orden.</p></div>
 
@@ -1138,7 +1201,108 @@ void dispose() {
   vehiculoController.dispose();
   super.dispose();
 }</code></pre><div class="table-scroll"><table class="lesson-table form-meaning-table"><thead><tr><th>Parte del código</th><th>Qué significa</th></tr></thead><tbody><tr><td><code>@override</code></td><td>Indica que implementamos un método heredado.</td></tr><tr><td><code>void dispose()</code></td><td>Flutter lo llama al retirar definitivamente ese State.</td></tr><tr><td><code>vehiculoController.dispose()</code></td><td>Libera el controlador.</td></tr><tr><td><code>super.dispose()</code></td><td>Completa la limpieza de la clase base.</td></tr></tbody></table></div><div class="form-expected"><strong>Resultado del paso</strong><p>No aparece ningún cambio visible; el controlador queda correctamente administrado.</p></div></section>
-<div class="deep-dive"><div class="deep-heading"><span>PARA LOCALIZAR EL PRIMER CAMBIO</span><h2>Así termina la Row original y empieza el formulario</h2><p>Busca <code>hintText: 'Buscar marca o modelo'</code> y sigue las llaves y paréntesis que cierran <code>Expanded</code> y <code>Row</code>. Justo después de <code>Row</code> añadimos el título y luego los demás widgets.</p></div><div class="code-label">Row original y primer cambio completo</div><pre class="code-block"><code>Row(
+<div class="deep-dive"><div class="deep-heading"><span>PARA LOCALIZAR EL PRIMER CAMBIO</span><div class="deep-dive" id="teclado-desbordamiento">
+<div class="deep-heading"><span>PROBLEMA REAL DESPUÉS DE CREAR EL FORMULARIO</span><h2>¿Qué pasa cuando aparece el teclado y falta espacio vertical?</h2>
+<p>En un teléfono pequeño, el teclado ocupa la zona inferior. Por defecto <code>Scaffold</code> intenta reducir el área del <code>body</code> para evitar el teclado, pero la <code>Column</code> no se desplaza sola. Si no caben el buscador, el formulario y el botón, puedes ver franjas amarillas/negras o un error de <code>RenderFlex overflowed</code>.</p></div>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Situación</th><th>Qué sucede</th><th>Qué hacemos en la Tienda</th></tr></thead><tbody>
+<tr><td><code>Column</code> sin desplazamiento</td><td>Muestra hijos verticalmente, pero puede desbordarse cuando no hay suficiente altura.</td><td>Al abrir el teclado, el botón «Agregar vehículo» puede quedar fuera del espacio disponible.</td></tr>
+<tr><td><code>SingleChildScrollView</code></td><td>Permite desplazar un único contenido en la dirección del scroll (vertical por defecto).</td><td>Desliza el formulario para llegar al botón aunque aparezca el teclado.</td></tr>
+<tr><td><code>Scaffold.resizeToAvoidBottomInset</code></td><td>Es <code>true</code> por defecto: ajusta el <code>body</code> ante el teclado.</td><td>Lo dejamos con su valor predeterminado y añadimos desplazamiento al contenido.</td></tr>
+</tbody></table></div>
+<h3>En qué lugar hacer el cambio</h3>
+<p>Abre <code>actividad2/lib/main.dart</code>. Busca <code>body: Center(</code> y justo debajo <code>child: Column(</code>. <strong>Reemplaza únicamente ese contenedor exterior</strong> por <code>SingleChildScrollView</code>. Mantén el mismo formulario, los botones, la lista <code>children</code> y las llaves existentes. No escribas una segunda <code>Scaffold</code>.</p>
+<div class="code-label">Antes · inicio del body</div><pre class="code-block" data-code-mode="dart"><code>body: Center(
+  child: Column(</code></pre>
+<div class="code-label">Después · solo el inicio del body, conserva tus children</div><pre class="code-block" data-code-mode="dart"><code>body: SingleChildScrollView(
+  padding: const EdgeInsets.all(16),
+  child: Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,</code></pre>
+<p><code>padding</code> evita que los campos queden pegados al borde; <code>MainAxisSize.min</code> permite que la columna se adapte al contenido; <code>CrossAxisAlignment.start</code> lo alinea hacia el inicio horizontal. Los <code>children</code> permanecen dentro de esa misma <code>Column</code>.</p>
+<details class="deep-details"><summary>Ver main.dart completo, con el formulario y desplazamiento</summary><div class="deep-details-body">
+<div class="code-label">actividad2/lib/main.dart · variante completa, sin crear otro proyecto</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text(&#x27;Tienda&#x27;)),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(&#x27;Primer widget&#x27;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#x27;Ingenieria de Sistemas&#x27;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#x27;Buscar marca o modelo&#x27;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text(&#x27;Agregar un vehículo&#x27;),
+              const SizedBox(height: 10),
+              TextField(
+                controller: vehiculoController,
+                decoration: const InputDecoration(
+                  hintText: &#x27;Nombre del vehículo&#x27;,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final nombre = vehiculoController.text.trim();
+                  if (nombre.isEmpty) return;
+                  debugPrint(&#x27;Vehículo escrito: $nombre&#x27;);
+                  vehiculoController.clear();
+                },
+                child: const Text(&#x27;Agregar vehículo&#x27;),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<div class="notice notice-warning"><strong>No coloques <code>Expanded</code> vertical dentro de este SingleChildScrollView:</strong><p>En la dirección de desplazamiento, la altura disponible puede no tener un máximo finito. <code>Expanded</code> necesita restricciones de altura para ocupar «lo que queda». El <code>Expanded</code> que ya existe dentro de una <code>Row</code> sigue siendo horizontal y puede conservarse. Para listas largas de vehículos, más adelante estudiaremos <code>ListView</code>.</p></div>
+<div class="next-step-result"><strong>Comprobación en un móvil o emulador:</strong><p>Abre la Tienda, pulsa el campo «Nombre del vehículo», deja el teclado visible y desplaza el formulario para ver el botón. Haz la misma prueba con la pantalla en orientación horizontal y con una ventana pequeña. No deben aparecer franjas de desbordamiento.</p></div>
+<p><a href="./etapas/paso_09_formulario_scroll.dart" target="_blank" rel="noopener noreferrer">Ver archivo Dart completo con el arreglo del teclado</a> · <a href="https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html" target="_blank" rel="noopener noreferrer">Documentación oficial de SingleChildScrollView</a>.</p></div>
+<h2>Así termina la Row original y empieza el formulario</h2><p>Busca <code>hintText: 'Buscar marca o modelo'</code> y sigue las llaves y paréntesis que cierran <code>Expanded</code> y <code>Row</code>. Justo después de <code>Row</code> añadimos el título y luego los demás widgets.</p></div><div class="code-label">Row original y primer cambio completo</div><pre class="code-block"><code>Row(
   children: [
     Icon(Icons.directions_car),
     const SizedBox(width: 8),
@@ -1166,7 +1330,7 @@ const Text(&#39;Agregar un vehículo&#39;),</code></pre>
 <tr><td>¿Se está guardando el vehículo?</td><td><strong>No.</strong> Aún no hay lista de registros ni base de datos asociada al botón. El texto solo se imprime en consola. Guardar vehículos será otra actividad, con una explicación nueva.</td></tr>
 <tr><td>¿Se necesita <code>Form</code> o <code>validator</code>?</td><td>No para esta práctica. Primero dominamos <code>Text</code>, <code>TextField</code>, <code>ElevatedButton</code> y el controlador. Los formularios con validación formal vendrán después.</td></tr>
 </tbody></table></div></div>
-<div class="checklist" data-checklist="proyecto"><label><input type="checkbox"> Localicé la Row existente sin buscar un ciclo for.</label><label><input type="checkbox"> Agregué los tres widgets directamente después de la Row.</label><label><input type="checkbox"> Comprendo por qué cambiamos MainApp a StatefulWidget.</label><label><input type="checkbox"> Puedo leer el contenido del segundo TextField con controller.text.</label><label><input type="checkbox"> El botón imprime el nombre en la consola, no en una lista.</label><label><input type="checkbox"> clear() limpia el TextField y dispose() libera el controller.</label></div>
+<div class="checklist" data-checklist="proyecto"><label><input type="checkbox"> Localicé la Row existente sin buscar un ciclo for.</label><label><input type="checkbox"> Agregué los tres widgets directamente después de la Row.</label><label><input type="checkbox"> Comprendo por qué cambiamos MainApp a StatefulWidget.</label><label><input type="checkbox"> Puedo leer el contenido del segundo TextField con controller.text.</label><label><input type="checkbox"> El botón imprime el nombre en la consola, no en una lista.</label><label><input type="checkbox"> clear() limpia el TextField y dispose() libera el controller.</label><label><input type="checkbox"> Probé el teclado en pantalla pequeña y sé colocar SingleChildScrollView alrededor de la Column.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Probar un vehículo nuevo</h3><p>Escribe «Kia Picanto», pulsa el botón y comprueba en la consola de Flutter que aparece el mensaje. Explica por qué el campo se limpia y señala dónde está la Row original.</p><details><summary>Respuesta orientativa</summary><p>La Row original sigue al principio de Column.children. El controller enlaza el nuevo TextField con el botón. debugPrint muestra el texto en la consola y clear() deja la caja vacía.</p></details></div>
 <div class="notice notice-warning"><strong>Para otra práctica</strong><p>Más adelante podemos enseñar <code>for</code>, listas, <code>Form</code>, validadores y mostrar resultados en la propia pantalla. Nada de eso es necesario para este primer formulario.</p></div>
 <div class="deep-dive form-complete-source"><div class="deep-heading"><span>COMPARACIÓN FINAL</span><h2>El main.dart completo después del formulario</h2><p>Este es el archivo original con los cambios de los nueve pasos. Úsalo para revisar después de construirlos.</p></div><details class="deep-details final-code"><summary>Mostrar y copiar el código completo</summary><div class="deep-details-body"><p><a href="./etapas/paso_09_formulario.dart" target="_blank" rel="noopener noreferrer">Abrir archivo Dart de referencia ↗</a></p><div class="code-label">main.dart final · Tienda original y formulario</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
@@ -1252,7 +1416,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <h1 id="carpetas-title">Crear y entender las carpetas de Flutter</h1><p>Después del primer formulario vamos a organizar el proyecto para que pueda crecer. En este módulo <strong>solo creamos carpetas vacías y entendemos sus responsabilidades</strong>: no movemos <code>main.dart</code>, no añadimos clases y no instalamos paquetes.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>La pantalla de la Tienda debe seguir funcionando igual. Estas carpetas no hacen nada por sí solas y no hay obligación de utilizarlas en esta etapa.</p></div></div>
 <div class="next-intro-grid"><div class="next-intro-card"><span>AHORA</span><strong>Crear las carpetas</strong><p>En <code>lib/</code>, sin escribir código dentro.</p></div><div class="next-intro-card"><span>DESPUÉS</span><strong>Entender su uso</strong><p>Identificar qué podría ir en cada una.</p></div><div class="next-intro-card"><span>AÚN NO</span><strong>Mover o implementar</strong><p>No tocar las clases ni alterar el formulario.</p></div></div>
-<div class="notice notice-info"><strong>Antes de crear las carpetas</strong><p>Abre una <strong>copia de práctica</strong> de <code>actividad2a</code> en VS Code. En el Explorador, selecciona <code>lib</code> y utiliza <strong>Nueva carpeta</strong>. Alternativamente, abre PowerShell en la raíz donde está <code>pubspec.yaml</code>. Estos seis comandos son una alternativa a los clics, no debes hacer ambos procedimientos dos veces.</p></div>
+<div class="notice notice-info"><strong>Antes de crear las carpetas</strong><p>Abre una <strong>copia de práctica</strong> de <code>actividad2a</code> en VS Code. En el Explorador, selecciona <code>lib</code> y utiliza <strong>Nueva carpeta</strong>. Alternativamente, abre PowerShell en la raíz donde está <code>pubspec.yaml</code>. Estos siete comandos son una alternativa a los clics, no debes hacer ambos procedimientos dos veces.</p></div>
 <div class="next-folder-overview"><div class="deep-heading"><span>REFERENCIA VISUAL</span><h2>Así quedará el árbol de carpetas</h2><p>El archivo <code>main.dart</code> sigue en el mismo lugar. Los directorios <code>test</code> y <code>assets</code> se explican aparte: <code>assets</code> solo se crea si más adelante necesitamos recursos como imágenes.</p></div>
 <div class="code-label">Esquema de lectura · estructura de carpetas (NO copiar en Dart)</div><pre class="code-block"><code>actividad2/
 ├── lib/
@@ -1262,10 +1426,11 @@ class _MainAppState extends State&lt;MainApp&gt; {
 │   ├── models/            ← clases de datos
 │   ├── services/          ← comunicación con APIs
 │   ├── repositories/      ← acceso y persistencia de datos
-│   └── bloc/              ← lógica y estados (en el futuro)
+│   ├── bloc/              ← lógica y estados (en el futuro)
+│   └── utils/             ← colores y otras ayudas compartidas
 ├── test/                  ← puede existir desde flutter create
 └── pubspec.yaml          ← ya forma parte del proyecto</code></pre>
-<div class="folder-purpose-grid"><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>pages/</strong><span>Las pantallas completas</span><p>Por ejemplo, una página de inicio o de detalle; todavía seguimos trabajando en <code>main.dart</code>.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>widgets/</strong><span>Las piezas reutilizables de interfaz</span><p>Se utilizará en la siguiente práctica para crear <code>TituloSeccion</code> sin duplicar la misma estructura.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>models/</strong><span>Las clases que describen los datos</span><p>Más adelante guardaremos aquí la definición de <code>Vehiculo</code>. Una clase no es todavía una base de datos.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>services/</strong><span>La comunicación con servicios externos</span><p>Se podría usar para consumir una API; hoy no creamos solicitudes HTTP ni conectamos servicios.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>repositories/</strong><span>Cómo obtener o guardar información</span><p>Podría organizar las operaciones con archivos, bases de datos o servicios; no hay persistencia en esta clase.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>bloc/</strong><span>La lógica y los estados separados de la interfaz</span><p>Se estudiará cuando corresponda el patrón BLoC. Crear la carpeta no implementa BLoC.</p></div></div></div>
+<div class="folder-purpose-grid"><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>pages/</strong><span>Las pantallas completas</span><p>Por ejemplo, una página de inicio o de detalle; todavía seguimos trabajando en <code>main.dart</code>.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>widgets/</strong><span>Las piezas reutilizables de interfaz</span><p>Se utilizará en la siguiente práctica para crear <code>TituloSeccion</code> sin duplicar la misma estructura.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>models/</strong><span>Las clases que describen los datos</span><p>Más adelante guardaremos aquí la definición de <code>Vehiculo</code>. Una clase no es todavía una base de datos.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>services/</strong><span>La comunicación con servicios externos</span><p>Se podría usar para consumir una API; hoy no creamos solicitudes HTTP ni conectamos servicios.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>repositories/</strong><span>Cómo obtener o guardar información</span><p>Podría organizar las operaciones con archivos, bases de datos o servicios; no hay persistencia en esta clase.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>bloc/</strong><span>La lógica y los estados separados de la interfaz</span><p>Se estudiará cuando corresponda el patrón BLoC. Crear la carpeta no implementa BLoC.</p></div></div><div class="folder-purpose"><span class="folder-icon" aria-hidden="true">▣</span><div><strong>utils/</strong><span>Colores y valores compartidos</span><p>En P3 crearemos <code>utils/colores_app.dart</code> para que AppBar, títulos y botones utilicen los mismos colores sin copiar códigos hexadecimales.</p></div></div></div>
 <div class="next-extra-structure">
 <h3>Otros elementos de la estructura</h3>
 <p>Estos no son seis carpetas adicionales para crear. Son archivos o directorios que el proyecto puede tener ya, o que se añadirán únicamente cuando se necesiten.</p>
@@ -1277,7 +1442,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <tr><td><code>README.md</code></td><td>Documento que explica cómo abrir, ejecutar y comprender un proyecto.</td><td>Leerlo si existe; no es obligatorio crearlo ahora.</td></tr>
 </tbody></table></div></div>
 </div>
-<div class="notice notice-warning"><strong>No confundir</strong><p><code>pages/</code>, <code>widgets/</code>, <code>models/</code>, <code>services/</code>, <code>repositories/</code> y <code>bloc/</code> son nombres organizativos, no carpetas que Flutter cree automáticamente ni que tengan funcionalidad por sí solas. Git tampoco almacena normalmente carpetas vacías hasta que contienen algún archivo versionado; no vamos a llenar carpetas artificialmente en esta práctica.</p></div>
+<div class="notice notice-warning"><strong>No confundir</strong><p><code>pages/</code>, <code>widgets/</code>, <code>models/</code>, <code>services/</code>, <code>repositories/</code>, <code>bloc/</code> y <code>utils/</code> son nombres organizativos, no carpetas que Flutter cree automáticamente ni que tengan funcionalidad por sí solas. Git tampoco almacena normalmente carpetas vacías hasta que contienen algún archivo versionado; no vamos a llenar carpetas artificialmente en esta práctica.</p></div>
 <div class="next-section-heading"><span>CREACIÓN PASO A PASO</span><h2>Una carpeta a la vez</h2></div><article class="next-step" id="carpetas-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Crear la carpeta <code>pages</code></h3></div>
  <p>Si usas VS Code, escribe solamente <strong>pages</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Ruta que vas a crear:</strong> <code>lib/pages</code></div></div></div><div class="code-label">PowerShell · crear solo lib/pages</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/pages&#39;</code></pre>
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
@@ -1302,17 +1467,24 @@ class _MainAppState extends State&lt;MainApp&gt; {
  <p>Si usas VS Code, escribe solamente <strong>bloc</strong> como nombre de la carpeta nueva dentro de <code>lib</code>. Si prefieres PowerShell, ubícate antes en la carpeta raíz que contiene <code>pubspec.yaml</code> y ejecuta el siguiente comando.</p><div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → clic derecho en lib → Nueva carpeta</div><div><strong>Ruta que vas a crear:</strong> <code>lib/bloc</code></div></div></div><div class="code-label">PowerShell · crear solo lib/bloc</div><pre class="code-block"><code>New-Item -ItemType Directory -Force -Path &#39;lib/bloc&#39;</code></pre>
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p><code>New-Item</code> crea elementos; <code>-ItemType Directory</code> indica que son directorios; <code>-Force</code> evita fallar si el directorio ya existe; <code>-Path</code> indica dónde crearlo. <strong>No se escribe en main.dart.</strong></p></div>
  <div class="next-step-result"><strong>Resultado de este paso</strong><p>Aparece <code>lib/bloc/</code> en el Explorador, pero permanece vacía. Se estudiará cuando corresponda el patrón BLoC. Crear la carpeta no implementa BLoC.</p></div></article>
-<div class="next-stop"><strong>Detenerse aquí antes de usar las carpetas</strong><p>Comprueba en VS Code que las seis carpetas estén dentro de <code>lib/</code> y vacías. <code>main.dart</code> debe seguir intacto. No escribas todavía <code>pages/home.dart</code>, ni modelos, APIs, repositorios o BLoC; eso será en otras clases.</p></div>
-<div class="checklist" data-checklist="carpetas"><label><input type="checkbox"> Creé las seis carpetas dentro de lib.</label><label><input type="checkbox"> No moví main.dart ni el formulario.</label><label><input type="checkbox"> Puedo explicar el propósito de cada carpeta sin decir que ya está funcionando.</label><label><input type="checkbox"> Entiendo que una carpeta vacía no equivale a una funcionalidad implementada.</label></div>
-<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD A MANO</span><h3>Dibuja la estructura y explica sus responsabilidades</h3><p>En una hoja, dibuja el árbol <code>lib/</code> con sus seis carpetas. Al lado escribe una frase propia que explique para qué servirá cada una. No implementes archivos ni códigos en ellas.</p></div>
+<article class="next-step" id="carpetas-paso-7">
+<div class="next-step-top"><span class="next-step-number">07</span><h3>Crear la carpeta <code>utils</code></h3></div>
+<p>Dentro de <code>lib/</code>, crea <code>utils</code>. Su función será guardar utilidades compartidas: por ejemplo, una clase con cuatro colores que puedan utilizar varias pantallas. <strong>Aún no escribas el archivo Dart</strong>, porque aprenderemos a importarlo en la práctica P3.</p>
+<div class="next-where"><div class="next-where-action">CREAR CARPETA, NO ARCHIVO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Explorador VS Code → lib → Nueva carpeta</div><div><strong>Ruta nueva:</strong> <code>lib/utils/</code></div></div></div>
+<div class="code-label">Terminal de VS Code · carpeta actividad2</div><pre class="code-block" data-code-mode="powershell"><code>New-Item -ItemType Directory -Force -Path &#x27;lib/utils&#x27;</code></pre>
+<div class="next-step-meaning"><strong>Qué guardaremos aquí</strong><p>Si el color azul de la Tienda se utiliza en la cabecera, títulos y botones, cambiarlo en cada archivo sería repetitivo. En P3 utilizaremos una sola definición <code>ColoresApp.primario</code> desde <code>lib/utils/colores_app.dart</code>.</p></div>
+<div class="next-step-result"><strong>Resultado:</strong><p>En el explorador aparece <code>lib/utils</code> vacía. La Tienda todavía funciona igual y no se han cambiado estilos.</p></div></article>
+<div class="next-stop"><strong>Detenerse aquí antes de usar las carpetas</strong><p>Comprueba en VS Code que las siete carpetas estén dentro de <code>lib/</code> y vacías. <code>main.dart</code> debe seguir intacto. No escribas todavía <code>pages/home.dart</code>, ni modelos, APIs, repositorios o BLoC; eso será en otras clases.</p></div>
+<div class="checklist" data-checklist="carpetas"><label><input type="checkbox"> Creé las siete carpetas dentro de lib.</label><label><input type="checkbox"> No moví main.dart ni el formulario.</label><label><input type="checkbox"> Puedo explicar el propósito de cada carpeta sin decir que ya está funcionando.</label><label><input type="checkbox"> Entiendo que una carpeta vacía no equivale a una funcionalidad implementada.</label></div>
+<div class="exercise"><span class="exercise-label">✎ ACTIVIDAD A MANO</span><h3>Dibuja la estructura y explica sus responsabilidades</h3><p>En una hoja, dibuja el árbol <code>lib/</code> con sus siete carpetas. Al lado escribe una frase propia que explique para qué servirá cada una. No implementes archivos ni códigos en ellas.</p></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="carpetas">Marcar módulo como completado</button><a class="next-link" href="#reutilizacion">Siguiente: crear el primer widget reutilizable →</a></div></section>
 
 
 
 <section class="page lesson next-module" id="reutilizacion" aria-labelledby="reutilizacion-title" data-lesson="ETAPA 3">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 3</span><span class="status-pill planned">Nueva práctica de clase</span></div>
-<h1 id="reutilizacion-title">Reutilizar widgets: nuestro primer componente</h1><p>Ahora sí empezamos a utilizar una de las carpetas creadas. Aprenderemos a convertir un <code>Text</code> repetido en una clase <code>TituloSeccion</code> que podremos usar en distintos lugares.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>Crear un componente que reciba un parámetro <code>texto</code> y sirva para mostrar dos títulos distintos sin repetir su implementación.</p></div></div>
+<h1 id="reutilizacion-title">Reutilizar widgets con y sin estado</h1><p>Ahora sí empezamos a utilizar una de las carpetas creadas. Primero construiremos <code>TituloSeccion</code> con <code>StatelessWidget</code>. Después aprenderemos a crear un componente <code>StatefulWidget</code> que cambia al pulsar un botón, y aplicaremos los colores guardados en <code>utils/</code>.</p></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>Crear un <code>StatelessWidget</code> para dos títulos, un <code>StatefulWidget</code> con contador y una clase <code>ColoresApp</code> dentro de <code>lib/utils/</code> para compartir colores.</p></div></div>
 <div class="curriculum-bridge" id="prerrequisitos-reutilizacion" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: recibir un valor mediante un constructor</h2><p>En lugar de duplicar <code>Text('Agregar vehículo')</code>, crearemos <code>TituloSeccion(texto: 'Agregar vehículo')</code>. El parámetro <code>texto</code> recibe ese valor. <code>required</code> exige que quien construya el widget proporcione ese argumento; <code>final</code> indica que el campo del widget no se reasigna.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Solo después de entender este intercambio entre <strong>quien crea el widget</strong> y <strong>el widget que recibe el dato</strong> debes mover el código a <code>widgets/</code>.</p></div>
 
@@ -1353,7 +1525,7 @@ class TituloSeccion extends StatelessWidget {
  <p>Busca el título del formulario y <strong>reemplaza solo esa línea</strong> por otra instancia de <code>TituloSeccion</code>. No dupliques la clase ni cambies el TextField o el botón.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR SOLO EL TÍTULO DEL FORMULARIO</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Column.children → después de la Row original de búsqueda</div><div><strong>Busca con Ctrl + F:</strong> <code>const Text(&#39;Agregar un vehículo&#39;)</code></div></div></div><div class="code-label">Dart · segundo uso del mismo widget</div><pre class="code-block"><code>const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),</code></pre>
  <div class="next-step-meaning"><strong>Comprueba que comprendiste</strong><p>La clase se escribió <strong>una sola vez</strong> en <code>lib/widgets/titulo_seccion.dart</code>, pero se utiliza <strong>dos veces</strong> con valores diferentes. Esa es la reutilización de widgets.</p></div>
  <div class="next-step-result"><strong>Resultado de este paso</strong><p>Hay dos títulos visibles y ambos están construidos con la misma clase. El formulario continúa funcionando.</p></div></article>
-<div class="deep-dive"><div class="deep-heading"><span>COMPROBAR EL RESULTADO</span><h2>Los dos archivos después de la práctica</h2><p>Estos son archivos de referencia: el componente corresponde a <code>lib/widgets/titulo_seccion.dart</code> y el archivo principal a <code>lib/main.dart</code>.</p></div>
+<div class="deep-dive"><div class="deep-heading"><span>COMPROBAR EL RESULTADO</span><h2>Primera parte: los archivos base de StatelessWidget</h2><p>Estos son archivos de referencia: el componente corresponde a <code>lib/widgets/titulo_seccion.dart</code> y el archivo principal a <code>lib/main.dart</code>.</p></div>
 <details class="deep-details"><summary>Ver el widget reutilizable completo</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/widgets/titulo_seccion.dart</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 
 class TituloSeccion extends StatelessWidget {
@@ -1448,7 +1620,225 @@ class _MainAppState extends State&lt;MainApp&gt; {
 }
 </code></pre></div></details>
 <p><a href="./etapas/paso_10_reutilizacion.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart de referencia ↗</a> · <a href="./etapas/paso_10_titulo_seccion.dart" target="_blank" rel="noopener noreferrer">Abrir TituloSeccion ↗</a></p></div>
-<div class="checklist" data-checklist="reutilizacion"><label><input type="checkbox"> El archivo del widget existe dentro de lib/widgets/.</label><label><input type="checkbox"> El componente tiene un parámetro required String.</label><label><input type="checkbox"> main.dart importa el widget sin duplicar clases.</label><label><input type="checkbox"> Utilicé TituloSeccion dos veces con valores distintos.</label><label><input type="checkbox"> La pantalla se ve igual que antes y el botón sigue funcionando.</label></div>
+<div class="next-section-heading" id="p3-ambos-tipos"><span>SEGUNDA PARTE · MISMO PROYECTO, SIN CREAR OTRO</span><h2>Un widget sin estado y otro con estado</h2></div>
+<p>Ya utilizas <code>TituloSeccion</code>, que recibe un texto. Ahora construiremos un segundo componente que recuerda cuántas veces se pulsó su botón. Los dos viven en <code>lib/widgets/</code> y ambos pueden usarse varias veces.</p>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Qué recuerda</th><th>Ejemplo ejecutable</th></tr></thead><tbody>
+<tr><td><code>StatelessWidget</code></td><td>No mantiene un estado mutable propio; se dibuja según sus argumentos y el contexto.</td><td><code>TituloSeccion(texto: 'Ofertas')</code> muestra ese título. Si el padre cambia el argumento, se vuelve a construir.</td></tr>
+<tr><td><code>StatefulWidget</code></td><td>Su objeto <code>State</code> puede guardar valores cambiantes y pedir que Flutter actualice la parte visible.</td><td><code>ContadorToques()</code> empieza en 0; cada pulsación ejecuta <code>setState</code> y muestra 1, 2, 3...</td></tr>
+</tbody></table></div>
+
+<article class="next-step" id="reutilizacion-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Crear el componente reutilizable <code>StatefulWidget</code></h3></div>
+<p>En <code>lib/widgets</code> crea <code>contador_toques.dart</code>. Este contador solo sirve para practicar el estado: <strong>no agrega vehículos al inventario real</strong>. Su valor vive dentro del propio componente.</p>
+<div class="next-where"><div class="next-where-action">CREAR UN ARCHIVO NUEVO</div><div class="next-where-details"><div><strong>Ubicación:</strong> <code>actividad2/lib/widgets/contador_toques.dart</code></div><div><strong>Acción:</strong> pega el contenido completo en este archivo, fuera de main.dart</div></div></div>
+<div class="code-label">Dart · lib/widgets/contador_toques.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+
+class ContadorToques extends StatefulWidget {
+  const ContadorToques({super.key});
+
+  @override
+  State&lt;ContadorToques&gt; createState() =&gt; _ContadorToquesState();
+}
+
+class _ContadorToquesState extends State&lt;ContadorToques&gt; {
+  int _toques = 0;
+
+  void sumarPrueba() {
+    setState(() {
+      _toques++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(&#x27;Pruebas realizadas: $_toques&#x27;),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: sumarPrueba,
+          child: const Text(&#x27;Sumar una prueba&#x27;),
+        ),
+      ],
+    );
+  }
+}
+</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Línea</th><th>Para qué sirve</th><th>Qué sucede en la Tienda</th></tr></thead><tbody>
+<tr><td><code>extends StatefulWidget</code></td><td>Declara un widget que dispone de un objeto <code>State</code> asociado.</td><td><code>ContadorToques</code> tiene un contador independiente del formulario.</td></tr>
+<tr><td><code>const ContadorToques({super.key});</code></td><td>Constructor de un widget cuya configuración no cambia.</td><td>Lo insertamos con <code>const ContadorToques()</code>.</td></tr>
+<tr><td><code>createState()</code></td><td>Crea el objeto que administrará los valores internos del widget.</td><td>Se obtiene <code>_ContadorToquesState</code>.</td></tr>
+<tr><td><code>int _toques = 0;</code></td><td>Guarda un entero que empieza en cero; el guion bajo indica acceso privado a su biblioteca.</td><td>La pantalla inicialmente muestra «Pruebas realizadas: 0».</td></tr>
+<tr><td><code>setState(() { _toques++; });</code></td><td>Cambia el valor y avisa a Flutter que necesita reconstruir esta parte.</td><td>Una pulsación cambia 0 a 1 y actualiza el texto.</td></tr>
+<tr><td><code>Widget build(BuildContext context)</code></td><td>Devuelve los widgets que representarán el estado actual.</td><td>Cuando cambia <code>_toques</code>, devuelve <code>Text</code> con el nuevo número.</td></tr>
+</tbody></table></div>
+<div class="next-step-result"><strong>Verifica:</strong><p>No pegues esta clase dentro de <code>MainApp</code>. Al final tendrás un archivo <code>contador_toques.dart</code> y otro <code>titulo_seccion.dart</code>; no reemplazan al formulario ni requieren BLoC.</p></div></article>
+
+<article class="next-step" id="reutilizacion-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Importar y colocar el contador en <code>main.dart</code></h3></div>
+<p>En <code>lib/main.dart</code>, debajo del import de <code>titulo_seccion.dart</code>, añade el import nuevo. Después, dentro de <code>Column(children: [ ... ])</code>, <strong>justo después del botón «Agregar vehículo»</strong>, inserta estas dos líneas. No borres el <code>TextEditingController</code>, su <code>dispose()</code> ni los títulos que ya funcionan.</p>
+<div class="code-label">A · Agregar junto a los imports de lib/main.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;widgets/contador_toques.dart&#x27;;</code></pre>
+<div class="code-label">B · Agregar después de ElevatedButton(...) dentro de children</div><pre class="code-block" data-code-mode="dart"><code>const SizedBox(height: 16),
+const ContadorToques(),</code></pre>
+<div class="next-step-result"><strong>Comprueba la aplicación:</strong><p>Pulsa «Sumar una prueba» tres veces: verás <code>3</code>. Escribe después un nombre en el formulario: el contador mantiene su valor mientras siga montado. Si agregas dos <code>ContadorToques()</code>, cada instancia conserva un contador independiente.</p></div></article>
+
+<article class="next-step" id="reutilizacion-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Crear <code>utils/colores_app.dart</code> para compartir colores</h3></div>
+<p>En P2 creaste la carpeta <code>utils</code> vacía. Ahora crea dentro el archivo <code>colores_app.dart</code>. Los colores se definen una sola vez para poder reutilizarlos en <code>AppBar</code>, textos y botones sin escribir el mismo código hexadecimal en varias clases.</p>
+<div class="next-where"><div class="next-where-action">CREAR EL ARCHIVO DE COLORES</div><div class="next-where-details"><div><strong>Ubicación:</strong> <code>lib/utils/colores_app.dart</code></div><div><strong>Acción:</strong> copia la clase completa siguiente</div></div></div>
+<div class="code-label">Dart · lib/utils/colores_app.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+
+class ColoresApp {
+  static const Color primario = Color(0xFF1D4ED8);
+  static const Color accion = Color(0xFF0F766E);
+  static const Color fondo = Color(0xFFF8FAFC);
+  static const Color texto = Color(0xFF172554);
+}
+</code></pre>
+<div class="table-scroll"><table class="lesson-table"><thead><tr><th>Fragmento</th><th>Qué significa</th><th>Uso</th></tr></thead><tbody>
+<tr><td><code>class ColoresApp</code></td><td>Agrupa los colores compartidos.</td><td>El título y AppBar acceden a la misma clase.</td></tr>
+<tr><td><code>static const Color primario</code></td><td>Constante accesible escribiendo <code>ColoresApp.primario</code>, sin crear un objeto.</td><td>Color de la cabecera de la Tienda.</td></tr>
+<tr><td><code>Color(0xFF1D4ED8)</code></td><td><code>0x</code> indica hexadecimal; <code>FF</code> es opacidad total; los últimos seis dígitos son rojo, verde y azul.</td><td>Azul principal de la aplicación.</td></tr>
+<tr><td><code>fondo</code>, <code>texto</code>, <code>accion</code></td><td>Otros nombres para colores con funciones específicas.</td><td>Fondo claro, texto oscuro y botón de acción verde.</td></tr>
+</tbody></table></div>
+<p>Para ajustar el azul en el futuro, cambia solo el valor de <code>ColoresApp.primario</code> y los widgets que lo usan recibirán el nuevo color al reconstruirse. Esta carpeta guarda constantes; no es una base de datos ni modifica el tema global por sí misma.</p></article>
+
+<article class="next-step" id="reutilizacion-paso-9"><div class="next-step-top"><span class="next-step-number">09</span><h3>Aplicar los colores en dos archivos y comprobar el resultado</h3></div>
+<p><strong>Primer archivo:</strong> en <code>lib/main.dart</code> agrega el import <code>utils/colores_app.dart</code> y modifica únicamente las propiedades de <code>AppBar</code>, el color de fondo de <code>Scaffold</code> y el estilo del botón. Conserva los demás widgets.</p>
+<div class="code-label">A · Agregar a los imports de lib/main.dart</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;utils/colores_app.dart&#x27;;</code></pre>
+<div class="code-label">B · Ajustar la cabecera dentro de Scaffold</div><pre class="code-block" data-code-mode="dart"><code>backgroundColor: ColoresApp.fondo,
+appBar: AppBar(
+  title: const Text(&#x27;Tienda&#x27;),
+  backgroundColor: ColoresApp.primario,
+  foregroundColor: Colors.white,
+),</code></pre>
+<div class="code-label">C · Dentro del ElevatedButton existente</div><pre class="code-block" data-code-mode="dart"><code>style: ElevatedButton.styleFrom(
+  backgroundColor: ColoresApp.accion,
+  foregroundColor: Colors.white,
+),</code></pre>
+<p><strong>Segundo archivo:</strong> en <code>lib/widgets/titulo_seccion.dart</code> agrega <code>import '../utils/colores_app.dart';</code> y reemplaza <code>return Text(texto);</code> por un <code>Text</code> con estilo. El archivo completo queda así:</p>
+<div class="code-label">D · lib/widgets/titulo_seccion.dart con colores compartidos</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+import &#x27;../utils/colores_app.dart&#x27;;
+
+class TituloSeccion extends StatelessWidget {
+  const TituloSeccion({
+    super.key,
+    required this.texto,
+  });
+
+  final String texto;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      texto,
+      style: const TextStyle(
+        color: ColoresApp.texto,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+}
+</code></pre>
+<div class="notice notice-info"><strong>Si la pantalla ya tiene varios campos, evita el desbordamiento:</strong><p>En <code>Scaffold.body</code> puedes cambiar el antiguo <code>Center(child: Column(...))</code> por <code>SingleChildScrollView(padding: ..., child: Column(...))</code>, como vimos al terminar P1. El ejemplo completo descargable ya incorpora este cambio.</p></div>
+<details class="deep-details"><summary>Ver main.dart completo con los dos componentes y colores</summary><div class="deep-details-body"><div class="code-label">lib/main.dart · variante ampliada para comparar</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
+import &#x27;widgets/titulo_seccion.dart&#x27;;
+import &#x27;widgets/contador_toques.dart&#x27;;
+import &#x27;utils/colores_app.dart&#x27;;
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State&lt;MainApp&gt; createState() =&gt; _MainAppState();
+}
+
+class _MainAppState extends State&lt;MainApp&gt; {
+  final TextEditingController vehiculoController = TextEditingController();
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#x27;Tienda&#x27;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TituloSeccion(texto: &#x27;Primer widget&#x27;),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text(&#x27;Ingenieria de Sistemas&#x27;),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: &#x27;Buscar marca o modelo&#x27;,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: &#x27;Agregar un vehículo&#x27;),
+              const SizedBox(height: 10),
+              TextField(
+                controller: vehiculoController,
+                decoration: const InputDecoration(
+                  hintText: &#x27;Nombre del vehículo&#x27;,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final nombre = vehiculoController.text.trim();
+                  if (nombre.isEmpty) return;
+                  debugPrint(&#x27;Vehículo escrito: $nombre&#x27;);
+                  vehiculoController.clear();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColoresApp.accion,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text(&#x27;Agregar vehículo&#x27;),
+              ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre></div></details>
+<p><strong>Archivos completos para comparar:</strong> <a href="./etapas/paso_10_reutilizacion_ampliada.dart" target="_blank" rel="noopener noreferrer">main.dart con ambos widgets</a> · <a href="./etapas/paso_10_contador_toques.dart" target="_blank" rel="noopener noreferrer">contador_toques.dart</a> · <a href="./etapas/paso_10_colores_app.dart" target="_blank" rel="noopener noreferrer">colores_app.dart</a> · <a href="./etapas/paso_10_titulo_seccion_colores.dart" target="_blank" rel="noopener noreferrer">titulo_seccion.dart con colores</a>.</p>
+<div class="next-step-result"><strong>Resultado esperado:</strong><p>Los títulos comparten su color, la AppBar se ve azul, el botón de agregar utiliza el color de acción y el contador sigue respondiendo. Cambiar un color en <code>ColoresApp</code> afecta a los lugares que lo importan.</p></div></article>
+<div class="notice notice-tip"><strong>Para avanzar a P4:</strong><p>La validación de P4 modifica solamente el campo del formulario. Conserva los componentes y los imports que ya has agregado. Su referencia base muestra los archivos mínimos, así que no sobrescribas tu <code>main.dart</code> ampliado con una versión que no incluya el contador o los colores.</p></div>
+<div class="checklist" data-checklist="reutilizacion"><label><input type="checkbox"> El archivo del widget existe dentro de lib/widgets/.</label><label><input type="checkbox"> El componente tiene un parámetro required String.</label><label><input type="checkbox"> main.dart importa el widget sin duplicar clases.</label><label><input type="checkbox"> Utilicé TituloSeccion dos veces con valores distintos.</label><label><input type="checkbox"> La pantalla se ve igual que antes y el botón sigue funcionando.</label><label><input type="checkbox"> Construí ContadorToques como StatefulWidget y comprobé que setState actualiza el valor.</label><label><input type="checkbox"> Creé utils/colores_app.dart e importé ColoresApp en dos archivos.</label><label><input type="checkbox"> Comprobé el formulario y el desplazamiento si aparece el teclado.</label></div>
 <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Cambiar solamente un argumento</h3><p>Cambia únicamente el texto del primer <code>TituloSeccion</code> por «Bienvenidos a la Tienda», ejecuta Hot Reload y explica por qué el segundo título no cambia.</p></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="reutilizacion">Marcar módulo como completado</button><a class="next-link" href="#validacion">Siguiente: validar un campo →</a></div></section>
 
@@ -1797,7 +2187,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="notice notice-info"><strong>Abre estos dos archivos de tu proyecto</strong><p><code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code> es el que vas a editar. <code>lib/models/vehiculo.dart</code> ya debe existir desde P5: conserva su modelo <code>Vehiculo</code> con las propiedades <code>nombre</code> y <code>disponible</code>. <strong>No modifiques <code>actividad2a</code></strong>, porque es la referencia del docente.</p></div>
 <article class="next-step crud-direct-step" id="crud-paso-1">
 <div class="next-step-top"><span class="next-step-number">01</span><div><span class="crud-step-kicker">CAMBIO 1 · AGREGAR 1 DECLARACIÓN</span><h3>Preparar la lista en _MainAppState</h3></div></div>
-<p>En P5 creaste un solo objeto, pero al pulsar el botón se perdía después de imprimirlo. Necesitamos un lugar donde conservar varios carros mientras la app está abierta. <strong>Analogía:</strong> la lista será el parqueadero y cada objeto será un carro.</p>
+<p>En P5 creaste un solo objeto, pero al pulsar el botón se perdía después de imprimirlo. Necesitamos un lugar donde conservar varios carros mientras la app está abierta. <strong>Ejemplo:</strong> la lista será el parqueadero y cada objeto será un carro.</p>
 <div class="next-where"><div class="next-where-action">AGREGAR 1 DECLARACIÓN EN EL PROYECTO ACTIVIDAD2</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>final GlobalKey&lt;FormState&gt; formularioKey</code></div>
@@ -1814,7 +2204,7 @@ final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
 
 <article class="next-step crud-direct-step" id="crud-paso-2">
 <div class="next-step-top"><span class="next-step-number">02</span><div><span class="crud-step-kicker">CAMBIO 2 · AGREGAR FUNCIÓN</span><h3>Crear tu primera función guardarVehiculo()</h3></div></div>
-<p>Antes, el botón contenía directamente todas las instrucciones para crear el objeto. Ahora esas instrucciones vivirán en una función real de tu pantalla. <strong>Analogía:</strong> defines la tarea «guardar carro» una sola vez para poder llamarla desde el botón.</p>
+<p>Antes, el botón contenía directamente todas las instrucciones para crear el objeto. Ahora esas instrucciones vivirán en una función real de tu pantalla. <strong>Ejemplo:</strong> defines la tarea «guardar carro» una sola vez para poder llamarla desde el botón.</p>
 <div class="next-where"><div class="next-where-action">AGREGAR FUNCIÓN EN EL PROYECTO ACTIVIDAD2</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>@override</code> que está encima de <code>void dispose()</code></div>
@@ -1849,7 +2239,7 @@ final List&lt;Vehiculo&gt; vehiculos = [];</code></pre>
 </article>
 <article class="next-step crud-direct-step" id="crud-paso-4">
 <div class="next-step-top"><span class="next-step-number">04</span><div><span class="crud-step-kicker">CAMBIO 4 · AGREGAR UN WIDGET DESPUÉS DEL BOTÓN</span><h3>Mostrar los vehículos debajo del botón</h3></div></div>
-<p>Ya estás guardando objetos. Ahora vas a colocar una lista visible debajo del mismo botón para comprobar cuántos carros hay. <strong>Analogía:</strong> el parqueadero ya tiene carros; necesitamos dibujar sus plazas en pantalla.</p>
+<p>Ya estás guardando objetos. Ahora vas a colocar una lista visible debajo del mismo botón para comprobar cuántos carros hay. <strong>Ejemplo:</strong> el parqueadero ya tiene carros; necesitamos dibujar sus plazas en pantalla.</p>
 <div class="next-where"><div class="next-where-action">AGREGAR UN WIDGET DESPUÉS DEL BOTÓN EN EL PROYECTO ACTIVIDAD2</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>child: const Text('Agregar vehículo')</code></div>
@@ -1874,7 +2264,7 @@ Expanded(
 </article>
 <article class="next-step crud-direct-step" id="crud-paso-5">
 <div class="next-step-top"><span class="next-step-number">05</span><div><span class="crud-step-kicker">CAMBIO 5 · REALIZAR 4 CAMBIOS CONCRETOS</span><h3>Editar el nombre de un vehículo</h3></div></div>
-<p>Ahora un botón «Editar» debe colocar el nombre elegido en el formulario; el botón principal cambiará a «Guardar cambios». No crearemos un segundo formulario. <strong>Analogía:</strong> tomas la ficha del carro que ya existe, corriges su nombre y la devuelves a la misma posición.</p>
+<p>Ahora un botón «Editar» debe colocar el nombre elegido en el formulario; el botón principal cambiará a «Guardar cambios». No crearemos un segundo formulario. <strong>Ejemplo:</strong> tomas la ficha del carro que ya existe, corriges su nombre y la devuelves a la misma posición.</p>
 <div class="next-where"><div class="next-where-action">REALIZAR 4 CAMBIOS CONCRETOS EN EL PROYECTO ACTIVIDAD2</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>final List&lt;Vehiculo&gt; vehiculos = [];</code> y <code>void guardarVehiculo()</code></div>
@@ -1927,7 +2317,7 @@ Expanded(
 </article>
 <article class="next-step crud-direct-step" id="crud-paso-6">
 <div class="next-step-top"><span class="next-step-number">06</span><div><span class="crud-step-kicker">CAMBIO 6 · AGREGAR FUNCIÓN Y REEMPLAZAR ICONO POR FILA DE ACCIONES</span><h3>Eliminar un vehículo de la misma lista</h3></div></div>
-<p>La opción «Eliminar» estará junto a «Editar» en cada fila. La lógica se agrega como otra función real en <code>_MainAppState</code>. <strong>Analogía:</strong> retiramos del parqueadero exactamente el carro seleccionado, no todos los carros.</p>
+<p>La opción «Eliminar» estará junto a «Editar» en cada fila. La lógica se agrega como otra función real en <code>_MainAppState</code>. <strong>Ejemplo:</strong> retiramos del parqueadero exactamente el carro seleccionado, no todos los carros.</p>
 <div class="next-where"><div class="next-where-action">AGREGAR FUNCIÓN Y REEMPLAZAR ICONO POR FILA DE ACCIONES EN EL PROYECTO ACTIVIDAD2</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div>
 <div><strong>Busca con Ctrl + F:</strong> <code>void comenzarEdicion(int indice)</code> y <code>tooltip: 'Editar vehículo'</code></div>
@@ -2684,7 +3074,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <section class="page lesson next-module" id="bloc-crud" aria-labelledby="bloc-crud-title" data-lesson="P8">
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA P8</span><span class="status-pill planned">Misma Tienda después de P7</span><span class="lesson-time">BLoC aplicado a crear, buscar, editar y eliminar</span></div>
 <h1 id="bloc-crud-title">Aplicar BLoC al CRUD de vehículos</h1><p>En P5.1 construiste un CRUD usando <code>setState</code>. Ahora trasladarás la lógica a <strong>BLoC</strong>, sin cambiar el objetivo de la Tienda: crear vehículos, verlos, buscarlos, editarlos y eliminarlos. Conservamos el modelo, el formulario, los widgets reutilizables y las páginas de P7.</p></div>
-<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Lo que aprenderás</strong><p>Comprender <code>BlocProvider</code>, <code>BlocBuilder</code>, eventos, estados, <code>on&lt;Evento&gt;</code>, <code>emit()</code> y <code>context.read()</code>, con analogías y ubicación exacta de los archivos. Tendrás también un ejemplo completo, no solo fragmentos sueltos.</p></div></div>
+<div class="goal-box"><span class="goal-icon">✦</span><div><strong>Lo que aprenderás</strong><p>Comprender <code>BlocProvider</code>, <code>BlocBuilder</code>, eventos, estados, <code>on&lt;Evento&gt;</code>, <code>emit()</code> y <code>context.read()</code>, con ejemplos concretos y ubicación exacta de los archivos. Tendrás también un ejemplo completo, no solo fragmentos sueltos.</p></div></div>
 <div class="notice notice-info"><strong>Punto de partida: P7 terminado</strong><p>Trabaja en <code>DesarrolloMovilFlutter/actividad2</code>. Deben existir <code>lib/models/vehiculo.dart</code>, <code>lib/widgets/</code> y <code>lib/pages/</code>. Guarda una copia de <code>lib/main.dart</code> fuera de <code>lib/</code> antes de reemplazar la gestión de estado. Esta es la <strong>ruta principal</strong>: no utilices los archivos del buscador BLoC opcional de la ruta B.</p></div>
 <div class="bc-flow"><div><span>1 · EL CLIENTE</span><strong>Interfaz Flutter</strong><p>El botón detecta «Guardar Renault 9».</p></div><div><span>2 · LA ORDEN</span><strong>VehiculoGuardado</strong><p>Un evento comunica la intención.</p></div><div><span>3 · EL ENCARGADO</span><strong>VehiculosBloc</strong><p>Decide si debe crear o editar y actualiza la lista.</p></div><div><span>4 · EL INVENTARIO</span><strong>VehiculosEstado</strong><p>BlocBuilder recibe el estado y actualiza la vitrina.</p></div></div>
 <div class="bc-pair"><div><span>ANTES · CRUD CON SETSTATE</span><p><code>_MainAppState</code> guarda directamente la lista <code>vehiculos</code>. Los métodos del formulario llaman a <code>setState()</code> para cambiarla.</p></div><div><span>DESPUÉS · EL MISMO CRUD CON BLOC</span><p><code>VehiculosBloc</code> conserva la lista y procesa los eventos. La pantalla sigue teniendo un controlador de texto y un formulario, pero deja de ser la encargada de administrar el inventario.</p></div></div>
@@ -2694,18 +3084,18 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <label for="bc-demo-buscar">Buscar entre los vehículos registrados</label><input id="bc-demo-buscar" type="search" placeholder="Prueba con Renault, Mazda o Toyota">
 <div class="bc-demo-entries"><ul id="bc-demo-lista" aria-live="polite"></ul></div></div>
 <div class="bc-demo-log"><strong>Evento que enviaría la pantalla</strong><output id="bc-demo-evento">Sin eventos</output><strong>Estado que publicaría BLoC</strong><output id="bc-demo-estado">VehiculosEstado</output><p class="bc-demo-hint" style="color:#c5d7ea">Prueba agregando «Renault 9» y «Mazda 3», filtrando «Mazda», editando el registro visible y eliminándolo. Los cambios son solo de esta página.</p></div></div>
-<p class="bc-demo-hint"><strong>Analogía:</strong> el botón envía una orden (evento); el encargado del almacén decide qué hacer (BLoC); el inventario actualizado es el estado; la vitrina muestra ese estado con BlocBuilder.</p></div>
+<p class="bc-demo-hint"><strong>Ejemplo:</strong> el botón envía una orden (evento); el encargado del almacén decide qué hacer (BLoC); el inventario actualizado es el estado; la vitrina muestra ese estado con BlocBuilder.</p></div>
 <div class="next-section-heading"><span>CONSTRUIR SIN SALTARSE CONCEPTOS</span><h2>De P7 a BLoC, archivo por archivo</h2></div>
 <article class="next-step" id="bloc-crud-paso-1"><div class="next-step-top"><span class="next-step-number">01</span><h3>Preparar la misma Tienda y reconocer qué se mueve</h3></div>
-<p><strong>Analogía:</strong> antes una sola persona atendía y actualizaba el inventario. Ahora el vendedor (la pantalla) recibirá el pedido y lo enviará al encargado (BLoC). La apariencia de la Tienda y sus páginas no se borran.</p><div class="next-where"><div class="next-where-action">COMPROBAR Y RESPALDAR: NO PEGAR CÓDIGO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>actividad2/lib/main.dart</code> tras la práctica P7</div><div><strong>Busca con Ctrl + F:</strong> <code>final List&lt;Vehiculo&gt; vehiculos = [];</code></div></div></div>
+<p><strong>Ejemplo:</strong> antes una sola persona atendía y actualizaba el inventario. Ahora el vendedor (la pantalla) recibirá el pedido y lo enviará al encargado (BLoC). La apariencia de la Tienda y sus páginas no se borran.</p><div class="next-where"><div class="next-where-action">COMPROBAR Y RESPALDAR: NO PEGAR CÓDIGO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>actividad2/lib/main.dart</code> tras la práctica P7</div><div><strong>Busca con Ctrl + F:</strong> <code>final List&lt;Vehiculo&gt; vehiculos = [];</code></div></div></div>
 <div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p>En P7 la lista, el índice de edición y las funciones CRUD están dentro de <code>_MainAppState</code>. En P8 moveremos esas decisiones a <code>VehiculosBloc</code>. <code>TextEditingController</code>, <code>Form</code>, <code>validator</code>, <code>dispose()</code> y la navegación seguirán formando parte de la interfaz.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Tu código P7 funciona y has guardado una copia de seguridad.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-2"><div class="next-step-top"><span class="next-step-number">02</span><h3>Instalar flutter_bloc desde la terminal integrada</h3></div>
-<p><strong>Analogía:</strong> instalas una herramienta de organización antes de distribuir tareas entre vendedor y encargado. No crea los archivos BLoC automáticamente.</p><div class="next-where"><div class="next-where-action">EJECUTAR UN SOLO COMANDO EN LA TERMINAL DE VS CODE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Terminal abierta en <code>DesarrolloMovilFlutter/actividad2</code>, donde está <code>pubspec.yaml</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en el Explorador de VS Code</div></div></div>
+<p><strong>Ejemplo:</strong> instalas una herramienta de organización antes de distribuir tareas entre vendedor y encargado. No crea los archivos BLoC automáticamente.</p><div class="next-where"><div class="next-where-action">EJECUTAR UN SOLO COMANDO EN LA TERMINAL DE VS CODE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Terminal abierta en <code>DesarrolloMovilFlutter/actividad2</code>, donde está <code>pubspec.yaml</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code> en el Explorador de VS Code</div></div></div>
 <div class="code-label">Terminal · instalar dependencia en el proyecto existente</div><pre class="code-block" data-code-mode="terminal"><code>flutter pub add flutter_bloc</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>flutter</code> ejecuta la herramienta, <code>pub</code> administra paquetes y <code>add</code> agrega <code>flutter_bloc</code>. En octubre de 2026, la versión estable documentada en pub.dev es <code>9.1.1</code>; el comando selecciona la versión compatible con tu SDK.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>En <code>pubspec.yaml</code> aparece <code>flutter_bloc</code> en dependencies. No vuelvas a ejecutar <code>flutter create</code> dentro del proyecto.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-3"><div class="next-step-top"><span class="next-step-number">03</span><h3>Crear las órdenes: los eventos</h3></div>
-<p><strong>Analogía:</strong> cada evento es una nota que recibe el encargado. «Guardar», «Empezar a editar», «Cancelar», «Eliminar» y «Buscar» son órdenes diferentes. Ninguna dibuja un botón por sí misma.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO Y PEGAR SU CONTENIDO COMPLETO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_evento.dart</code> (usa la carpeta <code>bloc/</code> que antes estaba vacía)</div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
+<p><strong>Ejemplo:</strong> cada evento es una nota que recibe el encargado. «Guardar», «Empezar a editar», «Cancelar», «Eliminar» y «Buscar» son órdenes diferentes. Ninguna dibuja un botón por sí misma.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO Y PEGAR SU CONTENIDO COMPLETO</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_evento.dart</code> (usa la carpeta <code>bloc/</code> que antes estaba vacía)</div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
 <div class="code-label">lib/bloc/vehiculos_evento.dart · contenido completo</div><pre class="code-block" data-code-mode="dart"><code>abstract class VehiculosEvento {}
 
 class VehiculoGuardado extends VehiculosEvento {
@@ -2731,7 +3121,7 @@ class BusquedaCambiada extends VehiculosEvento {
 }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>abstract class VehiculosEvento</code> declara una familia de eventos. <code>extends</code> indica que cada evento pertenece a ella. Un constructor como <code>VehiculoGuardado(this.nombre)</code> recibe el dato escrito. <code>EdicionCancelada</code> no necesita datos. <strong>Nombre y tipo son cosas distintas:</strong> <code>String</code> es texto, <code>int</code> es un número entero que identifica una posición.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Puedes explicar qué información transporta cada evento, aunque aún no haya pantalla conectada.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-4"><div class="next-step-top"><span class="next-step-number">04</span><h3>Definir el estado: qué sabe la Tienda ahora</h3></div>
-<p><strong>Analogía:</strong> el estado es una fotografía del inventario después de cada orden. La foto incluye todos los carros, los visibles según búsqueda y cuál se está editando.</p><div class="next-where"><div class="next-where-action">CREAR UN SEGUNDO ARCHIVO DENTRO DE bloc</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_estado.dart</code></div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
+<p><strong>Ejemplo:</strong> el estado es una fotografía del inventario después de cada orden. La foto incluye todos los carros, los visibles según búsqueda y cuál se está editando.</p><div class="next-where"><div class="next-where-action">CREAR UN SEGUNDO ARCHIVO DENTRO DE bloc</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_estado.dart</code></div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → bloc → Nuevo archivo</div></div></div>
 <div class="code-label">lib/bloc/vehiculos_estado.dart · contenido completo</div><pre class="code-block" data-code-mode="dart"><code>import '../models/vehiculo.dart';
 
 class VehiculosEstado {
@@ -2749,7 +3139,7 @@ class VehiculosEstado {
 }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>vehiculos</code> contiene el inventario total; <code>visibles</code> contiene la parte filtrada; <code>busqueda</code> recuerda el texto escrito; <code>int? indiceEnEdicion</code> permite un número o <code>null</code>. <code>required</code> obliga a entregar los datos necesarios al constructor. Las variables <code>final</code> no pueden reasignarse.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Diferencias entre evento y estado: el primero es un pedido; el segundo es el resultado actual.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-5"><div class="next-step-top"><span class="next-step-number">05</span><h3>Crear VehiculosBloc y comenzar por guardar</h3></div>
-<p><strong>Analogía:</strong> ahora contratamos al encargado y programamos su primera responsabilidad: recibir <code>VehiculoGuardado</code>. Un único evento sirve para crear o editar porque el estado indica si existe un índice en edición.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO; PRIMERA PARTE DE LA CLASE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → imports, declaración de clase, constructor y primer manejador</div><div><strong>Busca con Ctrl + F:</strong> Busca <code>VehiculosBloc()</code> en el ejemplo completo</div></div></div>
+<p><strong>Ejemplo:</strong> ahora contratamos al encargado y programamos su primera responsabilidad: recibir <code>VehiculoGuardado</code>. Un único evento sirve para crear o editar porque el estado indica si existe un índice en edición.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO NUEVO; PRIMERA PARTE DE LA CLASE</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → imports, declaración de clase, constructor y primer manejador</div><div><strong>Busca con Ctrl + F:</strong> Busca <code>VehiculosBloc()</code> en el ejemplo completo</div></div></div>
 <div class="code-label">Inicio del BLoC y primer evento · construiremos el resto</div><pre class="code-block" data-code-mode="dart"><code>import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/vehiculo.dart';
 import 'vehiculos_evento.dart';
@@ -2787,7 +3177,7 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
 }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>Bloc&lt;VehiculosEvento, VehiculosEstado&gt;</code> significa que esta clase recibe esos eventos y produce esos estados. <code>super(...)</code> entrega el estado inicial vacío. <code>on&lt;VehiculoGuardado&gt;</code> registra qué función ejecutará el encargado. <code>state</code> consulta el estado actual; <code>emit</code> se usa al publicar uno nuevo. <strong>El archivo está en construcción:</strong> todavía debemos agregar los otros manejadores y el método <code>_publicar</code>; no ejecutes Flutter hasta el paso 7.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Identificas dónde se recibe el nombre, dónde actúa <code>trim()</code> y por qué se construye una lista nueva en vez de modificar la del estado directamente.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-6"><div class="next-step-top"><span class="next-step-number">06</span><h3>Añadir edición y eliminación como eventos</h3></div>
-<p><strong>Analogía:</strong> cuando eliges editar, el encargado señala una ficha concreta. Cuando eliminas, la retira del inventario. La pantalla ya no ejecutará <code>removeAt()</code> por su cuenta.</p><div class="next-where"><div class="next-where-action">AGREGAR TRES MANEJADORES DENTRO DEL CONSTRUCTOR</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → después del manejador <code>on&lt;VehiculoGuardado&gt;</code> y antes de cerrar <code>VehiculosBloc()</code></div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;VehiculoGuardado&gt;</code> → justo después de su <code>});</code></div></div></div>
+<p><strong>Ejemplo:</strong> cuando eliges editar, el encargado señala una ficha concreta. Cuando eliminas, la retira del inventario. La pantalla ya no ejecutará <code>removeAt()</code> por su cuenta.</p><div class="next-where"><div class="next-where-action">AGREGAR TRES MANEJADORES DENTRO DEL CONSTRUCTOR</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → después del manejador <code>on&lt;VehiculoGuardado&gt;</code> y antes de cerrar <code>VehiculosBloc()</code></div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;VehiculoGuardado&gt;</code> → justo después de su <code>});</code></div></div></div>
 <div class="code-label">Agregar en el constructor, sin repetir los imports</div><pre class="code-block" data-code-mode="dart"><code>    on&lt;EdicionIniciada&gt;((evento, emit) {
       if (evento.indice &lt; 0 || evento.indice &gt;= state.vehiculos.length) {
         return;
@@ -2809,7 +3199,7 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
     });</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>EdicionIniciada</code> guarda la posición del carro seleccionado. <code>EdicionCancelada</code> borra la selección. <code>VehiculoEliminado</code> comprueba el índice antes de usar <code>removeAt</code>. La expresión <code>..removeAt(...)</code> es el operador de cascada de Dart: realiza una operación sobre la lista y mantiene esa lista como resultado; no son puntos suspensivos para omitir código.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>La misma lista de vehículos sirve para registrar, actualizar y eliminar, sin duplicar métodos en la pantalla.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Buscar y emitir un nuevo estado</h3></div>
-<p><strong>Analogía:</strong> el encargado filtra las fichas y publica una nueva fotografía del inventario. BLoC no se limita a recibir órdenes: debe informar el resultado mediante <code>emit</code>.</p><div class="next-where"><div class="next-where-action">COMPLETAR EL CONSTRUCTOR Y AÑADIR EL MÉTODO _publicar</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → manejador de búsqueda dentro del constructor; <code>_publicar</code> después del constructor, pero aún dentro de la clase</div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;BusquedaCambiada&gt;</code> y <code>void _publicar(</code></div></div></div>
+<p><strong>Ejemplo:</strong> el encargado filtra las fichas y publica una nueva fotografía del inventario. BLoC no se limita a recibir órdenes: debe informar el resultado mediante <code>emit</code>.</p><div class="next-where"><div class="next-where-action">COMPLETAR EL CONSTRUCTOR Y AÑADIR EL MÉTODO _publicar</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/bloc/vehiculos_bloc.dart</code> → manejador de búsqueda dentro del constructor; <code>_publicar</code> después del constructor, pero aún dentro de la clase</div><div><strong>Busca con Ctrl + F:</strong> <code>on&lt;BusquedaCambiada&gt;</code> y <code>void _publicar(</code></div></div></div>
 <div class="code-label">Último manejador dentro de VehiculosBloc()</div><pre class="code-block" data-code-mode="dart"><code>    on&lt;BusquedaCambiada&gt;((evento, emit) {
       _publicar(
         emit,
@@ -2839,7 +3229,7 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
   }</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>where()</code> recorre los vehículos y conserva las coincidencias; <code>contains()</code> comprueba si un nombre incluye el texto. <code>toLowerCase()</code> evita diferencias entre mayúsculas y minúsculas. <code>List.unmodifiable()</code> impide modificar el inventario publicado mediante esa referencia. <code>emit(VehiculosEstado(...))</code> entrega una nueva foto para que <code>BlocBuilder</code> actualice la interfaz.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Este es el momento de cotejar todo con <a href='./ejemplo_bloc_crud/lib/bloc/vehiculos_bloc.dart' target='_blank' rel='noopener noreferrer'>vehiculos_bloc.dart completo ↗</a>. El archivo debe tener <strong>cinco manejadores</strong> y un método <code>_publicar</code>.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Registrar BLoC en la aplicación</h3></div>
-<p><strong>Analogía:</strong> <code>BlocProvider</code> es la oficina donde se encuentra el encargado; permite que la pantalla le entregue órdenes sin crear un encargado nuevo para cada botón.</p><div class="next-where"><div class="next-where-action">REORGANIZAR EL ENCABEZADO DE main.dart, NO MODIFICAR LOS WIDGETS REUTILIZABLES</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → reemplazar imports, <code>main()</code> y el antiguo <code>MainApp</code>. La Tienda pasa a llamarse <code>TiendaPage</code>, y <code>build</code> devuelve <code>Scaffold</code> porque <code>MaterialApp</code> ya está en la raíz.</div><div><strong>Busca con Ctrl + F:</strong> <code>class MainApp extends StatefulWidget</code>, <code>MaterialApp</code> y <code>class _MainAppState</code></div></div></div>
+<p><strong>Ejemplo:</strong> <code>BlocProvider</code> es la oficina donde se encuentra el encargado; permite que la pantalla le entregue órdenes sin crear un encargado nuevo para cada botón.</p><div class="next-where"><div class="next-where-action">REORGANIZAR EL ENCABEZADO DE main.dart, NO MODIFICAR LOS WIDGETS REUTILIZABLES</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → reemplazar imports, <code>main()</code> y el antiguo <code>MainApp</code>. La Tienda pasa a llamarse <code>TiendaPage</code>, y <code>build</code> devuelve <code>Scaffold</code> porque <code>MaterialApp</code> ya está en la raíz.</div><div><strong>Busca con Ctrl + F:</strong> <code>class MainApp extends StatefulWidget</code>, <code>MaterialApp</code> y <code>class _MainAppState</code></div></div></div>
 <div class="code-label">Nuevo comienzo de main.dart · hasta los campos del formulario</div><pre class="code-block" data-code-mode="dart"><code>import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/vehiculos_bloc.dart';
@@ -2881,7 +3271,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>BlocProvider</code> crea y administra <code>VehiculosBloc</code>. <code>StatelessWidget</code> sirve para el contenedor inicial; <code>TiendaPage</code> sigue siendo <code>StatefulWidget</code> porque es propietaria del <code>TextEditingController</code> del formulario. <code>context</code> identifica la posición del widget en el árbol. <strong>No uses simultáneamente el antiguo MainAppState</strong> y el nuevo TiendaPageState.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Solo existe un <code>MaterialApp</code> en la raíz y un <code>BlocProvider</code> por encima de la pantalla.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-9"><div class="next-step-top"><span class="next-step-number">09</span><h3>El formulario ahora envía órdenes, no cambia el inventario</h3></div>
-<p><strong>Analogía:</strong> el vendedor revisa que el nombre sea válido y entrega una orden. Ya no abre ni reorganiza las fichas directamente.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR LOS ANTIGUOS MÉTODOS CRUD DENTRO DE _TiendaPageState</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → después de <code>formularioKey</code> y antes de <code>dispose()</code>. Elimina los antiguos campos <code>List&lt;Vehiculo&gt; vehiculos</code> e <code>indiceEnEdicion</code> que estaban en el <code>State</code> de P7.</div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion(</code>, <code>void borrarVehiculo(</code></div></div></div>
+<p><strong>Ejemplo:</strong> el vendedor revisa que el nombre sea válido y entrega una orden. Ya no abre ni reorganiza las fichas directamente.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR LOS ANTIGUOS MÉTODOS CRUD DENTRO DE _TiendaPageState</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → después de <code>formularioKey</code> y antes de <code>dispose()</code>. Elimina los antiguos campos <code>List&lt;Vehiculo&gt; vehiculos</code> e <code>indiceEnEdicion</code> que estaban en el <code>State</code> de P7.</div><div><strong>Busca con Ctrl + F:</strong> <code>void guardarVehiculo()</code>, <code>void comenzarEdicion(</code>, <code>void borrarVehiculo(</code></div></div></div>
 <div class="code-label">Métodos de la pantalla que envían eventos al BLoC</div><pre class="code-block" data-code-mode="dart"><code>  void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
       return;
@@ -2944,7 +3334,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
               ),</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>onChanged</code> se ejecuta al cambiar el campo. <code>BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;</code> escucha los estados publicados y reconstruye el widget que devuelve <code>builder</code>. La forma <code>if (...) ...[ ... ]</code> en <code>children</code> inserta varios widgets solo cuando se edita: los tres puntos <strong>son sintaxis real de Dart</strong>, no indican código omitido.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Al elegir un carro para editar, el botón cambia a «Guardar cambios» y aparece «Cancelar», sin llamar a <code>setState()</code>.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-11"><div class="next-step-top"><span class="next-step-number">11</span><h3>Mostrar y actualizar la lista con BlocBuilder</h3></div>
-<p><strong>Analogía:</strong> <code>ListView.builder</code> monta la vitrina con la foto actual del inventario. La pantalla no calcula el filtro ni decide cómo cambiar la lista: eso lo hizo BLoC.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL ANTIGUO ListView.builder DE P7</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → dentro de <code>Column(children: [ ... ])</code>, después del contador de vehículos y antes del botón «Acerca de y ayuda».</div><div><strong>Busca con Ctrl + F:</strong> <code>ListView.builder(</code> después del formulario</div></div></div>
+<p><strong>Ejemplo:</strong> <code>ListView.builder</code> monta la vitrina con la foto actual del inventario. La pantalla no calcula el filtro ni decide cómo cambiar la lista: eso lo hizo BLoC.</p><div class="next-where"><div class="next-where-action">REEMPLAZAR EL ANTIGUO ListView.builder DE P7</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> <code>lib/main.dart</code> → dentro de <code>Column(children: [ ... ])</code>, después del contador de vehículos y antes del botón «Acerca de y ayuda».</div><div><strong>Busca con Ctrl + F:</strong> <code>ListView.builder(</code> después del formulario</div></div></div>
 <div class="code-label">Lista de vehículos que observa el estado</div><pre class="code-block" data-code-mode="dart"><code>              Expanded(
                 child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
                   builder: (context, estado) {
@@ -2995,7 +3385,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
               ),</code></pre><div class="next-step-meaning"><strong>¿Cómo se interpreta?</strong><p><code>estado.visibles</code> es la lista filtrada. <code>indiceVisible</code> es la posición en esa lista. <code>estado.vehiculos.indexOf(vehiculo)</code> calcula la posición real en el inventario total: <strong>usar directamente el índice filtrado podría editar o eliminar otro carro</strong>. Los <code>IconButton</code> mantienen su <code>tooltip</code> explicativo.</p></div>
 <div class="next-step-result"><strong>Comprueba</strong><p>Prueba a guardar Renault 9 y Mazda 3; busca Mazda, edítalo y elimínalo. Renault 9 debe permanecer.</p></div></article>
 <article class="next-step" id="bloc-crud-paso-12"><div class="next-step-top"><span class="next-step-number">12</span><h3>Ejecutar, probar y comprobar la navegación</h3></div>
-<p><strong>Analogía:</strong> el encargado debe seguir trabajando aunque el vendedor abra otra página de la Tienda. <code>AcercaPage</code> y <code>AyudaPage</code> de P7 se conservan, y el inventario permanece al regresar.</p><div class="next-where"><div class="next-where-action">TERMINAL + PRUEBAS, SIN PEGAR CÓDIGO DENTRO DE main.dart</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Proyecto <code>actividad2/</code> en la terminal integrada de VS Code; la prueba automatizada de referencia está en <code>ejemplo_bloc_crud/test/</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code>, <code>lib/main.dart</code> y <code>lib/bloc/</code></div></div></div>
+<p><strong>Ejemplo:</strong> el encargado debe seguir trabajando aunque el vendedor abra otra página de la Tienda. <code>AcercaPage</code> y <code>AyudaPage</code> de P7 se conservan, y el inventario permanece al regresar.</p><div class="next-where"><div class="next-where-action">TERMINAL + PRUEBAS, SIN PEGAR CÓDIGO DENTRO DE main.dart</div><div class="next-where-details"><div><strong>Archivo / ubicación:</strong> Proyecto <code>actividad2/</code> en la terminal integrada de VS Code; la prueba automatizada de referencia está en <code>ejemplo_bloc_crud/test/</code></div><div><strong>Busca con Ctrl + F:</strong> <code>pubspec.yaml</code>, <code>lib/main.dart</code> y <code>lib/bloc/</code></div></div></div>
 <div class="code-label">Terminal · verificar que no haya errores y ejecutar</div><pre class="code-block" data-code-mode="terminal"><code>flutter pub get
 flutter analyze
 flutter run
@@ -3005,7 +3395,7 @@ flutter test</code></pre><div class="next-step-meaning"><strong>¿Cómo se inter
 <div class="bc-test-grid"><div><strong>CASO 1 · Crear</strong><p>Escribe «Renault 9», valida y guarda. Aparece una nueva fila y aumenta el contador.</p></div><div><strong>CASO 2 · Editar</strong><p>Pulsa Editar en Renault 9, cambia a Renault 21 y guarda. Sigue existiendo un solo registro.</p></div><div><strong>CASO 3 · Eliminar</strong><p>Agrega Mazda 3, busca «Mazda» y elimina el resultado. Renault 21 no debe desaparecer por error.</p></div><div><strong>CASO 4 · Navegar</strong><p>Abre Acerca de, entra a Ayuda y regresa. El inventario no cambia al navegar.</p></div></div>
 <div class="notice notice-warning"><strong>Errores frecuentes que debes reconocer</strong><p>«ProviderNotFoundException» suele indicar que el <code>BuildContext</code> utilizado no está debajo de <code>BlocProvider</code>. Un error de importación significa que falta un archivo o que la ruta del import no coincide. Si editas el carro equivocado después de filtrar, revisa <code>indiceReal</code>. Si reaparece <code>setState()</code> en las operaciones CRUD, todavía queda lógica del inventario dentro de la pantalla.</p></div>
 <div class="checklist" data-checklist="bloc-crud"><label><input type="checkbox"> Distingo eventos, BLoC, estados y widgets.</label><label><input type="checkbox"> Creé los tres archivos dentro de lib/bloc/.</label><label><input type="checkbox"> Conecté BlocProvider y BlocBuilder a main.dart.</label><label><input type="checkbox"> Puedo crear, buscar, editar y eliminar vehículos con BLoC.</label><label><input type="checkbox"> Entiendo por qué se obtiene el índice real después de filtrar.</label><label><input type="checkbox"> Sé que los datos son temporales y la navegación permanece.</label></div>
-<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL · SUSTENTACIÓN</span><h3>Dibuja el recorrido completo del botón «Guardar»</h3><p>En una hoja, explica con una analogía de tienda: quién recibe el nombre, quién verifica el formulario, quién envía <code>VehiculoGuardado</code>, quién construye el nuevo <code>VehiculosEstado</code> y qué elemento de Flutter actualiza la lista. Después compara esta solución con <code>setState()</code> de P5.1.</p></div>
+<div class="exercise"><span class="exercise-label">ACTIVIDAD INDIVIDUAL · SUSTENTACIÓN</span><h3>Dibuja el recorrido completo del botón «Guardar»</h3><p>En una hoja, explica con un ejemplo de la Tienda: quién recibe el nombre, quién verifica el formulario, quién envía <code>VehiculoGuardado</code>, quién construye el nuevo <code>VehiculosEstado</code> y qué elemento de Flutter actualiza la lista. Después compara esta solución con <code>setState()</code> de P5.1.</p></div>
 <div class="lesson-end"><button class="button button-complete" data-complete="bloc-crud">Marcar módulo como completado</button><a class="next-link" href="#menu-hamburguesa">Siguiente: crear un menú hamburguesa →</a></div>
 </section>
 
@@ -3423,7 +3813,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 }</code></pre><div class="next-step-meaning"><strong>Explicación fácil</strong><p><code>String</code> almacena texto, <code>int</code> un año entero, <code>double</code> un precio decimal y <code>bool</code> un valor verdadero/falso. <code>required</code> exige que el constructor reciba los nuevos campos. Por eso adaptaremos también el evento y BLoC.</p></div>
 <div class="next-step-result"><strong>Comprueba en tu aplicación</strong><p>Identificas qué representa cada propiedad. Los errores temporales de «argumento requerido» se resolverán en los pasos de evento y formulario.</p></div></article>
 <article class="next-step" id="al-paso-10-3">
-<div class="next-step-top"><span class="next-step-number">10-3</span><div class="al-step-info"><span class="al-step-kicker">CREAR UN ARCHIVO EN validators</span><h3>Crear un archivo con validadores reutilizables</h3></div></div><p>En lugar de repetir condiciones enormes en cada <code>TextFormField</code>, colocaremos las reglas en funciones. <strong>Analogía:</strong> son los requisitos que el encargado comprueba antes de aceptar un carro.</p>
+<div class="next-step-top"><span class="next-step-number">10-3</span><div class="al-step-info"><span class="al-step-kicker">CREAR UN ARCHIVO EN validators</span><h3>Crear un archivo con validadores reutilizables</h3></div></div><p>En lugar de repetir condiciones enormes en cada <code>TextFormField</code>, colocaremos las reglas en funciones. <strong>Ejemplo:</strong> son los requisitos que el encargado comprueba antes de aceptar un carro.</p>
 <div class="next-where"><div class="next-where-action">CREAR UN ARCHIVO EN validators</div>
 <div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/validators/validadores.dart</code> (crea la carpeta si aún no existe)</div><div><strong>Busca con Ctrl + F:</strong> Explorador → lib → Nueva carpeta <code>validators</code> → Nuevo archivo</div></div></div>
 <div class="code-label">CREA lib/validators/validadores.dart y pega todo su contenido</div><pre class="code-block" data-code-mode="dart"><code>class Validadores {
@@ -4001,7 +4391,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <tr><td>Eliminar carro</td><td><code>DELETE /vehiculos/1</code></td><td>Borra la fila ID 1</td><td><code>204 No Content</code></td></tr></tbody></table></div>
 <div class="next-section-heading"><span>PRIMERA PARTE · CREAR EL SERVIDOR</span><h2>FastAPI y PostgreSQL, paso a paso en otra carpeta</h2></div><article class="next-step" id="al-paso-11-1">
 <div class="next-step-top"><span class="next-step-number">01</span><div class="al-step-info"><span class="al-step-kicker">CREAR UNA CARPETA HERMANA DE actividad2</span><h3>Comprender las piezas y crear la carpeta del servidor</h3></div></div>
-<p><strong>Analogía:</strong> Flutter es el vendedor, FastAPI es el encargado que recibe solicitudes y PostgreSQL es la bodega donde se archivan los vehículos. El vendedor nunca entra directamente a la bodega.</p><div class="next-where"><div class="next-where-action">CREAR UNA CARPETA HERMANA DE actividad2</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Explorador de VS Code → <code>DesarrolloMovilFlutter</code></div><div><strong>Busca / ubica:</strong> Carpetas <code>actividad2</code> y nueva <code>tienda_api</code></div></div></div>
+<p><strong>Ejemplo:</strong> Flutter es el vendedor, FastAPI es el encargado que recibe solicitudes y PostgreSQL es la bodega donde se archivan los vehículos. El vendedor nunca entra directamente a la bodega.</p><div class="next-where"><div class="next-where-action">CREAR UNA CARPETA HERMANA DE actividad2</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Explorador de VS Code → <code>DesarrolloMovilFlutter</code></div><div><strong>Busca / ubica:</strong> Carpetas <code>actividad2</code> y nueva <code>tienda_api</code></div></div></div>
 <div class="code-label">Estructura deseada (esquema, no código ejecutable)</div><pre class="code-block" data-code-mode="plain"><code>DesarrolloMovilFlutter/
 ├── actividad2/                (Flutter, ya existe)
 │   ├── lib/
@@ -4018,7 +4408,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <div class="next-step-top"><span class="next-step-number">02</span><div class="al-step-info">
 <span class="al-step-kicker">POSTGRESQL NORMAL EN WINDOWS · SIN DOCKER</span>
 <h3>Preparar PostgreSQL nativo y su conexión privada</h3></div></div>
-<p><strong>Analogía:</strong> PostgreSQL es el almacén del concesionario y FastAPI será el encargado de atender las solicitudes. El alumno no debe dar la contraseña del almacén a Flutter: la guarda exclusivamente el servidor Python.</p>
+<p><strong>Ejemplo:</strong> PostgreSQL es el almacén del concesionario y FastAPI será el encargado de atender las solicitudes. El alumno no debe dar la contraseña del almacén a Flutter: la guarda exclusivamente el servidor Python.</p>
 <div class="next-where"><div class="next-where-action">CONFIGURAR SERVIDOR Y BASE</div>
 <div class="next-where-details"><div><strong>Dónde:</strong> PostgreSQL instalado en Windows y pgAdmin, fuera de Flutter</div>
 <div><strong>Carpeta:</strong> <code>DesarrolloMovilFlutter/tienda_api/</code></div></div></div>
@@ -4063,7 +4453,7 @@ volumes:
 </article>
 <article class="next-step" id="al-paso-11-3">
 <div class="next-step-top"><span class="next-step-number">03</span><div class="al-step-info"><span class="al-step-kicker">CREAR requirements.txt Y ENTORNO VIRTUAL</span><h3>Instalar FastAPI y preparar Python</h3></div></div>
-<p><strong>Analogía:</strong> el entorno virtual es una caja de herramientas propia del servidor Python; no cambia Flutter ni instala los paquetes dentro de la carpeta móvil.</p><div class="next-where"><div class="next-where-action">CREAR requirements.txt Y ENTORNO VIRTUAL</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>DesarrolloMovilFlutter/tienda_api/requirements.txt</code> y terminal en esa carpeta</div><div><strong>Busca / ubica:</strong> <code>main.py</code> todavía no existe; primero instalaremos bibliotecas</div></div></div>
+<p><strong>Ejemplo:</strong> el entorno virtual es una caja de herramientas propia del servidor Python; no cambia Flutter ni instala los paquetes dentro de la carpeta móvil.</p><div class="next-where"><div class="next-where-action">CREAR requirements.txt Y ENTORNO VIRTUAL</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>DesarrolloMovilFlutter/tienda_api/requirements.txt</code> y terminal en esa carpeta</div><div><strong>Busca / ubica:</strong> <code>main.py</code> todavía no existe; primero instalaremos bibliotecas</div></div></div>
 <div class="code-label">CREA requirements.txt con estas dependencias</div><pre class="code-block" data-code-mode="plain"><code>fastapi&gt;=0.115,&lt;1.0
 uvicorn[standard]&gt;=0.34,&lt;1.0
 sqlmodel&gt;=0.0.24,&lt;1.0
@@ -4218,7 +4608,7 @@ def eliminar_vehiculo(vehiculo_id: int, sesion: Sesion):
 <div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Tu <code>main.py</code> tiene cuatro operaciones CRUD y una ruta de salud. Compara al final con el archivo completo antes de ejecutarlo.</p></div></article>
 <article class="next-step" id="al-paso-11-7">
 <div class="next-step-top"><span class="next-step-number">07</span><div class="al-step-info"><span class="al-step-kicker">INICIAR PYTHON Y PROBAR EN /docs</span><h3>Ejecutar el servidor y usar la documentación Swagger</h3></div></div>
-<p><strong>Analogía:</strong> Swagger es un mostrador de pruebas donde puedes enviar órdenes manualmente, antes de que Flutter lo haga por ti.</p><div class="next-where"><div class="next-where-action">INICIAR PYTHON Y PROBAR EN /docs</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Terminal de VS Code abierta en <code>tienda_api</code></div><div><strong>Busca / ubica:</strong> El archivo <code>main.py</code> ya está completo y PostgreSQL está iniciado</div></div></div>
+<p><strong>Ejemplo:</strong> Swagger es un mostrador de pruebas donde puedes enviar órdenes manualmente, antes de que Flutter lo haga por ti.</p><div class="next-where"><div class="next-where-action">INICIAR PYTHON Y PROBAR EN /docs</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> Terminal de VS Code abierta en <code>tienda_api</code></div><div><strong>Busca / ubica:</strong> El archivo <code>main.py</code> ya está completo y PostgreSQL está iniciado</div></div></div>
 <div class="code-label">Terminal: iniciar FastAPI (mantener abierta)</div><pre class="code-block" data-code-mode="shell"><code>.\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8001</code></pre><div class="code-label">Cuerpo JSON para probar POST /vehiculos desde Swagger</div><pre class="code-block" data-code-mode="json"><code>{
   &quot;nombre&quot;: &quot;Renault 9&quot;,
   &quot;anio&quot;: 1994,
@@ -4266,7 +4656,7 @@ def eliminar_vehiculo(vehiculo_id: int, sesion: Sesion):
 <div class="next-step-result"><strong>Cómo verificar este paso</strong><p>Puedes explicar que <code>id=7</code> identifica al mismo vehículo aunque se filtre la lista o cambie su nombre.</p></div></article>
 <article class="next-step" id="al-paso-11-10">
 <div class="next-step-top"><span class="next-step-number">10</span><div class="al-step-info"><span class="al-step-kicker">CREAR lib/repositories/vehiculos_api.dart</span><h3>Crear el repositorio que se comunica por HTTP</h3></div></div>
-<p><strong>Analogía:</strong> el repositorio es el mensajero. La pantalla le pide una operación; él envía HTTP, interpreta la respuesta y entrega objetos Dart. El repositorio <strong>nunca escribe directamente en PostgreSQL</strong>.</p><div class="next-where"><div class="next-where-action">CREAR lib/repositories/vehiculos_api.dart</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/repositories/vehiculos_api.dart</code> (carpeta prevista desde P2)</div><div><strong>Busca / ubica:</strong> Explorador → lib → repositories → Nuevo archivo</div></div></div>
+<p><strong>Ejemplo:</strong> el repositorio es el mensajero. La pantalla le pide una operación; él envía HTTP, interpreta la respuesta y entrega objetos Dart. El repositorio <strong>nunca escribe directamente en PostgreSQL</strong>.</p><div class="next-where"><div class="next-where-action">CREAR lib/repositories/vehiculos_api.dart</div><div class="next-where-details"><div><strong>Archivo o terminal:</strong> <code>actividad2/lib/repositories/vehiculos_api.dart</code> (carpeta prevista desde P2)</div><div><strong>Busca / ubica:</strong> Explorador → lib → repositories → Nuevo archivo</div></div></div>
 <div class="al-substep"><strong>A · Crea el archivo e inserta imports, clase y función listar()</strong><div class="code-label">Inicio del repositorio: imports, constructor y GET</div><pre class="code-block" data-code-mode="dart"><code>import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb, TargetPlatform, defaultTargetPlatform;
 import 'package:http/http.dart' as http;
@@ -5256,7 +5646,7 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
 <tr><td>PUT /vehiculos/id</td><td>Prohibido (403)</td><td>Permitido</td><td>FastAPI exige administrador</td></tr>
 <tr><td>DELETE /vehiculos/id</td><td>Prohibido (403)</td><td>Permitido</td><td>FastAPI exige administrador</td></tr></tbody></table></div>
 <div class="next-section-heading"><span>APLICACIÓN DIRECTA SOBRE LA TIENDA</span><h2>Protege primero la API y luego adapta los widgets</h2></div>
-<article class="next-step" id="pu-step-12-1"><div class="next-step-top"><span class="next-step-number">12-1</span><div><span class="pu-badge">ENTENDER ANTES DE COPIAR</span><h3>Diferenciar autenticación, rol y autorización</h3></div></div><p>Analogía: un empleado muestra su carné para entrar al concesionario; después, sus funciones determinan qué puede hacer en el inventario.</p><div class="next-where"><div class="next-where-action">ENTENDER ANTES DE COPIAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code> y <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>GET /vehiculos</code>, <code>POST /vehiculos</code></div></div></div><div class="pu-concept"><div><strong>Autenticación · 401</strong><p>El sistema todavía no sabe quién eres o la contraseña es incorrecta.</p></div><div><strong>Autorización · 403</strong><p>El sistema sabe quién eres, pero tu puesto de trabajo no permite esa operación.</p></div></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>RBAC</code> significa control de acceso basado en roles. No se debe tomar una cadena <code>rol=administrador</code> enviada por el teléfono como prueba de autorización.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Explica por qué ocultar «Eliminar» ayuda a la interfaz, pero no sustituye comprobar el permiso en el backend.</p></div></article>
+<article class="next-step" id="pu-step-12-1"><div class="next-step-top"><span class="next-step-number">12-1</span><div><span class="pu-badge">ENTENDER ANTES DE COPIAR</span><h3>Diferenciar autenticación, rol y autorización</h3></div></div><p>Ejemplo: un empleado muestra su carné para entrar al concesionario; después, sus funciones determinan qué puede hacer en el inventario.</p><div class="next-where"><div class="next-where-action">ENTENDER ANTES DE COPIAR</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code> y <code>actividad2/lib/main.dart</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>GET /vehiculos</code>, <code>POST /vehiculos</code></div></div></div><div class="pu-concept"><div><strong>Autenticación · 401</strong><p>El sistema todavía no sabe quién eres o la contraseña es incorrecta.</p></div><div><strong>Autorización · 403</strong><p>El sistema sabe quién eres, pero tu puesto de trabajo no permite esa operación.</p></div></div><div class="next-step-meaning"><strong>¿Para qué sirve?</strong><p><code>RBAC</code> significa control de acceso basado en roles. No se debe tomar una cadena <code>rol=administrador</code> enviada por el teléfono como prueba de autorización.</p></div><div class="next-step-result"><strong>Resultado que debes comprobar</strong><p>Explica por qué ocultar «Eliminar» ayuda a la interfaz, pero no sustituye comprobar el permiso en el backend.</p></div></article>
 <article class="next-step" id="pu-step-12-2"><div class="next-step-top"><span class="next-step-number">12-2</span><div><span class="pu-badge">MODIFICAR EL BACKEND</span><h3>Agregar autenticación con HTTP Basic y funciones de roles</h3></div></div><p>La clase requiere un inicio de sesión sencillo. En este laboratorio los usuarios de prueba se definen en el servidor y se verifican allí.</p><div class="next-where"><div class="next-where-action">MODIFICAR EL BACKEND</div><div class="next-where-details"><div><strong>Archivo exacto:</strong> <code>tienda_api/main.py</code></div><div><strong>Buscar con Ctrl+F:</strong> <code>HTTPBasic</code> y <code>def obtener_usuario</code></div></div></div><div class="code-label">Primero añade estos imports con los demás imports Python al comienzo de main.py</div>
 <pre class="code-block" data-code-mode="python"><code>import secrets
 from typing import Literal

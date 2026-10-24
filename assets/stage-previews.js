@@ -392,7 +392,7 @@
           <span class="pv-effect-type${internal?' pv-internal':''}">${esc(effectType)}</span></div>
         <p>${esc(item.effect)}</p>${item.note?`<p class="pv-special-note">${esc(item.note)}</p>`:''}
       </div>
-      ${window.FlutterLabAnalogias?.pasos?.[id]?.[i]?`<aside class='pv-analogy' aria-label='Analogía de este paso'><strong>IMAGÍNALO ASÍ</strong><p>${analogyMark(window.FlutterLabAnalogias.pasos[id][i][0])}</p><p><b>En Dart o Flutter:</b> ${analogyMark(window.FlutterLabAnalogias.pasos[id][i][1])}</p></aside>`:''}
+      ${window.FlutterLabAnalogias?.pasos?.[id]?.[i]?`<aside class='pv-analogy' aria-label='Ejemplo del paso'><strong>EJEMPLO DE LA TIENDA</strong><p>${analogyMark(window.FlutterLabAnalogias.pasos[id][i][0])}</p><p><b>En Dart o Flutter:</b> ${analogyMark(window.FlutterLabAnalogias.pasos[id][i][1])}</p></aside>`:''}
       ${internal&&!editorTransition?renderStudy(item,id,i,after,runtime,screenUI,editorUI,nonVisualUI,esc):`
       <div class="pv-mobile-toggle" aria-label="Comparar las dos versiones">
         <button type="button" data-pv-phase="before" aria-pressed="${phase==='before'}" class="${phase==='before'?'active':''}">Antes</button>

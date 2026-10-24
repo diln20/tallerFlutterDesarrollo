@@ -9,13 +9,13 @@
     const pairs=info.equivalencias.map(([everyday,flutter])=>(
       '<div class="analogy-pair"><span>'+mark(everyday)+'</span><span>'+mark(flutter)+'</span></div>'
     )).join('');
-    return '<aside class="student-analogy" data-analogy-module="'+esc(id)+'" aria-label="Analogía cotidiana para este tema">'+
+    return '<aside class="student-analogy" data-analogy-module="'+esc(id)+'" aria-label="Ejemplo aplicado para comprender este tema">'+
       '<div class="student-analogy-head"><span class="student-analogy-index" aria-hidden="true">≍</span>'+
-        '<div><span class="student-analogy-kicker">UNA COMPARACIÓN PARA ENTENDERLO</span>'+
+        '<div><span class="student-analogy-kicker">EJEMPLO CERCANO</span>'+
         '<h2>'+mark(info.titulo)+'</h2></div></div>'+
       '<p class="student-analogy-story">'+mark(info.cotidiano)+'</p>'+
       '<div class="student-analogy-pairs"><div class="student-analogy-pair-head"><strong>En la vida diaria</strong><strong>En Dart o Flutter</strong></div>'+pairs+'</div>'+
-      '<p class="student-analogy-boundary"><strong>Hasta dónde sirve la analogía:</strong> '+mark(info.cuidado)+'</p>'+
+      '<p class="student-analogy-boundary"><strong>Qué conviene recordar:</strong> '+mark(info.cuidado)+'</p>'+
       '<details class="student-analogy-quiz"><summary>¿Lo entendiste? Comprueba tu respuesta</summary>'+
         '<p><strong>Pregunta:</strong> '+mark(info.pregunta)+'</p><p><strong>Respuesta esperada:</strong> '+mark(info.respuesta)+'</p></details>'+
       '</aside>';
@@ -60,8 +60,8 @@
     if(!sample)return;
     const target=dialog.querySelector('.wc-detail-grid');
     if(!target)return;
-    const html='<aside class="wc-widget-analogy" aria-label="Analogía para comprender el widget">'+
-      '<span>'+(exact?'ANALOGÍA DE ESTE WIDGET':'ANALOGÍA DE ESTA FAMILIA')+'</span>'+
+    const html='<aside class="wc-widget-analogy" aria-label="Ejemplo para comprender el widget">'+
+      '<span>'+(exact?'EJEMPLO DE ESTE WIDGET':'EJEMPLO DE ESTA FAMILIA')+'</span>'+
       '<p><strong>Imagínalo así:</strong> '+mark(sample[0])+'</p>'+
       '<p><strong>En Flutter:</strong> '+mark(sample[1])+'</p>'+
       (!exact?'<p class="wc-widget-analogy-note">Este es un ejemplo de su familia. El widget <code>'+esc(widgetName)+'</code> cumple la función específica descrita arriba.</p>':'')+

@@ -50,3 +50,19 @@ Los archivos Python y Dart que acompañan la guía mantienen los puertos nativos
 - Compilación estática de JavaScript, análisis Dart y pruebas de backend Flutter de referencia.
 
 Las comprobaciones web se hacen en Chrome real con Playwright. La simulación de widgets en HTML es pedagógica y no sustituye una compilación Flutter.
+
+
+## Ampliación verificada del aprendizaje en P1 a P3
+
+La explicación de `build(BuildContext context)` se ubica en el módulo 02
+antes de que se construyan componentes propios. El módulo 05 explica
+`InputDecoration` antes del formulario y distingue presentación,
+lectura de datos y validación. P1 agrega el caso del teclado y la opción
+de desplazar su `Column`.
+
+En P2 se añade la séptima carpeta `lib/utils/` sin código; en P3 el
+alumno primero utiliza `TituloSeccion` (StatelessWidget), ve su archivo
+completo, luego crea `ContadorToques` (StatefulWidget), centraliza
+los colores en `ColoresApp` y verifica el resultado. La práctica de
+validación P4 continúa sobre el mismo formulario sin borrar estas
+ampliaciones opcionales. Se conservan los archivos base para comparar.

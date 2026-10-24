@@ -334,3 +334,29 @@ Después se conserva **la misma aplicación actividad2** y se añaden tres etapa
 La nueva guía enseña los archivos **paso a paso, por ubicación** y mantiene las analogías, explicaciones y bloques de referencia completos para revisión final. El sitio incluye un Drawer interactivo, un formulario de validación simulado y una demostración visual de solicitudes/respuestas HTTP; son simulaciones HTML, no conexiones reales al servidor de un estudiante.
 
 **Nota:** el ejemplo de PostgreSQL usa credenciales locales demostrativas y no tiene autenticación. No es un backend de producción. La ruta opcional B mantiene su propia práctica BLoC del buscador sin mezclarla con esta línea principal.
+
+## Ejemplos progresivos: teclado, BuildContext, InputDecoration y componentes
+
+La guía ahora presenta cada concepto antes de pedir que se aplique:
+
+1. Módulo 02: comprender `Widget build(BuildContext context)` parte por parte.
+2. Módulo 05: `InputDecoration`, etiquetas, texto de ayuda, bordes, iconos y
+   diferencias frente a controladores y validación.
+3. P1: prevenir el desbordamiento vertical al abrir el teclado con
+   `SingleChildScrollView`, sin utilizar `Expanded` vertical sin restricciones.
+4. P2: crear siete carpetas, incluida `lib/utils/`, inicialmente vacías.
+5. P3: reutilizar un `StatelessWidget`, construir un segundo componente
+   `StatefulWidget` con `setState` y centralizar colores en `ColoresApp`.
+
+Los bloques enlazan archivos completos en `etapas/`. El proyecto original
+`actividad2a` sigue intacto; los ejemplos adicionales se trabajan
+sobre la Tienda de `actividad2`.
+
+[Detalle de archivos y comprobaciones](docs/conceptos-build-inputdecoration-scroll-widgets.md).
+
+Para validar el contenido sin abrir Flutter:
+
+~~~powershell
+node tests/verificar-conceptos-flutter.mjs
+node tests/validar-secuencia-flutter.mjs
+~~~
