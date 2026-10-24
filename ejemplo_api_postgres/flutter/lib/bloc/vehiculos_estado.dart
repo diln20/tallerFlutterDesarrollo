@@ -1,5 +1,8 @@
 import '../models/vehiculo.dart';
 
+enum FiltroVehiculos { todos, disponibles, favoritos }
+enum OrdenVehiculos { recientes, nombre, precioMenor, precioMayor }
+
 class VehiculosEstado {
   const VehiculosEstado({
     required this.vehiculos,
@@ -9,6 +12,8 @@ class VehiculosEstado {
     this.cargando = false,
     this.enviando = false,
     this.error,
+    this.filtro = FiltroVehiculos.todos,
+    this.orden = OrdenVehiculos.recientes,
   });
 
   final List<Vehiculo> vehiculos;
@@ -18,4 +23,6 @@ class VehiculosEstado {
   final bool cargando;
   final bool enviando;
   final String? error;
+  final FiltroVehiculos filtro;
+  final OrdenVehiculos orden;
 }
