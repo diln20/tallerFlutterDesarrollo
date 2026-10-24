@@ -10,8 +10,8 @@
 .wc-view-mode button{padding:8px 12px;min-height:40px;border:0;border-radius:8px;font-size:12px;font-weight:800;background:transparent;color:var(--text-soft);white-space:nowrap}
 .wc-view-mode button.active,.wc-view-mode button[aria-pressed=true]{background:var(--surface);color:var(--blue);box-shadow:0 2px 10px #142d4f1c}
 .wc-toolbar-sort{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:var(--text-soft)}
-.wc-toolbar-sort select{min-height:43px;max-width:180px;border:1px solid var(--border);border-radius:9px;padding:8px 30px 8px 10px;background:var(--surface);color:var(--heading);font:700 12px/1.3 inherit}
-.wc-favorite-filter{min-height:43px;border:1px solid var(--border);border-radius:10px;padding:8px 12px;background:var(--surface-soft);color:var(--text-soft);font:800 12px/1.3 inherit;display:inline-flex;align-items:center;gap:7px}
+.wc-toolbar-sort select{min-height:43px;max-width:180px;border:1px solid var(--border);border-radius:9px;padding:8px 30px 8px 10px;background:var(--surface);color:var(--heading);font-size:12px;font-weight:700;font-family:inherit}
+.wc-favorite-filter{min-height:43px;border:1px solid var(--border);border-radius:10px;padding:8px 12px;background:var(--surface-soft);color:var(--text-soft);font-size:12px;font-weight:800;font-family:inherit;display:inline-flex;align-items:center;gap:7px}
 .wc-favorite-filter[aria-pressed=true]{background:#fff0cf;color:#865009;border-color:#efcb80}
 .wc-favorite-filter span{border-radius:6px;padding:1px 6px;background:var(--surface);font-size:11px}
 .wc-favorite-filter:hover,.wc-view-mode button:hover{border-color:#739fe4;color:var(--blue)}
