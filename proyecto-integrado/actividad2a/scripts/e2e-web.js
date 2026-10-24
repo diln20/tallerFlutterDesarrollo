@@ -127,6 +127,7 @@ async function salir(page) {
     await page.setViewportSize({width:390,height:844});
     await page.getByRole('tab',{name:'Mi perfil'}).waitFor();
     assert.equal(await page.getByRole('tab').count(),2);
+    await page.getByRole('button',{name:'Marcar favorito'}).waitFor({timeout:15000});
     await page.screenshot({path:path.join(__dirname,'e2e-mobile.png')});
     console.log('OK: navegación móvil a 390x844');
 
