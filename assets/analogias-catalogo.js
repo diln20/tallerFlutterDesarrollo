@@ -1,4 +1,4 @@
-/* Analogías de consulta para los 128 widgets del catálogo. */
+/* Analogías de consulta para los 167 widgets del catálogo, incluidas familias ampliadas. */
 (function(){
   const data=window.FlutterLabAnalogias;
   if(!data)return;
@@ -356,4 +356,39 @@
     ]
   }
 };
+
+data.catalogo.familias['Accesibilidad']=[
+  'Las señales en braille y los avisos claros de una tienda.',
+  'Esta familia permite describir controles a lectores de pantalla y ayudar a las personas a comprenderlos.'
+];
+Object.assign(data.catalogo.exactas, {
+  'IndexedStack':[
+    'Tres mostradores preparados: solo uno se ve a la vez.',
+    'Muestra la pestaña seleccionada, pero conserva los otros widgets montados para que no pierdan su estado local.'
+  ],
+  'AnimatedList':[
+    'Una fila nueva entra a la sala con una transición suave.',
+    'Inserta y retira visualmente filas con una animación que debes coordinar con los registros reales.'
+  ],
+  'CheckboxListTile':[
+    'Una fila de una lista de compras con una casilla para marcar.',
+    'Muestra título y casilla en una misma fila; el State debe guardar si está seleccionada.'
+  ],
+  'SwitchListTile':[
+    'Un interruptor junto al nombre de una máquina.',
+    'Cambia una preferencia booleana con su etiqueta, pero la app debe registrar el valor.'
+  ],
+  'Semantics':[
+    'Un rótulo accesible que describe un control para quien no puede verlo.',
+    'Expone etiquetas y roles a tecnologías de asistencia, sin alterar necesariamente el dibujo de la pantalla.'
+  ],
+  'GridTile':[
+    'Una fotografía en una celda de una vitrina de productos.',
+    'Permite presentar una celda dentro de GridView con contenido y bandas opcionales.'
+  ],
+  'DraggableScrollableSheet':[
+    'Un cajón que puedes arrastrar hacia arriba para ver más.',
+    'Combina el movimiento del panel con el desplazamiento del listado interno mediante un controlador compartido.'
+  ]
+});
 })();
