@@ -180,3 +180,31 @@
 .wc-line-table tbody tr.wc-line-important td:first-child{box-shadow:inset 4px 0 #dba43c}
 .wc-line-explainer summary:focus-visible{outline:3px solid #e5b44f;outline-offset:-3px}
 @media(max-width:650px){.wc-line-scroll{margin:8px}.wc-line-explainer summary{font-size:12px}.wc-line-table{min-width:575px}.wc-line-table tbody td{padding:10px}}
+
+
+/* El catálogo respeta el selector de tema utilizado por el taller. */
+body[data-theme="dark"] .wc-list-lab{
+  background:linear-gradient(120deg,#17273f,#1b2c42 65%,#192b42);border-color:var(--border);
+}
+body[data-theme="dark"] .wc-lab-code-panel,
+body[data-theme="dark"] .wc-lab-phone-panel,
+body[data-theme="dark"] .wc-lab-guides>div,
+body[data-theme="dark"] .wc-learn-notes>div,
+body[data-theme="dark"] .wc-catalog-toolbar{background:var(--surface);border-color:var(--border)}
+body[data-theme="dark"] .wc-learn-notes .wc-learn-warning{background:#3a2e22;border-color:#7c6035}
+body[data-theme="dark"] .wc-learn-warning strong{color:#ffce85}
+body[data-theme="dark"] .wc-widget-thumbnail{background:linear-gradient(140deg,#1c2d48,#263e5c)}
+body[data-theme="dark"] .wc-lab-head>a,
+body[data-theme="dark"] .wc-lab-tabs button:not(.active),
+body[data-theme="dark"] .wc-variant-tabs button[aria-pressed="false"]{background:var(--surface);color:var(--text);border-color:var(--border)}
+body[data-theme="dark"] .wc-line-explainer,
+body[data-theme="dark"] .wc-line-table tbody td{background:var(--surface);border-color:var(--border)}
+body[data-theme="dark"] .wc-line-explainer summary,
+body[data-theme="dark"] .wc-line-table thead th{background:#223450;color:var(--heading)}
+body[data-theme="dark"] .wc-line-table tbody tr:nth-child(even) td{background:var(--surface-soft)}
+body[data-theme="dark"] .wc-line-table tbody tr.wc-line-important td{background:#413821;border-color:#69572f;color:#f0e1bf}
+body[data-theme="dark"] .wc-line-table tbody tr.wc-line-important td code{background:#4c412d;color:#fff0bc}
+body[data-theme="dark"] .wc-save-widget{background:var(--surface);color:#e7c376;border-color:var(--border)}
+body[data-theme="dark"] .wc-save-widget.is-saved,
+body[data-theme="dark"] .wc-favorite-filter[aria-pressed="true"]{background:#544025;color:#ffde87;border-color:#b68b45}
+body[data-theme="dark"] .wc-toolbar-sort select{background:var(--surface);color:var(--heading);border-color:var(--border)}
