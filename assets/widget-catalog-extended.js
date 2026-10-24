@@ -248,11 +248,11 @@
     right.append(info, example);
     grid.replaceChildren(left, right);
     grid.classList.add('wc-detail-grid-v2');
-    const et = example.querySelector('h3');
+    const et = example.querySelectorAll('.wc-detail-section-head h3')[1] || example.querySelector('h3');
     if (et) et.textContent = 'Código básico en Flutter';
-    const help = example.querySelector('p');
-    if (help) help.textContent = 'Fragmento didáctico que muestra el uso del widget. Algunos ejemplos requieren un controlador, estado o clases auxiliares.';
-    const complete = fullProgram(widget);
+    const help = example.querySelector(':scope > p');
+    if (help) help.textContent = 'Fragmento didáctico: si utiliza variables, controladores o estado, primero debes declararlos en el contexto indicado.';
+    const complete = widget.completeExample || fullProgram(widget);
     if (complete) {
       const details = document.createElement('details');
       details.className = 'wc-full-example';
