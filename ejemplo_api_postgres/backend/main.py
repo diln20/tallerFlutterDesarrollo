@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import re
 from contextlib import asynccontextmanager
 from datetime import date
@@ -10,10 +11,24 @@ from pydantic import field_validator
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 # Solo para prácticas locales. En servidores reales usa variables de entorno secretas.
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql+psycopg://tienda_alumno:clave_local_123@127.0.0.1:5434/tienda_flutter",
-)
+def obtener_url_postgresql() -> str:
+    # La variable permite elegir otra base expresamente (Docker opcional).
+    definida = os.environ.get("DATABASE_URL", "").strip()
+    if definida:
+        return definida
+
+    # Por defecto: PostgreSQL normal de Windows (puerto definido en .env.native).
+    archivo = Path(__file__).resolve().with_name(".env.native")
+    if archivo.is_file():
+        for linea in archivo.read_text(encoding="utf-8-sig").splitlines():
+            if linea.strip().startswith("DATABASE_URL="):
+                url = linea.partition("=")[2].strip()
+                if url:
+                    return url
+    raise RuntimeError("Falta .env.native o DATABASE_URL en tienda_api")
+
+
+DATABASE_URL = obtener_url_postgresql()
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
 

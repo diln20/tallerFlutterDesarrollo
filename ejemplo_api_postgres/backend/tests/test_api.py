@@ -2,6 +2,11 @@ from fastapi.testclient import TestClient
 from sqlalchemy.pool import StaticPool
 from sqlmodel import SQLModel, Session, create_engine
 
+import os
+
+# Las pruebas usan SQLite aislado y no requieren PostgreSQL o Docker.
+os.environ.setdefault("DATABASE_URL", "sqlite://")
+
 from main import app, obtener_sesion
 
 motor_pruebas = create_engine(

@@ -1,5 +1,26 @@
 # Taller Flutter — Crear actividad2 desde cero
 
+## Orden de enseñanza verificado (24 etapas y biblioteca)
+
+Fundamentos 01–05 y después una bifurcación explícita:
+
+- **Ruta A recomendada:** P1–P14, con P5.1 para el CRUD. Construye el
+  formulario, crea carpetas, valida, crea objetos, implementa CRUD,
+  reutiliza, navega, aplica BLoC, agrega el menú, amplía validaciones,
+  consume FastAPI + PostgreSQL, introduce roles, pagina y evalúa usabilidad.
+- **Ruta B opcional:** B1 diseño adaptable, B2 estado con setState,
+  B3 filtrar listas y B4 BLoC del buscador. Comienza con OTRA copia del
+  resultado de 05. Los nombres históricos paso_06, paso_07 y paso_08
+  continúan siendo válidos para los ejemplos descargables.
+
+En P11 el orden es PostgreSQL nativo en Windows primero, FastAPI después y
+Flutter al final. Docker se presenta únicamente como opción alternativa.
+Las propiedades y valores aparecen después de presentar el concepto y
+antes de su comprobación práctica.
+
+Ver [revisión del orden de la guía](docs/revision-orden-didactico-20261024.md).
+
+
 **Guía web didáctica para crear el proyecto nuevo `actividad2` y construir la Tienda paso a paso.** Usa el antiguo `actividad2a` únicamente como referencia de clase.
 
 **Página publicada:** https://diln20.github.io/tallerFlutterDesarrollo/  

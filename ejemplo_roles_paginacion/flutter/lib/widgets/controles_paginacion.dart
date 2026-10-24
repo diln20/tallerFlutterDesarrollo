@@ -29,9 +29,9 @@ class ControlesPaginacion extends StatelessWidget {
       runSpacing: 8,
       children: [
         Text('Total: ' + pagina.total.toString() + ' vehículos'),
+        const Text('Registros por página'),
         DropdownButton<int>(
           value: pagina.tamano,
-          tooltip: 'Registros por página',
           items: const [5, 10, 20]
               .map((numero) => DropdownMenuItem<int>(
                     value: numero,

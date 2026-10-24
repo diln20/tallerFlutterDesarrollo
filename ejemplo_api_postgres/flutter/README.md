@@ -17,31 +17,32 @@ flutter pub add http
 4. Copia los archivos de `ejemplo_api_postgres/flutter/lib/` hacia
    `actividad2/lib/`, **respetando todas las subcarpetas**.
    Compara los archivos ya existentes antes de reemplazarlos.
-5. Primero inicia PostgreSQL y FastAPI desde la carpeta `tienda_api`,
-   y comprueba http://127.0.0.1:8000/docs.
-6. Ejecuta Flutter eligiendo la dirección correcta:
+5. Inicia PostgreSQL instalado en Windows (5435) y luego FastAPI (8001),
+   y comprueba http://127.0.0.1:8001/docs.
+6. Ejecuta Flutter con la dirección que el propio repositorio selecciona.
 
-**Emulador Android estándar:**
+**Emulador Android estándar** (FastAPI en el mismo computador):
 
-```powershell
+~~~powershell
 flutter run
-```
+~~~
 
-La aplicación trae como valor por defecto `http://10.0.2.2:8000`,
-que en el emulador Android representa el PC anfitrión.
+El emulador Android utiliza http://10.0.2.2:8001.
 
-**Flutter Web en Chrome:**
+**Flutter Web en Chrome**:
 
-```powershell
-flutter run -d chrome --web-port 5174 --dart-define=API_URL=http://127.0.0.1:8000
-```
+~~~powershell
+flutter run -d chrome --web-port 5174
+~~~
 
-**Celular físico en la misma red:** sustituye `192.168.1.10` por
-la IPv4 **real del PC** y usa
-`flutter run --dart-define=API_URL=http://192.168.1.10:8000`.
-En ese caso, para un laboratorio local controlado, inicia FastAPI
-con `--host 0.0.0.0` y permite el puerto 8000 en el firewall solo
-para la red de confianza. No expongas el servidor a Internet.
+Flutter Web y Windows utilizan http://127.0.0.1:8001. No necesitas poner
+--dart-define para la conexión nativa. Solo si decides usar Docker u otro
+servidor indica explícitamente --dart-define=API_URL=... .
+
+**Celular físico**: necesita un servidor accesible y HTTPS para proteger
+las credenciales; no basta con reemplazar localhost por la IP del PC.
+El servidor de demostración atiende en 127.0.0.1 y no debe exponerse
+a Internet sin controles adecuados.
 
 ## Android: permiso de Internet y HTTP local
 
@@ -87,11 +88,12 @@ por lo que **no** necesita PostgreSQL para ejecutarse.
 
 Si hay problemas:
 
-- `Connection refused`: confirma que FastAPI está corriendo en el puerto 8000.
+- `Connection refused`: confirma que FastAPI está corriendo en el puerto 8001.
 - `SocketException`: revisa host y conexión entre emulador/celular y PC.
 - Error de CORS: para Web usa el puerto 5174 y una URL permitida en backend.
 - `422`: FastAPI rechazó datos que no cumplen las reglas de validación.
 - `404`: el ID del vehículo ya no existe en la base.
 - `500`: revisa el servidor y PostgreSQL, nunca muestres secretos en pantalla.
 
-**Importante:** la contraseña del contenedor es únicamente una demostración local.
+**Importante:** usa la contraseña PostgreSQL solo en tienda_api/.env.native.
+Docker es una alternativa opcional, con una base de datos independiente.

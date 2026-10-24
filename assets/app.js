@@ -50,11 +50,22 @@
     }, 2400);
   }
 
-  function currentHashRoute() {
+  // Un hash puede apuntar al modulo completo (#diseno) o a un apartado
+  // interior (#etiqueta-debug, #bloc-practica, #crud-paso-1, etc.).
+  // En ambos casos mostramos su pagina padre antes de desplazar la vista.
+  function hashId() {
     let id = window.location.hash.replace(/^#/, '');
     try { id = decodeURIComponent(id); } catch (_) { id = ''; }
-    if (/^crud-paso-[1-7]$/.test(id)) return 'crud';
-    return ROUTES.includes(id) ? id : 'inicio';
+    return id;
+  }
+
+  function currentHashRoute() {
+    const id = hashId();
+    if (ROUTES.includes(id)) return id;
+    const target = document.getElementById(id);
+    const parent = target?.closest('main .page');
+    if (parent && ROUTES.includes(parent.id)) return parent.id;
+    return 'inicio';
   }
 
   function setMenuOpen(open) {
@@ -110,18 +121,27 @@
       const title = heading ? heading.textContent.trim() : 'Inicio';
       if (crumb) crumb.textContent = route === 'inicio' ? 'Inicio' : title;
       document.title = (route === 'inicio' ? 'Flutter en práctica' : title) + ' — Taller de Desarrollo Móvil';
-      if (wasChanged) {
-        const subpaso = window.location.hash.slice(1).match(/^crud-paso-[1-7]$/);
-        if (subpaso) {
-          window.requestAnimationFrame(() => {
-            document.getElementById(subpaso[0])?.scrollIntoView({block:'start'});
-          });
-        } else {
-          window.scrollTo(0, 0);
-          if (withFocus && heading) {
-            heading.setAttribute('tabindex', '-1');
-            heading.focus({preventScroll:true});
+      const id = hashId();
+      const anchor = document.getElementById(id);
+      const anchorPage = anchor?.closest('main .page');
+      const isInternalAnchor = anchor &&
+        ((anchorPage?.id === route && id !== route) || id === 'contenido');
+
+      if (isInternalAnchor) {
+        // El enlace directo funciona incluso si el alumno ya esta en la
+        // misma pagina; antes los hashes internos volvian a Inicio.
+        window.requestAnimationFrame(() => {
+          anchor.scrollIntoView({block: 'start'});
+          if (withFocus && anchor.matches('h1,h2,h3,h4')) {
+            anchor.setAttribute('tabindex', '-1');
+            anchor.focus({preventScroll: true});
           }
+        });
+      } else if (wasChanged) {
+        window.scrollTo(0, 0);
+        if (withFocus && heading) {
+          heading.setAttribute('tabindex', '-1');
+          heading.focus({preventScroll: true});
         }
       }
     }

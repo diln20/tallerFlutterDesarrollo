@@ -74,7 +74,7 @@ void main() {
       pagina: 2, tamano: 5, buscar: 'mazda',
     );
     expect(pagina.totalPaginas, 2);
-    expect(llamadas, ['/sesion', '/vehiculos']);
+    expect(llamadas, ['GET /sesion', 'GET /vehiculos']);
     api.cerrar();
   });
 

@@ -1,8 +1,20 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb, TargetPlatform, defaultTargetPlatform;
 
 import 'package:http/http.dart' as http;
 import '../models/pagina_vehiculos.dart';
 import '../models/sesion_usuario.dart';
+
+/// El servidor FastAPI corre en Windows; el emulador Android usa 10.0.2.2.
+/// API_URL puede cambiarse para probar Docker o una URL segura.
+String urlApiPredeterminada() {
+  const especificada = String.fromEnvironment('API_URL');
+  if (especificada.isNotEmpty) return especificada;
+  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+    return 'http://10.0.2.2:8001';
+  }
+  return 'http://127.0.0.1:8001';
+}
 
 class ErrorApi implements Exception {
   const ErrorApi(this.mensaje, {this.codigo});
@@ -16,11 +28,7 @@ class ErrorApi implements Exception {
 class VehiculosApi {
   VehiculosApi({http.Client? cliente, String? urlBase})
       : _cliente = cliente ?? http.Client(),
-        urlBase = urlBase ??
-            const String.fromEnvironment(
-              'API_URL',
-              defaultValue: 'http://10.0.2.2:8000',
-            );
+        urlBase = urlBase ?? urlApiPredeterminada();
 
   final http.Client _cliente;
   final String urlBase;

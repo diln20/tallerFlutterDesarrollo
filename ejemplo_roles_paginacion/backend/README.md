@@ -1,62 +1,47 @@
-# P12-P13: API con roles reales y paginación
+# P12 y P13 · Seguridad y paginación de la misma API
 
-Continúa la API creada en **P11**, sin modificar la referencia anterior.
-Los archivos de esta carpeta son la **versión completa** para comparar
-con los cambios que harás sobre DesarrolloMovilFlutter/tienda_api.
+Este ejemplo continúa sobre el backend construido en P11, no crea una
+segunda API ni exige otra base de datos.
 
-## Antes de iniciar
+## Ruta de trabajo
 
-Usa los archivos requirements.txt y compose.yaml de la carpeta
-../ejemplo_api_postgres/backend. Copia **main.py** de este ejemplo
-sobre tienda_api/main.py solo después de respaldar el trabajo P11.
+1. Terminar P11 y comprobar PostgreSQL nativo (5435) y FastAPI (8001).
+2. Respaldar tienda_api/main.py.
+3. P12: agregar autenticación, roles Administrador y Lector y proteger CRUD.
+4. P13: devolver una página de vehículos y sus metadatos JSON.
+5. Probar HTTP, modelos Flutter y estados BLoC, en ese orden.
 
-Dentro de tienda_api, con Docker Desktop abierto:
+## Iniciar en Windows sin Docker
 
-    py -m venv .venv
-    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-    docker compose up -d
-    .\.venv\Scripts\python.exe -m uvicorn main:app --reload --port 8000
+Conserva el mismo archivo privado tienda_api/.env.native de P11.
+Dentro de tienda_api, utiliza:
 
-Abre http://127.0.0.1:8000/docs. Swagger te pedirá autenticarte mediante
-la opción «Authorize». Para una práctica local se permiten:
+~~~powershell
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8001
+~~~
 
-- Usuario admin / clave admin123 -> rol administrador: GET, POST, PUT y DELETE.
-- Usuario lector / clave lector123 -> rol lector: GET exclusivamente.
+Abre http://127.0.0.1:8001/docs. Cuentas SOLO de demostración:
+admin/admin123 puede GET, POST, PUT y DELETE;
+lector/lector123 puede GET; POST como Lector devuelve 403;
+sin credenciales devuelve 401.
 
-Las claves del código son solo ejemplos de clase. Puedes reemplazarlas con
-DEMO_ADMIN_PASSWORD y DEMO_LECTOR_PASSWORD como variables de entorno.
-**HTTP Basic transmite credenciales codificadas en Base64, no cifradas**.
-Úsalo solo para un laboratorio local; producción necesita HTTPS, usuarios
-reales, sesiones/identidad administradas y auditoría.
+GET /vehiculos?pagina=1&tamano=5&buscar=mazda devuelve
+un JSON con datos, pagina, tamano, total y total_paginas.
+Para 13 vehículos, tres páginas de cinco mostrarán 5, 5 y 3.
 
-## Pruebas de roles
+## Verificar
 
-1. GET /sesion con usuario lector responde su rol.
-2. GET /vehiculos con lector permite consultar la lista.
-3. POST /vehiculos con lector responde 403 (prohibido).
-4. POST /vehiculos con admin crea el vehículo.
-5. GET /vehiculos?pagina=1&tamano=5&buscar=mazda muestra un JSON:
-   { "datos": [...], "pagina": 1, "tamano": 5, "total": 1, "total_paginas": 1 }
-6. En una segunda página se muestran los siguientes registros.
-7. GET sin credenciales responde 401 (no autenticado).
+~~~powershell
+.\.venv\Scripts\python.exe -m pytest -q tests
+~~~
 
-El navegador Flutter Web usa el puerto 5174 y la API permite el header
-Authorization en CORS. **No debes enviar un parámetro rol=admin**
-ni confiar en botones ocultos: FastAPI valida cada operación protegida.
+Las pruebas automatizadas usan SQLite aislado; revisa aparte la
+persistencia real desde Swagger sobre PostgreSQL nativo.
 
-### Conceptos
-- Autenticación: comprobar quién eres; 401 si falla.
-- Autorización: comprobar qué puedes hacer; 403 si no tienes permiso.
-- Paginación: LIMIT/OFFSET sobre filas filtradas y ordenadas por ID.
-- total: número de coincidencias antes de LIMIT.
-- total_paginas: ceil(total/tamano); es 0 si no hay registros.
-- Query: valida página >=1 y tamaño entre 1 y 50.
+## Docker es opcional
 
-## Pruebas sin PostgreSQL real
-
-Instala requirements.txt y, desde esta carpeta, ejecuta pytest en:
-    py -m pytest -q tests
-
-Los tests utilizan SQLite en memoria y reemplazan la dependencia Session.
-Después comprueba manualmente PostgreSQL a través de Swagger porque
-SQLite y PostgreSQL no son idénticos.
+Si eliges Docker, configura DATABASE_URL explícitamente con la dirección
+del contenedor. No cambies ni borres la base nativa de P11 por ello.
+HTTP Basic no protege contraseñas sin HTTPS y no es para producción.

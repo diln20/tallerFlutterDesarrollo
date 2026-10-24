@@ -31,27 +31,25 @@ Añade/reemplaza en actividad2/lib, comparando los cambios:
 
 No copies ni cambies el proyecto actividad2a del docente.
 
-## Ejecutar
+## Ejecutar sin Docker (modo de clase principal)
 
-Usa el backend de ../backend (roles y paginación), cuyo Docker/Postgres
-es el mismo de P11. Asegúrate de tener Python/Docker y correr el servidor.
-Luego en actividad2 ejecuta:
+Es la misma Tienda de P11. Primero inicia PostgreSQL nativo en 5435 y
+FastAPI en 8001. Luego desde actividad2 ejecuta:
 
-    flutter pub add flutter_bloc http
-    flutter analyze
-    flutter test
+~~~powershell
+flutter pub add flutter_bloc http
+flutter analyze
+flutter test
+flutter run -d chrome --web-port 5174
+~~~
 
-Emulador Android estándar (API_URL predeterminada, 10.0.2.2):
+El repositorio selecciona automáticamente http://127.0.0.1:8001 para
+Flutter Web/Windows y http://10.0.2.2:8001 para el emulador Android.
+Solo usa API_URL para apuntar a una dirección alternativa explícita.
 
-    flutter run
-
-Flutter web en Chrome, puerto 5174 permitido por CORS:
-
-    flutter run -d chrome --web-port 5174 --dart-define=API_URL=http://127.0.0.1:8000
-
-Teléfono físico: cambia la dirección de ejemplo por la IPv4 real del PC.
-Si usas HTTP local en Android, declara permiso INTERNET y permite tráfico HTTP
-**solo en el manifiesto debug**. Consulta la explicación de P11.
+La base de Docker es una variante opcional y no comparte los registros.
+No necesitas Docker Desktop en el flujo principal. Las contraseñas
+demostrativas de HTTP Basic requieren una red de laboratorio controlada.
 
 ## API vs paginación dentro del widget
 
