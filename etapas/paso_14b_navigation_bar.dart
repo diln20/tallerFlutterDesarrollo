@@ -1,0 +1,212 @@
+import 'package:flutter/material.dart';
+import 'widgets/titulo_seccion.dart';
+import 'widgets/contador_toques.dart';
+import 'utils/colores_app.dart';
+import 'models/vehiculo.dart';
+import 'widgets/campo_nombre_vehiculo.dart';
+import 'widgets/boton_tienda.dart';
+import 'pages/acerca_page.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  final TextEditingController vehiculoController = TextEditingController();
+  final GlobalKey<FormState> formularioKey = GlobalKey<FormState>();
+  final List<Vehiculo> vehiculos = [];
+  int? indiceEnEdicion;
+  int indicePestana = 0;
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }
+
+  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }
+
+  @override
+  void dispose() {
+    vehiculoController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text('Tienda'),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: indicePestana,
+          onDestinationSelected: (indice) {
+            setState(() {
+              indicePestana = indice;
+            });
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.storefront_outlined),
+              selectedIcon: Icon(Icons.storefront),
+              label: 'Tienda',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.summarize_outlined),
+              selectedIcon: Icon(Icons.summarize),
+              label: 'Resumen',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.lightbulb_outline),
+              selectedIcon: Icon(Icons.lightbulb),
+              label: 'Consejos',
+            ),
+          ],
+        ),
+        body: IndexedStack(
+          index: indicePestana,
+          children: [
+            SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const TituloSeccion(texto: 'Primer widget'),
+              const SizedBox(height: 20),
+              Icon(Icons.directions_car),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(Icons.directions_car),
+                  const SizedBox(width: 8),
+                  Text('Ingenieria de Sistemas'),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Buscar marca o modelo',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const TituloSeccion(texto: 'Agregar un vehículo'),
+              const SizedBox(height: 10),
+              Form(
+                key: formularioKey,
+                child: CampoNombreVehiculo(controller: vehiculoController),
+              ),
+              const SizedBox(height: 12),
+              BotonTienda(
+                texto: indiceEnEdicion == null
+                    ? 'Agregar vehículo'
+                    : 'Guardar cambios',
+                alPresionar: guardarVehiculo,
+              ),
+              const SizedBox(height: 12),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vehiculos.length,
+                itemBuilder: (context, indice) {
+                  final vehiculo = vehiculos[indice];
+                  return ListTile(
+                    title: Text(vehiculo.nombre),
+                    subtitle: Text(
+                      vehiculo.disponible ? 'Disponible' : 'No disponible',
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: 'Editar vehículo',
+                          onPressed: () => comenzarEdicion(indice),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          tooltip: 'Eliminar vehículo',
+                          onPressed: () => borrarVehiculo(indice),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              Builder(
+                builder: (context) => BotonTienda(
+                  texto: 'Acerca de y ayuda',
+                  alPresionar: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AcercaPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
+            ],
+          ),
+        ),
+            Center(
+              child: Text('Vehículos registrados: ${vehiculos.length}'),
+            ),
+            const Center(
+              child: Text(
+                'Escribe un nombre de al menos tres letras. '
+                'Puedes editar o eliminar cada vehículo en la pestaña Tienda.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
