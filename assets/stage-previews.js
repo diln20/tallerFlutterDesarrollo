@@ -260,6 +260,19 @@
        <div data-pv-items>${matches.length?matches.map(c=>`<div class="pv-car-item"><span>🚘</span>${esc(c)}</div>`).join(''):'<div class="pv-no-results">No se encontraron vehículos.</div>'}</div>
     </section>`;
   }
+  function crudUI(v,which,r){
+    if(!v.crudReady)return '';
+    const cars=which==='after'?(r.addedCars||[]):[];
+    return '<section class="pv-crud-demo" data-pv-crud-list>'+
+      '<strong>Vehículos registrados: '+cars.length+'</strong>'+
+      (cars.length?cars.map((car,i)=>'<div class="pv-crud-row">'+
+        '<span class="pv-crud-name">🚘 '+esc(car)+'</span>'+
+        (which==='after'?'<span class="pv-crud-actions">'+
+          '<button type="button" data-pv-edit="'+i+'" aria-label="Editar '+esc(car)+'">✎</button>'+
+          '<button type="button" data-pv-delete="'+i+'" aria-label="Eliminar '+esc(car)+'">🗑</button>'+
+        '</span>':'')+'</div>').join(''):'<p class="pv-crud-empty">La lista está vacía. Agrega el primer vehículo.</p>')+
+      '</section>';
+  }
   function formUI(v,which,highlight,r){
     const showTitle=v.formTitle!==false;
     const showField=v.formField!==false;
@@ -275,7 +288,7 @@
         ${which==='before'?'readonly tabindex="-1"':''}>${v.validationEnabled&&which==='after'?`<div class="pv-validation" data-pv-error ${r.invalid?'':'hidden'}>${esc(errorText)}</div>`:''}`:''}
       ${showButton?`<button type="button" class="pv-submit${highlight==='button'&&which==='after'?' pv-glow':''}"
         ${which==='after'&&ready?'data-pv-submit':''}
-        ${which==='before'?'disabled':''}>Agregar vehículo</button>`:''}
+        ${which==='before'?'disabled':''}>${which==='after'&&v.crudReady&&r.editIndex!==null?'Guardar cambios':'Agregar vehículo'}</button>`:''}
     </section>`;
   }
   function pageUI(page,which){
@@ -308,10 +321,10 @@
     return `<div class="pv-device">
       <div class="pv-status">9:41 <span>◉ ▰</span></div>
       <div class="pv-app-screen">
-        ${v.appbar!==false?`<div class="pv-appbar${noteHL('appbar')}${v.appbarCentered?' pv-title-center':''}">
+        ${v.appbar!==false?`<div class="pv-appbar${noteHL('appbar')}${v.appbarCentered?' pv-title-center':''}"${v.colorsReady?' style="background:#1d4ed8;color:#fff"':''}>
           <strong>Tienda</strong>${v.appbarActions?'<span>⌕ ⋮</span>':''}
         </div>`:''}
-        <div class="pv-content${centered}${bodyHL}" style="--pv-indent:${v.padding||0}px">
+        <div class="pv-content${centered}${bodyHL}" style="--pv-indent:${v.padding||0}px;${v.colorsReady?'background:#f8fafc':''}">
           <div class="pv-body-text${noteHL('firstText')}">${esc(v.bodyText)}</div>
           ${v.topIcon?`
             <div class="pv-gap${highlight==='spacer'&&which==='after'?' pv-gap-highlight':''}" style="height:${v.firstGap??20}px"></div>
@@ -326,6 +339,8 @@
           ${v.reactive?`<p class="pv-search-label${noteHL('searchLabel')}" data-pv-label>Estás buscando: ${esc(which==='after'?r.query:(v.query||''))}</p>`:''}
           ${v.results?carsUI(v,which,highlight,r):''}
           ${v.form?formUI(v,which,highlight,r):''}
+          ${crudUI(v,which,r)}
+          ${v.counterReady?`<section class="pv-practice-counter"><span>Pruebas realizadas: <b data-pv-counter>${r.touchCount||0}</b></span><button type="button" data-pv-increment ${which==='before'?'disabled':''}>Sumar una prueba</button></section>`:''}
           ${v.navigationEnabled?`<button type="button" class="pv-nav-button pv-nav-from-home${which==='after'?' pv-glow':''}" ${which==='after'?'data-pv-nav="acerca"':'disabled'}>Acerca de y ayuda</button>`:''}
         </div>
         ${''}
@@ -372,7 +387,7 @@
       {...oldRuntime,phase}:
       {id,step:i,phase,query:after.query||'',addedCars:after.added?[after.added]:[],
         model:'',invalid:!!after.validationError,validationMessage:'Escribe un nombre',snackbar:after.snackbar||'',
-        clearAfterSave:!!after.clearAfterSave,debugMessage:'',pageStack:['tienda']};
+        clearAfterSave:!!after.clearAfterSave,debugMessage:'',pageStack:['tienda'],editIndex:null,touchCount:0};
     runtimeMap.set(id,runtime);
     const internal=item.visual===false;
     const editorTransition=internal&&before.editor&&after.editor;
@@ -411,7 +426,7 @@
         </div>
       </div>
 `}
-       ${['proyecto','validacion','objeto','extraccion'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
+       ${['proyecto','validacion','objeto'].includes(id)?'<div class="pv-debug-console" data-pv-debug-console hidden><strong>Salida simulada de la consola de Flutter</strong><code data-pv-debug-message></code><p>La instrucción debugPrint escribe en la consola de desarrollo, no en la pantalla del móvil.</p></div>':''}
       ${id==='bloc'?'<div class="pv-bloc-flow">Flujo conceptual fuera de la pantalla: <strong>Evento → BLoC → Estado</strong> · Sin implementación en main.dart</div>':''}
       <div class="pv-notices">
         ${after.form?'<span class="pv-scroll-tip">↕ Desplázate dentro del teléfono para ver el campo y el botón.</span>':''}
@@ -488,6 +503,9 @@
       const count=after.querySelector('[data-pv-count]');
       if(count)count.textContent=match.length+' resultado'+(match.length===1?'':'s');
     }
+    const list=after.querySelector('[data-pv-crud-list]');if(list)list.outerHTML=crudUI({crudReady:true},'after',r);
+    const save=after.querySelector('[data-pv-submit]');if(save)save.textContent=r.editIndex===null?'Agregar vehículo':'Guardar cambios';
+    const countTouch=after.querySelector('[data-pv-counter]');if(countTouch)countTouch.textContent=String(r.touchCount||0);
     const debug=wrapper.querySelector('[data-pv-debug-console]');
     if(debug){debug.hidden=!r.debugMessage;const line=debug.querySelector('[data-pv-debug-message]');if(line)line.textContent=r.debugMessage||'';}
     const error=after.querySelector('[data-pv-error]');if(error){error.hidden=!r.invalid;error.textContent=r.validationMessage||'Escribe un nombre';}
@@ -564,10 +582,35 @@
       if(area&&current)area.innerHTML=screenUI(state(current.after),'after',current.highlight,r);
       return;
     }
+    const edit=target.closest('[data-pv-edit]');
+    const remove=target.closest('[data-pv-delete]');
+    const increment=target.closest('[data-pv-increment]');
+    if(edit||remove||increment){
+      const id=(edit||remove||increment).closest('[data-pv-module]')?.dataset.pvModule;
+      const r=runtimeMap.get(id);
+      if(!r||!['extraccion','navegacion'].includes(id))return;
+      if(increment){r.touchCount=(r.touchCount||0)+1;}
+      if(edit){
+        const i=Number(edit.dataset.pvEdit);
+        if(!Number.isInteger(i)||i<0||i>=r.addedCars.length)return;
+        r.editIndex=i;r.model=r.addedCars[i];r.invalid=false;
+      }
+      if(remove){
+        const i=Number(remove.dataset.pvDelete);
+        if(!Number.isInteger(i)||i<0||i>=r.addedCars.length)return;
+        r.addedCars.splice(i,1);
+        r.editIndex=null;r.model='';r.invalid=false;
+      }
+      const screen=document.getElementById('pv-'+id)?.querySelector('[data-pv-side="after"]');
+      const input=screen?.querySelector('[data-pv-model="after"]');
+      if(input)input.value=r.model;
+      updateResults(id);
+      return;
+    }
     if(submit){
       const id=submit.closest('[data-pv-module]')?.dataset.pvModule,r=runtimeMap.get(id);if(!r)return;
       const name=r.model.trim();
-      if(id==='validacion'||id==='objeto'||id==='extraccion'){
+      if(id==='validacion'||id==='objeto'||id==='extraccion'||id==='navegacion'){
         if(name.length<3){
           r.invalid=true;
           r.validationMessage=name.length?'Mínimo 3 caracteres':'Escribe un nombre';
@@ -577,12 +620,16 @@
         }
       }
       if(!name)return;
-      if(id==='objeto'||id==='extraccion') r.debugMessage='Vehículo creado: '+name+' - Disponible: true';
-      else if(['proyecto','validacion','reutilizacion'].includes(id)) r.debugMessage='Vehículo escrito: '+name;
+      if(id==='objeto')r.debugMessage='Vehículo creado: '+name+' - Disponible: true';
+      else if(id==='extraccion'||id==='navegacion'){
+        if(r.editIndex!==null&&r.editIndex>=0&&r.editIndex<r.addedCars.length)r.addedCars[r.editIndex]=name;
+        else r.addedCars.push(name);
+        r.editIndex=null;r.debugMessage='';
+      }else if(['proyecto','validacion','reutilizacion'].includes(id))r.debugMessage='Vehículo escrito: '+name;
       else r.addedCars.push(name);
       r.invalid=false;
       r.snackbar='';
-      if(r.clearAfterSave||id==='validacion'||id==='objeto'||id==='extraccion') {
+      if(r.clearAfterSave||id==='validacion'||id==='objeto'||id==='extraccion'||id==='navegacion') {
         r.model='';
         const field=submit.closest('[data-pv-side]')?.querySelector('[data-pv-model="after"]');
         if(field)field.value='';
