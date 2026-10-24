@@ -26,6 +26,14 @@
   let viewMode=saved('vista')==='grid'?'grid':'list';
   let orderMode='recomendados';
   let onlyFavorites=false;
+  // Se pagina después de filtrar y ordenar, nunca el conjunto original.
+  const tamañosPermitidos = new Set(['12','24','48','all']);
+  const paginaGuardada=saved('tamano-pagina');
+  let pageSize=tamañosPermitidos.has(paginaGuardada)?paginaGuardada:'12';
+  let currentPage=1;
+  const pageSizeSelect=document.getElementById('catalog-page-size');
+  const pageRange=document.getElementById('catalog-range');
+  const paginationControls=Array.from(document.querySelectorAll('[data-catalog-pagination]'));
   let lastOpenButton=null;
   let favorites=new Set();
   try{
@@ -193,6 +201,41 @@
     }
     if(favoriteCount) favoriteCount.textContent=String(favorites.size);
     if(sortSelect)sortSelect.value=orderMode;
+    if(pageSizeSelect)pageSizeSelect.value=pageSize;
+  }
+
+  function numberButtons(totalPages) {
+    const range=new Set([1,totalPages,currentPage-1,currentPage,currentPage+1]);
+    if(currentPage<=2)range.add(3);
+    if(currentPage>=totalPages-1)range.add(totalPages-2);
+    const numbers=[...range].filter(n=>n>0&&n<=totalPages).sort((a,b)=>a-b);
+    let previous=0;
+    return numbers.map(n=>{
+      const ellipsis=n-previous>1?'<span class="wc-pagination-ellipsis" aria-hidden="true">…</span>':'';
+      previous=n;
+      const selected=n===currentPage;
+      return ellipsis+`<button type="button" class="wc-pagination-number${selected?' active':''}"
+        data-catalog-page="${n}" aria-label="Página ${n}" ${selected?'aria-current="page"':''}>${n}</button>`;
+    }).join('');
+  }
+
+  function renderPagination(totalMatches,pageCount,start,end) {
+    if(pageRange)pageRange.textContent=totalMatches===0
+      ? '0 de 0 widgets'
+      : 'Mostrando '+(start+1)+'–'+end+' de '+totalMatches+' widgets';
+    const canBack=currentPage>1;
+    const canForward=currentPage<pageCount;
+    for(const nav of paginationControls){
+      nav.dataset.pageCount=String(pageCount);
+      nav.hidden=pageCount<=1;
+      nav.innerHTML=`
+        <button type="button" data-catalog-page="first" aria-label="Primera página" ${canBack?'':'disabled'}>« <span class="wc-pager-word">Primera</span></button>
+        <button type="button" data-catalog-page="prev" aria-label="Página anterior" ${canBack?'':'disabled'}>‹ <span class="wc-pager-word">Anterior</span></button>
+        <span class="wc-pagination-numbers">${numberButtons(pageCount)}</span>
+        <button type="button" data-catalog-page="next" aria-label="Página siguiente" ${canForward?'':'disabled'}><span class="wc-pager-word">Siguiente</span> ›</button>
+        <button type="button" data-catalog-page="last" aria-label="Última página" ${canForward?'':'disabled'}><span class="wc-pager-word">Última</span> »</button>
+      `;
+    }
   }
 
   function renderCards() {
@@ -208,6 +251,13 @@
       return (ranking.get(a.name)??999)-(ranking.get(b.name)??999)||alpha(a,b);
     });
 
+    const size=pageSize==='all'?Math.max(matches.length,1):Number(pageSize);
+    const pageCount=Math.max(1,Math.ceil(matches.length/size));
+    currentPage=Math.min(Math.max(currentPage,1),pageCount);
+    const start=(currentPage-1)*size;
+    const end=Math.min(start+size,matches.length);
+    const visible=matches.slice(start,end);
+
     if(total) total.textContent=String(widgets.length);
     if(counter) counter.textContent=matches.length+' widget'+(matches.length!==1?'s':'')+' '+(term||onlyFavorites?'encontrados':'para explorar');
     if(clear) clear.hidden=!term&&currentGroup==='Todas'&&!onlyFavorites;
@@ -221,7 +271,7 @@
     grid.classList.toggle('is-list',viewMode==='list');
     grid.dataset.view=viewMode;
     grid.setAttribute('aria-label',viewMode==='list'?'Widgets en forma de lista':'Widgets en forma de tarjetas');
-    grid.innerHTML=matches.map(w=>{
+    grid.innerHTML=visible.map(w=>{
       const n=widgets.indexOf(w);
       const starred=favorites.has(w.name);
       return `<article class="wc-widget-item">
@@ -238,6 +288,7 @@
           title="${starred?'Quitar de favoritos':'Guardar para estudiar'}"><span aria-hidden="true">${starred?'★':'☆'}</span></button>
       </article>`;
     }).join('');
+    renderPagination(matches.length,pageCount,start,end);
     updateToolbar();
   }
 
@@ -424,6 +475,7 @@
     const button=e.target.closest('[data-group]');
     if(!button)return;
     currentGroup=button.dataset.group;
+    currentPage=1;
     renderFilters();renderCards();
   });
   grid.addEventListener('click',e=>{
@@ -444,23 +496,50 @@
     const w=widgets[Number(card.dataset.widgetIndex)];
     if(w){lastOpenButton=card;renderDetail(w);}
   });
-  search.addEventListener('input',renderCards);
-  clear?.addEventListener('click',()=>{currentGroup='Todas';onlyFavorites=false;search.value='';renderFilters();renderCards();search.focus()});
+  search.addEventListener('input',()=>{
+    currentPage=1;
+    renderCards();
+  });
+  clear?.addEventListener('click',()=>{currentGroup='Todas';onlyFavorites=false;currentPage=1;search.value='';renderFilters();renderCards();search.focus()});
   viewButtons.forEach(button=>button.addEventListener('click',()=>{
     viewMode=button.dataset.catalogView==='grid'?'grid':'list';
     persist('vista',viewMode);
     renderCards();
   }));
-  sortSelect?.addEventListener('change',()=>{orderMode=sortSelect.value;renderCards()});
-  favoriteFilter?.addEventListener('click',()=>{onlyFavorites=!onlyFavorites;renderCards()});
+  sortSelect?.addEventListener('change',()=>{orderMode=sortSelect.value;currentPage=1;renderCards()});
+  favoriteFilter?.addEventListener('click',()=>{onlyFavorites=!onlyFavorites;currentPage=1;renderCards()});
   document.getElementById('catalog-list-jump')?.addEventListener('click',()=>{
     currentGroup='Listas y desplazamiento';
     onlyFavorites=false;
+    currentPage=1;
     viewMode='list';
     renderFilters();
     renderCards();
     grid.scrollIntoView({behavior:'smooth',block:'start'});
   });
+  pageSizeSelect?.addEventListener('change',()=>{
+    const selected=pageSizeSelect.value;
+    if(!tamañosPermitidos.has(selected))return;
+    pageSize=selected;
+    currentPage=1;
+    persist('tamano-pagina',pageSize);
+    renderCards();
+  });
+  paginationControls.forEach(nav=>nav.addEventListener('click',e=>{
+    const target=e.target.closest('[data-catalog-page]');
+    if(!target || target.disabled)return;
+    const count=Number(nav.dataset.pageCount)||1;
+    const action=target.dataset.catalogPage;
+    const next=action==='first'?1:action==='prev'?currentPage-1:
+      action==='next'?currentPage+1:action==='last'?count:Number(action);
+    if(!Number.isInteger(next)||next<1||next>count||next===currentPage)return;
+    currentPage=next;
+    renderCards();
+    const pageButton=nav.querySelector('[data-catalog-page="'+next+'"]');
+    if(pageButton)pageButton.focus();
+    const header=document.querySelector('#catalogo-widgets .wc-results-header');
+    if(header)header.scrollIntoView({block:'start',behavior:'smooth'});
+  }));
   dialog.addEventListener('click',e=>{
     if(e.target===dialog)dialog.close();
   });
