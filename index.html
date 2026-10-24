@@ -7421,7 +7421,9 @@ class TarjetaIndicador extends StatelessWidget {
 <h1 id="api-postgres-title">Guardar los vehículos con una API FastAPI y PostgreSQL</h1>
 <p>Hasta P10.3, los vehículos desaparecen al cerrar la aplicación porque están en memoria. Ahora aprenderás a guardarlos de forma persistente, conectando <strong>la misma Tienda Flutter</strong> con una API sencilla en Python y una base de datos PostgreSQL. Partiremos desde lo básico, sin asumir conocimientos previos de servidores.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Resultado final de la práctica</strong><p>La aplicación móvil o web podrá <strong>consultar, crear, editar y eliminar</strong> vehículos por HTTP. FastAPI validará los datos y los guardará en PostgreSQL. Tras cerrar y abrir Flutter, los registros continuarán disponibles.</p></div></div>
-<div class="notice notice-warning"><strong>Punto de partida</strong><p>Debes haber terminado <a href="#bloc-crud">BLoC</a>, <a href="#menu-hamburguesa">menú hamburguesa</a> y <a href="#validaciones-esenciales">validación de campos</a>. <code>actividad2</code> continúa siendo tu proyecto Flutter. La API se crea en otra carpeta hermana llamada <code>tienda_api</code> porque <strong>Python y Dart no se escriben en el mismo archivo</strong>. Este es un proyecto local de aprendizaje: todavía no tiene usuarios ni seguridad de producción.</p></div>
+<div class="notice notice-warning"><strong>Punto de partida</strong><p>Debes haber terminado <a href="#mejoras-panel">P10.3: Resumen interactivo</a>, con BLoC, menú hamburguesa, filtros, paginación y validación de campos. <code>actividad2</code> continúa siendo tu proyecto Flutter. La API se crea en otra carpeta hermana llamada <code>tienda_api</code> porque <strong>Python y Dart no se escriben en el mismo archivo</strong>. Este es un proyecto local de aprendizaje: todavía no tiene usuarios ni seguridad de producción.</p></div>
+<div class="notice notice-info"><strong>Continuidad desde P10.3: conserva tu Tienda completa.</strong><p>La referencia de <a href="./ejemplo_api_postgres/flutter/lib/main.dart" target="_blank" rel="noopener noreferrer">main.dart de P11</a> ya incluye las pestañas de <code>NavigationBar</code>, la búsqueda, la paginación de <code>ListView.builder</code>, los favoritos, el selector de orden, el menú hamburguesa y las tarjetas del Resumen. No regreses a un main.dart más antiguo: cambia el origen de los datos de BLoC en memoria a <code>VehiculosApi</code>, manteniendo los widgets desarrollados.</p>
+<p>Los cambios de <strong>disponibilidad</strong> se envían por HTTP y persisten. Los <strong>favoritos</strong> son una preferencia de la sesión local en esta etapa y todavía no están guardados en PostgreSQL. <strong>Deshacer</strong> espera la confirmación del servidor y crea un vehículo equivalente mediante HTTP; el servidor asigna un <em>nuevo ID</em>, por lo que el histórico del ID anterior no se recupera. Ante un fallo de red se informa del error y no se simula una restauración local.</p></div>
 <div class="al-flow" aria-label="Diagrama de comunicación entre Flutter FastAPI y PostgreSQL">
 <div><strong>Flutter (Dart)</strong><span>Interfaz, validadores, BLoC y HTTP</span></div><b aria-hidden="true">→</b>
 <div><strong>FastAPI (Python)</strong><span>Recibe solicitudes y valida datos</span></div><b aria-hidden="true">→</b>
@@ -8078,20 +8080,20 @@ def eliminar_vehiculo(vehiculo_id: int, sesion: Sesion):
     sesion.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 </code></pre></details>
-<details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/repositories/vehiculos_api.dart completo</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/repositories/vehiculos_api.dart completo</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;dart:convert&#x27;;
-import &#x27;package:flutter/foundation.dart&#x27; show kIsWeb, TargetPlatform, defaultTargetPlatform;
-import &#x27;package:http/http.dart&#x27; as http;
-import &#x27;../models/vehiculo.dart&#x27;;
+<details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/repositories/vehiculos_api.dart completo</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/repositories/vehiculos_api.dart completo</div><pre class="code-block" data-code-mode="dart"><code>import &#39;dart:convert&#39;;
+import &#39;package:flutter/foundation.dart&#39; show kIsWeb, TargetPlatform, defaultTargetPlatform;
+import &#39;package:http/http.dart&#39; as http;
+import &#39;../models/vehiculo.dart&#39;;
 
 /// El servidor FastAPI corre en Windows; el emulador Android usa 10.0.2.2.
 /// API_URL puede cambiarse para probar Docker o una URL segura.
 String urlApiPredeterminada() {
-  const especificada = String.fromEnvironment(&#x27;API_URL&#x27;);
+  const especificada = String.fromEnvironment(&#39;API_URL&#39;);
   if (especificada.isNotEmpty) return especificada;
   if (!kIsWeb &amp;&amp; defaultTargetPlatform == TargetPlatform.android) {
-    return &#x27;http://10.0.2.2:8001&#x27;;
+    return &#39;http://10.0.2.2:8001&#39;;
   }
-  return &#x27;http://127.0.0.1:8001&#x27;;
+  return &#39;http://127.0.0.1:8001&#39;;
 }
 
 class VehiculosApi {
@@ -8102,7 +8104,7 @@ class VehiculosApi {
   final String urlBase;
   final http.Client _cliente;
 
-  Uri get _ruta =&gt; Uri.parse(&#x27;$urlBase/vehiculos&#x27;);
+  Uri get _ruta =&gt; Uri.parse(&#39;$urlBase/vehiculos&#39;);
 
   Future&lt;List&lt;Vehiculo&gt;&gt; listar() async {
     final respuesta = await _cliente.get(_ruta);
@@ -8113,24 +8115,27 @@ class VehiculosApi {
         .toList();
   }
 
-  Future&lt;void&gt; crear({
+  Future&lt;int&gt; crear({
     required String nombre,
     required int anio,
     required double precio,
     required String correo,
+    bool disponible = true,
   }) async {
     final respuesta = await _cliente.post(
       _ruta,
-      headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
       body: jsonEncode({
-        &#x27;nombre&#x27;: nombre,
-        &#x27;anio&#x27;: anio,
-        &#x27;precio&#x27;: precio,
-        &#x27;correo&#x27;: correo,
-        &#x27;disponible&#x27;: true,
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: disponible,
       }),
     );
     _verificar(respuesta, 201);
+    final datos = jsonDecode(respuesta.body) as Map&lt;String, dynamic&gt;;
+    return datos[&#39;id&#39;] as int;
   }
 
   Future&lt;void&gt; actualizar({
@@ -8142,14 +8147,14 @@ class VehiculosApi {
     required bool disponible,
   }) async {
     final respuesta = await _cliente.put(
-      Uri.parse(&#x27;$urlBase/vehiculos/$id&#x27;),
-      headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
+      headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
       body: jsonEncode({
-        &#x27;nombre&#x27;: nombre,
-        &#x27;anio&#x27;: anio,
-        &#x27;precio&#x27;: precio,
-        &#x27;correo&#x27;: correo,
-        &#x27;disponible&#x27;: disponible,
+        &#39;nombre&#39;: nombre,
+        &#39;anio&#39;: anio,
+        &#39;precio&#39;: precio,
+        &#39;correo&#39;: correo,
+        &#39;disponible&#39;: disponible,
       }),
     );
     _verificar(respuesta, 200);
@@ -8157,7 +8162,7 @@ class VehiculosApi {
 
   Future&lt;void&gt; eliminar(int id) async {
     final respuesta = await _cliente.delete(
-      Uri.parse(&#x27;$urlBase/vehiculos/$id&#x27;),
+      Uri.parse(&#39;$urlBase/vehiculos/$id&#39;),
     );
     _verificar(respuesta, 204);
   }
@@ -8165,7 +8170,7 @@ class VehiculosApi {
   void _verificar(http.Response respuesta, int esperado) {
     if (respuesta.statusCode != esperado) {
       throw Exception(
-        &#x27;Error HTTP ${respuesta.statusCode}. Revisa la API y sus datos.&#x27;,
+        &#39;Error HTTP ${respuesta.statusCode}. Revisa la API y sus datos.&#39;,
       );
     }
   }
@@ -8181,13 +8186,11 @@ import &#39;vehiculos_estado.dart&#39;;
 
 class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
   VehiculosBloc(this.api)
-      : super(
-          const VehiculosEstado(
-            vehiculos: [],
-            visibles: [],
-            busqueda: &#39;&#39;,
-          ),
-        ) {
+      : super(const VehiculosEstado(
+          vehiculos: [],
+          visibles: [],
+          busqueda: &#39;&#39;,
+        )) {
     on&lt;VehiculosCargados&gt;((evento, emit) async {
       emit(_nuevoEstado(state.vehiculos, cargando: true));
       try {
@@ -8226,7 +8229,7 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
           );
         }
         final datos = await api.listar();
-        emit(_nuevoEstado(datos, idEnEdicion: null));
+        emit(_nuevoEstado(datos));
       } catch (error) {
         emit(_nuevoEstado(
           state.vehiculos,
@@ -8241,20 +8244,38 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
       emit(_nuevoEstado(state.vehiculos, enviando: true));
       try {
         await api.eliminar(evento.id);
+        _favoritos.remove(evento.id);
         final datos = await api.listar();
-        emit(_nuevoEstado(datos, idEnEdicion: null));
+        emit(_nuevoEstado(datos));
       } catch (error) {
-        emit(_nuevoEstado(
-          state.vehiculos,
-          idEnEdicion: state.idEnEdicion,
-          error: _mensaje(error),
-        ));
+        emit(_nuevoEstado(state.vehiculos, error: _mensaje(error)));
+      }
+    });
+
+    // La restauración remota crea un nuevo registro: el servidor asigna otro ID.
+    // No se modifica la lista en memoria sin confirmar primero la respuesta HTTP.
+    on&lt;VehiculoRestaurado&gt;((evento, emit) async {
+      if (state.enviando) return;
+      emit(_nuevoEstado(state.vehiculos, enviando: true));
+      try {
+        final v = evento.vehiculo;
+        final nuevoId = await api.crear(
+          nombre: v.nombre,
+          anio: v.anio,
+          precio: v.precio,
+          correo: v.correo,
+          disponible: v.disponible,
+        );
+        if (v.favorito) _favoritos.add(nuevoId);
+        final datos = await api.listar();
+        emit(_nuevoEstado(datos));
+      } catch (error) {
+        emit(_nuevoEstado(state.vehiculos, error: _mensaje(error)));
       }
     });
 
     on&lt;EdicionIniciada&gt;((evento, emit) {
-      final existe = state.vehiculos.any((v) =&gt; v.id == evento.id);
-      if (existe) {
+      if (state.vehiculos.any((v) =&gt; v.id == evento.id)) {
         emit(_nuevoEstado(state.vehiculos, idEnEdicion: evento.id));
       }
     });
@@ -8273,28 +8294,105 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
         error: state.error,
       ));
     });
+
+    // Favoritos es una preferencia visual local de esta versión.
+    on&lt;FavoritoAlternado&gt;((evento, emit) {
+      if (!state.vehiculos.any((v) =&gt; v.id == evento.id)) return;
+      if (!_favoritos.add(evento.id)) _favoritos.remove(evento.id);
+      emit(_nuevoEstado(state.vehiculos,
+          idEnEdicion: state.idEnEdicion));
+    });
+
+    on&lt;DisponibilidadAlternada&gt;((evento, emit) async {
+      if (state.enviando) return;
+      final lista = state.vehiculos.where((v) =&gt; v.id == evento.id);
+      if (lista.isEmpty) return;
+      final v = lista.first;
+      emit(_nuevoEstado(state.vehiculos, enviando: true));
+      try {
+        await api.actualizar(
+          id: v.id, nombre: v.nombre, anio: v.anio,
+          precio: v.precio, correo: v.correo,
+          disponible: !v.disponible,
+        );
+        emit(_nuevoEstado(await api.listar()));
+      } catch (error) {
+        emit(_nuevoEstado(state.vehiculos, error: _mensaje(error)));
+      }
+    });
+
+    on&lt;FiltroCambiado&gt;((evento, emit) {
+      emit(_nuevoEstado(
+        state.vehiculos,
+        filtro: evento.filtro,
+        idEnEdicion: state.idEnEdicion,
+      ));
+    });
+
+    on&lt;OrdenCambiado&gt;((evento, emit) {
+      emit(_nuevoEstado(
+        state.vehiculos,
+        orden: evento.orden,
+        idEnEdicion: state.idEnEdicion,
+      ));
+    });
   }
 
   final VehiculosApi api;
+  final Set&lt;int&gt; _favoritos = {};
 
   VehiculosEstado _nuevoEstado(
     List&lt;Vehiculo&gt; vehiculos, {
     String? busqueda,
     int? idEnEdicion,
+    FiltroVehiculos? filtro,
+    OrdenVehiculos? orden,
     bool cargando = false,
     bool enviando = false,
     String? error,
   }) {
-    final actual = busqueda ?? state.busqueda;
-    final texto = actual.trim().toLowerCase();
-    final visibles = vehiculos
-        .where((v) =&gt; v.nombre.toLowerCase().contains(texto))
+    final actualBusqueda = busqueda ?? state.busqueda;
+    final actualFiltro = filtro ?? state.filtro;
+    final actualOrden = orden ?? state.orden;
+    final texto = actualBusqueda.trim().toLowerCase();
+
+    final datos = vehiculos
+        .map((v) =&gt; v.copiarCon(favorito: _favoritos.contains(v.id)))
         .toList();
+    final visibles = datos.where((v) {
+      if (!v.nombre.toLowerCase().contains(texto)) return false;
+      switch (actualFiltro) {
+        case FiltroVehiculos.todos:
+          return true;
+        case FiltroVehiculos.disponibles:
+          return v.disponible;
+        case FiltroVehiculos.favoritos:
+          return v.favorito;
+      }
+    }).toList();
+
+    switch (actualOrden) {
+      case OrdenVehiculos.recientes:
+        break;
+      case OrdenVehiculos.nombre:
+        visibles.sort((a, b) =&gt; a.nombre.toLowerCase()
+            .compareTo(b.nombre.toLowerCase()));
+        break;
+      case OrdenVehiculos.precioMenor:
+        visibles.sort((a, b) =&gt; a.precio.compareTo(b.precio));
+        break;
+      case OrdenVehiculos.precioMayor:
+        visibles.sort((a, b) =&gt; b.precio.compareTo(a.precio));
+        break;
+    }
+
     return VehiculosEstado(
-      vehiculos: List&lt;Vehiculo&gt;.unmodifiable(vehiculos),
+      vehiculos: List&lt;Vehiculo&gt;.unmodifiable(datos),
       visibles: List&lt;Vehiculo&gt;.unmodifiable(visibles),
-      busqueda: actual,
+      busqueda: actualBusqueda,
       idEnEdicion: idEnEdicion,
+      filtro: actualFiltro,
+      orden: actualOrden,
       cargando: cargando,
       enviando: enviando,
       error: error,
@@ -8310,7 +8408,8 @@ class VehiculosBloc extends Bloc&lt;VehiculosEvento, VehiculosEstado&gt; {
     api.cerrar();
     return super.close();
   }
-}</code></pre></details>
+}
+</code></pre></details>
 <details class="al-full-reference"><summary>Ver archivo de referencia completo: actividad2/lib/main.dart conectado a FastAPI</summary><p>Compáralo con el que construiste paso a paso. No pegues código encima de una etapa distinta.</p><div class="code-label">actividad2/lib/main.dart conectado a FastAPI</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;package:flutter_bloc/flutter_bloc.dart&#39;;
 import &#39;bloc/vehiculos_bloc.dart&#39;;
@@ -8321,6 +8420,7 @@ import &#39;pages/ayuda_page.dart&#39;;
 import &#39;widgets/boton_tienda.dart&#39;;
 import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
 import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/tarjeta_indicador.dart&#39;;
 import &#39;repositories/vehiculos_api.dart&#39;;
 import &#39;validators/validadores.dart&#39;;
 
@@ -8357,6 +8457,27 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   final TextEditingController precioController = TextEditingController();
   final TextEditingController correoController = TextEditingController();
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  int indicePestana = 0;
+  int paginaActual = 1;
+  int registrosPorPagina = 5;
+
+  void cambiarPagina(int nuevaPagina, int totalPaginas) {
+    if (nuevaPagina &lt; 1 || nuevaPagina &gt; totalPaginas) return;
+    setState(() =&gt; paginaActual = nuevaPagina);
+  }
+
+  void cambiarFiltro(FiltroVehiculos filtro) {
+    setState(() =&gt; paginaActual = 1);
+    context.read&lt;VehiculosBloc&gt;().add(FiltroCambiado(filtro));
+  }
+
+  void alternarFavorito(int id) {
+    context.read&lt;VehiculosBloc&gt;().add(FavoritoAlternado(id));
+  }
+
+  void alternarDisponibilidad(int id) {
+    context.read&lt;VehiculosBloc&gt;().add(DisponibilidadAlternada(id));
+  }
 
   void guardarVehiculo() {
     if (formularioKey.currentState?.validate() != true) {
@@ -8394,9 +8515,55 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
     bloc.add(EdicionIniciada(id));
   }
 
-  void borrarVehiculo(int id) {
+  Future&lt;void&gt; borrarVehiculo(int id) async {
+    final bloc = context.read&lt;VehiculosBloc&gt;();
+    final encontrados = bloc.state.vehiculos.where((v) =&gt; v.id == id);
+    if (encontrados.isEmpty || bloc.state.enviando) return;
+    final eliminado = encontrados.first;
+    final confirmado = await showDialog&lt;bool&gt;(
+      context: context,
+      builder: (dialogo) =&gt; AlertDialog(
+        title: const Text(&#39;Eliminar vehículo&#39;),
+        content: Text(&#39;¿Eliminar ${eliminado.nombre} del servidor?&#39;),
+        actions: [
+          TextButton(
+            onPressed: () =&gt; Navigator.pop(dialogo, false),
+            child: const Text(&#39;Cancelar&#39;),
+          ),
+          FilledButton(
+            onPressed: () =&gt; Navigator.pop(dialogo, true),
+            child: const Text(&#39;Eliminar&#39;),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || confirmado != true) return;
+    bloc.add(VehiculoEliminado(id));
+    // El DELETE debe terminar antes de ofrecer la restauración.
+    final resultado = await bloc.stream.firstWhere((estado) =&gt;
+        !estado.enviando &amp;&amp;
+        (estado.error != null ||
+            !estado.vehiculos.any((v) =&gt; v.id == id)));
+    if (!mounted) return;
+    final mensajes = ScaffoldMessenger.of(context);
+    mensajes.hideCurrentSnackBar();
+    if (resultado.error != null) {
+      mensajes.showSnackBar(
+        SnackBar(content: Text(&#39;No se pudo eliminar: ${resultado.error}&#39;)),
+      );
+      return;
+    }
     limpiarCampos();
-    context.read&lt;VehiculosBloc&gt;().add(VehiculoEliminado(id));
+    mensajes.showSnackBar(SnackBar(
+      content: Text(&#39;${eliminado.nombre} eliminado del servidor&#39;),
+      duration: const Duration(seconds: 7),
+      action: SnackBarAction(
+        label: &#39;Deshacer&#39;,
+        onPressed: () {
+          if (!bloc.isClosed) bloc.add(VehiculoRestaurado(eliminado));
+        },
+      ),
+    ));
   }
 
   void cancelarEdicion() {
@@ -8417,6 +8584,29 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: indicePestana,
+        onDestinationSelected: (indice) {
+          setState(() =&gt; indicePestana = indice);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: &#39;Tienda&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.summarize_outlined),
+            selectedIcon: Icon(Icons.summarize),
+            label: &#39;Resumen&#39;,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.lightbulb_outline),
+            selectedIcon: Icon(Icons.lightbulb),
+            label: &#39;Consejos&#39;,
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: SafeArea(
           child: ListView(
@@ -8467,204 +8657,474 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
-              const SizedBox(height: 12),
-              const Row(
+      body: IndexedStack(
+        index: indicePestana,
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.directions_car),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      &#39;Ingenieria de Sistemas&#39;,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Buscar marca o modelo&#39;,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (texto) {
-                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
-                },
-              ),
-              const SizedBox(height: 16),
-              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: [
-                    CampoNombreVehiculo(controller: vehiculoController),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: anioController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Año del vehículo&#39;,
-                        hintText: &#39;2020&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.anio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: precioController,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: &#39;Precio&#39;,
-                        hintText: &#39;25000000.50&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.precio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: correoController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Correo de contacto&#39;,
-                        hintText: &#39;cliente@ejemplo.com&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.correo,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: BotonTienda(
-                          texto: estado.enviando
-                              ? &#39;Guardando...&#39;
-                              : (estado.idEnEdicion == null
-                                  ? &#39;Agregar vehículo&#39;
-                                  : &#39;Guardar cambios&#39;),
-                          alPresionar: guardarVehiculo,
-                        ),
-                      ),
-                      if (estado.idEnEdicion != null) ...[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: cancelarEdicion,
-                          child: const Text(&#39;Cancelar&#39;),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 14),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Text(
-                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
-                    &#39;Visibles: ${estado.visibles.length}&#39;,
-                  );
-                },
-              ),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  if (estado.error == null) return const SizedBox.shrink();
-                  return Card(
-                    color: Colors.amber.shade50,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          Expanded(child: Text(estado.error!)),
-                          IconButton(
-                            tooltip: &#39;Reintentar&#39;,
-                            icon: const Icon(Icons.refresh),
-                            onPressed: () {
-                              context.read&lt;VehiculosBloc&gt;().add(
-                                VehiculosCargados(),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                  builder: (context, estado) {
-                    if (estado.cargando) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (estado.visibles.isEmpty) {
-                      return Center(
-                        child: Text(
-                          estado.vehiculos.isEmpty
-                              ? &#39;Todavía no hay vehículos registrados.&#39;
-                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: estado.visibles.length,
-                      itemBuilder: (context, indiceVisible) {
-                        final vehiculo = estado.visibles[indiceVisible];
-                        final id = vehiculo.id;
+                  const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      if (estado.cargando) {
+                        return const LinearProgressIndicator();
+                      }
+                      if (estado.error != null) {
                         return Card(
                           child: ListTile(
-                            title: Text(vehiculo.nombre),
-                            isThreeLine: true,
-                            subtitle: Text(
-                              &#39;Año: &#39; + vehiculo.anio.toString() +
-                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
-                              &#39;\nCorreo: &#39; + vehiculo.correo,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  tooltip: &#39;Editar vehículo&#39;,
-                                  onPressed: () =&gt; comenzarEdicion(id),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  tooltip: &#39;Eliminar vehículo&#39;,
-                                  onPressed: () =&gt; borrarVehiculo(id),
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
+                            leading: const Icon(Icons.error_outline),
+                            title: Text(estado.error!),
+                            trailing: TextButton(
+                              onPressed: () =&gt; context.read&lt;VehiculosBloc&gt;()
+                                  .add(VehiculosCargados()),
+                              child: const Text(&#39;Reintentar&#39;),
                             ),
                           ),
                         );
-                      },
-                    );
-                  },
-                ),
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          &#39;Ingenieria de Sistemas&#39;,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: &#39;Buscar marca o modelo&#39;,
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (texto) {
+                      setState(() =&gt; paginaActual = 1);
+                      context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              ChoiceChip(
+                                label: const Text(&#39;Todos&#39;),
+                                selected: estado.filtro == FiltroVehiculos.todos,
+                                onSelected: (_) =&gt; cambiarFiltro(FiltroVehiculos.todos),
+                              ),
+                              ChoiceChip(
+                                label: const Text(&#39;Disponibles&#39;),
+                                selected: estado.filtro == FiltroVehiculos.disponibles,
+                                onSelected: (_) =&gt;
+                                    cambiarFiltro(FiltroVehiculos.disponibles),
+                              ),
+                              ChoiceChip(
+                                avatar: const Icon(Icons.star, size: 18),
+                                label: const Text(&#39;Favoritos&#39;),
+                                selected: estado.filtro == FiltroVehiculos.favoritos,
+                                onSelected: (_) =&gt; cambiarFiltro(FiltroVehiculos.favoritos),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          DropdownButtonFormField&lt;OrdenVehiculos&gt;(
+                            initialValue: estado.orden,
+                            isExpanded: true,
+                            decoration: const InputDecoration(
+                              labelText: &#39;Ordenar vehículos&#39;,
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                            ),
+                            items: const [
+                              DropdownMenuItem(
+                                value: OrdenVehiculos.recientes,
+                                child: Text(&#39;Orden de registro&#39;),
+                              ),
+                              DropdownMenuItem(
+                                value: OrdenVehiculos.nombre,
+                                child: Text(&#39;Nombre A–Z&#39;),
+                              ),
+                              DropdownMenuItem(
+                                value: OrdenVehiculos.precioMenor,
+                                child: Text(&#39;Precio: menor a mayor&#39;),
+                              ),
+                              DropdownMenuItem(
+                                value: OrdenVehiculos.precioMayor,
+                                child: Text(&#39;Precio: mayor a menor&#39;),
+                              ),
+                            ],
+                            onChanged: (orden) {
+                              if (orden == null) return;
+                              setState(() =&gt; paginaActual = 1);
+                              context.read&lt;VehiculosBloc&gt;().add(OrdenCambiado(orden));
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        CampoNombreVehiculo(controller: vehiculoController),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: anioController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Año del vehículo&#39;,
+                            hintText: &#39;2020&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.anio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: precioController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: &#39;Precio&#39;,
+                            hintText: &#39;25000000.50&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.precio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: correoController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Correo de contacto&#39;,
+                            hintText: &#39;cliente@ejemplo.com&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.correo,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: BotonTienda(
+                              texto: estado.idEnEdicion == null
+                                  ? &#39;Agregar vehículo&#39;
+                                  : &#39;Guardar cambios&#39;,
+                              alPresionar: guardarVehiculo,
+                            ),
+                          ),
+                          if (estado.idEnEdicion != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: cancelarEdicion,
+                              child: const Text(&#39;Cancelar&#39;),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Text(
+                        &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                        &#39;Visibles: ${estado.visibles.length}&#39;,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      final cantidad = estado.visibles.length;
+                      final totalPaginas = cantidad == 0
+                          ? 1
+                          : (cantidad + registrosPorPagina - 1) ~/ registrosPorPagina;
+                      final paginaSegura =
+                          paginaActual &gt; totalPaginas ? totalPaginas : paginaActual;
+                      final inicio = (paginaSegura - 1) * registrosPorPagina;
+                      final visiblesPagina = estado.visibles
+                          .skip(inicio)
+                          .take(registrosPorPagina)
+                          .toList();
+
+                      if (visiblesPagina.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            estado.vehiculos.isEmpty
+                                ? &#39;Todavía no hay vehículos registrados.&#39;
+                                : &#39;No hay vehículos que coincidan con la búsqueda o filtro.&#39;,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: visiblesPagina.length,
+                        itemBuilder: (context, indiceVisible) {
+                          final vehiculo = visiblesPagina[indiceVisible];
+                          // El índice REAL evita editar otro vehículo al filtrar.
+                          final idReal = vehiculo.id;
+                          return Card(
+                            child: ListTile(
+                              leading: IconButton(
+                                tooltip: vehiculo.favorito
+                                    ? &#39;Quitar de favoritos&#39;
+                                    : &#39;Marcar como favorito&#39;,
+                                onPressed: () =&gt; alternarFavorito(idReal),
+                                icon: Icon(
+                                  vehiculo.favorito
+                                      ? Icons.star
+                                      : Icons.star_border,
+                                  color: vehiculo.favorito
+                                      ? Colors.amber.shade700
+                                      : null,
+                                ),
+                              ),
+                              title: Text(
+                                vehiculo.nombre,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              isThreeLine: true,
+                              subtitle: Text(
+                                &#39;Año: ${vehiculo.anio} · &#39;
+                                &#39;Precio: ${vehiculo.precio.toStringAsFixed(2)}\n&#39;
+                                &#39;${vehiculo.disponible ? &quot;Disponible&quot; : &quot;No disponible&quot;}&#39;
+                                &#39; · ${vehiculo.correo}&#39;,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: PopupMenuButton&lt;String&gt;(
+                                tooltip: &#39;Acciones de ${vehiculo.nombre}&#39;,
+                                onSelected: (accion) {
+                                  switch (accion) {
+                                    case &#39;editar&#39;:
+                                      comenzarEdicion(idReal);
+                                      break;
+                                    case &#39;disponibilidad&#39;:
+                                      alternarDisponibilidad(idReal);
+                                      break;
+                                    case &#39;eliminar&#39;:
+                                      borrarVehiculo(idReal);
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (_) =&gt; [
+                                  const PopupMenuItem(
+                                    value: &#39;editar&#39;,
+                                    child: Text(&#39;Editar&#39;),
+                                  ),
+                                  PopupMenuItem(
+                                    value: &#39;disponibilidad&#39;,
+                                    child: Text(
+                                      vehiculo.disponible
+                                          ? &#39;Marcar no disponible&#39;
+                                          : &#39;Marcar disponible&#39;,
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: &#39;eliminar&#39;,
+                                    child: Text(&#39;Eliminar&#39;),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      final cantidad = estado.visibles.length;
+                      final totalPaginas = cantidad == 0
+                          ? 1
+                          : (cantidad + registrosPorPagina - 1) ~/ registrosPorPagina;
+                      final paginaSegura =
+                          paginaActual &gt; totalPaginas ? totalPaginas : paginaActual;
+                      final inicio = cantidad == 0
+                          ? 0
+                          : (paginaSegura - 1) * registrosPorPagina + 1;
+                      final fin = cantidad &lt; paginaSegura * registrosPorPagina
+                          ? cantidad
+                          : paginaSegura * registrosPorPagina;
+
+                      return Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: [
+                          Text(&#39;$inicio–$fin de $cantidad&#39;),
+                          DropdownButton&lt;int&gt;(
+                            value: registrosPorPagina,
+                            items: const [
+                              DropdownMenuItem(value: 5, child: Text(&#39;5 por página&#39;)),
+                              DropdownMenuItem(value: 10, child: Text(&#39;10 por página&#39;)),
+                              DropdownMenuItem(value: 20, child: Text(&#39;20 por página&#39;)),
+                            ],
+                            onChanged: (valor) {
+                              if (valor == null) return;
+                              setState(() {
+                                registrosPorPagina = valor;
+                                paginaActual = 1;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            tooltip: &#39;Página anterior&#39;,
+                            icon: const Icon(Icons.chevron_left),
+                            onPressed: paginaSegura &gt; 1
+                                ? () =&gt; cambiarPagina(paginaSegura - 1, totalPaginas)
+                                : null,
+                          ),
+                          Text(&#39;Página $paginaSegura de $totalPaginas&#39;),
+                          IconButton(
+                            tooltip: &#39;Página siguiente&#39;,
+                            icon: const Icon(Icons.chevron_right),
+                            onPressed: paginaSegura &lt; totalPaginas
+                                ? () =&gt; cambiarPagina(paginaSegura + 1, totalPaginas)
+                                : null,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+            builder: (context, estado) {
+              final vehiculos = estado.vehiculos;
+              final total = vehiculos.length;
+              final disponibles = vehiculos.where((v) =&gt; v.disponible).length;
+              final favoritos = vehiculos.where((v) =&gt; v.favorito).length;
+              final promedio = total == 0
+                  ? 0.0
+                  : vehiculos.fold&lt;double&gt;(0, (suma, v) =&gt; suma + v.precio) /
+                      total;
+
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      &#39;Resumen de la Tienda&#39;,
+                      style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(&#39;Estos indicadores se calculan desde el BLoC.&#39;),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        TarjetaIndicador(
+                          titulo: &#39;Registrados&#39;,
+                          valor: &#39;$total&#39;,
+                          icono: Icons.directions_car,
+                          color: Colors.indigo,
+                        ),
+                        TarjetaIndicador(
+                          titulo: &#39;Disponibles&#39;,
+                          valor: &#39;$disponibles&#39;,
+                          icono: Icons.check_circle_outline,
+                          color: Colors.teal,
+                        ),
+                        TarjetaIndicador(
+                          titulo: &#39;Favoritos&#39;,
+                          valor: &#39;$favoritos&#39;,
+                          icono: Icons.star,
+                          color: Colors.orange,
+                        ),
+                        TarjetaIndicador(
+                          titulo: &#39;Precio promedio&#39;,
+                          valor: promedio.toStringAsFixed(0),
+                          icono: Icons.payments_outlined,
+                          color: Colors.blueGrey,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      &#39;Disponibilidad: $disponibles de $total&#39;,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      minHeight: 10,
+                      borderRadius: BorderRadius.circular(8),
+                      value: total == 0 ? 0 : disponibles / total,
+                    ),
+                    const SizedBox(height: 18),
+                    FilledButton.icon(
+                      icon: const Icon(Icons.star_outline),
+                      label: const Text(&#39;Explorar favoritos&#39;),
+                      onPressed: () {
+                        cambiarFiltro(FiltroVehiculos.favoritos);
+                        setState(() =&gt; indicePestana = 0);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      &#39;El inventario se guarda en FastAPI y PostgreSQL. Los favoritos &#39;
+                      &#39;son una preferencia visual de esta sesión.&#39;,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                &#39;Para registrar un vehículo, escribe un nombre válido &#39;
+                &#39;y pulsa Agregar en la pestaña Tienda.&#39;,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}</code></pre></details>
+}
+</code></pre></details>
 <div class="notice notice-warning"><strong>Lo que todavía NO hacemos en esta práctica</strong><p>No hay autenticación ni autorización, migraciones de esquema, despliegue público, cifrado de HTTP local ni administración de secretos. La contraseña Docker es demostrativa y la API debe ejecutarse en una red controlada. Para una aplicación real necesitarás HTTPS, usuarios y permisos, copias de seguridad, migraciones y secretos fuera del repositorio.</p></div>
 <div class="al-table-scroll"><table class="al-table"><thead><tr><th>Problema que observa el estudiante</th><th>Primera comprobación</th></tr></thead><tbody>
 <tr><td><code>Connection refused</code> o servidor inaccesible</td><td>¿Uvicorn está abierto en el puerto 8000? ¿La IP corresponde al dispositivo?</td></tr>
