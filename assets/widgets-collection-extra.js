@@ -65,7 +65,7 @@
     list.properties=[
       ['children','List<Widget>','Widgets dibujados de inmediato al usar ListView(children: ...)'],
       ['itemCount','int?','En ListView.builder indica cuántas filas se construirán'],
-      ['itemBuilder','IndexedWidgetBuilder','En builder crea la fila solicitada según su índice'],
+      ['itemBuilder','NullableIndexedWidgetBuilder','Solo en builder y separated; crea la fila del índice pedido y puede devolver null'],
       ['separatorBuilder','IndexedWidgetBuilder','En ListView.separated dibuja separadores entre las filas'],
       ['scrollDirection','Axis','Axis.vertical o Axis.horizontal'],
       ['shrinkWrap','bool','Ajusta la extensión al contenido cuando sea necesario; puede ser más costoso'],
