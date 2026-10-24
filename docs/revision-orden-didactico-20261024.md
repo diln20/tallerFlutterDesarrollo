@@ -8,7 +8,7 @@ Revisión de la guía HTML publicada en GitHub Pages, su navegación y los ejemp
 |---|---|---|
 | Fundamentos comunes | 01 → 02 → 03 → 04 → 05 | Proyecto vacío creado en VS Code |
 | Ruta A principal, parte 1 | P1 → P2 → P3 → P4 → P5 → P5.1 | Código al terminar 05 |
-| Ruta A principal, parte 2 | P6 → P7 → P8 → P9 → P10 | CRUD construido en P5.1 |
+| Ruta A principal, parte 2 | P6 → P7 → P7.1 (NavigationBar) → P8 → P9 → P10 | CRUD construido en P5.1 |
 | Ruta A principal, parte 3 | P11 → P12 → P13 → P14 | BLoC, páginas, menú y validación funcionando |
 | Ruta B opcional | B1 → B2 → B3 → B4 | **Otra copia independiente del resultado de 05** |
 | Catálogo de widgets | Consulta libre | No es requisito para pasar de un módulo a otro |
@@ -79,3 +79,8 @@ prueba 0, 1 y 3 vehículos.
 Se corrigió la continuidad con P1: las referencias P5.1, P6 y P7 usan
 `SingleChildScrollView` y listas adaptadas sin `Expanded` vertical.
 Ver [informe específico P5.1](listview-builder-listtile-p51.md).
+
+
+## Ampliación P7.1 — NavigationBar inferior
+
+Después de construir páginas con Navigator.push/pop en P7, se presenta NavigationBar con Scaffold.bottomNavigationBar, selectedIndex, onDestinationSelected e IndexedStack. P8 conserva la barra mientras migra exclusivamente la lógica del inventario a BLoC. P9 (Drawer) y P10 (validaciones) siguen como lecciones de la misma ruta y nivel del menú de P7, sin un separador de categoría entre ellas. La navegación inferior alterna Tienda, Resumen y Consejos sin perder vehículos. El ejemplo de referencia está en `etapas/paso_14b_navigation_bar.dart`.
