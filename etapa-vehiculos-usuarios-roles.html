@@ -4,7 +4,25 @@
 <body><header><a href="./index.html">← Volver al taller principal</a><p class="pill">Etapa complementaria · Paso a paso</p><h1>Mi concesionario: filtros, favoritos y roles</h1><p class="muted">Continuación acumulativa de actividad2. Un segundo objeto, Usuario, con perfiles administrador, vendedor y cliente.</p></header>
 <main>
 <section><h2>Ruta de aprendizaje</h2><p>Primero mejoramos el catálogo que ya existe y luego introducimos el modelo Usuario. No sustituimos el objeto Vehiculo, ni implementamos autenticación real antes de explicar los conceptos.</p><p><strong>Orden:</strong> búsqueda → marca y precio → ordenamiento → favoritos → lista vacía → paginación → objeto Usuario → enum RolUsuario → permisos → páginas por rol → protección en servidor.</p></section>
-<section><h2>Parte A · Evolución del listado de vehículos</h2>
+<section><h2>Antes de continuar: migración obligatoria del modelo</h2><div class="step"><h3>0. Ampliar Vehiculo sin perder imágenes</h3><p>La versión inicial del taller tiene <code>Vehiculo(nombre, disponible)</code>. La etapa de fotografías agrega <code>imagenBytes</code>. <strong>Los pasos de filtros, favoritos y precios requieren primero añadir id, marca y precio</strong>. No se debe reemplazar el modelo por una copia anterior sin imágenes.</p><p><strong>Archivo exacto:</strong> <code>lib/models/vehiculo.dart</code>. En este punto reemplaza la definición de la clase por la versión acumulativa siguiente:</p><pre><code>import 'dart:typed_data';
+
+class Vehiculo {
+  const Vehiculo({
+    required this.id,
+    required this.nombre,
+    required this.marca,
+    required this.precio,
+    this.disponible = true,
+    this.imagenBytes,
+  });
+
+  final int id;
+  final String nombre;
+  final String marca;
+  final double precio;
+  final bool disponible;
+  final Uint8List? imagenBytes;
+}</code></pre><p>La clase conserva <code>disponible</code> e <code>imagenBytes</code> y agrega <code>id</code>, <code>marca</code> y <code>precio</code>. <strong>Este cambio requiere adaptar previamente el formulario y los lugares que llaman a <code>Vehiculo(...)</code></strong> para suministrar los tres campos nuevos; mientras no se adapte el formulario, no ejecutes esta migración. Puedes mantener temporalmente la etapa de imágenes sin filtros avanzados.</p><p>El <code>id</code> debe permanecer estable al editar y ser generado de forma única por el repositorio o la API; nunca uses como identificador permanente la posición de un elemento en <code>ListView</code>. Para la aplicación completa, la API debería generar los identificadores persistentes. El repositorio en memoria de la etapa anterior no es todavía una implementación de estos cambios.</p></div></section><section><h2>Parte A · Evolución del listado de vehículos</h2>
 <div class="step"><h3>1. Ubicar los archivos</h3><p>Trabaja dentro del proyecto <code>actividad2</code>. Mantén <code>lib/models/vehiculo.dart</code> y la página donde se muestra el catálogo. Los fragmentos siguientes van dentro del <code>State</code> de esa página, NO dentro del método <code>build</code>.</p><p>Si tu página actual es StatelessWidget, primero explica y convierte la pantalla a StatefulWidget, porque el texto buscado, los favoritos y la página seleccionada cambian durante el uso.</p></div>
 <div class="step"><h3>2. Crear variables de estado</h3><pre><code>String busqueda = '';
 String marcaSeleccionada = 'Todas';
@@ -13,7 +31,7 @@ String orden = 'Nombre';
 final Set&lt;int&gt; favoritos = {};
 int paginaActual = 0;
 final int elementosPorPagina = 5;</code></pre><p><code>String</code> almacena texto; <code>double</code>, un número con decimales; <code>Set&lt;int&gt;</code> conserva identificadores sin repetirlos; <code>final</code> impide reasignar la variable (pero el Set puede cambiar). La página comienza en cero.</p></div>
-<div class="step"><h3>3. Construir la lista filtrada</h3><p>Este ejemplo supone que <code>Vehiculo</code> expone <code>id</code>, <code>nombre</code>, <code>marca</code> y <code>precio</code>. Si tu clase emplea nombres diferentes, primero revisa y adapta esos campos; no pegues el código sin verificarlos.</p>
+<div class="step"><h3>3. Construir la lista filtrada</h3><p>Este ejemplo depende de completar el paso 0 y adaptar el formulario, el repositorio y la creación de objetos a <code>id</code>, <code>nombre</code>, <code>marca</code> y <code>precio</code>. No corresponde todavía al proyecto ejecutable de la etapa de fotografías.</p>
 <pre><code>List&lt;Vehiculo&gt; filtrarVehiculos(List&lt;Vehiculo&gt; vehiculos) {
   final resultado = vehiculos.where((vehiculo) {
     final coincideTexto = vehiculo.nombre
