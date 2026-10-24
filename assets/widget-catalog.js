@@ -12,9 +12,30 @@
   if (!grid || !filters || !search || !dialog || widgets.length === 0) return;
 
   const groups = [...new Set((window.FlutterLabWidgetData || []).map(w=>w.group))];
-  const seenInClass = new Set(['MaterialApp','Scaffold','AppBar','Center','Column','Row','Text','Icon','SizedBox','Expanded','TextField']);
+  const seenInClass = new Set(['MaterialApp','Scaffold','AppBar','Center','Column','Row','Text','Icon','SizedBox','Expanded','TextField',
+    'ListView','ListTile','GridView','SingleChildScrollView','Form','TextFormField','NavigationBar','NavigationDestination','IndexedStack',
+    'Drawer','DrawerHeader','IconButton','Card','ElevatedButton','StatefulWidget','StatelessWidget','Padding','CircleAvatar']);
   const order = new Map(groups.map((name,i)=>[name,i]));
   let currentGroup='Todas';
+  const preferidos=['ListView','ListTile','GridView','Card','NavigationBar','IndexedStack','SingleChildScrollView','TextFormField','Form',
+    'Column','Row','Scaffold','CheckboxListTile','SwitchListTile','ExpansionTile','SearchBar','SearchAnchor'];
+  const ranking = new Map(preferidos.map((name,index)=>[name,index]));
+  const storeKey='tallerFlutterDesarrollo.catalogo.v2.';
+  const saved = (key) => {try {return window.localStorage.getItem(storeKey+key);} catch {return null;}};
+  const persist = (key,value) => {try {window.localStorage.setItem(storeKey+key,value);} catch {}};
+  let viewMode=saved('vista')==='grid'?'grid':'list';
+  let orderMode='recomendados';
+  let onlyFavorites=false;
+  let lastOpenButton=null;
+  let favorites=new Set();
+  try{
+    const values=JSON.parse(saved('favoritos')||'[]');
+    if(Array.isArray(values)) favorites=new Set(values.filter(value=>typeof value==='string'));
+  } catch {}
+  const sortSelect=document.getElementById('catalog-sort');
+  const viewButtons=Array.from(document.querySelectorAll('[data-catalog-view]'));
+  const favoriteFilter=document.getElementById('catalog-only-favorites');
+  const favoriteCount=document.getElementById('catalog-favorite-count');
   let currentWidget=null;
   let currentAppBar=null;
   const escape = (str) => String(str??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -160,24 +181,64 @@
       +groups.map(g=>`<button type="button" class="wc-filter${currentGroup===g?' active':''}" data-group="${escape(g)}" aria-pressed="${currentGroup===g}">${escape(g)} <span>${freq[g]}</span></button>`).join('');
   }
 
+  function updateToolbar(){
+    viewButtons.forEach(button=>{
+      const selected=button.dataset.catalogView===viewMode;
+      button.setAttribute('aria-pressed',String(selected));
+      button.classList.toggle('active',selected);
+    });
+    if(favoriteFilter){
+      favoriteFilter.setAttribute('aria-pressed',String(onlyFavorites));
+      favoriteFilter.classList.toggle('active',onlyFavorites);
+    }
+    if(favoriteCount) favoriteCount.textContent=String(favorites.size);
+    if(sortSelect)sortSelect.value=orderMode;
+  }
+
   function renderCards() {
     const term=norm(search.value.trim());
-    const matches=widgets.filter(w=>(currentGroup==='Todas'||w.group===currentGroup) &&
-      norm([w.name,w.group,w.description,w.example,...w.properties.flat()].join(' ')).includes(term));
+    const matches=widgets.filter(w=>
+      (currentGroup==='Todas'||w.group===currentGroup)
+      && (!onlyFavorites||favorites.has(w.name))
+      && norm([w.name,w.group,w.description,w.example,w.usage||'',w.placement||'',...w.properties.flat()].join(' ')).includes(term));
+    const alpha=(a,b)=>a.name.localeCompare(b.name,'es');
+    matches.sort((a,b)=>{
+      if(orderMode==='categoria')return order.get(a.group)-order.get(b.group)||alpha(a,b);
+      if(orderMode==='az')return alpha(a,b);
+      return (ranking.get(a.name)??999)-(ranking.get(b.name)??999)||alpha(a,b);
+    });
+
     if(total) total.textContent=String(widgets.length);
-    if(counter) counter.textContent=`${matches.length} widget${matches.length!==1?'s':''} ${term?'encontrados':'disponibles'}`;
-    if(clear) clear.hidden=!term&&currentGroup==='Todas';
-    if(empty) empty.hidden=matches.length!==0;
+    if(counter) counter.textContent=matches.length+' widget'+(matches.length!==1?'s':'')+' '+(term||onlyFavorites?'encontrados':'para explorar');
+    if(clear) clear.hidden=!term&&currentGroup==='Todas'&&!onlyFavorites;
+    if(empty){
+      empty.hidden=matches.length!==0;
+      const hint=empty.querySelector('p');
+      if(hint)hint.textContent=onlyFavorites
+        ? 'Aún no hay coincidencias guardadas. Desactiva Favoritos o marca una estrella en la colección.'
+        : 'Prueba ListView, ListTile, NavigationBar, filtros, formularios o una propiedad de Dart.';
+    }
+    grid.classList.toggle('is-list',viewMode==='list');
+    grid.dataset.view=viewMode;
+    grid.setAttribute('aria-label',viewMode==='list'?'Widgets en forma de lista':'Widgets en forma de tarjetas');
     grid.innerHTML=matches.map(w=>{
       const n=widgets.indexOf(w);
-      return `<button type="button" class="wc-widget-card" data-widget-index="${n}" aria-label="Ver propiedades y ejemplo de ${escape(w.name)}">
-        <div class="wc-widget-thumbnail">${demo(w)}</div>
-        <div class="wc-widget-card-info"><div class="wc-widget-card-title"><strong>${escape(w.name)}</strong>${seenInClass.has(w.name)?'<span class="wc-seen">En actividad2a</span>':''}</div>
-          <p>${escape(w.description)}</p>
-          <div class="wc-widget-meta"><span>${escape(w.group)}</span><span>${w.properties.length} propiedades　↗</span></div>
-        </div>
-      </button>`;
+      const starred=favorites.has(w.name);
+      return `<article class="wc-widget-item">
+        <button type="button" class="wc-widget-card" data-widget-index="${n}" aria-label="Ver propiedades, ejemplo y detalles de ${escape(w.name)}">
+          <div class="wc-widget-thumbnail">${demo(w)}</div>
+          <div class="wc-widget-card-info">
+            <div class="wc-widget-card-title"><strong>${escape(w.name)}</strong>${seenInClass.has(w.name)?'<span class="wc-seen">En el taller</span>':''}</div>
+            <p>${escape(w.description)}</p>
+            <div class="wc-widget-meta"><span>${escape(w.group)}</span><span>${w.properties.length} propiedades <span aria-hidden="true">↗</span></span></div>
+          </div>
+        </button>
+        <button type="button" class="wc-save-widget${starred?' is-saved':''}" data-save-widget="${n}"
+          aria-pressed="${starred}" aria-label="${starred?'Quitar '+escape(w.name)+' de':'Guardar '+escape(w.name)+' en'} favoritos"
+          title="${starred?'Quitar de favoritos':'Guardar para estudiar'}"><span aria-hidden="true">${starred?'★':'☆'}</span></button>
+      </article>`;
     }).join('');
+    updateToolbar();
   }
 
   function updateAppBarSnippet() {
@@ -216,6 +277,24 @@
   }
 
   function bindDetailControls(item){
+    dialog.querySelectorAll('[data-example-variant]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const option=item.snippetVariants?.[Number(button.dataset.exampleVariant)];
+        if(!option)return;
+        const code=dialog.querySelector('#wc-example-code');
+        if(code){code.textContent=option.code;delete code.dataset.highlighted;}
+        const note=dialog.querySelector('#wc-variant-note');
+        if(note)note.textContent=option.explain;
+        dialog.querySelectorAll('[data-example-variant]').forEach(entry=>{
+          entry.setAttribute('aria-pressed',String(entry===button));
+        });
+        dialog.dispatchEvent(new CustomEvent('flutterlab:catalog-code',{bubbles:true}));
+      });
+    });
+    dialog.querySelector('[data-open-list-lab]')?.addEventListener('click',()=>{
+      dialog.close();
+      document.getElementById('catalog-listview-lab')?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
     if(item.name==='AppBar'){
       currentAppBar={title:'Tienda',color:'#4354b6',center:false,actions:true,leading:true,height:56,elevation:2};
       const entries=['title','color','center','actions','leading','height','elevation'];
@@ -301,10 +380,21 @@
           <tbody>${item.properties.map(([name,type,description])=>`<tr><td><code>${escape(name)}</code></td><td><code>${escape(type)}</code></td><td>${escape(description)}</td></tr>`).join('')}</tbody></table></div>
         </section>
       </div>
-      <section class="wc-detail-example"><div class="wc-detail-section-head"><h3>Ejemplo en Dart</h3><button type="button" class="wc-copy-example" data-copy-example>Copiar ejemplo</button></div>
-        <p>Fragmento didáctico: si utiliza un controlador, estado o clase auxiliar, primero debes declararlos en el contexto correspondiente.</p>
-        <div class="code-label">Dart · ejemplo de ${escape(item.name)}</div>
-        <pre class="code-block"><code id="wc-example-code">${escape(item.example)}</code></pre>
+      <section class="wc-detail-example">
+        <div class="wc-detail-section-head"><h3>Cómo utilizarlo en la Tienda</h3><span class="wc-detail-level">${escape(item.level||'Consulta')}</span></div>
+        <div class="wc-learn-notes">
+          <div><strong>¿Cuándo usarlo?</strong><p>${escape(item.usage||item.description)}</p></div>
+          <div><strong>¿Dónde se escribe?</strong><p>${escape(item.placement||'Dentro del método build, en el lugar que corresponda del árbol de widgets.')}</p></div>
+          ${item.pitfall?`<div class="wc-learn-warning"><strong>Evita este error</strong><p>${escape(item.pitfall)}</p></div>`:''}
+        </div>
+        <div class="wc-detail-section-head"><h3>Ejemplo en Dart</h3><button type="button" class="wc-copy-example" data-copy-example>Copiar ejemplo</button></div>
+        <p>Fragmento para estudiar. Si utiliza una variable, controlador o estado, decláralos antes de usarlo. El programa completo de ListView está disponible en esta colección.</p>
+        ${item.snippetVariants?.length?`<div class="wc-variant-tabs" role="group" aria-label="Variantes de ${escape(item.name)}">
+          ${item.snippetVariants.map((v,i)=>`<button type="button" data-example-variant="${i}" aria-pressed="${i===0}">${escape(v.label)}</button>`).join('')}
+        </div><p class="wc-variant-note" id="wc-variant-note">${escape(item.snippetVariants[0].explain)}</p>`:''}
+        <div class="code-label">Dart · ${escape(item.name)}</div>
+        <pre class="code-block"><code id="wc-example-code">${escape(item.snippetVariants?.[0]?.code||item.example)}</code></pre>
+        ${['ListView','ListTile','GridView'].includes(item.name)?'<button type="button" class="wc-go-practice" data-open-list-lab>Ver práctica interactiva de listas →</button>':''}
       </section>
       <div class="wc-detail-footer"><a href="${official(item)}" target="_blank" rel="noopener noreferrer">Consultar documentación oficial de ${escape(item.name)} ↗</a>
         <button type="button" class="wc-detail-done" data-close-widget>Cerrar</button></div>
@@ -337,15 +427,52 @@
     renderFilters();renderCards();
   });
   grid.addEventListener('click',e=>{
+    const save=e.target.closest('[data-save-widget]');
+    if(save){
+      const widget=widgets[Number(save.dataset.saveWidget)];
+      if(!widget)return;
+      if(favorites.has(widget.name))favorites.delete(widget.name);
+      else favorites.add(widget.name);
+      persist('favoritos',JSON.stringify([...favorites]));
+      const next=widget.name;
+      renderCards();
+      grid.querySelector('[data-save-widget="'+widgets.findIndex(w=>w.name===next)+'"]')?.focus();
+      return;
+    }
     const card=e.target.closest('[data-widget-index]');
     if(!card)return;
     const w=widgets[Number(card.dataset.widgetIndex)];
-    if(w)renderDetail(w);
+    if(w){lastOpenButton=card;renderDetail(w);}
   });
   search.addEventListener('input',renderCards);
-  clear?.addEventListener('click',()=>{currentGroup='Todas';search.value='';renderFilters();renderCards();search.focus()});
+  clear?.addEventListener('click',()=>{currentGroup='Todas';onlyFavorites=false;search.value='';renderFilters();renderCards();search.focus()});
+  viewButtons.forEach(button=>button.addEventListener('click',()=>{
+    viewMode=button.dataset.catalogView==='grid'?'grid':'list';
+    persist('vista',viewMode);
+    renderCards();
+  }));
+  sortSelect?.addEventListener('change',()=>{orderMode=sortSelect.value;renderCards()});
+  favoriteFilter?.addEventListener('click',()=>{onlyFavorites=!onlyFavorites;renderCards()});
+  document.getElementById('catalog-list-jump')?.addEventListener('click',()=>{
+    currentGroup='Listas y desplazamiento';
+    onlyFavorites=false;
+    viewMode='list';
+    renderFilters();
+    renderCards();
+    grid.scrollIntoView({behavior:'smooth',block:'start'});
+  });
   dialog.addEventListener('click',e=>{
     if(e.target===dialog)dialog.close();
+  });
+  dialog.addEventListener('close',()=>{
+    currentWidget=null;
+    const url=new URL(window.location.href);
+    if(url.searchParams.has('widget')){
+      url.searchParams.delete('widget');
+      window.history.replaceState(null,'',url);
+    }
+    if(lastOpenButton?.isConnected)lastOpenButton.focus();
+    lastOpenButton=null;
   });
 
   renderFilters();renderCards();renderAppBarGuide();
