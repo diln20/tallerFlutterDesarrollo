@@ -33,22 +33,22 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       } else {
         return;
       }
-      _publicar(emit, copia, indiceEnEdicion: null);
+      _publicar(emit, copia, indiceEnEdicion: null, mantenerEdicion: false);
     });
 
     on<EdicionIniciada>((evento, emit) {
       if (evento.indice < 0 || evento.indice >= state.vehiculos.length) return;
-      _publicar(emit, state.vehiculos, indiceEnEdicion: evento.indice);
+      _publicar(emit, state.vehiculos, indiceEnEdicion: evento.indice, mantenerEdicion: false);
     });
 
     on<EdicionCancelada>((evento, emit) {
-      _publicar(emit, state.vehiculos, indiceEnEdicion: null);
+      _publicar(emit, state.vehiculos, indiceEnEdicion: null, mantenerEdicion: false);
     });
 
     on<VehiculoEliminado>((evento, emit) {
       if (evento.indice < 0 || evento.indice >= state.vehiculos.length) return;
       final copia = List<Vehiculo>.from(state.vehiculos)..removeAt(evento.indice);
-      _publicar(emit, copia, indiceEnEdicion: null);
+      _publicar(emit, copia, indiceEnEdicion: null, mantenerEdicion: false);
     });
 
     on<BusquedaCambiada>((evento, emit) {
@@ -85,6 +85,7 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
     List<Vehiculo> vehiculos, {
     String? busqueda,
     int? indiceEnEdicion,
+    bool mantenerEdicion = true,
     FiltroVehiculos? filtro,
     OrdenVehiculos? orden,
   }) {
@@ -126,7 +127,7 @@ class VehiculosBloc extends Bloc<VehiculosEvento, VehiculosEstado> {
       vehiculos: List<Vehiculo>.unmodifiable(vehiculos),
       visibles: List<Vehiculo>.unmodifiable(visibles),
       busqueda: actualBusqueda,
-      indiceEnEdicion: indiceEnEdicion,
+      indiceEnEdicion: mantenerEdicion ? state.indiceEnEdicion : indiceEnEdicion,
       filtro: actualFiltro,
       orden: actualOrden,
     ));
