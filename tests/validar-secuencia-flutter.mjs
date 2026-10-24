@@ -15,7 +15,7 @@ function comprobar(condicion, mensaje) {
 const esperadas = [
   'inicio', 'preparacion', 'punto-entrada', 'estructura', 'diseno',
   'campo-texto', 'proyecto', 'carpetas', 'reutilizacion', 'validacion',
-  'objeto', 'crud', 'extraccion', 'navegacion', 'bloc-crud',
+  'objeto', 'crud', 'extraccion', 'navegacion', 'barra-navegacion', 'bloc-crud',
   'menu-hamburguesa', 'validaciones-esenciales', 'api-postgres',
   'roles-usuarios', 'paginacion-widget', 'heuristicas-ux',
   'responsive', 'estado', 'formularios', 'bloc', 'catalogo-widgets',
@@ -36,8 +36,10 @@ const conjunto = new Set(todosIds);
 const enlaces = [...html.matchAll(/<a\b[^>]*\bhref="#([^"]+)"/g)].map(m => m[1]);
 comprobar(enlaces.every(id => !id || conjunto.has(id)), 'enlaces internos apuntan a IDs existentes');
 
-const primarios = esperadas.slice(1,21);
-const alternativas = esperadas.slice(21,25);
+const separacion = esperadas.indexOf('responsive');
+const primarios = esperadas.slice(1, separacion);
+const alternativas = esperadas.slice(separacion, esperadas.indexOf('catalogo-widgets'));
+
 function tramo(id) {
   const start = html.indexOf('id="' + id + '"');
   if (start < 0) return '';
