@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const read = name => readFileSync(new URL('../' + name, import.meta.url), 'utf8').replace(/\r\n/g,'\n');
 const html = read('index.html');
 const app = read('assets/app.js');
-const ids = ['navegacion','barra-navegacion','bloc-crud','menu-hamburguesa','validaciones-esenciales','paginacion-local'];
+const ids = ['navegacion','barra-navegacion','bloc-crud','menu-hamburguesa','validaciones-esenciales','paginacion-local','mejoras-favoritos','mejoras-panel'];
 const pos = ids.map(id => html.indexOf('id="' + id + '"',html.indexOf('<main')));
 assert.ok(pos.every(p=>p>0)&&pos.every((p,i)=>i===0||p>pos[i-1]),'Orden didactico P7, P7.1, P8, P9, P10');
 for (const id of ids) {
@@ -13,8 +13,8 @@ for (const id of ids) {
 }
 const sidebar = [...html.matchAll(/<a\s+class="nav-link"[^>]*data-route="([^"]+)"/g)].map(m=>m[1]);
 const at = sidebar.indexOf('barra-navegacion');
-assert.deepEqual(sidebar.slice(at,at + 5),
-  ['barra-navegacion','menu-hamburguesa','validaciones-esenciales','paginacion-local','bloc-crud'],
+assert.deepEqual(sidebar.slice(at,at + 7),
+  ['barra-navegacion','menu-hamburguesa','validaciones-esenciales','paginacion-local','mejoras-favoritos','mejoras-panel','bloc-crud'],
   'P9 y P10 deben aparecer inmediatamente despues de la barra inferior en el menu');
 const headerLinks = html.slice(html.indexOf('data-route="navegacion"'), html.indexOf('data-route="api-postgres"'));
 assert.ok(!headerLinks.includes('nav-group-label'),
