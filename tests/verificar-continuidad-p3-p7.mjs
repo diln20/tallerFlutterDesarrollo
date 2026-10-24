@@ -72,7 +72,8 @@ const simulation=read('assets/stage-previews.js');
 for (const name of ['crudUI(', 'data-pv-edit', 'data-pv-delete', 'r.addedCars.push(name)', 'r.addedCars.splice(i,1)']) {
   assert.ok(simulation.includes(name), 'Simulador omite '+name);
 }
-for(const phrase of ["Después de ListView.builder", "const ContadorToques()"]) {
-  assert.ok(html.includes(phrase), 'La guia no aclara '+phrase);
-}
+const navStepPos=html.indexOf('id="navegacion-paso-9"');
+const navStep=html.slice(navStepPos,html.indexOf('</article>',navStepPos));
+assert.ok(navStep.includes('ListView.builder'),'P7 debe ubicar el boton despues del listado');
+assert.ok(html.includes('const ContadorToques()'),'La guia debe conservar el contador');
 console.log('CONTINUIDAD P3-P7: archivos, guardado, navegacion, colores, scroll, vista y referencias sincronizados.');
