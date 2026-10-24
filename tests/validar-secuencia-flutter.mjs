@@ -16,7 +16,7 @@ const esperadas = [
   'inicio', 'preparacion', 'punto-entrada', 'estructura', 'diseno',
   'campo-texto', 'proyecto', 'carpetas', 'reutilizacion', 'validacion',
   'objeto', 'crud', 'extraccion', 'navegacion', 'barra-navegacion', 'bloc-crud',
-  'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local', 'api-postgres',
+  'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local', 'mejoras-favoritos', 'mejoras-panel', 'api-postgres',
   'roles-usuarios', 'paginacion-widget', 'heuristicas-ux',
   'responsive', 'estado', 'formularios', 'bloc', 'catalogo-widgets',
 ];
@@ -30,9 +30,9 @@ const sidebar = [...html.matchAll(/<a\s+class="nav-link[^"]*"[^>]*\bdata-route="
 const sinCatalogo = x => x.filter(id => id !== 'catalogo-widgets');
 // El menú visual destaca P9 y P10 justo después de P7.1. La secuencia
 // de estudio mantiene P8 antes de P9/P10 porque estas lecciones usan BLoC.
-const esperadoMenu = esperadas.filter(id => !['menu-hamburguesa','validaciones-esenciales','paginacion-local'].includes(id));
+const esperadoMenu = esperadas.filter(id => !['menu-hamburguesa','validaciones-esenciales','paginacion-local','mejoras-favoritos','mejoras-panel'].includes(id));
 const posicionBarra = esperadoMenu.indexOf('barra-navegacion');
-esperadoMenu.splice(posicionBarra + 1, 0, 'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local');
+esperadoMenu.splice(posicionBarra + 1, 0, 'menu-hamburguesa', 'validaciones-esenciales', 'paginacion-local', 'mejoras-favoritos', 'mejoras-panel');
 comprobar(JSON.stringify(sinCatalogo(sidebar)) === JSON.stringify(sinCatalogo(esperadoMenu)), 'menu: P9, P10 y P10.1 despues de barra inferior P7.1');
 
 const todosIds = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
