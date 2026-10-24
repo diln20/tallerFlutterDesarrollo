@@ -33,7 +33,7 @@ class VehiculosApi {
         .toList();
   }
 
-  Future<void> crear({
+  Future<int> crear({
     required String nombre,
     required int anio,
     required double precio,
@@ -52,6 +52,8 @@ class VehiculosApi {
       }),
     );
     _verificar(respuesta, 201);
+    final datos = jsonDecode(respuesta.body) as Map<String, dynamic>;
+    return datos['id'] as int;
   }
 
   Future<void> actualizar({
