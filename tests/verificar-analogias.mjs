@@ -43,11 +43,11 @@ assert.equal(total,87,'Ha cambiado el total de pasos: actualizar analogías');
 const blocSteps=[...html.matchAll(/<article class="bloc-practice-step"/g)].length;
 assert.equal(blocSteps,analogies.blocPractica.length,'No coinciden los pasos BLoC');
 const widgetData={window:{}};
-for(const path of ['assets/widgets-core.js','assets/widgets-controls.js','assets/widgets-advanced.js']){
+for(const path of ['assets/widgets-core.js','assets/widgets-controls.js','assets/widgets-advanced.js','assets/widgets-collection-extra.js']){
   load(path,widgetData);
 }
 const widgets=widgetData.window.FlutterLabWidgetData;
-assert.equal(widgets.length,128,'Revisar el recuento del catálogo');
+assert.equal(widgets.length,167,'Revisar el recuento del catálogo ampliado');
 let exact=0,family=0;
 for(const w of widgets){
   const individual=analogies.catalogo.exactas[w.name];
