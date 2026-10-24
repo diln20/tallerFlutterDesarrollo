@@ -3589,92 +3589,92 @@ class _MainAppState extends State&lt;MainApp&gt; {
           index: indicePestana,
           children: [
             SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const TituloSeccion(texto: &#39;Primer widget&#39;),
-              const SizedBox(height: 20),
-              Icon(Icons.directions_car),
-              const SizedBox(height: 8),
-              Row(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const TituloSeccion(texto: &#39;Primer widget&#39;),
+                  const SizedBox(height: 20),
                   Icon(Icons.directions_car),
-                  const SizedBox(width: 8),
-                  Text(&#39;Ingenieria de Sistemas&#39;),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: &#39;Buscar marca o modelo&#39;,
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      const SizedBox(width: 8),
+                      Text(&#39;Ingenieria de Sistemas&#39;),
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            hintText: &#39;Buscar marca o modelo&#39;,
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    child: CampoNombreVehiculo(controller: vehiculoController),
+                  ),
+                  const SizedBox(height: 12),
+                  BotonTienda(
+                    texto: indiceEnEdicion == null
+                        ? &#39;Agregar vehículo&#39;
+                        : &#39;Guardar cambios&#39;,
+                    alPresionar: guardarVehiculo,
+                  ),
+                  const SizedBox(height: 12),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: vehiculos.length,
+                    itemBuilder: (context, indice) {
+                      final vehiculo = vehiculos[indice];
+                      return ListTile(
+                        title: Text(vehiculo.nombre),
+                        subtitle: Text(
+                          vehiculo.disponible ? &#39;Disponible&#39; : &#39;No disponible&#39;,
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              tooltip: &#39;Editar vehículo&#39;,
+                              onPressed: () =&gt; comenzarEdicion(indice),
+                              icon: const Icon(Icons.edit),
+                            ),
+                            IconButton(
+                              tooltip: &#39;Eliminar vehículo&#39;,
+                              onPressed: () =&gt; borrarVehiculo(indice),
+                              icon: const Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Builder(
+                    builder: (context) =&gt; BotonTienda(
+                      texto: &#39;Acerca de y ayuda&#39;,
+                      alPresionar: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =&gt; const AcercaPage(),
+                          ),
+                        );
+                      },
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  const ContadorToques(),
                 ],
               ),
-              const SizedBox(height: 20),
-              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                child: CampoNombreVehiculo(controller: vehiculoController),
-              ),
-              const SizedBox(height: 12),
-              BotonTienda(
-                texto: indiceEnEdicion == null
-                    ? &#39;Agregar vehículo&#39;
-                    : &#39;Guardar cambios&#39;,
-                alPresionar: guardarVehiculo,
-              ),
-              const SizedBox(height: 12),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: vehiculos.length,
-                itemBuilder: (context, indice) {
-                  final vehiculo = vehiculos[indice];
-                  return ListTile(
-                    title: Text(vehiculo.nombre),
-                    subtitle: Text(
-                      vehiculo.disponible ? &#39;Disponible&#39; : &#39;No disponible&#39;,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          tooltip: &#39;Editar vehículo&#39;,
-                          onPressed: () =&gt; comenzarEdicion(indice),
-                          icon: const Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          tooltip: &#39;Eliminar vehículo&#39;,
-                          onPressed: () =&gt; borrarVehiculo(indice),
-                          icon: const Icon(Icons.delete),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              Builder(
-                builder: (context) =&gt; BotonTienda(
-                  texto: &#39;Acerca de y ayuda&#39;,
-                  alPresionar: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =&gt; const AcercaPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              const ContadorToques(),
-            ],
-          ),
-        ),
+            ),
             Center(
               child: Text(&#39;Vehículos registrados: ${vehiculos.length}&#39;),
             ),
@@ -4292,128 +4292,128 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
         index: indicePestana,
         children: [
           SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
-              const SizedBox(height: 12),
-              const Row(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.directions_car),
-                  SizedBox(width: 8),
+                  const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          &#39;Ingenieria de Sistemas&#39;,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: &#39;Buscar marca o modelo&#39;,
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (texto) {
+                      context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    child: CampoNombreVehiculo(controller: vehiculoController),
+                  ),
+                  const SizedBox(height: 10),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: BotonTienda(
+                              texto: estado.indiceEnEdicion == null
+                                  ? &#39;Agregar vehículo&#39;
+                                  : &#39;Guardar cambios&#39;,
+                              alPresionar: guardarVehiculo,
+                            ),
+                          ),
+                          if (estado.indiceEnEdicion != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: cancelarEdicion,
+                              child: const Text(&#39;Cancelar&#39;),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Text(
+                        &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                        &#39;Visibles: ${estado.visibles.length}&#39;,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
-                    child: Text(
-                      &#39;Ingenieria de Sistemas&#39;,
-                      overflow: TextOverflow.ellipsis,
+                    child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                      builder: (context, estado) {
+                        if (estado.visibles.isEmpty) {
+                          return Center(
+                            child: Text(
+                              estado.vehiculos.isEmpty
+                                  ? &#39;Todavía no hay vehículos registrados.&#39;
+                                  : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          itemCount: estado.visibles.length,
+                          itemBuilder: (context, indiceVisible) {
+                            final vehiculo = estado.visibles[indiceVisible];
+                            final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                            return Card(
+                              child: ListTile(
+                                title: Text(vehiculo.nombre),
+                                subtitle: Text(
+                                  vehiculo.disponible
+                                      ? &#39;Disponible&#39;
+                                      : &#39;No disponible&#39;,
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      tooltip: &#39;Editar vehículo&#39;,
+                                      onPressed: () =&gt; comenzarEdicion(indiceReal),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      tooltip: &#39;Eliminar vehículo&#39;,
+                                      onPressed: () =&gt; borrarVehiculo(indiceReal),
+                                      icon: const Icon(Icons.delete_outline),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Buscar marca o modelo&#39;,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (texto) {
-                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
-                },
-              ),
-              const SizedBox(height: 16),
-              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                child: CampoNombreVehiculo(controller: vehiculoController),
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: BotonTienda(
-                          texto: estado.indiceEnEdicion == null
-                              ? &#39;Agregar vehículo&#39;
-                              : &#39;Guardar cambios&#39;,
-                          alPresionar: guardarVehiculo,
-                        ),
-                      ),
-                      if (estado.indiceEnEdicion != null) ...[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: cancelarEdicion,
-                          child: const Text(&#39;Cancelar&#39;),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 14),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Text(
-                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
-                    &#39;Visibles: ${estado.visibles.length}&#39;,
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                  builder: (context, estado) {
-                    if (estado.visibles.isEmpty) {
-                      return Center(
-                        child: Text(
-                          estado.vehiculos.isEmpty
-                              ? &#39;Todavía no hay vehículos registrados.&#39;
-                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: estado.visibles.length,
-                      itemBuilder: (context, indiceVisible) {
-                        final vehiculo = estado.visibles[indiceVisible];
-                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
-                        return Card(
-                          child: ListTile(
-                            title: Text(vehiculo.nombre),
-                            subtitle: Text(
-                              vehiculo.disponible
-                                  ? &#39;Disponible&#39;
-                                  : &#39;No disponible&#39;,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  tooltip: &#39;Editar vehículo&#39;,
-                                  onPressed: () =&gt; comenzarEdicion(indiceReal),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  tooltip: &#39;Eliminar vehículo&#39;,
-                                  onPressed: () =&gt; borrarVehiculo(indiceReal),
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
           ),
           BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
             builder: (context, estado) {
@@ -4903,169 +4903,169 @@ class _TiendaPageState extends State&lt;TiendaPage&gt; {
         index: indicePestana,
         children: [
           SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
-              const SizedBox(height: 12),
-              const Row(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Icons.directions_car),
-                  SizedBox(width: 8),
+                  const TituloSeccion(texto: &#39;Tienda de vehículos&#39;),
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.directions_car),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          &#39;Ingenieria de Sistemas&#39;,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: &#39;Buscar marca o modelo&#39;,
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (texto) {
+                      context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
+                  const SizedBox(height: 10),
+                  Form(
+                    key: formularioKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Column(
+                      children: [
+                        CampoNombreVehiculo(controller: vehiculoController),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: anioController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Año del vehículo&#39;,
+                            hintText: &#39;2020&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.anio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: precioController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: &#39;Precio&#39;,
+                            hintText: &#39;25000000.50&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.precio,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: correoController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: &#39;Correo de contacto&#39;,
+                            hintText: &#39;cliente@ejemplo.com&#39;,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: Validadores.correo,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: BotonTienda(
+                              texto: estado.indiceEnEdicion == null
+                                  ? &#39;Agregar vehículo&#39;
+                                  : &#39;Guardar cambios&#39;,
+                              alPresionar: guardarVehiculo,
+                            ),
+                          ),
+                          if (estado.indiceEnEdicion != null) ...[
+                            const SizedBox(width: 8),
+                            TextButton(
+                              onPressed: cancelarEdicion,
+                              child: const Text(&#39;Cancelar&#39;),
+                            ),
+                          ],
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                    builder: (context, estado) {
+                      return Text(
+                        &#39;Registrados: ${estado.vehiculos.length} · &#39;
+                        &#39;Visibles: ${estado.visibles.length}&#39;,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
-                    child: Text(
-                      &#39;Ingenieria de Sistemas&#39;,
-                      overflow: TextOverflow.ellipsis,
+                    child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
+                      builder: (context, estado) {
+                        if (estado.visibles.isEmpty) {
+                          return Center(
+                            child: Text(
+                              estado.vehiculos.isEmpty
+                                  ? &#39;Todavía no hay vehículos registrados.&#39;
+                                  : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                          itemCount: estado.visibles.length,
+                          itemBuilder: (context, indiceVisible) {
+                            final vehiculo = estado.visibles[indiceVisible];
+                            final indiceReal = estado.vehiculos.indexOf(vehiculo);
+                            return Card(
+                              child: ListTile(
+                                title: Text(vehiculo.nombre),
+                                isThreeLine: true,
+                                subtitle: Text(
+                                  &#39;Año: &#39; + vehiculo.anio.toString() +
+                                  &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
+                                  &#39;\nCorreo: &#39; + vehiculo.correo,
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      tooltip: &#39;Editar vehículo&#39;,
+                                      onPressed: () =&gt; comenzarEdicion(indiceReal),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      tooltip: &#39;Eliminar vehículo&#39;,
+                                      onPressed: () =&gt; borrarVehiculo(indiceReal),
+                                      icon: const Icon(Icons.delete_outline),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: &#39;Buscar marca o modelo&#39;,
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (texto) {
-                  context.read&lt;VehiculosBloc&gt;().add(BusquedaCambiada(texto));
-                },
-              ),
-              const SizedBox(height: 16),
-              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
-              const SizedBox(height: 10),
-              Form(
-                key: formularioKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  children: [
-                    CampoNombreVehiculo(controller: vehiculoController),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: anioController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Año del vehículo&#39;,
-                        hintText: &#39;2020&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.anio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: precioController,
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      decoration: const InputDecoration(
-                        labelText: &#39;Precio&#39;,
-                        hintText: &#39;25000000.50&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.precio,
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: correoController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: &#39;Correo de contacto&#39;,
-                        hintText: &#39;cliente@ejemplo.com&#39;,
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: Validadores.correo,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: BotonTienda(
-                          texto: estado.indiceEnEdicion == null
-                              ? &#39;Agregar vehículo&#39;
-                              : &#39;Guardar cambios&#39;,
-                          alPresionar: guardarVehiculo,
-                        ),
-                      ),
-                      if (estado.indiceEnEdicion != null) ...[
-                        const SizedBox(width: 8),
-                        TextButton(
-                          onPressed: cancelarEdicion,
-                          child: const Text(&#39;Cancelar&#39;),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 14),
-              BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                builder: (context, estado) {
-                  return Text(
-                    &#39;Registrados: ${estado.vehiculos.length} · &#39;
-                    &#39;Visibles: ${estado.visibles.length}&#39;,
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
-                  builder: (context, estado) {
-                    if (estado.visibles.isEmpty) {
-                      return Center(
-                        child: Text(
-                          estado.vehiculos.isEmpty
-                              ? &#39;Todavía no hay vehículos registrados.&#39;
-                              : &#39;No hay vehículos que coincidan con la búsqueda.&#39;,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: estado.visibles.length,
-                      itemBuilder: (context, indiceVisible) {
-                        final vehiculo = estado.visibles[indiceVisible];
-                        final indiceReal = estado.vehiculos.indexOf(vehiculo);
-                        return Card(
-                          child: ListTile(
-                            title: Text(vehiculo.nombre),
-                            isThreeLine: true,
-                            subtitle: Text(
-                              &#39;Año: &#39; + vehiculo.anio.toString() +
-                              &#39; · Precio: &#39; + vehiculo.precio.toStringAsFixed(2) +
-                              &#39;\nCorreo: &#39; + vehiculo.correo,
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  tooltip: &#39;Editar vehículo&#39;,
-                                  onPressed: () =&gt; comenzarEdicion(indiceReal),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  tooltip: &#39;Eliminar vehículo&#39;,
-                                  onPressed: () =&gt; borrarVehiculo(indiceReal),
-                                  icon: const Icon(Icons.delete_outline),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
           ),
           BlocBuilder&lt;VehiculosBloc, VehiculosEstado&gt;(
             builder: (context, estado) {
