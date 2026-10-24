@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/titulo_seccion.dart';
+import 'widgets/contador_toques.dart';
+import 'utils/colores_app.dart';
 import 'models/vehiculo.dart';
 import 'widgets/campo_nombre_vehiculo.dart';
 import 'widgets/boton_tienda.dart';
@@ -68,8 +70,14 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text('Tienda')),
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text('Tienda'),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -152,6 +160,8 @@ class _MainAppState extends State<MainApp> {
                   },
                 ),
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
