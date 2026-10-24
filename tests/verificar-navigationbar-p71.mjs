@@ -11,7 +11,7 @@ for (const id of ids) {
  assert.ok(app.includes("'"+id+"'"), 'Ruta ausente en app.js: '+id);
  assert.equal([...html.matchAll(new RegExp('data-route="'+id+'"','g'))].length,1,'Sidebar tiene una entrada por ruta '+id);
 }
-const sidebar = [...html.matchAll(/<a\\s+class="nav-link"[^>]*data-route="([^"]+)"/g)].map(m=>m[1]);
+const sidebar = [...html.matchAll(/<a\s+class="nav-link"[^>]*data-route="([^"]+)"/g)].map(m=>m[1]);
 const at = sidebar.indexOf('barra-navegacion');
 assert.deepEqual(sidebar.slice(at,at + 4),
   ['barra-navegacion','menu-hamburguesa','validaciones-esenciales','bloc-crud'],
