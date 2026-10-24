@@ -1,0 +1,40 @@
+/* Propiedades Flutter: opciones completas, tablas didacticas y demo Row/Column. */
+.fv-properties-block{margin:24px 0 27px;padding:clamp(16px,2.3vw,24px);border-radius:14px;border:1px solid var(--border);background:var(--surface-soft)}
+.fv-properties-block h3{color:var(--heading);font-size:clamp(17px,1.8vw,21px);line-height:1.4;margin:11px 0}
+.fv-properties-block h4{color:var(--heading);font-size:15px;margin:18px 0 10px}
+.fv-properties-block p,.fv-properties-block li{font-size:13px;line-height:1.8;color:var(--text-soft)}
+.fv-properties-block strong{color:var(--heading)}
+.fv-properties-block .table-scroll{margin:13px 0 21px}
+.fv-properties-block .lesson-table{min-width:530px}
+.fv-properties-block .lesson-table th,.fv-properties-block .lesson-table td{font-size:12px;line-height:1.7}
+.fv-properties-block .lesson-table td:first-child code{white-space:nowrap}
+.fv-property-badge{display:inline-block;padding:5px 9px;border-radius:7px;background:#dce9ff;color:#194d84;font-size:11px;font-weight:800;letter-spacing:.045em}
+.fv-properties-block .fv-tip{border-left:3px solid #248a96;padding:9px 13px;background:var(--surface);margin:13px 0;border-radius:0 8px 8px 0}
+.fv-properties-block .fv-tip p{margin:3px 0}
+.fv-properties-block details{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin:10px 0;padding:12px 15px}
+.fv-properties-block details>summary{font-size:13px;font-weight:700;color:var(--heading);cursor:pointer;line-height:1.7}
+.fv-properties-block details>p{margin:10px 0}
+.fv-property-lab{padding:clamp(14px,2vw,20px);border:1px solid var(--border);background:var(--surface);border-radius:14px;margin:20px 0}
+.fv-property-lab h4{margin:0 0 8px}
+.fv-lab-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+.fv-lab-controls label{display:flex;flex-direction:column;gap:7px;min-width:0;color:var(--heading);font-size:12px;font-weight:700}
+.fv-lab-controls select{min-width:0;width:100%;border:1px solid #90a4b8;color:var(--text);background:var(--surface);border-radius:9px;padding:10px 12px;font:inherit;font-size:13px;min-height:44px}
+.fv-lab-controls select:focus-visible,.fv-lab-copy:focus-visible{outline:3px solid #45afbf;outline-offset:3px}
+.fv-lab-showcase{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+.fv-demo-frame{border:1px dashed #a4b6c8;border-radius:10px;padding:10px;background:var(--surface-soft);min-height:244px;overflow-x:auto}
+.fv-demo-layout{display:flex;border:2px solid #6e91ac;background:repeating-linear-gradient(45deg,#dfe9f6,#dfe9f6 9px,#e8f0fa 9px,#e8f0fa 18px);border-radius:8px;padding:7px;box-sizing:border-box;gap:0;transition:width .2s,height .2s}
+.fv-demo-chip{border-radius:6px;display:flex;align-items:center;justify-content:center;min-width:56px;min-height:34px;background:#176b88;color:#fff;margin:2px;padding:8px 11px;font-size:13px;font-weight:700;box-sizing:border-box;white-space:nowrap}
+.fv-demo-chip:nth-child(2){background:#7559a3}
+.fv-demo-chip:nth-child(3){background:#44704e}
+.fv-demo-layout.fv-column-mode .fv-demo-chip{min-width:80px}
+.fv-demo-layout.fv-stretch-mode.fv-column-mode .fv-demo-chip{width:calc(100% - 4px)}
+.fv-demo-layout.fv-stretch-mode.fv-row-mode .fv-demo-chip{align-items:center}
+.fv-live-code{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;background:#12263d;color:#d7edfa;border-radius:10px;padding:14px;font:12px/1.75 ui-monospace,SFMono-Regular,Consolas,monospace;max-height:310px;overflow:auto}
+.fv-lab-copy{min-height:42px;padding:9px 13px;background:var(--surface-soft);color:var(--heading);border:1px solid var(--border);border-radius:9px;cursor:pointer;font:inherit;font-size:12px;font-weight:700}
+.fv-lab-footer{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:9px 0}
+.fv-lab-status{font-size:12px;color:var(--text-soft);line-height:1.6}
+.fv-lab-summary{margin:12px 0 4px;padding:12px;background:var(--surface-soft);border-radius:8px;font-size:13px;line-height:1.8;color:var(--text-soft)}
+.fv-lab-footnote{font-size:12px;line-height:1.7;margin:7px 0 0;color:var(--text-soft)}
+.fv-properties-block a{overflow-wrap:anywhere}
+@media(max-width:720px){.fv-lab-showcase{grid-template-columns:1fr}.fv-demo-frame{min-height:235px}}
+@media(max-width:540px){.fv-properties-block{padding:14px}.fv-lab-controls{grid-template-columns:1fr}}
