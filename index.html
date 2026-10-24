@@ -1850,6 +1850,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 4</span><span class="status-pill planned">Nueva práctica de clase</span></div>
 <h1 id="validacion-title">Validar el campo del primer formulario</h1><p>El formulario básico ya funciona. Ahora aprenderemos a revisar lo que escribe el estudiante y mostrar mensajes de error antes de continuar. Vamos a utilizar <code>Form</code>, <code>TextFormField</code>, <code>GlobalKey&lt;FormState&gt;</code> y <code>validator</code>, <strong>uno por uno</strong>.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>El campo debe pedir un nombre obligatorio de al menos tres caracteres (sin contar espacios al inicio o al final). Un nombre inválido no debe procesarse.</p></div></div>
+<div class="notice notice-info"><strong>Continuamos la misma Tienda de P3.</strong><p>Conserva <code>ContadorToques</code>, <code>ColoresApp</code>, el widget <code>TituloSeccion</code> y el <code>SingleChildScrollView</code> del paso anterior. Ahora únicamente se añade <code>GlobalKey&lt;FormState&gt;</code> y se sustituye el campo de nombre por un <code>Form</code> con <code>TextFormField</code> y reglas <code>validator</code>. Al desplegar el teclado y mostrar errores, la página puede seguir desplazándose.</p></div>
 <div class="curriculum-bridge" id="prerrequisitos-validacion" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: condición, retorno y valor nulo</h2><p><code>if</code> comprueba una condición; <code>nombre.trim()</code> quita espacios de los extremos, y <code>nombre.length</code> cuenta caracteres. En <code>validator</code>, <code>return 'Mensaje'</code> indica un error y <code>return null</code> indica que el dato pasó la validación. <code>null</code> no es una cadena vacía: significa ausencia de valor. <code>formularioKey.currentState?.validate()</code> usa <code>?.</code> para llamar al método solo cuando existe un estado asociado al formulario.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Antes de pulsar el botón, prueba mentalmente tres nombres: <code>''</code>, <code>'Ki'</code> y <code>'Mazda'</code>. En esta etapa solo se valida, <strong>todavía no se crea ningún objeto.</strong></p></div>
 
@@ -1933,6 +1934,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
 ),</code></pre></div></details>
 <details class="deep-details"><summary>Ver main.dart completo de la etapa</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/main.dart después de validar</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
 
 void main() {
   runApp(const MainApp());
@@ -1958,10 +1961,19 @@ class _MainAppState extends State&lt;MainApp&gt; {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
-        body: Center(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
@@ -2013,8 +2025,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   debugPrint(&#39;Vehículo escrito: $nombre&#39;);
                   vehiculoController.clear();
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColoresApp.accion,
+                  foregroundColor: Colors.white,
+                ),
                 child: const Text(&#39;Agregar vehículo&#39;),
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
@@ -2034,6 +2052,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <div class="lesson-heading"><div class="lesson-meta"><span class="lesson-id">RUTA PRINCIPAL · ETAPA 5</span><span class="status-pill planned">Nueva práctica de clase</span></div>
 <h1 id="objeto-title">Crear el primer objeto de la Tienda</h1><p>Después de validar el nombre, vamos a crear una clase de datos y construir nuestro primer objeto <code>Vehiculo</code>. Empezaremos con dos propiedades sencillas: <code>nombre</code> y <code>disponible</code>.</p></div>
 <div class="goal-box"><span class="goal-icon">✦</span><div><strong>Objetivo de la etapa</strong><p>Comprender la diferencia entre <strong>clase</strong> (el molde) y <strong>objeto</strong> (una instancia con valores), y utilizar los datos de un formulario validado para crear uno.</p></div></div>
+<div class="notice notice-info"><strong>No reinicies el proyecto.</strong><p>Continúa con los colores, el contador de toques, el desplazamiento y la validación de P4. Solo creas <code>lib/models/vehiculo.dart</code>, importas la clase y construyes un objeto después de validar. Todavía no se guarda en una lista ni base de datos.</p></div>
 <div class="curriculum-bridge" id="prerrequisitos-objeto" aria-label="Conocimientos necesarios para esta lección">
   <div class="curriculum-bridge-label">ANTES DE ESCRIBIR CÓDIGO</div><h2>Puente de Dart: clase, propiedades, constructor y objeto</h2><p>Una <strong>clase</strong> es el molde <code>Vehiculo</code>. Sus propiedades describen los datos: <code>String nombre</code> contiene texto y <code>bool disponible</code> un valor verdadero o falso. El <strong>constructor</strong> recibe los valores para crear un objeto real: <code>Vehiculo(nombre: 'Renault 9')</code>. El parámetro opcional <code>disponible</code> puede tener un valor por defecto, sin exigirlo en cada construcción.</p><p class="curriculum-bridge-task"><strong>Comprueba antes de continuar:</strong> Crear un objeto <strong>no significa guardarlo en una base de datos ni en una lista</strong>. Primero lo construiremos después de validar y leeremos sus propiedades en la consola.</p></div>
 
@@ -2083,6 +2102,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
 }
 </code></pre></div></details><details class="deep-details"><summary>Ver main.dart completo que crea el objeto</summary><div class="deep-details-body"><div class="code-label">Archivo completo · lib/main.dart con el primer objeto</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
 import &#39;models/vehiculo.dart&#39;;
 
 void main() {
@@ -2109,10 +2130,19 @@ class _MainAppState extends State&lt;MainApp&gt; {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
-        body: Center(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
@@ -2167,8 +2197,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   );
                   vehiculoController.clear();
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColoresApp.accion,
+                  foregroundColor: Colors.white,
+                ),
                 child: const Text(&#39;Agregar vehículo&#39;),
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
@@ -2187,6 +2223,7 @@ class _MainAppState extends State&lt;MainApp&gt; {
 <h1 id="crud-title">Agregar, editar y eliminar vehículos en tu proyecto Flutter</h1>
 <p>Continúa exactamente donde terminaste P5: <strong>no crees otro proyecto ni archivos de prueba aparte</strong>. Ahora vas a modificar <code>lib/main.dart</code> de tu propia Tienda, un cambio funcional a la vez, hasta que puedas guardar vehículos, verlos, editarlos y eliminarlos.</p></div>
 <div class="notice notice-info"><strong>Abre estos dos archivos de tu proyecto</strong><p><code>DesarrolloMovilFlutter/actividad2/lib/main.dart</code> es el que vas a editar. <code>lib/models/vehiculo.dart</code> ya debe existir desde P5: conserva su modelo <code>Vehiculo</code> con las propiedades <code>nombre</code> y <code>disponible</code>. <strong>No modifiques <code>actividad2a</code></strong>, porque es la referencia del docente.</p></div>
+<div class="notice notice-info"><strong>Partimos del proyecto de P5 con toda su interfaz.</strong><p>El <code>Form</code> sigue validando, <code>ColoresApp</code> continúa coloreando la Tienda, <code>ContadorToques</code> permanece como práctica independiente y <code>SingleChildScrollView</code> permite desplazarse si aparece el teclado. Los nuevos objetos se verán en <code>ListView.builder</code>; no borres el resto de los widgets.</p></div>
 <article class="next-step crud-direct-step" id="crud-paso-1">
 <div class="next-step-top"><span class="next-step-number">01</span><div><span class="crud-step-kicker">CAMBIO 1 · AGREGAR 1 DECLARACIÓN</span><h3>Preparar la lista en _MainAppState</h3></div></div>
 <p>En P5 creaste un solo objeto, pero al pulsar el botón se perdía después de imprimirlo. Necesitamos un lugar donde conservar varios carros mientras la app está abierta. <strong>Ejemplo:</strong> la lista será el parqueadero y cada objeto será un carro.</p>
@@ -2458,9 +2495,11 @@ flutter run</code></pre>
 <div class="next-step-result"><strong>Así debe quedar en la Tienda</strong><p>Puedes comparar tu <code>lib/main.dart</code> con el archivo final de referencia. Si todo funciona, continúa a P6 sin reemplazarlo.</p></div>
 </article>
 <div class="crud-final-reference"><div><span class="crud-final-mark">RESULTADO COMPLETO</span><h2>Tu archivo final de P5.1</h2><p>Este archivo es una guía de verificación. Se usa <code>SingleChildScrollView</code> y una lista con <code>shrinkWrap</code> para que también funcione cuando el teclado reduce la altura disponible. Si seguiste los siete cambios, ya deberías tenerlo construido. <strong>No lo pegues encima sin revisar tu propio trabajo.</strong></p><a href="./etapas/paso_12b_crud.dart" target="_blank" rel="noopener noreferrer">Abrir main.dart final de la etapa ↗</a></div>
-<details class="crud-full-details"><summary>Comparar con el archivo completo de referencia (desplegable)</summary><div class="code-label">lib/main.dart · así debe quedar al terminar P5.1</div><pre class="code-block" data-code-mode="dart"><code>import &#x27;package:flutter/material.dart&#x27;;
-import &#x27;widgets/titulo_seccion.dart&#x27;;
-import &#x27;models/vehiculo.dart&#x27;;
+<details class="crud-full-details"><summary>Comparar con el archivo completo de referencia (desplegable)</summary><div class="code-label">lib/main.dart · así debe quedar al terminar P5.1</div><pre class="code-block" data-code-mode="dart"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
+import &#39;models/vehiculo.dart&#39;;
 
 void main() {
   runApp(const MainApp());
@@ -2525,15 +2564,21 @@ class _MainAppState extends State&lt;MainApp&gt; {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text(&#x27;Tienda&#x27;)),
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TituloSeccion(texto: &#x27;Primer widget&#x27;),
+              const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
               Icon(Icons.directions_car),
               const SizedBox(height: 8),
@@ -2541,33 +2586,33 @@ class _MainAppState extends State&lt;MainApp&gt; {
                 children: [
                   Icon(Icons.directions_car),
                   const SizedBox(width: 8),
-                  Text(&#x27;Ingenieria de Sistemas&#x27;),
+                  Text(&#39;Ingenieria de Sistemas&#39;),
                   Expanded(
                     child: TextField(
                       decoration: const InputDecoration(
-                        hintText: &#x27;Buscar marca o modelo&#x27;,
+                        hintText: &#39;Buscar marca o modelo&#39;,
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const TituloSeccion(texto: &#x27;Agregar un vehículo&#x27;),
+              const TituloSeccion(texto: &#39;Agregar un vehículo&#39;),
               const SizedBox(height: 10),
               Form(
                 key: formularioKey,
                 child: TextFormField(
                   controller: vehiculoController,
                   decoration: const InputDecoration(
-                    hintText: &#x27;Nombre del vehículo&#x27;,
+                    hintText: &#39;Nombre del vehículo&#39;,
                     border: OutlineInputBorder(),
                   ),
                   validator: (valor) {
                     if (valor == null || valor.trim().isEmpty) {
-                      return &#x27;Escribe un nombre&#x27;;
+                      return &#39;Escribe un nombre&#39;;
                     }
                     if (valor.trim().length &lt; 3) {
-                      return &#x27;Mínimo 3 caracteres&#x27;;
+                      return &#39;Mínimo 3 caracteres&#39;;
                     }
                     return null;
                   },
@@ -2576,10 +2621,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: guardarVehiculo,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: ColoresApp.accion,
+                  foregroundColor: Colors.white,
+                ),
                 child: Text(
                   indiceEnEdicion == null
-                      ? &#x27;Agregar vehículo&#x27;
-                      : &#x27;Guardar cambios&#x27;,
+                      ? &#39;Agregar vehículo&#39;
+                      : &#39;Guardar cambios&#39;,
                 ),
               ),
               const SizedBox(height: 12),
@@ -2592,18 +2641,18 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   return ListTile(
                     title: Text(vehiculo.nombre),
                     subtitle: Text(
-                      vehiculo.disponible ? &#x27;Disponible&#x27; : &#x27;No disponible&#x27;,
+                      vehiculo.disponible ? &#39;Disponible&#39; : &#39;No disponible&#39;,
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          tooltip: &#x27;Editar vehículo&#x27;,
+                          tooltip: &#39;Editar vehículo&#39;,
                           onPressed: () =&gt; comenzarEdicion(indice),
                           icon: const Icon(Icons.edit),
                         ),
                         IconButton(
-                          tooltip: &#x27;Eliminar vehículo&#x27;,
+                          tooltip: &#39;Eliminar vehículo&#39;,
                           onPressed: () =&gt; borrarVehiculo(indice),
                           icon: const Icon(Icons.delete),
                         ),
@@ -2612,6 +2661,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   );
                 },
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
@@ -2691,6 +2742,7 @@ class CampoNombreVehiculo extends StatelessWidget {
   controller: vehiculoController,
 ),</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>CampoNombreVehiculo</code> es el widget que acabamos de crear; <code>controller: vehiculoController</code> entrega al hijo el controlador del estado padre. El método <code>guardarVehiculo()</code>, declarado en <code>_MainAppState</code>, continúa llamando a <code>validate()</code>. El campo devuelve mensajes de error mediante <code>validator</code>; el widget BotonTienda no necesita conocer estas reglas.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Escribe «AB» y pulsa el botón original: debe seguir saliendo «Mínimo 3 caracteres». No se perdió la validación.</p></div></article>
 <article class="next-step" id="extraccion-paso-7"><div class="next-step-top"><span class="next-step-number">07</span><h3>Crear el botón como widget reutilizable</h3></div><p>Ahora extraeremos la <strong>apariencia del botón</strong>, pero no su lógica de negocio. Crea <code>boton_tienda.dart</code> y escribe esta clase completa. El botón recibirá un texto y una función.</p><div class="next-where"><div class="next-where-action">CREAR ARCHIVO y escribir su clase</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/widgets/boton_tienda.dart</code></div><div><strong>Ubicación:</strong> Explorador de VS Code → lib/widgets → Nuevo archivo</div><div><strong>Busca con Ctrl + F:</strong> <code>lib/widgets</code></div></div></div><div class="code-label">Dart · archivo completo BotonTienda</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../utils/colores_app.dart&#39;;
 
 class BotonTienda extends StatelessWidget {
   const BotonTienda({
@@ -2706,11 +2758,15 @@ class BotonTienda extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: alPresionar,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: ColoresApp.accion,
+        foregroundColor: Colors.white,
+      ),
       child: Text(texto),
     );
   }
 }
-</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>VoidCallback</code> es el tipo de una función que no recibe argumentos y no devuelve un resultado. <code>onPressed: alPresionar</code> le entrega esa función al botón, <strong>sin ejecutarla de inmediato</strong>. El padre decidirá qué debe hacer.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Ya existe <code>BotonTienda</code>, pero el botón original todavía está en main.dart.</p></div></article>
+</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p><code>VoidCallback</code> es el tipo de una función que no recibe argumentos y no devuelve un resultado. <code>onPressed: alPresionar</code> le entrega esa función al botón, <strong>sin ejecutarla de inmediato</strong>. El padre decidirá qué debe hacer. El widget recibe también los colores de <code>ColoresApp</code>: el botón mantiene la apariencia definida desde P3, pero ahora la configuración visual se reutiliza desde el archivo del propio componente.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>Ya existe <code>BotonTienda</code>, pero el botón original todavía está en main.dart.</p></div></article>
 <article class="next-step" id="extraccion-paso-8"><div class="next-step-top"><span class="next-step-number">08</span><h3>Importar BotonTienda en main.dart</h3></div><p>Agrega la siguiente importación después de la del campo. No dupliques <code>import 'package:flutter/material.dart'</code>.</p><div class="next-where"><div class="next-where-action">AÑADIR import del segundo widget</div><div class="next-where-details"><div><strong>Archivo:</strong> <code>lib/main.dart</code></div><div><strong>Ubicación:</strong> Parte superior del archivo, junto al import del campo</div><div><strong>Busca con Ctrl + F:</strong> <code>import &#39;widgets/campo_nombre_vehiculo.dart&#39;;</code></div></div></div><div class="code-label">Dart · añadir import</div><pre class="code-block"><code>import &#39;widgets/boton_tienda.dart&#39;;</code></pre><div class="next-step-meaning"><strong>Qué significa</strong><p>La importación permite utilizar el componente desde la pantalla. Todavía no cambies la función del botón.</p></div><div class="next-step-result"><strong>Cómo comprobarlo</strong><p>MainApp reconoce tanto <code>CampoNombreVehiculo</code> como <code>BotonTienda</code>.</p></div></article>
 <article class="next-step" id="extraccion-paso-9">
 <div class="next-step-top"><span class="next-step-number">09</span><h3>Sustituir ElevatedButton conservando guardarVehiculo()</h3></div>
@@ -2729,7 +2785,7 @@ class BotonTienda extends StatelessWidget {
 ),</code></pre>
 <div class="next-step-meaning"><strong>Explicación paso a paso del nuevo botón</strong>
 <p><code>BotonTienda(</code> usa la clase que acabas de crear en <code>widgets/boton_tienda.dart</code>. <code>texto:</code> configura el rótulo del botón. La condición <code>indiceEnEdicion == null</code> significa que no hay vehículo seleccionado para editar; el operador <code>?</code> devuelve «Agregar vehículo» y <code>:</code> devuelve «Guardar cambios» cuando ya se seleccionó un vehículo. <code>alPresionar: guardarVehiculo</code> pasa una referencia al método de la pantalla, sin paréntesis, para que el <code>onPressed</code> interno del botón lo ejecute al tocarlo.</p>
-<p>El botón reutilizable <strong>no valida ni crea registros por sí mismo</strong>: la función <code>guardarVehiculo()</code>, que ya hiciste en P5.1, conserva la lógica del formulario y del listado.</p></div>
+<p>El botón reutilizable mantiene su color mediante <code>ColoresApp.accion</code>, pero <strong>no valida ni crea registros por sí mismo</strong>: la función <code>guardarVehiculo()</code>, que ya hiciste en P5.1, conserva la lógica del formulario y del listado.</p></div>
 <details class="deep-details" id="extraccion-guardar-referencia"><summary>¿Dónde está guardarVehiculo()? Mostrar ubicación y función completa</summary><div class="deep-details-body">
 <p>El método se creó inicialmente en <a href="#crud-paso-2">P5.1, paso 2</a> y se reemplazó por su versión de crear/editar en <a href="#crud-paso-5">P5.1, paso 5</a>. Debe aparecer <strong>una sola vez</strong> en <code>_MainAppState</code>, <strong>después de las variables</strong> (<code>vehiculoController</code>, <code>formularioKey</code>, <code>vehiculos</code> e <code>indiceEnEdicion</code>) y <strong>antes de <code>dispose()</code> y <code>build()</code></strong>. No lo pegues dentro de <code>Column</code> ni de <code>BotonTienda</code>.</p>
 <div class="code-label">REFERENCIA · cuerpo completo que ya debe existir en _MainAppState</div>
@@ -2790,6 +2846,7 @@ class CampoNombreVehiculo extends StatelessWidget {
 }
 </code></pre></div></details>
 <details class="deep-details"><summary>Ver BotonTienda completo</summary><div class="deep-details-body"><div class="code-label">lib/widgets/boton_tienda.dart · referencia</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
+import &#39;../utils/colores_app.dart&#39;;
 
 class BotonTienda extends StatelessWidget {
   const BotonTienda({
@@ -2805,6 +2862,10 @@ class BotonTienda extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: alPresionar,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: ColoresApp.accion,
+        foregroundColor: Colors.white,
+      ),
       child: Text(texto),
     );
   }
@@ -2812,6 +2873,8 @@ class BotonTienda extends StatelessWidget {
 </code></pre></div></details>
 <details class="deep-details"><summary>Ver main.dart completo después de la extracción</summary><div class="deep-details-body"><div class="code-label">lib/main.dart · referencia final P6</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
 import &#39;models/vehiculo.dart&#39;;
 import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
 import &#39;widgets/boton_tienda.dart&#39;;
@@ -2879,8 +2942,14 @@ class _MainAppState extends State&lt;MainApp&gt; {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -2949,6 +3018,8 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   );
                 },
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
@@ -3171,6 +3242,8 @@ class AcercaPage extends StatelessWidget {
 </code></pre></div></details>
 <details class="deep-details"><summary>Ver main.dart final con navegación</summary><div class="deep-details-body"><div class="code-label">lib/main.dart · referencia final P7</div><pre class="code-block"><code>import &#39;package:flutter/material.dart&#39;;
 import &#39;widgets/titulo_seccion.dart&#39;;
+import &#39;widgets/contador_toques.dart&#39;;
+import &#39;utils/colores_app.dart&#39;;
 import &#39;models/vehiculo.dart&#39;;
 import &#39;widgets/campo_nombre_vehiculo.dart&#39;;
 import &#39;widgets/boton_tienda.dart&#39;;
@@ -3190,6 +3263,45 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State&lt;MainApp&gt; {
   final TextEditingController vehiculoController = TextEditingController();
   final GlobalKey&lt;FormState&gt; formularioKey = GlobalKey&lt;FormState&gt;();
+  final List&lt;Vehiculo&gt; vehiculos = [];
+  int? indiceEnEdicion;
+
+  void guardarVehiculo() {
+    if (formularioKey.currentState?.validate() != true) {
+      return;
+    }
+
+    final nombre = vehiculoController.text.trim();
+    setState(() {
+      if (indiceEnEdicion == null) {
+        vehiculos.add(Vehiculo(nombre: nombre));
+      } else {
+        final indice = indiceEnEdicion!;
+        final anterior = vehiculos[indice];
+        vehiculos[indice] = Vehiculo(
+          nombre: nombre,
+          disponible: anterior.disponible,
+        );
+        indiceEnEdicion = null;
+      }
+    });
+    vehiculoController.clear();
+  }
+
+  void comenzarEdicion(int indice) {
+    vehiculoController.text = vehiculos[indice].nombre;
+    setState(() {
+      indiceEnEdicion = indice;
+    });
+  }
+
+  void borrarVehiculo(int indice) {
+    setState(() {
+      vehiculos.removeAt(indice);
+      indiceEnEdicion = null;
+      vehiculoController.clear();
+    });
+  }
 
   @override
   void dispose() {
@@ -3200,10 +3312,19 @@ class _MainAppState extends State&lt;MainApp&gt; {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: const Text(&#39;Tienda&#39;)),
-        body: Center(
+        backgroundColor: ColoresApp.fondo,
+        appBar: AppBar(
+          title: const Text(&#39;Tienda&#39;),
+          backgroundColor: ColoresApp.primario,
+          foregroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TituloSeccion(texto: &#39;Primer widget&#39;),
               const SizedBox(height: 20),
@@ -3228,23 +3349,43 @@ class _MainAppState extends State&lt;MainApp&gt; {
               const SizedBox(height: 10),
               Form(
                 key: formularioKey,
-                child: CampoNombreVehiculo(
-                  controller: vehiculoController,
-                ),
+                child: CampoNombreVehiculo(controller: vehiculoController),
               ),
               const SizedBox(height: 12),
               BotonTienda(
-                texto: &#39;Agregar vehículo&#39;,
-                alPresionar: () {
-                  if (formularioKey.currentState?.validate() != true) {
-                    return;
-                  }
-                  final nombre = vehiculoController.text.trim();
-                  final vehiculo = Vehiculo(nombre: nombre);
-                  debugPrint(
-                    &#39;Vehículo creado: ${vehiculo.nombre} - Disponible: ${vehiculo.disponible}&#39;,
+                texto: indiceEnEdicion == null
+                    ? &#39;Agregar vehículo&#39;
+                    : &#39;Guardar cambios&#39;,
+                alPresionar: guardarVehiculo,
+              ),
+              const SizedBox(height: 12),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vehiculos.length,
+                itemBuilder: (context, indice) {
+                  final vehiculo = vehiculos[indice];
+                  return ListTile(
+                    title: Text(vehiculo.nombre),
+                    subtitle: Text(
+                      vehiculo.disponible ? &#39;Disponible&#39; : &#39;No disponible&#39;,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: &#39;Editar vehículo&#39;,
+                          onPressed: () =&gt; comenzarEdicion(indice),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          tooltip: &#39;Eliminar vehículo&#39;,
+                          onPressed: () =&gt; borrarVehiculo(indice),
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
                   );
-                  vehiculoController.clear();
                 },
               ),
               const SizedBox(height: 16),
@@ -3254,11 +3395,15 @@ class _MainAppState extends State&lt;MainApp&gt; {
                   alPresionar: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =&gt; const AcercaPage()),
+                      MaterialPageRoute(
+                        builder: (context) =&gt; const AcercaPage(),
+                      ),
                     );
                   },
                 ),
               ),
+              const SizedBox(height: 16),
+              const ContadorToques(),
             ],
           ),
         ),
