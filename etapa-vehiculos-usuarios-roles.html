@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Etapa siguiente | Vehículos, usuarios y roles</title><style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#e9f0ff;background:#10182b}*{box-sizing:border-box}body{margin:0}header{padding:40px max(20px,calc((100vw - 1000px)/2));background:linear-gradient(125deg,#203763,#132238)}main{max-width:1000px;margin:auto;padding:24px}h1{font-size:clamp(2rem,4vw,3rem);margin:.2em 0}h2{border-bottom:1px solid #435272;padding-bottom:12px;margin-top:48px}h3{color:#9fdff7}.muted{color:#b6c6db}.pill{display:inline-block;background:#2a466d;padding:6px 12px;border-radius:100px}section{margin:20px 0}.step{background:#1b2943;border:1px solid #304365;border-radius:14px;padding:20px;margin:22px 0}pre{background:#0a1222;border:1px solid #364763;padding:18px;overflow:auto;border-radius:12px;font-size:13px;line-height:1.55;white-space:pre}code{font-family:ui-monospace,Consolas,monospace}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid #45516a;padding:12px;text-align:left}a{color:#9fdff7}.note{border-left:4px solid #6ed6bc;padding:12px 16px;background:#1d3744}button,select,input{font:inherit;border-radius:8px;padding:10px;color:#182b46}button{cursor:pointer;background:#8fd5ff;border:0}input{max-width:220px}.demo{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px;background:#20304e;border-radius:12px}.item{padding:10px;background:#19253c;border-radius:8px;margin-top:6px}.hidden{display:none}@media(max-width:600px){main{padding:14px}td,th{padding:7px;font-size:13px}}</style></head>
+<body><header><a href="./index.html">← Volver al taller principal</a><p class="pill">Etapa complementaria · Paso a paso</p><h1>Mi concesionario: filtros, favoritos y roles</h1><p class="muted">Continuación acumulativa de actividad2. Un segundo objeto, Usuario, con perfiles administrador, vendedor y cliente.</p></header>
+<main>
+<section><h2>Ruta de aprendizaje</h2><p>Primero mejoramos el catálogo que ya existe y luego introducimos el modelo Usuario. No sustituimos el objeto Vehiculo, ni implementamos autenticación real antes de explicar los conceptos.</p><p><strong>Orden:</strong> búsqueda → marca y precio → ordenamiento → favoritos → lista vacía → paginación → objeto Usuario → enum RolUsuario → permisos → páginas por rol → protección en servidor.</p></section>
+<section><h2>Parte A · Evolución del listado de vehículos</h2>
+<div class="step"><h3>1. Ubicar los archivos</h3><p>Trabaja dentro del proyecto <code>actividad2</code>. Mantén <code>lib/models/vehiculo.dart</code> y la página donde se muestra el catálogo. Los fragmentos siguientes van dentro del <code>State</code> de esa página, NO dentro del método <code>build</code>.</p><p>Si tu página actual es StatelessWidget, primero explica y convierte la pantalla a StatefulWidget, porque el texto buscado, los favoritos y la página seleccionada cambian durante el uso.</p></div>
+<div class="step"><h3>2. Crear variables de estado</h3><pre><code>String busqueda = '';
+String marcaSeleccionada = 'Todas';
+double precioMaximo = 200000000;
+String orden = 'Nombre';
+final Set&lt;int&gt; favoritos = {};
+int paginaActual = 0;
+final int elementosPorPagina = 5;</code></pre><p><code>String</code> almacena texto; <code>double</code>, un número con decimales; <code>Set&lt;int&gt;</code> conserva identificadores sin repetirlos; <code>final</code> impide reasignar la variable (pero el Set puede cambiar). La página comienza en cero.</p></div>
+<div class="step"><h3>3. Construir la lista filtrada</h3><p>Este ejemplo supone que <code>Vehiculo</code> expone <code>id</code>, <code>nombre</code>, <code>marca</code> y <code>precio</code>. Si tu clase emplea nombres diferentes, primero revisa y adapta esos campos; no pegues el código sin verificarlos.</p>
+<pre><code>List&lt;Vehiculo&gt; filtrarVehiculos(List&lt;Vehiculo&gt; vehiculos) {
+  final resultado = vehiculos.where((vehiculo) {
+    final coincideTexto = vehiculo.nombre
+        .toLowerCase()
+        .contains(busqueda.toLowerCase().trim());
+    final coincideMarca = marcaSeleccionada == 'Todas' ||
+        vehiculo.marca == marcaSeleccionada;
+    final coincidePrecio = vehiculo.precio &lt;= precioMaximo;
+    return coincideTexto &amp;&amp; coincideMarca &amp;&amp; coincidePrecio;
+  }).toList();
+
+  if (orden == 'Precio menor') {
+    resultado.sort((a, b) =&gt; a.precio.compareTo(b.precio));
+  } else if (orden == 'Precio mayor') {
+    resultado.sort((a, b) =&gt; b.precio.compareTo(a.precio));
+  } else {
+    resultado.sort((a, b) =&gt; a.nombre.compareTo(b.nombre));
+  }
+  return resultado;
+}</code></pre><p><code>where</code> revisa cada vehículo; <code>&amp;&amp;</code> exige que se cumplan las tres condiciones; <code>toList()</code> crea una lista concreta; <code>sort</code> cambia el orden. La función no altera la lista original.</p></div>
+<div class="step"><h3>4. Agregar la búsqueda en la parte superior del listado</h3>
+<pre><code>TextField(
+  decoration: const InputDecoration(
+    labelText: 'Buscar vehículo',
+    prefixIcon: Icon(Icons.search),
+    border: OutlineInputBorder(),
+  ),
+  onChanged: (texto) {
+    setState(() {
+      busqueda = texto;
+      paginaActual = 0;
+    });
+  },
+),</code></pre><p><code>onChanged</code> se ejecuta al escribir; <code>setState</code> actualiza la pantalla; volver a página cero evita quedar en una página que ya no existe tras filtrar.</p></div>
+<div class="step"><h3>5. Dibujar resultados y paginarlos</h3>
+<pre><code>final filtrados = filtrarVehiculos(vehiculos);
+final inicio = paginaActual * elementosPorPagina;
+final visibles = filtrados.skip(inicio)
+    .take(elementosPorPagina).toList();</code></pre><p><strong>Ubicación:</strong> estas tres instrucciones van al inicio de <code>build</code>, antes de <code>return Scaffold(...)</code>, donde <code>vehiculos</code> es la lista actual de tu pantalla.</p>
+<pre><code>filtrados.isEmpty
+    ? const Center(child: Text('No se encontraron vehículos'))
+    : ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: visibles.length,
+        itemBuilder: (context, index) {
+          final vehiculo = visibles[index];
+          return ListTile(
+            title: Text(vehiculo.nombre),
+            subtitle: Text(vehiculo.marca),
+            trailing: IconButton(
+              icon: Icon(favoritos.contains(vehiculo.id)
+                  ? Icons.favorite
+                  : Icons.favorite_border),
+              onPressed: () {
+                setState(() {
+                  if (!favoritos.add(vehiculo.id)) {
+                    favoritos.remove(vehiculo.id);
+                  }
+                });
+              },
+            ),
+          );
+        },
+      ),</code></pre><p><code>itemCount</code> determina cuántas filas dibujar; <code>itemBuilder</code> construye cada fila; <code>index</code> identifica la posición; <code>ListTile</code> agrupa título, subtítulo y acción. <code>shrinkWrap</code> y la física sin desplazamiento propio se usan aquí solamente si el listado está dentro de otro contenedor vertical desplazable.</p>
+<pre><code>Row(
+  children: [
+    TextButton(
+      onPressed: paginaActual &gt; 0
+          ? () =&gt; setState(() =&gt; paginaActual--)
+          : null,
+      child: const Text('Anterior'),
+    ),
+    Text('Página ${paginaActual + 1}'),
+    TextButton(
+      onPressed: (paginaActual + 1) * elementosPorPagina
+              &lt; filtrados.length
+          ? () =&gt; setState(() =&gt; paginaActual++)
+          : null,
+      child: const Text('Siguiente'),
+    ),
+  ],
+),</code></pre><p><strong>Ubicación:</strong> dentro de la misma <code>Column</code>, inmediatamente después del listado. Los botones se desactivan cuando no hay página anterior o siguiente.</p></div>
+<div class="step"><h3>6. Simulación interactiva del catálogo</h3><p>Prueba cómo filtros y paginación se combinan antes de escribirlos en Flutter.</p><div class="demo"><label>Buscar <input id="buscar" placeholder="Modelo o marca"></label><label>Marca <select id="marca"><option>Todas</option><option>Renault</option><option>Mazda</option><option>Chevrolet</option></select></label><label>Orden <select id="orden"><option>Nombre</option><option>Precio menor</option><option>Precio mayor</option></select></label><label>Precio máximo <select id="precio"><option value="999999999">Todos</option><option value="35000000">$35 millones</option><option value="60000000">$60 millones</option></select></label></div><div id="resultado" aria-live="polite"></div><div class="demo"><button id="anterior">Anterior</button><strong id="pagina"></strong><button id="siguiente">Siguiente</button></div><p class="muted">Los favoritos de esta simulación no se guardan al recargar. Más adelante pueden persistirse mediante almacenamiento local o API.</p></div>
+</section>
+<section><h2>Parte B · Un segundo objeto: Usuario</h2><div class="note">El objeto <strong>Vehiculo</strong> contiene datos del carro. El nuevo objeto <strong>Usuario</strong> representa a la persona que utiliza el sistema y su rol. El rol describe qué operaciones puede realizar, no qué vehículo es.</div>
+<div class="step"><h3>7. Crear el archivo lib/models/usuario.dart</h3>
+<pre><code>enum RolUsuario { administrador, vendedor, cliente }
+
+class Usuario {
+  final int id;
+  final String nombre;
+  final String correo;
+  final RolUsuario rol;
+
+  const Usuario({
+    required this.id,
+    required this.nombre,
+    required this.correo,
+    required this.rol,
+  });
+}</code></pre><p><code>enum</code> limita los roles a tres valores válidos; <code>class</code> define el molde; <code>final</code> conserva los datos asignados; <code>required</code> obliga a enviarlos al construir el objeto; <code>const</code> permite crear instancias constantes cuando todos sus valores también lo son. Las contraseñas nunca deben almacenarse como texto simple en este modelo.</p></div>
+<div class="step"><h3>8. Crear objetos de ejemplo</h3>
+<pre><code>const usuarios = [
+  Usuario(
+    id: 1,
+    nombre: 'Ana',
+    correo: 'ana@ejemplo.com',
+    rol: RolUsuario.administrador,
+  ),
+  Usuario(
+    id: 2,
+    nombre: 'Luis',
+    correo: 'luis@ejemplo.com',
+    rol: RolUsuario.vendedor,
+  ),
+  Usuario(
+    id: 3,
+    nombre: 'Sofía',
+    correo: 'sofia@ejemplo.com',
+    rol: RolUsuario.cliente,
+  ),
+];</code></pre><p><strong>Ubicación:</strong> en un archivo de datos de ejemplo, por ejemplo <code>lib/data/usuarios_demo.dart</code>, importando el modelo. Cada elemento usa la misma clase pero tiene un rol diferente. Estos usuarios son ficticios y permiten practicar sin iniciar sesión.</p></div>
+<div class="step"><h3>9. Definir la matriz de permisos antes de crear pantallas</h3>
+<table><thead><tr><th>Acción</th><th>Administrador</th><th>Vendedor</th><th>Cliente</th></tr></thead><tbody>
+<tr><td>Ver catálogo</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Crear y editar vehículo</td><td>✓</td><td>✓</td><td>—</td></tr>
+<tr><td>Eliminar vehículo</td><td>✓</td><td>—</td><td>—</td></tr>
+<tr><td>Gestionar usuarios y roles</td><td>✓</td><td>—</td><td>—</td></tr>
+<tr><td>Agregar favoritos</td><td>✓</td><td>✓</td><td>✓</td></tr></tbody></table>
+<p>Esta matriz es una decisión didáctica para el concesionario: en un proyecto real el equipo define qué necesita cada rol.</p></div>
+<div class="step"><h3>10. Centralizar permisos en lib/models/permiso.dart</h3>
+<pre><code>import 'usuario.dart';
+
+enum Permiso {
+  verCatalogo,
+  crearVehiculo,
+  editarVehiculo,
+  eliminarVehiculo,
+  gestionarUsuarios,
+  agregarFavoritos,
+}
+
+bool tienePermiso(Usuario usuario, Permiso permiso) {
+  switch (usuario.rol) {
+    case RolUsuario.administrador:
+      return true;
+    case RolUsuario.vendedor:
+      return permiso == Permiso.verCatalogo ||
+          permiso == Permiso.crearVehiculo ||
+          permiso == Permiso.editarVehiculo ||
+          permiso == Permiso.agregarFavoritos;
+    case RolUsuario.cliente:
+      return permiso == Permiso.verCatalogo ||
+          permiso == Permiso.agregarFavoritos;
+  }
+}</code></pre><p><code>switch</code> examina el rol; <code>||</code> significa «o»; la función devuelve <code>true</code> únicamente cuando la operación está permitida. Con esta función evitamos repetir reglas diferentes en cada botón.</p></div>
+<div class="step"><h3>11. Mostrar botones según el rol</h3><p>En la página del catálogo, importa <code>usuario.dart</code> y <code>permiso.dart</code>. Recibe el <code>Usuario usuarioActual</code> por constructor y usa esta condición dentro de la lista de botones:</p>
+<pre><code>if (tienePermiso(usuarioActual, Permiso.crearVehiculo))
+  ElevatedButton(
+    onPressed: () {
+      // Aquí se llamará la navegación al formulario.
+    },
+    child: const Text('Agregar vehículo'),
+  ),</code></pre><p>El <code>if</code> dentro de <code>children: []</code> es una colección condicional de Dart; si el permiso es falso, el botón no se agrega al árbol de widgets. No hace falta instalar un paquete para esta explicación inicial.</p></div>
+<div class="step"><h3>12. Pantallas según el perfil</h3><p>Crea gradualmente <code>lib/pages/admin_page.dart</code>, <code>lib/pages/vendedor_page.dart</code> y <code>lib/pages/cliente_page.dart</code>. Al comienzo solo deben tener un Scaffold, AppBar y texto explicativo; conecta cada una al menú al terminarla. Comprueba el permiso también al abrir una ruta, no únicamente al mostrar su botón.</p>
+<pre><code>Widget paginaInicial(Usuario usuario) {
+  switch (usuario.rol) {
+    case RolUsuario.administrador:
+      return const AdminPage();
+    case RolUsuario.vendedor:
+      return const VendedorPage();
+    case RolUsuario.cliente:
+      return const ClientePage();
+  }
+}</code></pre><p><strong>Ubicación:</strong> en el archivo que configura la navegación de la aplicación. Importa las tres páginas antes de utilizar sus clases. La selección de rol es solo una simulación educativa y no constituye inicio de sesión.</p></div>
+<div class="step"><h3>13. Practicar la vista por rol</h3><div class="demo"><label>Usuario <select id="rol"><option value="administrador">Ana · Administrador</option><option value="vendedor">Luis · Vendedor</option><option value="cliente">Sofía · Cliente</option></select></label></div><div id="panelRol" class="item" aria-live="polite"></div></div>
+<div class="step"><h3>14. Seguridad real: autenticación y autorización</h3><p><strong>Autenticación</strong> responde quién es la persona: por ejemplo, mediante inicio de sesión y token válido. <strong>Autorización</strong> responde qué puede hacer esa persona. Aunque Flutter oculte el botón «Eliminar», un cliente podría intentar invocar la API directamente. Por eso el backend debe verificar el token, recuperar el rol desde una fuente confiable y denegar la operación si no está autorizada (por ejemplo con HTTP 403). Nunca aceptes un rol enviado libremente desde la interfaz como prueba de permisos.</p></div>
+</section>
+<section><h2>Comprobación de aprendizaje</h2><p>Al terminar, el estudiante debe demostrar que la búsqueda reinicia la página, que los filtros funcionan juntos, que una lista sin coincidencias muestra un mensaje, que los favoritos se activan y desactivan y que los tres usuarios muestran acciones diferentes. Pregunta adicional: ¿por qué un botón oculto no es una medida de seguridad suficiente?</p><p><a href="./index.html">Regresar a la guía principal</a></p></section></main>
+<script>
+const autos=[['Renault Logan','Renault',28000000],['Mazda 2','Mazda',58000000],['Chevrolet Spark','Chevrolet',26000000],['Renault Duster','Renault',52000000],['Mazda 3','Mazda',70000000],['Chevrolet Onix','Chevrolet',47000000],['Renault Sandero','Renault',33000000],['Mazda CX-5','Mazda',98000000]];
+let pg=0;const fav=new Set();const by=id=>document.getElementById(id);
+function render(){let v=autos.map((a,i)=>({a,i}));const q=by('buscar').value.toLocaleLowerCase().trim(),m=by('marca').value,p=+by('precio').value,o=by('orden').value;v=v.filter(x=>x.a[0].toLocaleLowerCase().includes(q)&&(m==='Todas'||x.a[1]===m)&&x.a[2]<=p);v.sort((x,y)=>o==='Precio menor'?x.a[2]-y.a[2]:o==='Precio mayor'?y.a[2]-x.a[2]:x.a[0].localeCompare(y.a[0]));const count=Math.max(1,Math.ceil(v.length/3));pg=Math.min(pg,count-1);by('pagina').textContent='Página '+(pg+1)+' de '+count;by('anterior').disabled=pg===0;by('siguiente').disabled=pg>=count-1;by('resultado').replaceChildren();if(!v.length){by('resultado').textContent='No se encontraron vehículos';return;}v.slice(pg*3,pg*3+3).forEach(x=>{const d=document.createElement('div');d.className='item';const b=document.createElement('button');b.textContent=fav.has(x.i)?'♥ Favorito':'♡ Favorito';b.onclick=()=>{fav.has(x.i)?fav.delete(x.i):fav.add(x.i);render()};const s=document.createElement('span');s.textContent=x.a[0]+' · '+x.a[2].toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0})+' ';d.append(s,b);by('resultado').append(d);});}
+['buscar','marca','precio','orden'].forEach(id=>by(id).addEventListener('input',()=>{pg=0;render()}));by('anterior').onclick=()=>{pg--;render()};by('siguiente').onclick=()=>{pg++;render()};by('rol').onchange=()=>{const r=by('rol').value;by('panelRol').textContent=r==='administrador'?'Puede administrar vehículos y usuarios, y gestionar roles.':r==='vendedor'?'Puede consultar, crear y editar vehículos. No puede eliminar vehículos ni gestionar roles.':'Puede consultar vehículos y marcarlos como favoritos. No puede modificar el inventario.'};by('rol').onchange();render();
+</script></body></html>
