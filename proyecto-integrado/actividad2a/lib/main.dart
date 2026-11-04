@@ -31,6 +31,26 @@ class _MainAppState extends State<MainApp> {
     setState(() => _usuario = null);
   }
 
+  // Función Widget: el if tradicional decide qué pantalla mostrar.
+  // Utilizamos la misma API y la sesión existente (no hay login duplicado).
+  Widget _construirPantallaInicial() {
+    final usuario = _usuario;
+    if (usuario == null) {
+      return LoginPage(
+        api: _api,
+        onSesion: (autenticado) =>
+            setState(() => _usuario = autenticado),
+      );
+    }
+
+    return InicioPage(
+      key: ValueKey(usuario.id),
+      api: _api,
+      usuario: usuario,
+      onSalir: _cerrarSesion,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,17 +72,7 @@ class _MainAppState extends State<MainApp> {
           ),
         ),
       ),
-      home: _usuario == null
-          ? LoginPage(
-              api: _api,
-              onSesion: (usuario) => setState(() => _usuario = usuario),
-            )
-          : InicioPage(
-              key: ValueKey(_usuario!.id),
-              api: _api,
-              usuario: _usuario!,
-              onSalir: _cerrarSesion,
-            ),
+      home: _construirPantallaInicial(),
     );
   }
 }
