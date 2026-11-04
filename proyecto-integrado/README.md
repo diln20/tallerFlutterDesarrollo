@@ -7,6 +7,19 @@ Esta carpeta contiene la **implementación final coherente** del taller, publica
 - `actividad2a_api/`: FastAPI, SQLite, permisos, archivos de imagen, pruebas.
 - [Guía paso a paso y auditoría](./actividad2a/docs/GUIA_INTEGRACION_FINAL.md).
 
+## Condicionales y funciones Widget integrados en el concesionario
+
+Los ejemplos de `if (...) { ... }`, `return`, `Widget` y `List<Widget>` ya se aplicaron **dentro del código Flutter de esta carpeta**, no solo en archivos de ejemplo de la página:
+
+- [`lib/main.dart`](./actividad2a/lib/main.dart): la función `_construirPantallaInicial()` retorna `LoginPage` o `InicioPage` según un `if` con llaves y reutiliza la sesión actual.
+- [`lib/widgets/vehiculo_card.dart`](./actividad2a/lib/widgets/vehiculo_card.dart): `_construirEstado()` utiliza `if/return` para mostrar «Disponible» o «No disponible»; `_construirFoto()` devuelve un `Widget`; `_construirDetalles()` devuelve una `List<Widget>`. El menú de acciones sigue siendo condicional con `if` dentro de `children`.
+- [`lib/pages/catalogo_page.dart`](./actividad2a/lib/pages/catalogo_page.dart): conserva las comprobaciones de permisos por rol y los filtros, favoritos, paginación y operaciones CRUD existentes. La tarjeta sigue recibiendo `onEditar`/`onEliminar` únicamente cuando el usuario tiene permiso.
+- [`test/condicionales_widgets_test.dart`](./actividad2a/test/condicionales_widgets_test.dart): pruebas de disponibilidad, acciones condicionales y presentación en móvil y escritorio.
+
+El modelo integrado usa `Vehiculo.disponible` de tipo `bool` procedente de la API, **no** un `stock` inventado: los ejemplos con existencias numéricas de la guía son prácticas independientes. Los permisos de edición/eliminación siempre se comprueban en el backend, aunque un botón esté oculto.
+
+Para ver la explicación detallada y relacionarla con los archivos reales, consulta la [sección de condicionales y funciones de la guía](../index.html#estructura) y [la ampliación de la guía de integración](./actividad2a/docs/GUIA_INTEGRACION_FINAL.md#14-condicionales-y-funciones-que-retornan-widgets-en-la-aplicación-real).
+
 ## Ejecutar directamente desde GitHub
 
 **Método recomendado y verificado en una copia recién clonada.** No necesitas copiar clases manualmente ni borrar el código existente.
