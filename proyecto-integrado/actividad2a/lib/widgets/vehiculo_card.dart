@@ -18,10 +18,57 @@ class VehiculoCard extends StatelessWidget {
   final VoidCallback? onEditar;
   final VoidCallback? onEliminar;
 
-  @override
-  Widget build(BuildContext context) {
+  // Función que retorna un Widget distinto según un if normal con llaves.
+  // El modelo de la API utiliza disponible (bool), no un stock inventado.
+  Widget _construirEstado() {
+    if (vehiculo.disponible) {
+      return const Chip(
+        label: Text('Disponible'),
+        avatar: Icon(Icons.check_circle_outline, size: 17),
+        visualDensity: VisualDensity.compact,
+      );
+    }
+
+    return const Chip(
+      label: Text('No disponible'),
+      avatar: Icon(Icons.remove_circle_outline, size: 17),
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  // Esta función devuelve una lista, no un Widget individual.
+  // Así reutilizamos el nombre, marca, precio y estado sin duplicarlos.
+  List<Widget> _construirDetalles(BuildContext context) {
     final colores = Theme.of(context).colorScheme;
-    final foto = ClipRRect(
+    return [
+                Text(
+                  vehiculo.nombre,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  vehiculo.marca,
+                  style: TextStyle(color: colores.onSurfaceVariant),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '\$ ${vehiculo.precio.toStringAsFixed(0).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => '.')} COP',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colores.primary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                _construirEstado(),
+    ];
+  }
+
+  // Otra función que retorna un solo Widget (imagen real o marcador).
+  Widget _construirFoto(BuildContext context) {
+    final colores = Theme.of(context).colorScheme;
+    return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: SizedBox(
         height: 145,
@@ -45,6 +92,12 @@ class VehiculoCard extends StatelessWidget {
               ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colores = Theme.of(context).colorScheme;
+    final foto = _construirFoto(context);
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       clipBehavior: Clip.antiAlias,
@@ -55,40 +108,7 @@ class VehiculoCard extends StatelessWidget {
             final anchoGrande = constraints.maxWidth > 610;
             final descripcion = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  vehiculo.nombre,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  vehiculo.marca,
-                  style: TextStyle(color: colores.onSurfaceVariant),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '\$ ${vehiculo.precio.toStringAsFixed(0).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => '.')} COP',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colores.primary,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Chip(
-                  label: Text(
-                    vehiculo.disponible ? 'Disponible' : 'No disponible',
-                  ),
-                  avatar: Icon(
-                    vehiculo.disponible
-                        ? Icons.check_circle_outline
-                        : Icons.remove_circle_outline,
-                    size: 17,
-                  ),
-                  visualDensity: VisualDensity.compact,
-                ),
-              ],
+              children: _construirDetalles(context),
             );
             final acciones = Row(
               mainAxisSize: MainAxisSize.min,
