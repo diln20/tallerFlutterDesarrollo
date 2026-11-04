@@ -106,7 +106,7 @@
         <div class="nav-group-label">INICIO · PROYECTO ACTIVIDAD2</div>
         <a class="nav-link" href="#preparacion" data-route="preparacion" data-search="preparacion instalación flutter doctor proyecto ejecutar emulador"><span class="lesson-index">01</span><span>Preparar el proyecto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#punto-entrada" data-route="punto-entrada" data-search="main dart runapp import flutter statelesswidget super key const build"><span class="lesson-index">02</span><span>Entender main.dart</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home if else condicionales widgets condicionados stock rol concesionario"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home if else condicionales widgets condicionados stock rol concesionario funciones return Widget List Widget void parametros BuildContext setState callbacks"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#diseno" data-route="diseno" data-search="Column Row Center Icon children SizedBox widgets layout"><span class="lesson-index">04</span><span>Organizar los widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">RUTA A · CONTINÚA DESDE EL MÓDULO 05</div>
@@ -766,8 +766,312 @@ return Column(children: widgets);</code></pre>
   <p class="conditions-links"><a href="./etapas/paso_03_condicionales.dart" target="_blank" rel="noopener noreferrer">Abrir ejemplo Flutter completo para copiar a lib/main.dart ↗</a> · <a href="https://dart.dev/language/branches" target="_blank" rel="noopener noreferrer">Documentación oficial de if/else en Dart ↗</a> · <a href="https://dart.dev/language/collections" target="_blank" rel="noopener noreferrer">Documentación oficial de elementos condicionales en colecciones ↗</a></p>
 </div>
 
+
+<div class="deep-dive" id="funciones-retornan-widgets">
+  <div class="deep-heading">
+    <span>AMPLIACIÓN DIDÁCTICA · FUNCIONES Y REUTILIZACIÓN</span>
+    <h2>Funciones que retornan widgets: explicación desde cero</h2>
+    <p>Un widget también puede ser el resultado de una función. Aprenderemos a escribir funciones normales de Dart, devolver <code>Widget</code>, enviar parámetros, reutilizar interfaces y actualizar el resultado con <code>setState()</code>, con ejemplos del concesionario.</p>
+  </div>
+  <div class="notice notice-tip"><strong>Objetivo de aprendizaje</strong><p>Al finalizar distinguirás una función <code>void</code>, una función que retorna un dato, una función <code>Widget</code>, una función que retorna <code>List&lt;Widget&gt;</code> y el método <code>build()</code>. Todos los ejemplos completos se pueden abrir y copiar a <code>lib/main.dart</code> en tu proyecto de práctica.</p></div>
+
+  <h3>1. ¿Qué es una función y qué significa retornar?</h3>
+  <p>Una función es un bloque de instrucciones al que damos un nombre. Podemos llamarlo cada vez que necesitemos ejecutar esas instrucciones. La palabra <code>return</code> entrega un resultado al lugar que llamó la función y termina su ejecución.</p>
+  <div class="code-label">Dart · primero observa una función que devuelve un número</div>
+  <pre class="code-block" data-code-mode="dart"><code>int sumar(int a, int b) {
+  return a + b;
+}
+
+void main() {
+  int resultado = sumar(3, 2);
+  print(resultado); // 5
+}</code></pre>
+  <div class="line-notes numbered">
+    <div><strong><code>int</code></strong><p>Tipo del resultado. Esta función debe devolver un número entero.</p></div>
+    <div><strong><code>sumar</code></strong><p>Nombre de la función que utilizaremos para llamarla.</p></div>
+    <div><strong><code>(int a, int b)</code></strong><p>Dos parámetros de entrada. Cada uno es un dato que la función recibe.</p></div>
+    <div><strong><code>return a + b;</code></strong><p>Calcula y entrega un valor compatible con el tipo <code>int</code>.</p></div>
+  </div>
+
+  <h3>2. ¿Cómo pasa de devolver un número a devolver un widget?</h3>
+  <p>En Dart, <code>Text</code>, <code>Icon</code>, <code>Card</code> y muchos otros componentes son widgets. Una función declarada con tipo de retorno <code>Widget</code> puede entregar uno de esos componentes, que luego se incorpora a la interfaz.</p>
+  <div class="code-label">Flutter · función que retorna un widget</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget crearTitulo() {
+  return const Text('Concesionario de vehículos');
+}
+
+// Dentro de children:
+Column(
+  children: [
+    crearTitulo(),
+  ],
+)</code></pre>
+  <div class="notice notice-info"><strong>Observa la diferencia</strong><p><code>Widget crearTitulo()</code> declara una función. <code>crearTitulo()</code> la llama. <code>return Text(...)</code> devuelve un objeto widget que Flutter puede construir en pantalla. La función no dibuja por sí sola: forma parte de la construcción del árbol de widgets.</p></div>
+
+  <h3>3. Funciones con parámetros: mostrar información diferente</h3>
+  <p>Si recibimos el nombre del vehículo como <code>String</code>, reutilizamos la misma función para distintos productos sin copiar el mismo código.</p>
+  <div class="code-label">Flutter · parámetro posicional</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget mostrarNombre(String nombre) {
+  return Text(
+    nombre,
+    style: const TextStyle(fontSize: 20),
+  );
+}
+
+// Dentro de children:
+Column(
+  children: [
+    mostrarNombre('Renault Logan'),
+    mostrarNombre('Mazda 3'),
+  ],
+)</code></pre>
+  <p>Los parámetros posicionales se envían en el mismo orden en que fueron declarados. Cuando un widget o función tiene muchos argumentos, es más claro utilizar <strong>parámetros nombrados</strong>.</p>
+  <div class="code-label">Flutter · parámetros nombrados con required</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget mostrarPrecio({
+  required String modelo,
+  required double precio,
+}) {
+  return Text('$modelo: $precio');
+}
+
+// Llamada con nombres explícitos:
+mostrarPrecio(
+  modelo: 'Renault Logan',
+  precio: 32000000,
+)</code></pre>
+  <p><code>{ }</code> en la declaración de parámetros indica que son <strong>nombrados</strong>; aquí no son llaves de un <code>if</code>. <code>required</code> exige indicar el valor al llamar la función. Una función puede aceptar parámetros opcionales con valores por defecto, por ejemplo <code>bool disponible = true</code> dentro de parámetros nombrados.</p>
+
+  <h3>4. Función con un if tradicional que retorna widgets distintos</h3>
+  <p>Podemos colocar el <code>if (condición) { ... }</code> de Dart dentro de la función. Si se cumple una condición, devolvemos un widget; si no, devolvemos otro. Así mantenemos separada la decisión del sitio donde la mostramos.</p>
+  <div class="code-label">Flutter · if/else con llaves y return</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget mostrarEstado(int stock) {
+  if (stock > 0) {
+    return const Text(
+      'Disponible',
+      style: TextStyle(color: Colors.green),
+    );
+  } else {
+    return const Text(
+      'Agotado',
+      style: TextStyle(color: Colors.red),
+    );
+  }
+}
+
+// Dentro de una columna:
+mostrarEstado(5),</code></pre>
+  <div class="notice notice-warning"><strong>Evita un error común</strong><p>Si una función declara que retorna <code>Widget</code>, todos los caminos posibles deben retornar un widget. No basta con escribir <code>Text('Agotado');</code> sin <code>return</code>. Si deseas no mostrar nada, puedes devolver <code>const SizedBox.shrink()</code>.</p></div>
+
+  <h3>5. Función para construir un widget completo</h3>
+  <p>Una función no está limitada a devolver un <code>Text</code>: también puede retornar un <code>Card</code> con una jerarquía completa. Esto facilita reutilizar tarjetas de vehículos en varias pantallas.</p>
+  <div class="code-label">Flutter · widget compuesto con parámetros</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget construirTarjeta({
+  required String modelo,
+  required int stock,
+}) {
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(modelo),
+          Text('Unidades: $stock'),
+          mostrarEstado(stock),
+        ],
+      ),
+    ),
+  );
+}
+
+// Dentro de children, llamar a la función:
+construirTarjeta(modelo: 'Renault Logan', stock: 3),</code></pre>
+  <p>La función <code>construirTarjeta</code> se declara en el mismo ámbito que <code>mostrarEstado</code>, por ejemplo como métodos de la misma clase. <code>Padding</code>, <code>Card</code> y <code>Column</code> son componentes que ya conoces del taller.</p>
+
+  <h3>6. ¿Y si necesitamos devolver varios widgets?</h3>
+  <p>Una función <code>Widget</code> devuelve <strong>uno</strong> (aunque ese widget pueda contener hijos). Una función <code>List&lt;Widget&gt;</code> devuelve una <strong>lista</strong> de widgets. Para insertarla como elementos de <code>children</code> utilizamos el operador de propagación <code>...</code>.</p>
+  <div class="code-label">Flutter · devuelve una lista de widgets</div>
+  <pre class="code-block" data-code-mode="dart"><code>List&lt;Widget&gt; construirInformacion(int stock) {
+  return [
+    const Text('Renault Logan'),
+    Text('Cantidad: $stock'),
+    if (stock > 0)
+      const Text('Listo para la venta'),
+  ];
+}
+
+// Dentro de children:
+Column(
+  children: [
+    ...construirInformacion(3),
+    const SizedBox(height: 12),
+    mostrarEstado(3),
+  ],
+)</code></pre>
+  <p>Sin <code>...</code>, estaríamos intentando colocar una lista completa donde <code>children</code> espera elementos individuales de tipo <code>Widget</code>.</p>
+
+  <h3>7. ¿Cuál es la diferencia entre Widget, void, bool y Future?</h3>
+  <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Tipo de función</th><th>Qué devuelve y cuándo usarla</th></tr></thead><tbody>
+    <tr><td><code>Widget mostrarEstado(...)</code></td><td>Un widget que se puede incluir en una pantalla.</td></tr>
+    <tr><td><code>List&lt;Widget&gt; construirDetalles(...)</code></td><td>Varios widgets para insertar en una colección como <code>children</code>.</td></tr>
+    <tr><td><code>bool hayStock(...)</code></td><td>Un valor lógico (<code>true</code> o <code>false</code>) que sirve para validar condiciones.</td></tr>
+    <tr><td><code>int calcularTotal(...)</code></td><td>Un número entero, útil para cálculos.</td></tr>
+    <tr><td><code>void guardarVenta()</code></td><td>No devuelve un resultado útil. Realiza una acción.</td></tr>
+    <tr><td><code>Future&lt;List&lt;Vehiculo&gt;&gt; cargarVehiculos()</code></td><td>Una operación asíncrona que más adelante entregará una lista; suele utilizarse en servicios/API. No debe insertarse directamente en <code>children</code>.</td></tr>
+  </tbody></table></div>
+
+  <h3>8. Funciones como callbacks: ejecutar algo al pulsar un botón</h3>
+  <p>Un botón espera en <code>onPressed</code> una función que ejecutará <strong>cuando el usuario pulse</strong>. Pasar una función no es lo mismo que ejecutarla inmediatamente.</p>
+  <div class="code-label">Flutter · función void y callback</div>
+  <pre class="code-block" data-code-mode="dart"><code>void registrarVenta() {
+  debugPrint('Venta iniciada');
+}
+
+ElevatedButton(
+  onPressed: registrarVenta,
+  child: const Text('Registrar venta'),
+)</code></pre>
+  <p><code>onPressed: registrarVenta</code> entrega la referencia a la función. Evita <code>onPressed: registrarVenta()</code>: eso la ejecuta de inmediato, en vez de pasarla como callback.</p>
+  <div class="code-label">Flutter · enviar un parámetro mediante una función anónima</div>
+  <pre class="code-block" data-code-mode="dart"><code>void seleccionarVehiculo(String modelo) {
+  debugPrint('Seleccionado: $modelo');
+}
+
+ElevatedButton(
+  onPressed: () {
+    seleccionarVehiculo('Renault Logan');
+  },
+  child: const Text('Seleccionar'),
+)</code></pre>
+  <p><code>() { ... }</code> es una función anónima: no le damos nombre porque solo se necesita para esa acción. El botón ejecutará ese bloque cuando se pulse.</p>
+
+  <h3>9. Funciones cortas: sintaxis con =&gt;</h3>
+  <p>En Dart una función con una sola expresión puede utilizar <code>=&gt;</code>. Es una forma abreviada de escribir un cuerpo que devuelve el resultado de esa expresión.</p>
+  <div class="code-label">Dart · equivalencia entre return y =&gt;</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget crearEtiqueta() {
+  return const Text('Disponible');
+}
+
+// Equivalente con sintaxis corta:
+Widget crearEtiquetaCorta() => const Text('Disponible');</code></pre>
+  <p>Para varias instrucciones o para un <code>if</code> tradicional con llaves, utiliza el bloque <code>{ ... }</code>.</p>
+
+  <h3>10. Funciones Widget frente a crear una clase reutilizable</h3>
+  <p>Las funciones pequeñas son útiles durante el aprendizaje y para fragmentos simples. Para un componente que tenga comportamiento propio, estado, identidad, pruebas independientes o reutilización en varias pantallas, normalmente conviene crear una clase <code>StatelessWidget</code> o <code>StatefulWidget</code>.</p>
+  <div class="code-label">Flutter · componente reutilizable con StatelessWidget</div>
+  <pre class="code-block" data-code-mode="dart"><code>class EtiquetaStock extends StatelessWidget {
+  const EtiquetaStock({
+    super.key,
+    required this.stock,
+  });
+
+  final int stock;
+
+  @override
+  Widget build(BuildContext context) {
+    if (stock > 0) {
+      return const Text('Disponible');
+    }
+    return const Text('Agotado');
+  }
+}
+
+// Dentro de children:
+const EtiquetaStock(stock: 3),</code></pre>
+  <p><code>this.stock</code> recibe el argumento del constructor y lo guarda en el campo <code>stock</code> de la clase. <code>build(BuildContext context)</code> es el método que Flutter usa para obtener la interfaz de ese componente. Las funciones auxiliares no reemplazan automáticamente las capacidades de una clase widget.</p>
+
+  <h3>11. ¿Qué es BuildContext y por qué aparece en build()?</h3>
+  <p><code>BuildContext</code> representa la ubicación de un widget dentro del árbol de Flutter. Se utiliza, entre otras cosas, para acceder al tema o localizar widgets antecesores como <code>ScaffoldMessenger</code>. Una función que no lo necesita no tiene por qué recibirlo.</p>
+  <div class="code-label">Flutter · función que necesita BuildContext</div>
+  <pre class="code-block" data-code-mode="dart"><code>void mostrarMensaje(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text('Vehículo seleccionado'),
+    ),
+  );
+}
+
+// Dentro de un botón creado en build(context):
+ElevatedButton(
+  onPressed: () {
+    mostrarMensaje(context);
+  },
+  child: const Text('Seleccionar'),
+)</code></pre>
+  <p>El <code>context</code> usado debe pertenecer a un punto del árbol que tenga acceso al <code>ScaffoldMessenger</code> adecuado. Si una tarea asíncrona ocurre entre medias, verifica <code>context.mounted</code> antes de utilizar el contexto después de un <code>await</code>.</p>
+
+  <h3>12. ¿Cómo hacemos que el widget cambie durante la ejecución?</h3>
+  <p>Si el stock cambia al pulsar un botón, necesitamos manejar el estado. Un <code>StatefulWidget</code> puede guardar <code>stock</code> en su clase <code>State</code>. Al ejecutar <code>setState(() { stock--; })</code>, Flutter solicita reconstruir la interfaz usando el valor nuevo.</p>
+  <div class="code-label">Fragmento de un State · cambiar datos y reconstruir</div>
+  <pre class="code-block" data-code-mode="dart"><code>int stock = 2;
+
+void vender() {
+  if (stock > 0) {
+    setState(() {
+      stock--;
+    });
+  }
+}
+
+Widget mostrarEstadoActual() {
+  if (stock > 0) {
+    return Text('Disponibles: $stock');
+  }
+  return const Text('Agotado');
+}
+
+// Dentro de build():
+// mostrarEstadoActual(),
+// ElevatedButton(onPressed: vender, child: const Text('Vender')),</code></pre>
+  <div class="notice notice-info"><strong>Importante para evitar confusiones</strong><p><code>setState()</code> se utiliza dentro de una clase <code>State</code> de un <code>StatefulWidget</code>; no está disponible directamente en una clase <code>StatelessWidget</code>. No es necesario llamar a <code>setState()</code> dentro de una función que solo construye un widget. Esa función debe usar los valores actuales cuando Flutter reconstruye la interfaz.</p></div>
+
+  <h3>13. ¿Y si los datos provienen de una API?</h3>
+  <p>Las peticiones HTTP o a bases de datos suelen ser asíncronas: devuelven un <code>Future</code>. La función que trae datos es distinta de la que construye widgets. Para mostrar estados de carga, error y resultado existe <code>FutureBuilder</code>. Esta parte es una introducción; el taller profundiza en servicios y API en módulos posteriores.</p>
+  <div class="code-label">Flutter · FutureBuilder básico</div>
+  <pre class="code-block" data-code-mode="dart"><code>Future&lt;String&gt; obtenerNombre() async {
+  return 'Renault Logan';
+}
+
+// Dentro de build(), en una demostración sencilla:
+FutureBuilder&lt;String&gt;(
+  future: obtenerNombre(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState != ConnectionState.done) {
+      return const CircularProgressIndicator();
+    }
+    if (snapshot.hasError) {
+      return const Text('Error al cargar');
+    }
+    return Text(snapshot.data ?? 'Sin vehículo');
+  },
+)</code></pre>
+  <p>Para una aplicación real, evita crear el <code>Future</code> de una petición de red nuevamente cada vez que se ejecuta <code>build()</code>: crea o conserva ese <code>Future</code> antes, por ejemplo en <code>initState()</code>, y pásalo a <code>FutureBuilder</code>.</p>
+
+  <h3>14. Errores comunes y cómo reconocerlos</h3>
+  <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Error</th><th>Solución y motivo</th></tr></thead><tbody>
+    <tr><td><code>Widget crear() { Text('Hola'); }</code></td><td>Falta <code>return</code>. La expresión se crea, pero la función no entrega el widget.</td></tr>
+    <tr><td><code>Widget estado(int n) { if (n &gt; 0) return Text('Sí'); }</code></td><td>Falta devolver un widget cuando la condición sea falsa. Agrega un <code>else</code> o un retorno final.</td></tr>
+    <tr><td><code>children: [mostrarLista()]</code></td><td>Si devuelve <code>List&lt;Widget&gt;</code>, usa <code>children: [...mostrarLista()]</code>.</td></tr>
+    <tr><td><code>onPressed: guardar()</code></td><td>Eso llama la función inmediatamente. Usa <code>onPressed: guardar</code> o <code>onPressed: () { guardar(); }</code>.</td></tr>
+    <tr><td><code>setState()</code> en <code>StatelessWidget</code></td><td>Para estado local mutable crea un <code>StatefulWidget</code> y actualiza desde su clase <code>State</code>.</td></tr>
+    <tr><td>Ejecutar API o cambiar variables dentro de <code>build()</code></td><td><code>build()</code> puede llamarse muchas veces. Procura que solo construya interfaz a partir del estado y conserva las operaciones asíncronas fuera de él.</td></tr>
+  </tbody></table></div>
+
+  <h3>15. Archivos ejecutables para practicar</h3>
+  <div class="step-explainer">
+    <div><span class="step-counter">A</span><div><strong>Primero: funciones Widget con parámetros y condicionales</strong><p>Abre <a href="./etapas/paso_03_funciones_widgets.dart" target="_blank" rel="noopener noreferrer">paso_03_funciones_widgets.dart ↗</a>. Copia su contenido en <code>lib/main.dart</code> de una práctica Flutter. Incluye <code>bool</code>, <code>void</code>, <code>Widget</code>, <code>List&lt;Widget&gt;</code>, <code>if</code>, botones y una tarjeta de concesionario.</p></div></div>
+    <div><span class="step-counter">B</span><div><strong>Después: versión interactiva con StatefulWidget y setState()</strong><p>Abre <a href="./etapas/paso_03_funciones_widgets_dinamico.dart" target="_blank" rel="noopener noreferrer">paso_03_funciones_widgets_dinamico.dart ↗</a>. Permite cambiar el rol, aumentar o disminuir el stock y observar cómo cambian los widgets. Sus operaciones de compra y venta son simuladas, sin API ni persistencia.</p></div></div>
+  </div>
+  <p>Ejecuta <code>flutter run</code> desde la raíz de tu proyecto y comprueba los resultados en tu dispositivo o emulador. Puedes editar el código, realizar Hot Reload y comparar cada cambio.</p>
+
+  <div class="exercise"><span class="exercise-label">✎ PRÁCTICA GUIADA · FUNCIONES Y WIDGETS</span><h3>Construye tu propia tarjeta de concesionario</h3><p>1. Crea una función <code>bool estaDisponible(int stock)</code>. 2. Crea <code>Widget mostrarDisponibilidad(int stock)</code> con <code>if / else</code> y <code>return</code> en ambos casos. 3. Crea <code>Widget tarjetaVehiculo({required String modelo, required int stock})</code>. 4. Agrega una función <code>List&lt;Widget&gt;</code> con dos características del vehículo. 5. Muestra la tarjeta dentro de <code>build()</code>. 6. Como reto avanzado, cambia el stock mediante <code>setState()</code>.</p><details><summary>Ver orientación para resolver</summary><p>Comprueba primero que todos los <code>return</code> coincidan con su tipo. Llama <code>mostrarDisponibilidad(stock)</code> dentro de la tarjeta y utiliza <code>...detallesVehiculo()</code> en una lista <code>children</code>. Al cambiar el estado mediante <code>setState</code>, el widget debe reconstruirse con el stock actualizado.</p></details></div>
+
+  <div class="guided-check"><strong>Preguntas de comprobación</strong><p>¿En qué se diferencia una función <code>Widget</code> de <code>List&lt;Widget&gt;</code>? ¿Qué hace <code>return</code>? ¿Por qué <code>onPressed: registrarVenta</code> es diferente de <code>onPressed: registrarVenta()</code>? ¿Qué gana la aplicación al utilizar clases <code>StatelessWidget</code> o <code>StatefulWidget</code> para elementos reutilizables?</p><details><summary>Ver respuestas</summary><p><code>Widget</code> entrega un componente; <code>List&lt;Widget&gt;</code> entrega una colección. <code>return</code> devuelve el resultado y termina la ejecución de la función. <code>onPressed: registrarVenta</code> entrega la función para que se ejecute al pulsar, mientras que <code>registrarVenta()</code> la ejecuta inmediatamente. Las clases widget tienen identidad propia en el árbol, admiten claves y permiten extraer y mantener componentes independientes.</p></details></div>
+  <p><a href="https://dart.dev/language/functions" target="_blank" rel="noopener noreferrer">Funciones en Dart · documentación oficial ↗</a> · <a href="https://docs.flutter.dev/ui" target="_blank" rel="noopener noreferrer">Construcción de interfaces Flutter ↗</a> · <a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html" target="_blank" rel="noopener noreferrer">StatefulWidget ↗</a> · <a href="https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html" target="_blank" rel="noopener noreferrer">FutureBuilder ↗</a></p>
+</div>
+
 <h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
-          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label><label><input type="checkbox"> Sé ocultar la etiqueta DEBUG desde <code>MaterialApp</code> y distingo la cinta del modo de ejecución.</label><label><input type="checkbox"> Diferencio el <code>if</code> con llaves del <code>if</code> dentro de <code>children</code> y sé condicionar widgets.</label></div>
+          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label><label><input type="checkbox"> Sé ocultar la etiqueta DEBUG desde <code>MaterialApp</code> y distingo la cinta del modo de ejecución.</label><label><input type="checkbox"> Diferencio el <code>if</code> con llaves del <code>if</code> dentro de <code>children</code> y sé condicionar widgets.</label><label><input type="checkbox"> Puedo crear funciones que retornan <code>Widget</code> y <code>List&lt;Widget&gt;</code>, reutilizarlas con parámetros y explicar <code>return</code>, <code>void</code> y <code>setState()</code>.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dibuja tu propia jerarquía</h3><p>Representa en una hoja el árbol de widgets desde <code>MainApp</code> hasta el primer <code>Text</code> del cuerpo. Usa flechas para indicar qué widget está dentro de cuál.</p><details><summary>Ver orientación</summary><p>MainApp → MaterialApp → Scaffold → body → Center → Column → Text.</p></details></div>
           <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_03_tienda.dart" target="_blank" rel="noopener noreferrer">Construir la barra Tienda: paso_03_tienda.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="estructura">Marcar módulo como completado</button><a class="next-link" href="#diseno">Siguiente: Organizar widgets →</a></div>
         </section>
