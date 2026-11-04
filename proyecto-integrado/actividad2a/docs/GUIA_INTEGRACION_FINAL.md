@@ -243,3 +243,123 @@ Consulta `scripts/README.md` para iniciar los servicios. La prueba valida el adm
 **Verificación del 24 de octubre de 2026:** 12 pruebas Flutter, 10 de API y recorrido automatizado real de Chrome aprobados. La aplicación compiló en web y Android (APK debug x64). La selección de galería/cámara en teléfonos físicos y la compilación iOS siguen requiriendo pruebas en dispositivos correspondientes.
 
 **Precaución:** la versión publicada de `proyecto-integrado/actividad2a` es código fuente para superponer sobre el esqueleto generado por `flutter create --empty actividad2a`. Si se clona desde GitHub, sigue los pasos del README de `proyecto-integrado` para generar las carpetas de plataforma necesarias antes de ejecutar Flutter.
+
+## 14. Condicionales y funciones que retornan widgets en la aplicación real
+
+**Actualización del 3 de noviembre de 2026.** Esta sección explica funciones y condicionales incorporados dentro de `actividad2a/lib/`, manteniendo los modelos, el CRUD, los permisos y la conexión con FastAPI. No se creó una segunda tienda ni se reemplazaron archivos existentes por ejemplos simplificados.
+
+### 14.1. Función Widget e if tradicional: elegir la pantalla inicial
+
+**Archivo real:** [lib/main.dart](../lib/main.dart), dentro de `_MainAppState`.
+
+```dart
+Widget _construirPantallaInicial() {
+  final usuario = _usuario;
+
+  if (usuario == null) {
+    return LoginPage(
+      api: _api,
+      onSesion: (autenticado) =>
+          setState(() => _usuario = autenticado),
+    );
+  }
+
+  return InicioPage(
+    key: ValueKey(usuario.id),
+    api: _api,
+    usuario: usuario,
+    onSalir: _cerrarSesion,
+  );
+}
+```
+
+- `Widget` indica que la función debe devolver un widget.
+- `if (usuario == null) { ... }` es un **if normal con llaves**: el bloque ejecuta instrucciones Dart.
+- `return LoginPage(...)` entrega un widget y termina la función cuando no hay sesión.
+- En caso contrario, `return InicioPage(...)` entrega la pantalla autenticada.
+- `home: _construirPantallaInicial()` invoca la función dentro de la única `MaterialApp` del proyecto.
+- `setState` modifica la sesión y permite reconstruir la interfaz. No duplica el login ni la conexión a la API.
+
+**Actividad:** entra y sal de una cuenta de laboratorio y explica qué ruta del `if` se ejecuta en cada caso.
+
+### 14.2. Función con if y dos posibles widgets
+
+**Archivo real:** [lib/widgets/vehiculo_card.dart](../lib/widgets/vehiculo_card.dart).
+
+```dart
+Widget _construirEstado() {
+  if (vehiculo.disponible) {
+    return const Chip(
+      label: Text('Disponible'),
+      avatar: Icon(Icons.check_circle_outline, size: 17),
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  return const Chip(
+    label: Text('No disponible'),
+    avatar: Icon(Icons.remove_circle_outline, size: 17),
+    visualDensity: VisualDensity.compact,
+  );
+}
+```
+
+La condición consulta `vehiculo.disponible`, un campo `bool` real de la API. **No se inventa un atributo stock numérico** para esta implementación. Cada camino entrega un `Widget`. Cuando una función promete devolver `Widget`, no puede terminar sin retornar un widget.
+
+### 14.3. Devolver una lista de widgets
+
+El método `_construirDetalles(BuildContext context)` del mismo archivo retorna `List<Widget>` con nombre, marca, precio y `_construirEstado()`. El método `_construirFoto(BuildContext context)`, en cambio, retorna un solo `Widget` con la imagen persistida o un icono de reemplazo.
+
+- `Widget` representa un widget individual.
+- `List<Widget>` representa varios widgets, y puede usarse como `children: _construirDetalles(context)`.
+- Para agregar elementos de esa lista junto con otros componentes usa `children: [..._construirDetalles(context), otroWidget]`.
+- `BuildContext` permite consultar el tema y otros datos del árbol, como `Theme.of(context)`.
+- `return` no es obligatorio en una función `void` que solo ejecuta acciones, pero sí en cada camino de las funciones que prometen devolver un widget.
+
+### 14.4. if con llaves e if en una lista de widgets
+
+En `VehiculoCard`, un `if` de colección controla el menú de edición/eliminación:
+
+```dart
+// Dentro de children: [...]
+if (onEditar != null || onEliminar != null)
+  PopupMenuButton<String>(
+    // Ver la implementación completa en vehiculo_card.dart.
+  ),
+```
+
+Esta forma no lleva llaves porque es un **elemento condicional de una colección**. Dentro del menú, otras condiciones verifican qué elementos están autorizados.
+
+El `if (condicion) { ... }` tradicional sí lleva llaves y se utiliza en métodos y funciones, como `_construirEstado()`. Para agregar varios widgets condicionales en una colección: `if (condicion) ...[WidgetA(), WidgetB()]`.
+
+### 14.5. Relación entre funciones, clases y seguridad
+
+`VehiculoCard` sigue siendo un `StatelessWidget`: sus métodos privados construyen fragmentos reutilizables sin estado mutable propio. `CatalogoPage` es un `StatefulWidget` y sigue gestionando las consultas, filtros, favoritos y la edición con la API.
+
+Los botones de edición y eliminación dependen de callbacks opcionales (`VoidCallback?`) que el catálogo envía únicamente cuando `tienePermiso(usuario, permiso)` lo permite. **La API también valida esos permisos**, independientemente de la interfaz. Ocultar un botón no garantiza seguridad.
+
+`build(BuildContext context)` retorna un widget que Flutter puede reconstruir. `setState()` se utiliza en el objeto `State` de un `StatefulWidget` cuando los datos locales cambian. No debe llamarse desde un `StatelessWidget`.
+
+### 14.6. Pruebas reales y verificación
+
+El nuevo archivo [test/condicionales_widgets_test.dart](../test/condicionales_widgets_test.dart) cubre:
+1. Disponibilidad del vehículo y ausencia de menú de edición para un cliente.
+2. Estado no disponible, con opción editar y sin eliminar cuando solo se entrega ese callback.
+3. Opciones de editar y eliminar cuando se entregan ambos callbacks.
+4. Activación de los callbacks y presentación sin excepciones en las dimensiones de prueba.
+
+Desde una copia clonada y configurada del proyecto final:
+
+```powershell
+cd tallerFlutterDesarrollo\proyecto-integrado\actividad2a
+flutter pub get
+flutter analyze
+flutter test test/condicionales_widgets_test.dart
+flutter test
+```
+
+Si la copia del repositorio no tiene carpetas de plataforma generadas, utiliza **primero** el comando `flutter create --empty` descrito en la sección 2. No regeneres un proyecto que ya está configurado solo por repetir esta guía.
+
+El módulo [Estructura de la pantalla](../../../index.html#estructura) aporta ejercicios graduales de `if`, `Widget`, parámetros, `return` y funciones. **Para desarrollar el concesionario final, trabaja sobre estos archivos reales de `actividad2a/lib` y no reemplaces su código con los ejemplos aislados.**
+
+> **Verificación:** los cambios y las nuevas pruebas se guardaron en GitHub. La referencia de 12 pruebas aprobadas corresponde al 24 de octubre de 2026, antes de esta modificación. La versión actual debe pasar `flutter analyze` y `flutter test` antes de declararla validada.
