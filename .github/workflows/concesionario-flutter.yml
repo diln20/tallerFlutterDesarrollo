@@ -1,0 +1,48 @@
+name: Validar concesionario Flutter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proyecto-integrado/actividad2a/**'
+      - '.github/workflows/concesionario-flutter.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'proyecto-integrado/actividad2a/**'
+      - '.github/workflows/concesionario-flutter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  flutter-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyecto-integrado/actividad2a
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+
+      - name: Instalar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Completar estructura Flutter del proyecto
+        run: flutter create --empty --platforms=android,web --project-name=actividad2a .
+
+      - name: Resolver dependencias
+        run: flutter pub get
+
+      - name: Revisar el código Dart
+        run: flutter analyze
+
+      - name: Probar widgets condicionales
+        run: flutter test test/condicionales_widgets_test.dart
+
+      - name: Ejecutar toda la suite Flutter
+        run: flutter test
