@@ -70,6 +70,8 @@
   <link rel="stylesheet" href="./assets/advanced-lessons.css?v=P14-debug-banner-v2">
   <link rel="stylesheet" href="./assets/propiedades-flutter.css?v=20261024-valores-v1">
   <link rel="stylesheet" href="./assets/roles-pagination-ux.css?v=P12-P14-v1">
+  <link rel="stylesheet" href="./assets/condicionales-demo.css?v=20261103-v1">
+  <script src="./assets/condicionales-demo.js?v=20261103-v1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -104,7 +106,7 @@
         <div class="nav-group-label">INICIO · PROYECTO ACTIVIDAD2</div>
         <a class="nav-link" href="#preparacion" data-route="preparacion" data-search="preparacion instalación flutter doctor proyecto ejecutar emulador"><span class="lesson-index">01</span><span>Preparar el proyecto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#punto-entrada" data-route="punto-entrada" data-search="main dart runapp import flutter statelesswidget super key const build"><span class="lesson-index">02</span><span>Entender main.dart</span><span class="nav-check" aria-hidden="true">✓</span></a>
-        <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
+        <a class="nav-link" href="#estructura" data-route="estructura" data-search="MaterialApp Scaffold AppBar Text pantalla home if else condicionales widgets condicionados stock rol concesionario"><span class="lesson-index">03</span><span>La estructura de la pantalla</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#diseno" data-route="diseno" data-search="Column Row Center Icon children SizedBox widgets layout"><span class="lesson-index">04</span><span>Organizar los widgets</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <a class="nav-link" href="#campo-texto" data-route="campo-texto" data-search="TextField Expanded InputDecoration hintText caja texto"><span class="lesson-index">05</span><span>Primer campo de texto</span><span class="nav-check" aria-hidden="true">✓</span></a>
         <div class="nav-group-label">RUTA A · CONTINÚA DESDE EL MÓDULO 05</div>
@@ -623,8 +625,149 @@ class MainApp extends StatelessWidget {
   <div class="notice notice-tip"><strong>Comprueba el resultado:</strong> ejecuta tu práctica y verifica que desaparezca la cinta. Cambia temporalmente a <code>true</code>, observa la diferencia y vuelve a <code>false</code>. Puedes usar Hot Reload.</div>
   <p><a href="./etapas/paso_03_tienda_sin_debug.dart" target="_blank" rel="noopener noreferrer">Ver el archivo completo del módulo 03 con la cinta DEBUG oculta ↗</a> · <a href="https://api.flutter.dev/flutter/material/MaterialApp/debugShowCheckedModeBanner.html" target="_blank" rel="noopener noreferrer">Documentación oficial de Flutter ↗</a></p>
 </div>
+
+<div class="deep-dive conditions-lesson" id="condicionales-flutter">
+  <div class="deep-heading">
+    <span>AMPLIACIÓN PRÁCTICA · MÓDULO 03</span>
+    <h2>Condicionales en Dart y widgets condicionados en Flutter</h2>
+    <p>Aprende a tomar decisiones con <code>if</code>, <code>else if</code> y <code>else</code>. En el concesionario podemos mostrar disponibilidad, controlar permisos y decidir qué botón aparece.</p>
+  </div>
+  <div class="notice notice-info"><strong>Dos contextos diferentes</strong><p>El <code>if (condicion) { ... }</code> tradicional se escribe en funciones y bloques de instrucciones. Dentro de <code>children: [...]</code> se usan elementos <code>if</code> de colección, que no llevan esas llaves. Los ejemplos siguientes explican ambas formas.</p></div>
+  <h3>1. El if normal con paréntesis y llaves</h3>
+  <p>Los paréntesis <code>( )</code> contienen una expresión booleana (<code>true</code> o <code>false</code>). Las llaves <code>{ }</code> agrupan las instrucciones que se ejecutarán cuando esa condición sea verdadera.</p>
+  <div class="code-label">Dart · if tradicional</div>
+  <pre class="code-block" data-code-mode="dart"><code>int stock = 5;
+
+if (stock > 0) {
+  print('Vehículo disponible');
+}</code></pre>
+  <h3>2. if / else y else if</h3>
+  <div class="code-label">Dart · decisiones alternativas</div>
+  <pre class="code-block" data-code-mode="dart"><code>int stock = 0;
+String rol = 'vendedor';
+
+if (stock > 0) {
+  print('Disponible');
+} else {
+  print('Agotado');
+}
+
+if (rol == 'admin') {
+  print('Puede administrar vehículos');
+} else if (rol == 'vendedor') {
+  print('Puede registrar ventas');
+} else {
+  print('Puede consultar el catálogo');
+}</code></pre>
+  <p>Usa <code>==</code> para comparar valores, <code>&gt;</code> para verificar que hay existencias, <code>&amp;&amp;</code> cuando deben cumplirse ambas condiciones, <code>||</code> cuando basta una y <code>!</code> para negar una condición.</p>
+  <div class="code-label">Dart · condiciones combinadas</div>
+  <pre class="code-block" data-code-mode="dart"><code>if (rol == 'vendedor' &amp;&amp; stock > 0) {
+  print('Puede iniciar la venta');
+}</code></pre>
+  <h3>3. Mostrar un widget con un if dentro de children</h3>
+  <p>Dentro de <code>children: []</code>, Dart permite elementos condicionales: el botón solo forma parte de la lista cuando hay existencias. Observa que este <code>if</code> <strong>no utiliza llaves</strong>.</p>
+  <div class="code-label">Flutter · if de colección</div>
+  <pre class="code-block" data-code-mode="dart"><code>Column(
+  children: [
+    const Text('Catálogo de vehículos'),
+
+    if (stock > 0)
+      ElevatedButton(
+        onPressed: () {},
+        child: const Text('Comprar'),
+      ),
+  ],
+)</code></pre>
+  <h3>4. Condicionar varios widgets con ...[]</h3>
+  <p>Cuando una sola condición debe incluir varios elementos, agrúpalos en una lista con <code>...[...]</code>. El operador de propagación agrega los elementos de esa lista a <code>children</code>.</p>
+  <div class="code-label">Flutter · varios widgets con una condición</div>
+  <pre class="code-block" data-code-mode="dart"><code>Column(
+  children: [
+    if (stock > 0) ...[
+      const Icon(Icons.check_circle, color: Colors.green),
+      const Text('Vehículo disponible'),
+      ElevatedButton(
+        onPressed: () {},
+        child: const Text('Comprar'),
+      ),
+    ] else
+      const Text('Vehículo agotado'),
+  ],
+)</code></pre>
+  <h3>5. Utilizar el if con llaves para devolver un widget</h3>
+  <p>Una función puede usar el <code>if</code> tradicional y retornar distintos widgets. Luego se llama la función donde Flutter espera un widget.</p>
+  <div class="code-label">Dentro de una clase de widgets · función que devuelve un Widget</div>
+  <pre class="code-block" data-code-mode="dart"><code>Widget mostrarVehiculo(int stock) {
+  if (stock > 0) {
+    return const Text('Vehículo disponible');
+  } else {
+    return const Text('Vehículo agotado');
+  }
+}
+
+// Dentro del método build:
+Column(
+  children: [
+    mostrarVehiculo(stock),
+  ],
+)</code></pre>
+  <h3>6. Utilizar if con llaves para construir una lista de widgets</h3>
+  <div class="code-label">Dentro de build() · lista que se construye antes del return</div>
+  <pre class="code-block" data-code-mode="dart"><code>final List&lt;Widget&gt; widgets = [];
+
+if (stock > 0) {
+  widgets.add(const Text('Vehículo disponible'));
+  widgets.add(
+    ElevatedButton(
+      onPressed: () {},
+      child: const Text('Comprar'),
+    ),
+  );
+} else {
+  widgets.add(const Text('Vehículo agotado'));
+}
+
+return Column(children: widgets);</code></pre>
+  <div class="notice notice-tip"><strong>¿Dónde se escribe cada versión?</strong><p><code>if (...) { ... }</code> sí funciona dentro de <code>build()</code>, antes del <code>return</code>, o en funciones y callbacks. Sin embargo, no escribas <code>if (...) { Text(...) }</code> directamente como elemento de <code>children: []</code>. En esa lista utiliza <code>if (...) Text(...)</code>, o <code>if (...) ...[Text(...), ...]</code>.</p></div>
+  <h3>7. Laboratorio visual: cambia stock y rol</h3>
+  <p class="conditions-intro">Esta vista previa <strong>simula</strong> el resultado de las condiciones. No compila ni ejecuta Flutter. Prueba diferentes valores y comprueba qué widgets aparecerían.</p>
+  <div class="conditions-demo" id="condicionales-lab">
+    <div class="conditions-controls">
+      <label for="condicional-stock">Vehículos disponibles <output data-condicional-valor for="condicional-stock">3</output></label>
+      <input id="condicional-stock" type="range" min="0" max="10" step="1" value="3">
+      <label for="condicional-rol">Rol del usuario</label>
+      <select id="condicional-rol">
+        <option value="admin">Administrador</option>
+        <option value="vendedor">Vendedor</option>
+        <option value="cliente">Cliente</option>
+      </select>
+      <p>La vista cambia según <code>stock &gt; 0</code> y el valor de <code>rol</code>. Los botones son ilustrativos y no registran operaciones.</p>
+    </div>
+    <div class="conditions-phone" aria-label="Vista previa de condicionales en el concesionario">
+      <div class="conditions-phone-bar">Concesionario</div>
+      <div class="conditions-phone-body">
+        <strong>Renault Logan</strong>
+        <span class="conditions-stock-result" data-condicional-estado data-available="true" role="status" aria-live="polite">Vehículo disponible (3)</span>
+        <div class="conditions-actions" data-condicional-acciones></div>
+        <div class="conditions-trace" data-condicional-trazas aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+  <h3>8. Tabla comparativa y errores comunes</h3>
+  <div class="table-scroll"><table class="lesson-table"><thead><tr><th>Forma</th><th>Para qué sirve</th></tr></thead><tbody>
+    <tr><td><code>if (condicion) { ... }</code></td><td>Ejecutar varias instrucciones dentro de una función.</td></tr>
+    <tr><td><code>if (condicion) Widget()</code></td><td>Incluir un solo widget de forma condicional en <code>children</code>.</td></tr>
+    <tr><td><code>if (condicion) ...[Widget(), Widget()]</code></td><td>Incluir varios widgets en <code>children</code>.</td></tr>
+    <tr><td><code>Widget mostrar() { if (...) { return ...; } ... }</code></td><td>Elegir el widget a devolver mediante lógica tradicional.</td></tr>
+    <tr><td><code>Visibility(visible: condicion, child: ...)</code></td><td>Controlar la visibilidad de un widget; puede mantener tamaño o estado según sus opciones.</td></tr>
+  </tbody></table></div>
+  <div class="guided-check"><strong>Antes de pasar al siguiente módulo</strong><p>¿Por qué <code>if (stock &gt; 0) { ... }</code> no es igual que un elemento <code>if</code> de <code>children</code>? ¿Qué cambia si el stock vale cero? ¿Qué harías si necesitas mostrar tres widgets juntos?</p><details><summary>Ver orientación</summary><p>El primero es una instrucción Dart con bloque de llaves; el segundo decide qué elementos incluir en una colección. Si el stock es cero, la condición <code>stock &gt; 0</code> es falsa. Para mostrar tres widgets juntos utiliza <code>if (condicion) ...[widget1, widget2, widget3]</code>.</p></details></div>
+  <div class="exercise"><span class="exercise-label">✎ RETO DEL CONCESIONARIO</span><h3>Controla las acciones según disponibilidad y rol</h3><p>En tu copia del proyecto, muestra «Agotado» cuando el stock sea cero. Si hay stock, permite «Comprar» al cliente, «Registrar venta» al vendedor y «Agregar vehículo» al administrador. Experimenta con cada rol y documenta qué condición se cumple.</p><details><summary>Ver pista</summary><p>Combina comparaciones con <code>&amp;&amp;</code> y utiliza un <code>if</code> de colección para cada botón, o una función con <code>if / else if / else</code> que devuelva el widget apropiado.</p></details></div>
+  <p class="conditions-links"><a href="./etapas/paso_03_condicionales.dart" target="_blank" rel="noopener noreferrer">Abrir ejemplo Flutter completo para copiar a lib/main.dart ↗</a> · <a href="https://dart.dev/language/branches" target="_blank" rel="noopener noreferrer">Documentación oficial de if/else en Dart ↗</a> · <a href="https://dart.dev/language/collections" target="_blank" rel="noopener noreferrer">Documentación oficial de elementos condicionales en colecciones ↗</a></p>
+</div>
+
 <h2>4. Prueba un cambio pequeño</h2><p>En <strong>tu propio proyecto de práctica</strong>, localiza el título <code>'Tienda'</code> y cámbialo por <code>'Mi primera aplicación'</code>. Ejecuta Hot Reload y comprueba la barra superior. La guía no cambia automáticamente el código de clase.</p>
-          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label><label><input type="checkbox"> Sé ocultar la etiqueta DEBUG desde <code>MaterialApp</code> y distingo la cinta del modo de ejecución.</label></div>
+          <div class="checklist" data-checklist="estructura"><label><input type="checkbox"> Identifico el widget que define la pantalla principal.</label><label><input type="checkbox"> Sé dónde cambiar el título de la barra superior.</label><label><input type="checkbox"> Distingo <code>child</code> de <code>children</code>.</label><label><input type="checkbox"> Sé ocultar la etiqueta DEBUG desde <code>MaterialApp</code> y distingo la cinta del modo de ejecución.</label><label><input type="checkbox"> Diferencio el <code>if</code> con llaves del <code>if</code> dentro de <code>children</code> y sé condicionar widgets.</label></div>
           <div class="exercise"><span class="exercise-label">✎ ACTIVIDAD INDIVIDUAL</span><h3>Dibuja tu propia jerarquía</h3><p>Representa en una hoja el árbol de widgets desde <code>MainApp</code> hasta el primer <code>Text</code> del cuerpo. Usa flechas para indicar qué widget está dentro de cuál.</p><details><summary>Ver orientación</summary><p>MainApp → MaterialApp → Scaffold → body → Center → Column → Text.</p></details></div>
           <div class="notice notice-tip"><strong>Archivo completo de este paso</strong><p><a href="./etapas/paso_03_tienda.dart" target="_blank" rel="noopener noreferrer">Construir la barra Tienda: paso_03_tienda.dart ↗</a>. Puedes consultar el archivo completo para verificar tu resultado después de construirlo por partes. Para ejecutar una etapa, guarda su contenido como <code>lib/main.dart</code> en tu copia de práctica, no en el proyecto del docente.</p></div><div class="lesson-end"><button class="button button-complete" data-complete="estructura">Marcar módulo como completado</button><a class="next-link" href="#diseno">Siguiente: Organizar widgets →</a></div>
         </section>
