@@ -1,3 +1,5 @@
+import 'package:actividad2a/main.dart' show MainApp, InicioPage;
+import 'package:actividad2a/pages/login_page.dart';
 import 'package:actividad2a/models/vehiculo.dart';
 import 'package:actividad2a/widgets/vehiculo_card.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,18 @@ Widget appConTarjeta({
 }
 
 void main() {
+  testWidgets('MainApp construye el login con un if al no haber sesión',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(const MainApp());
+
+    expect(find.byType(LoginPage), findsOneWidget);
+    expect(find.byType(InicioPage), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Disponible y cliente sin acciones de edición', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
