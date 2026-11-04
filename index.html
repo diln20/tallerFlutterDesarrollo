@@ -1057,7 +1057,12 @@ FutureBuilder&lt;String&gt;(
     <tr><td>Ejecutar API o cambiar variables dentro de <code>build()</code></td><td><code>build()</code> puede llamarse muchas veces. Procura que solo construya interfaz a partir del estado y conserva las operaciones asíncronas fuera de él.</td></tr>
   </tbody></table></div>
 
-  <h3>15. Archivos ejecutables para practicar</h3>
+  
+  <div class="notice notice-tip" id="integracion-condicionales-concesionario">
+    <strong>¡También está integrado en el proyecto real del concesionario!</strong>
+    <p>Estos conceptos ya se aplicaron directamente a <a href="./proyecto-integrado/actividad2a/lib/main.dart" target="_blank" rel="noopener noreferrer"><code>actividad2a/lib/main.dart</code></a> (función <code>_construirPantallaInicial()</code> con <code>if</code> y <code>return</code>) y <a href="./proyecto-integrado/actividad2a/lib/widgets/vehiculo_card.dart" target="_blank" rel="noopener noreferrer"><code>vehiculo_card.dart</code></a> (funciones <code>_construirEstado()</code>, <code>_construirFoto()</code> y <code>_construirDetalles()</code>). El catálogo sigue usando sus permisos y su API; el estado del vehículo se controla con <code>disponible</code>, un <code>bool</code> del modelo real. Revisa la <a href="./proyecto-integrado/actividad2a/docs/GUIA_INTEGRACION_FINAL.md" target="_blank" rel="noopener noreferrer">explicación de integración</a> y sus <a href="./proyecto-integrado/actividad2a/test/condicionales_widgets_test.dart" target="_blank" rel="noopener noreferrer">pruebas de widgets</a>. Los ejemplos aislados de abajo siguen sirviendo para experimentar sin tocar el código final.</p>
+  </div>
+<h3>15. Archivos ejecutables para practicar</h3>
   <div class="step-explainer">
     <div><span class="step-counter">A</span><div><strong>Primero: funciones Widget con parámetros y condicionales</strong><p>Abre <a href="./etapas/paso_03_funciones_widgets.dart" target="_blank" rel="noopener noreferrer">paso_03_funciones_widgets.dart ↗</a>. Copia su contenido en <code>lib/main.dart</code> de una práctica Flutter. Incluye <code>bool</code>, <code>void</code>, <code>Widget</code>, <code>List&lt;Widget&gt;</code>, <code>if</code>, botones y una tarjeta de concesionario.</p></div></div>
     <div><span class="step-counter">B</span><div><strong>Después: versión interactiva con StatefulWidget y setState()</strong><p>Abre <a href="./etapas/paso_03_funciones_widgets_dinamico.dart" target="_blank" rel="noopener noreferrer">paso_03_funciones_widgets_dinamico.dart ↗</a>. Permite cambiar el rol, aumentar o disminuir el stock y observar cómo cambian los widgets. Sus operaciones de compra y venta son simuladas, sin API ni persistencia.</p></div></div>
