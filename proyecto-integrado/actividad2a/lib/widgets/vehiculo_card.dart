@@ -41,27 +41,27 @@ class VehiculoCard extends StatelessWidget {
   List<Widget> _construirDetalles(BuildContext context) {
     final colores = Theme.of(context).colorScheme;
     return [
-                Text(
-                  vehiculo.nombre,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  vehiculo.marca,
-                  style: TextStyle(color: colores.onSurfaceVariant),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '\$ ${vehiculo.precio.toStringAsFixed(0).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => '.')} COP',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colores.primary,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                _construirEstado(),
+        Text(
+          vehiculo.nombre,
+          style: Theme.of(context).textTheme.titleMedium,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          vehiculo.marca,
+          style: TextStyle(color: colores.onSurfaceVariant),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '\$ ${vehiculo.precio.toStringAsFixed(0).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => '.')} COP',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: colores.primary,
+          ),
+        ),
+        const SizedBox(height: 6),
+        _construirEstado(),
     ];
   }
 
